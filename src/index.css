@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+::-ms-reveal {
+  display: none;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/src/assets/fonts/Inter-VariableFont_slnt\,wght.ttf');
+  font-style: normal;
+  font-weight: normal;
+}
+
+*{
+  font-family: Inter;
+}

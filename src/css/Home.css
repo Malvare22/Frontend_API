@@ -1,0 +1,36 @@
+#navbar{
+  background-color: #1C3B57;
+  margin: 0;
+  padding: 0;
+}
+#navbar img{
+  margin-left: 3rem;
+}
+
+.navbar-toggler-icon{
+  height: 40px;
+  color: white;
+}
+
+#basic-navbar-nav{
+  padding: 0;
+  height: 100%;
+}
+
+
+#nav_elements a{
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  padding: 0px;
+  height: 100%;
+  padding: 40px;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+#nav_elements a:hover{
+  background-color: rgb(37, 35, 35);
+  transition-duration: 0s;
+}
