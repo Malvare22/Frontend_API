@@ -1,3 +1,14 @@
+# Librerías que usan los compañeritos:
+
+**Notación->** nombre : comando
+- react-router-dom: npm i react-router-dom
+- reactstrap: npm i reactstrap
+- styled-components: npm i styled-components
+- bootstrap: npm i bootstrap
+- react-bootstrap: npm i react-bootstrap
+
+# Apartir de aquí es chachara
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
