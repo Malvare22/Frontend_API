@@ -6,30 +6,38 @@ import logo from '../../assets/images/Login/Emprender_Aprender.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useUserSession, useUserTogglerSession } from '../../context/UserContext';
+import axios from 'axios';
 //import Sidebar from '../../components/NavBar'
 
-const useForm = (initialData,validar, navigate) =>{
-    
-    const[estado, setEstado] = useState(false);
-    const[form, setForm] = useState(initialData);
 
-    const handleChange = (e)=>{
-        const{name, value} = e.target;
-        setForm({...form, [name]:value});
+
+const useForm = (initialData, validar, navigate) => {
+
+    const [fail, setFail] = useState(false);
+    const [form, setForm] = useState(initialData);
+    const userSession = useUserSession();
+    const togglerUserSession = useUserTogglerSession();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
     };
 
-    const handleSubmit = (e)=>{
+    /**Función que se aplica al querer efectuar en Submit **/
+    const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
-        const err = validar(form)
-        if (err===true) setEstado(true);
-        else{
-            //Lo que se hace si no hay errores
-            
-        };
+        const state = await validar(form)
+        //Si hubo error:
+        if (state  === undefined) setFail(true);
+        else {
+            togglerUserSession(state)
+        }
+
     };
 
-    return{form, estado, handleChange, handleSubmit};
+    return { form, fail, handleChange, handleSubmit };
 };
 
 
@@ -57,81 +65,98 @@ const Panel = () => {
         navigate('/forgetPassword');
     };
     //Aquí se hace toda la validación de los campos
-    const validar = (form) =>{
-        let error =false;
+    const validar = async (form) => {
+        let temp = undefined;
         //Colocar método de verificación de clave (Cada input está en form)
-            if(!form.userName.trim()){
-                error=true;
-            }
-            if(form.userName=="estudiante") navigate('/estudiante');
-            if(form.userName=="lider") navigate('/lider');
-            if(form.userName=="docente") navigate('/docente');
-            if(form.userName=="admin") navigate('/admin');
-            console.log(form.userName)
-        return error;
+        if (form.userName.trim() && form.password.trim()) {
+            temp = await busquedaUsuario(form);
+        }
+        console.log(temp)
+        // if(form.userName=="estudiante") navigate('/estudiante');
+        // if(form.userName=="lider") navigate('/lider');
+        // if(form.userName=="docente") navigate('/docente');
+        // if(form.userName=="admin") navigate('/admin');
+        return temp;
     };
+
+    const busquedaUsuario=async(user)=>{
+       let value = null;
+        value = await axios.get('database.json').then(
+            response => {
+                const data = response.data;
+                //let tipos = ["administradores","lider","docentes","estudiantes"];
+                for(let i=0; i<data.usuarios.length; i++){
+                    if(data.usuarios[i].correo===form.userName && data.usuarios[i].contraseña===form.password) return data.usuarios[i];
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        return value;
+    };
+    //Plantilla del objeto user
     const user = {
         userName: '',
         password: '',
     };
-    {/*Método de mostrar contraseña*/}
+
+    /*Método de mostrar contraseña*/
     const [type, setType] = useState('password');
-    const changeType=()=>{
-        if(type==='password'){
+    const changeType = () => {
+        if (type === 'password') {
             setType('text');
         }
-        else{
+        else {
             setType('password');
         }
     };
 
-    const {form, estado, handleChange, handleSubmit} = useForm(user,validar, navigate);
-    
+    const { form, fail, handleChange, handleSubmit } = useForm(user, validar, navigate);
+
     return (<div className='container border rounded' style={{ backgroundColor: "#D9D9D9" }}>
         <div className='text-center m-3'>
             <img src={logo} height={"120px"} className=''></img>
         </div>
         <form onSubmit={handleSubmit}>
-        {estado && <div className='d-flex justify-content-center align-items-center rounded'><ErrorMessage></ErrorMessage></div>}
-        <div className='mt-4'>
-            <div>
-                <h3 className='fw-bold'>Usuario</h3>
+            {fail && <div className='d-flex justify-content-center align-items-center rounded'><ErrorMessage></ErrorMessage></div>}
+            <div className='mt-4'>
+                <div>
+                    <h3 className='fw-bold'>Usuario</h3>
+                </div>
+                <div className='d-flex align-items-center position-relative'>
+                    <svg xmlns="http://www.w3.org/2000/svg" className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                    </svg><input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' name='userName' value={form.userName} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "5%" }}></input>
+                </div>
             </div>
-            <div className='d-flex align-items-center position-relative'>
-                <svg xmlns="http://www.w3.org/2000/svg" className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                </svg><input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' name='userName' value={form.userName} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "5%" }}></input>
+            <div className='mt-4'>
+                <div className=''>
+                    <h3 className='fw-bold'>Contraseña</h3>
+                </div>
+                <div className='d-flex align-items-center position-relative'>
+                    {/*Lock*/}
+                    <svg xmlns="http://www.w3.org/2000/svg" className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                    </svg>
+                    <input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' type={type} name='password' value={form.password} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "2%", width: "86%" }}></input>
+                    {type == 'password' ? <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                    </svg> : <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} width="20" height="20" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
+                        <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
+                        <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
+                    </svg>}
+                </div>
             </div>
-        </div>
-        <div className='mt-4'>
-            <div className=''>
-                <h3 className='fw-bold'>Contraseña</h3>
+            <div className='mt-3 mb-4'>
+                <div className='text-center'>
+                    <a href='' onClick={toggleA}>¿Olvidaste tu contraseña?</a>
+                </div>
+                <div className='text-center mt-3'>
+                    <button type="submit" class="btn" style={{ backgroundColor: "#2B9877", color: "white" }}>Ingresar</button>
+                </div>
             </div>
-            <div className='d-flex align-items-center position-relative'>
-                {/*Lock*/}
-                <svg xmlns="http://www.w3.org/2000/svg" className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                </svg>
-                <input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' type={type} name='password' value={form.password} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "2%", width: "86%" }}></input>
-                {type=='password'?<svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} className='m-1 mb-0 mt-0' width="20" height="20" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                </svg> :<svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} width="20" height="20" fill="currentColor" class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
-                <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z"/>
-                <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z"/>
-                </svg>}
-            </div>
-        </div>
-        <div className='mt-3 mb-4'>
-            <div className='text-center'>
-                <a href='' onClick={toggleA}>¿Olvidaste tu contraseña?</a>
-            </div>
-            <div className='text-center mt-3'>
-                <button type="submit" class="btn" style={{ backgroundColor: "#2B9877", color: "white" }}>Ingresar</button>
-            </div>
-        </div>
         </form>
-        
+
     </div>
     );
 };

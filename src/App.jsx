@@ -9,6 +9,7 @@ import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
 import Recovery from './routes/login/Recovery';
 import Error404 from './routes/404_error'
+import ContextProvider from './context/UserContext';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,6 @@ const router = createBrowserRouter([
 ]);
 
 export default function App(){
-  return <><RouterProvider router={router}></RouterProvider></>;
+  return <><ContextProvider><RouterProvider router={router}></RouterProvider></ContextProvider></>;
 }
 

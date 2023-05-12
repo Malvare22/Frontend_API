@@ -1,0 +1,73 @@
+{
+    "usuarios": [
+        {
+            "correo": "example@student.com",
+            "contraseña": "123",
+            "apellido": "Ramirez",
+            "nombre": "Jorge",
+            "curso": "Septimo",
+            "codigo": "112018",
+            "sexo": "Masculino",
+            "edad": "13",
+            "telefono": "305484564",
+            "foto": "./images/01.png",
+            "tipo_usuario": "estudiante",
+            "estado": "1"
+        },
+        {
+            "correo": "Caja",
+            "contraseña": "123",
+            "apellido": "Ramirez",
+            "nombre": "Jorge",
+            "curso": "Septimo",
+            "codigo": "112018",
+            "sexo": "Masculino",
+            "edad": "13",
+            "telefono": "305484564",
+            "foto": "./images/01.png",
+            "tipo_usuario": "estudiante",
+            "estado": "1"
+        },
+        {
+            "correo": "ex@teacher.es",
+            "contraseña": "1234",
+            "apellido": "Cervantes",
+            "nombre": "Miguel",
+            "titulo": "Tecnico en Sistemas",
+            "area": "Informatica",
+            "documento": "156421",
+            "sexo": "Masculino",
+            "edad": "41",
+            "telefono": "35453135",
+            "foto": "./images/01.png",
+            "tipo_usuario": "docente",
+            "estado": "1"
+        },
+        {
+            "correo": "example@lider.net",
+            "contraseña": "12345",
+            "apellido": "Robledo",
+            "nombre": "Fabiola",
+            "documento": "4561233",
+            "sexo": "Femenimo",
+            "edad": "34",
+            "telefono": "654324",
+            "foto": "./images/02.png",
+            "tipo_usuario": "lider",
+            "estado": "1"
+        },
+        {
+            "correo": "example@admin.co",
+            "contraseña": "12345",
+            "apellido": "Martinez",
+            "nombre": "Esmeralda",
+            "documento": "6514624",
+            "sexo": "Femenino",
+            "edad": "46",
+            "telefono": "2645212",
+            "foto": "./images/03.png",
+            "tipo_usuario": "administrativo",
+            "estado": "1"
+        }
+    ]
+}
