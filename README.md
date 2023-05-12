@@ -6,6 +6,7 @@
 - styled-components: npm i styled-components
 - bootstrap: npm i bootstrap
 - react-bootstrap: npm i react-bootstrap
+- axios: npm install axios
 
 # Apartir de aquí es chachara
 

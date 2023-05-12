@@ -1,0 +1,15 @@
+{
+    "lider": [
+        {
+            "correo": "",
+            "contraseña": "",
+            "apellido": "",
+            "nombre": "",
+            "documento": "",
+            "sexo": "",
+            "edad": "",
+            "telefono": "",
+            "foto": ""
+        }
+    ]
+}

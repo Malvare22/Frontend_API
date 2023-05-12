@@ -2,11 +2,13 @@ import logo from './logo.svg';
 import './App.css';
 import React from "react";
 import { createRoot } from "react-dom/client";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Home from './routes/Home.jsx'
-import Login from './routes/Login.jsx'
+import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
-import Recovery from './routes/ForgetPassword';
+import Recovery from './routes/login/Recovery';
+import Error404 from './routes/404_error'
 
 const router = createBrowserRouter([
   {
@@ -15,19 +17,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <><Login></Login><Footer></Footer></>,
-  },
-  {
-    path: '/contact',
-    element: <h1>Contact</h1>,
+    element: <><Login></Login></>,
   },
   {
     path: '/forgetPassword',
-    element: <><Recovery></Recovery><Footer></Footer></>,
+    element: <><Recovery></Recovery></>,
   },
+  {
+    path: '*',
+    element: <Error404></Error404>,
+  }
 ]);
 
 export default function App(){
-  return <RouterProvider router={router}></RouterProvider>;
+  return <><RouterProvider router={router}></RouterProvider></>;
 }
 

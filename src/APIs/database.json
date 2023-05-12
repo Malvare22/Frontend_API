@@ -1,0 +1,57 @@
+{
+    "estudiantes": [
+        {
+            "correo": "",
+            "contraseña": "",
+            "apellido": "",
+            "nombre": "",
+            "curso": "",
+            "codigo": "",
+            "sexo": "",
+            "edad": "",
+            "telefono": "",
+            "foto": ""
+        }
+    ],
+    "docentes": [
+        {
+            "correo": "",
+            "contraseña": "",
+            "apellido": "",
+            "nombre": "",
+            "titulo": "",
+            "area": "",
+            "documento": "",
+            "sexo": "",
+            "edad": "",
+            "telefono": "",
+            "foto": ""
+        }
+    ],
+    "lider": [
+        {
+            "correo": "",
+            "contraseña": "",
+            "apellido": "",
+            "nombre": "",
+            "documento": "",
+            "sexo": "",
+            "edad": "",
+            "telefono": "",
+            "foto": ""
+        }
+    ],
+    "administradores": [
+        {
+            "correo": "",
+            "contraseña": "",
+            "apellido": "",
+            "nombre": "",
+            "documento": "",
+            "sexo": "",
+            "edad": "",
+            "telefono": "",
+            "foto": ""
+        }
+    ]
+}

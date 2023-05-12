@@ -1,8 +1,8 @@
 //import '../css/Login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import image from '../assets/images/Login/login.png'
-import logo from '../assets/images/Login/Emprender_Aprender.png';
+import image from '../../assets/images/Login/login.png'
+import logo from '../../assets/images/Login/Emprender_Aprender.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';

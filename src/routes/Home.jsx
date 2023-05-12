@@ -25,7 +25,6 @@ function Menu() {
       <div className='container-fluid' style={{height:"900px"}}>
         a
       </div>
-      <Footer></Footer>
     </div>
   );
 }

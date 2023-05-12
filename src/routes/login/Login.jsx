@@ -1,12 +1,12 @@
 //import '../css/Login.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import image from '../assets/images/Login/login.png'
-import logo from '../assets/images/Login/Emprender_Aprender.png';
+import image from '../../assets/images/Login/login.png'
+import logo from '../../assets/images/Login/Emprender_Aprender.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import Sidebar from '../components/NavBar'
+//import Sidebar from '../../components/NavBar'
 
 const useForm = (initialData,validar, navigate) =>{
     
@@ -25,7 +25,7 @@ const useForm = (initialData,validar, navigate) =>{
         if (err===true) setEstado(true);
         else{
             //Lo que se hace si no hay errores
-            navigate("/C");
+            
         };
     };
 
@@ -63,6 +63,11 @@ const Panel = () => {
             if(!form.userName.trim()){
                 error=true;
             }
+            if(form.userName=="estudiante") navigate('/estudiante');
+            if(form.userName=="lider") navigate('/lider');
+            if(form.userName=="docente") navigate('/docente');
+            if(form.userName=="admin") navigate('/admin');
+            console.log(form.userName)
         return error;
     };
     const user = {
