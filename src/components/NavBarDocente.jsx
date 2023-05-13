@@ -32,6 +32,20 @@ const Sidebar = () => {
       </NavLink>
       </NavItem>
 
+
+      <NavItem>
+        <NavLink id='Usuarios' href="#">
+          <Row className='d-flex align-content-center align-items-center'>
+            <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+            <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+            </svg>
+            </Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Estudiantes</Col>
+          </Row>
+      </NavLink>
+      </NavItem>
+
       <NavItem>
         <NavLink id="Habilidades" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
@@ -41,57 +55,41 @@ const Sidebar = () => {
               <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
               </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Habilidades de Emprendimiento</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
           </Row>        
         </NavLink>
       </NavItem>
 
-      <UncontrolledCollapse id="despliegue" toggler="#Habilidades">
-      
       <NavItem>
-        <NavLink className='offset-md-3 text-white text-start' href="#">
-          Capacitacion
-        </NavLink>
-      </NavItem>
-      <NavItem>
-        <NavLink className='offset-md-3 text-white text-start' href="#">
-          Evaluacion
-        </NavLink>
-      </NavItem>
-      
-      </UncontrolledCollapse>
-
-      
-      <NavItem>
-        <NavLink id="idea" href="#">
+        <NavLink id="Ideas" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
             <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Ideas de Negocio</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Idea de negocio</Col>
           </Row>        
         </NavLink>
       </NavItem>
-      <UncontrolledCollapse id="despliegue" toggler="#idea">
-      
+      <UncontrolledCollapse id="despliegue" toggler="#Ideas">
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Capacitacion
+          Tutor
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Evaluacion
+          Apoyo
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Resultados
+          Evaluador
         </NavLink>
       </NavItem>
       </UncontrolledCollapse>
+
       <NavItem>
         <NavLink id="plan" href="#">
         <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -101,39 +99,44 @@ const Sidebar = () => {
             <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Planes de Negocio</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Plan de Negocio</Col>
           </Row>
         </NavLink>
       </NavItem>
-
       <UncontrolledCollapse id="despliegue" toggler="#plan">
-      
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Capacitacion
+          Tutor
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Gestionar
+          Apoyo
         </NavLink>
       </NavItem>
-     
+      <NavItem>
+        <NavLink className='offset-md-3 text-white text-start' href="#">
+          Evaluador
+        </NavLink>
+      </NavItem>
       </UncontrolledCollapse>
+    
 
       <NavItem>
         <NavLink  href="#">
         <Row className='d-flex align-content-center align-items-center justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-building-fill-gear" viewBox="0 0 16 16">
-            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.493 4.493 0 0 0 12.5 8a4.493 4.493 0 0 0-3.59 1.787A.498.498 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.476 4.476 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1V1Zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z"/>
-            <path d="M11.886 9.46c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382l.045-.148ZM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Abanico de Ententidades</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Entidades financiadoras</Col>
           </Row>
         </NavLink>
       </NavItem>
+
       <NavItem>
         <NavLink  href="#">
         <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -146,6 +149,7 @@ const Sidebar = () => {
           </Row>
         </NavLink>
       </NavItem>
+
       <NavItem>
         <NavLink  href="#">
         <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -155,14 +159,13 @@ const Sidebar = () => {
             <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Actividades</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
           </Row>
         </NavLink>
       </NavItem>
-    
 
       <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
-        <NavLink id='cerrar' className='' href="#">
+        <NavLink id='cerrar'  className='' href="#">
         <Row  className='d-flex align-content-center align-items-center justify-content-end'>
             <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">

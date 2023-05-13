@@ -13,6 +13,7 @@ import TemplateEstudiante from './components/estudiante/Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import Perfil from './routes/usuarios/Perfil';
+import Sidebar from './components/NavBar'
 
 const Enrutado = () => {
 
