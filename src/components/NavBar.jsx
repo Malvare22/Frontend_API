@@ -4,7 +4,7 @@ import { Col, Dropdown, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 
 
 const Sidebar = () => {
   return (
-    <div class="d-flex flex-column flex-shrink-0 col-2 text-white bg-dark" style={{width: '280px;'}}>
+    <div class="d-flex flex-column flex-shrink-0 text-white bg-dark" style={{}}>
     
     <hr></hr>
    

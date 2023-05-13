@@ -30,12 +30,27 @@ const useForm = (initialData, validar, navigate) => {
         //Validar -> verificación de campos
         const state = await validar(form)
         //Si hubo error:
-        if (state  === undefined) setFail(true);
+        if (state === undefined) setFail(true);
         else {
-            togglerUserSession(state)
+            iniciarSesion(state, togglerUserSession)
         }
-
     };
+
+    const iniciarSesion = (state, togglerUserSession) => {
+        togglerUserSession(state);
+        const type = state.tipo_usuario
+        switch (type) {
+            case 'administrativo':
+                break;
+            case 'lider':
+                break;
+            case 'docente':
+                break;
+            case 'estudiante':
+                break;
+        }
+        console.log("Se inició " + state);
+    }
 
     return { form, fail, handleChange, handleSubmit };
 };
@@ -79,20 +94,22 @@ const Panel = () => {
         return temp;
     };
 
-    const busquedaUsuario=async(user)=>{
-       let value = null;
+    const busquedaUsuario = async (user) => {
+        let value = null;
         value = await axios.get('database.json').then(
             response => {
                 const data = response.data;
                 //let tipos = ["administradores","lider","docentes","estudiantes"];
-                for(let i=0; i<data.usuarios.length; i++){
-                    if(data.usuarios[i].correo===form.userName && data.usuarios[i].contraseña===form.password) return data.usuarios[i];
+                for (let i = 0; i < data.usuarios.length; i++) {
+                    if (data.usuarios[i].correo === form.userName && data.usuarios[i].contraseña === form.password) return data.usuarios[i];
                 }
             }).catch(error => {
                 console.error(error);
             });
         return value;
     };
+
+
     //Plantilla del objeto user
     const user = {
         userName: '',
