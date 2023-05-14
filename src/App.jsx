@@ -9,11 +9,11 @@ import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
 import Recovery from './routes/login/Recovery';
 import Error404 from './routes/404_error'
-import TemplateEstudiante from './components/estudiante/Template'
+import TemplateEstudiante from './components/estudiante/Estudiante_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import Perfil from './routes/usuarios/Perfil';
-import Sidebar from './components/NavBar'
+import Sidebar from './components/estudiante/Estudiante_Navbar'
 
 const Enrutado = () => {
 

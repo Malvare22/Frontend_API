@@ -1,17 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Col, Dropdown, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
-import Emprender_Aprender from '../assets/images/Login/Emprender_Aprender.png'
-import '../css/Sidebar.css';
-import { Container } from 'react-bootstrap';
+import {Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
+import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
+import '../../css/Sidebar.css';
 
 const Sidebar = () => {
+
+  const [collapsed, setCollapsed] = useState(false);
+
+  const toggleNavbar = () => setCollapsed(!collapsed);
+
   return (
-    <div id="Sidebar" class="d-flex flex-column flex-shrink-0 text-white" style={{}}>
-   
-    <Nav vertical className=' d-flex' style={{height :"100%"}}>
+    <div class="d-flex flex-column flex-shrink-0 text-white" style={{}}>
+
+      <Nav vertical id='Sidebar' className=' d-flex' style={{ height: "100%" }}>
+        <div className='d-flex justify-content-end'>
+          <button type='button' id='btn-toggler' onClick={toggleNavbar} className="btn border border-white m-3" style={{ background: "#1C3B57" }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-list" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+            </svg>
+          </button>
+        </div>
+        <Collapse isOpen={!collapsed} navbar>
       <NavItem>
-      <div className='container-fluid w-100 h-100'>
+      <div className='container-fluid' id='img'>
         <img className='img-fluid' src={Emprender_Aprender}></img>
       </div>
       </NavItem>
@@ -174,7 +186,7 @@ const Sidebar = () => {
           </Row>
         </NavLink>
       </NavItem>
-    
+      </Collapse>
     </Nav>
 
      </div>
