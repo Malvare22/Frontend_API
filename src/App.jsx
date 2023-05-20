@@ -9,6 +9,9 @@ import Footer from './components/Footer';
 import Recovery from './routes/login/Recovery';
 import Error404 from './routes/404_error'
 import TemplateEstudiante from './components/estudiante/Estudiante_Template'
+import TemplateLider from './components/lider/Lider_Template'
+import TemplateAdministrativo from './components/administrativo/Administrativo_Template'
+import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
@@ -32,6 +35,15 @@ const Enrutado = () => {
           <Route path='/forgetPassword' element={<Recovery></Recovery>} />
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
+          </Route>
+          <Route element={<TemplateLider></TemplateLider>}>
+            <Route path='/Lider/Perfil'></Route>
+          </Route>
+          <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
+            <Route path='/Administrativo/Perfil'></Route>
+          </Route>
+          <Route element={<TemplateDocente></TemplateDocente>}>
+            <Route path='/Docente/Perfil'></Route>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
