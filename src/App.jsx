@@ -1,5 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
+import './css/App.css';
 import React from "react";
 import { createRoot } from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,11 +11,18 @@ import Error404 from './routes/404_error'
 import TemplateEstudiante from './components/estudiante/Estudiante_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
-import Perfil from './routes/usuarios/Perfil';
+import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 
 const Enrutado = () => {
-
+  /** *
+   * Todo del sistema de enrutado del sitio Web
+   * Notación en usuarios: Tipo/Sección
+   * Ejemplo: Estudiante/Perfil
+   * Ejemplo: LiderUE/Planes/${id}
+   * Nota: Dentro de cada template de usuario valida el tipo de usuario, para que no vean
+   * funcionalidades que no les corresponden.
+  */
   return (
     <BrowserRouter>
       <Routes>
@@ -25,8 +31,7 @@ const Enrutado = () => {
           <Route path='/login' element={<Login></Login>} />
           <Route path='/forgetPassword' element={<Recovery></Recovery>} />
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
-            <Route path='/test1' element={<Perfil></Perfil>} />
-            <Route path='/test2' element={<Login></Login>} />
+            <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
@@ -35,29 +40,6 @@ const Enrutado = () => {
   );
 
 }
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home></Home>,
-  },
-  {
-    path: '/login',
-    element: <><Login></Login></>,
-  },
-  {
-    path: '/forgetPassword',
-    element: <><Recovery></Recovery></>,
-  },
-  {
-    path: '/profile',
-    element: <Error404></Error404>,
-  },
-  {
-    path: '*',
-    element: <Error404></Error404>,
-  }
-]);
 
 export default function App() {
   return <><ContextProvider><Enrutado></Enrutado></ContextProvider></>;
