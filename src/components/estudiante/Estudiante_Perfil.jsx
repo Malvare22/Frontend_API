@@ -105,7 +105,7 @@ const Information = () => {
         </Sdiv02>
     );
 }
-
+//
 const VistaGeneral = () => {
     return (
         <div className='flex-grow-1'>
