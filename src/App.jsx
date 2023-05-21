@@ -53,6 +53,9 @@ const Enrutado = () => {
           <Route element={<TemplateDocente></TemplateDocente>}>
             <Route path='/Docente/Perfil'></Route>
           </Route>
+          <Route element={<TemplateLider></TemplateLider>}>
+            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
+          </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
       </Routes>
