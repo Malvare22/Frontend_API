@@ -18,7 +18,9 @@ import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
 import ListarIdeas from './components/lider/Listar_ideas';
 import VistaIdea from './components/lider/Lider_VerIdea';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
-import Tabla from './components/estudiante/Prueba_Chart';
+import Tabla from './components/estudiante/Tabla';
+import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
+
 
 const Enrutado = () => {
   /** *
@@ -39,18 +41,17 @@ const Enrutado = () => {
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
             <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
+            <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Ideas' element={<ListarIdeas></ListarIdeas>}></Route>
+            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>
           </Route>
           <Route element={<TemplateDocente></TemplateDocente>}>
             <Route path='/Docente/Perfil'></Route>
-          </Route>
-          <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
