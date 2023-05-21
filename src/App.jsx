@@ -15,7 +15,9 @@ import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
+import ListarIdeas from './components/lider/Listar_ideas';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
+import { Tab } from 'react-bootstrap';
 
 const Enrutado = () => {
   /** *
@@ -37,7 +39,7 @@ const Enrutado = () => {
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Perfil'></Route>
+            <Route path='/Lider/Ideas' element={<ListarIdeas></ListarIdeas>}></Route>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>
