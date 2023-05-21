@@ -204,6 +204,9 @@ const Sdiv02 = styled.div`
         .row{
             margin-bottom: 10px;
         }
+        h3{
+            margin-top: 40px;
+        }
     }
     
 `;
