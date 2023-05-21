@@ -109,7 +109,7 @@ const InfoGeneral = () => {
             </div>
         </main>
     )
-}
+};
 
 const SProgress = styled.div`
 
