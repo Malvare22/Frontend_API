@@ -15,6 +15,7 @@ import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
+import VistaIdea from './components/lider/Lider_VerIdea';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 
 const Enrutado = () => {
@@ -44,6 +45,9 @@ const Enrutado = () => {
           </Route>
           <Route element={<TemplateDocente></TemplateDocente>}>
             <Route path='/Docente/Perfil'></Route>
+          </Route>
+          <Route element={<TemplateLider></TemplateLider>}>
+            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
