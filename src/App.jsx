@@ -16,6 +16,7 @@ import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
 import Sidebar from './components/estudiante/Estudiante_Navbar'
+import Tabla from './components/estudiante/Prueba_Chart';
 
 const Enrutado = () => {
   /** *
@@ -35,6 +36,7 @@ const Enrutado = () => {
           <Route path='/forgetPassword' element={<Recovery></Recovery>} />
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
+            <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Perfil'></Route>
