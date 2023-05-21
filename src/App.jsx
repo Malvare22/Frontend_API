@@ -15,8 +15,12 @@ import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
+import ListarIdeas from './components/lider/Listar_ideas';
 import VistaIdea from './components/lider/Lider_VerIdea';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
+import Tabla from './components/estudiante/Tabla';
+import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
+
 
 const Enrutado = () => {
   /** *
@@ -36,9 +40,12 @@ const Enrutado = () => {
           <Route path='/forgetPassword' element={<Recovery></Recovery>} />
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
+            <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
+            <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Perfil'></Route>
+            <Route path='/Lider/Ideas' element={<ListarIdeas></ListarIdeas>}></Route>
+            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>
