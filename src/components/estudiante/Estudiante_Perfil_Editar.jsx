@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import image from './../../assets/images/Pencil.png'
 import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 export default function EditarPerfilEstudiante() {
 
     return (
@@ -12,11 +13,10 @@ export default function EditarPerfilEstudiante() {
 };
 
 
-const useForm = (initialData, validar) => {
+const useForm = (initialData, validar, initialErrors) => {
 
-    const [fail, setFail] = useState(false);
     const [form, setForm] = useState(initialData);
-
+    const [errors, setErrors] = useState(initialErrors);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,11 +27,23 @@ const useForm = (initialData, validar) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
-        const state = await validar(form)
+        const state = await validar(form);
         //Si hubo error:
-        if (state === undefined) setFail(true);
-        else {
-            sendInfo(state)
+        if(state!=null){
+            setErrors(state);
+        }
+        else{
+            const tmp={
+                nombres: false,
+                apellidos: false,
+                fecha_nacimiento: false,
+                sexo: false,
+                nombre_acudiente: false,
+                telefono_acudiente: false,
+                correo: false,
+            };
+            setErrors(tmp);
+            console.log("Todo bien");
         }
     };
 
@@ -51,7 +63,7 @@ const useForm = (initialData, validar) => {
         console.log("Se inició " + state);
     }
 
-    return { form, fail, handleChange, handleSubmit };
+    return { form, errors, handleChange, handleSubmit };
 };
 
 const SContent = styled.div`
@@ -88,7 +100,7 @@ const SContent = styled.div`
             margin-bottom: 20px;
             justify-content: center;
         }
-        #btns > button{
+        #btns button{
             background-color:#1C3B57;
             margin-left: 40px;
             margin-right:40px;
@@ -98,7 +110,8 @@ const SContent = styled.div`
             align-items: center;
             justify-content: center;
         }
-        #btns > button > h6{
+        #btns h6{
+            
             font-weight: bold;
             margin: 0px;
         }
@@ -143,39 +156,93 @@ const SInfo = styled.div`
                 margin: 5%;
             }
         }
+        label{
+            
+        }
     `;
 
 const Information = () => {
+    
 
     const user = {
         nombres: 'Juanes Anderson',
         apellidos: 'Corozo Curacao',
         codigo: '6545',
         curso: 'Septimo',
-        fecha_nacimiento: '22/04/2001',
-        sexo: false,
+        fecha_nacimiento: '2001-04-20',
+        sexo: "0",
         nombre_acudiente: 'Royer Olivia',
         telefono_acudiente: '564556',
         correo: 'sdfdsfg@asd.com',
         foto: './../../assets/images/Users/01.png'
     };
 
-
-    const validar = () => {
-
+    const initialErrors = {
+        nombres: false,
+        apellidos: false,
+        fecha_nacimiento: false,
+        sexo: false,
+        nombre_acudiente: false,
+        telefono_acudiente: false,
+        correo: false,
     };
-    const { form, fail, handleChange, handleSubmit } = useForm(user, validar);
+
+
+    const validar = (user) => {
+        let errors = {
+            nombres: false,
+            apellidos: false,
+            fecha_nacimiento: false,
+            sexo: false,
+            nombre_acudiente: false,
+            telefono_acudiente: false,
+            correo: false,
+        };
+        let fail = false;
+        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const number_regex = /[0-9]/g;
+        if (number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
+            errors.nombre_acudiente = true;
+            fail = true;
+        }
+        if (number_regex.test(user.apellidos) || user.apellidos.length > 50) {
+            errors.apellidos = true;
+            fail = true;
+        }
+        if (number_regex.test(user.nombres) || user.nombres.length > 50) {
+            errors.nombres = true;
+            fail = true;
+        }
+        if (!Date.parse(user.fecha_nacimiento)) { errors.fecha_nacimiento = true; }
+        if (user.sexo != '0' && user.sexo != '1') {
+            errors.sexo = true;
+            fail = true;
+        }
+
+        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length > 10) {
+            errors.telefono_acudiente = true;
+            fail = true;
+        }
+        if (!email_regex.test(user.correo) || user.correo.length > 50) {
+            errors.correo = true;
+            fail = true;
+        }
+        if(fail==false) return null;
+        return errors;
+    };
+    const { form, errors, handleChange, handleSubmit } = useForm(user, validar, initialErrors);
     return (
         <div>
-            <div className='' style={{ backgroundColor: "#ECECEC" }}>
-                <SInfo>
-                    <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+                <div className='' style={{ backgroundColor: "#ECECEC" }}>
+                    <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className="form-control" name='nombres' value={form.nombres} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} />
+                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -183,7 +250,8 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className="form-control" name='apellidos' value={form.apellidos} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} />
+                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -207,7 +275,8 @@ const Information = () => {
                                 Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="date" className="form-control" name='fecha_nacimiento' />
+                                <input type="date" className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <div class="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -215,14 +284,15 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className="form-select">
-                                    <option>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
+                                    <option value={"0"}>
                                         Masculino
                                     </option>
-                                    <option>
+                                    <option value={"1"}>
                                         Femenino
                                     </option>
                                 </select>
+                                <div class="invalid-feedback">Este campo solo admite valores Femenino y Masculino.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -230,7 +300,8 @@ const Information = () => {
                                 Nombre del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className="form-control" name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} />
+                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -238,7 +309,8 @@ const Information = () => {
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className="form-control" name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <div class="invalid-feedback">Este campo solo admite teléfonos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -246,7 +318,8 @@ const Information = () => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className="form-control" name='correo' value={form.correo} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div class="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
@@ -257,13 +330,14 @@ const Information = () => {
                                 <img src={form.foto} className='border border-2 border-dark rounded-circle ' style={{ height: "80px" }}></img>
                             </div>
                         </div>
-                    </form>
-                </SInfo>
-            </div>
-            <div id='btns'>
-                <button className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                <button className='btn rounded-3'><h6 className='text-white '>Cancelar</h6></button>
-            </div>
+
+                    </SInfo>
+                </div>
+                <div id='btns'>
+                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
+                    <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                </div>
+            </form>
         </div>
     );
 }
