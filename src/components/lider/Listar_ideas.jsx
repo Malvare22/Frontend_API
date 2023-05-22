@@ -1,4 +1,4 @@
-import Tabla from "./Tabla_idea";
+import Tabla from "./Lider_Tabla_idea";
 export default function Listar_Ideas() {
     return (
             <div className="container-fluid w-75">

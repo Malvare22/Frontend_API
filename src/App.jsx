@@ -21,9 +21,8 @@ import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_I
 import VistaIdea from './components/lider/Lider_VerIdea';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
-import Tabla from './components/estudiante/Tabla';
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
-
+import Tabla from './components/estudiante/Tabla';
 
 const Enrutado = () => {
   /** *
@@ -57,9 +56,6 @@ const Enrutado = () => {
           </Route>
           <Route element={<TemplateDocente></TemplateDocente>}>
             <Route path='/Docente/Perfil'></Route>
-          </Route>
-          <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
