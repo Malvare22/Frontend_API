@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import image from './../../assets/images/Pencil.png'
+
 import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 export default function EditarPerfilEstudiante() {
 
     return (
@@ -11,7 +13,6 @@ export default function EditarPerfilEstudiante() {
         </>
     );
 };
-
 
 const useForm = (initialData, validar, initialErrors) => {
 
@@ -140,9 +141,11 @@ const Head = () => {
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
             <img className='rounded-circle' src={image} style={{ height: "50px" }}></img>
             <h5 className='text-white fw-bold'>Editar Perfil</h5>
+
         </div>
     );
 }
+
 
 const SInfo = styled.div`
         .row{
@@ -338,6 +341,8 @@ const Information = () => {
                     <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
+
+
         </div>
     );
 }
