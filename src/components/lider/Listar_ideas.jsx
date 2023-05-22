@@ -31,6 +31,7 @@ export default function Listar_Ideas() {
         </div>
     );
 }
+
 function Filtros() {
     return (<form className="row g-7">
         <div className="col-auto d-flex align-items-center mb-2">
