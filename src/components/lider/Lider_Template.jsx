@@ -8,7 +8,7 @@ export default function TemplateLider({ children }) {
         <div className="col-12 col-sm-2 m-0 p-0">
             <NavbarLU></NavbarLU>
         </div>
-        <div className="col-12 col-sm-10 m-0 p-0 d-flex align-items-center">
+        <div className="col-12 col-sm-10 m-0 p-0">
             <Outlet></Outlet>
         </div>
     </div></>);
