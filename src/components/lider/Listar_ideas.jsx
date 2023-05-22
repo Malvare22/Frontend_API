@@ -1,7 +1,7 @@
 import Tabla from "./Tabla_idea";
 export default function Listar_Ideas() {
     return (
-        <div className="container-fluid w-75">
+            <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
                     <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio</h1>

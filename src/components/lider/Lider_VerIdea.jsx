@@ -4,12 +4,9 @@ import { Collapse, UncontrolledCollapse } from 'reactstrap';
 import React, { useState } from 'react';
 
 export default function VistaIdea() {
-    return (<>
-
+    return (<div className="row">
         <InfoGeneral></InfoGeneral>
-
         <Observaciones></Observaciones>
-
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -21,14 +18,13 @@ export default function VistaIdea() {
         </div>
 
         <Evaluaciones></Evaluaciones>
-
-    </>
+    </div>    
     )
 };
 
 const InfoGeneral = () => {
     return (
-        <main className="container-fluid mt-4" style={{ width: "95%" }}>
+        <div className="container-fluid mt-4" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
                     <div>
@@ -108,7 +104,7 @@ const InfoGeneral = () => {
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     )
 };
 
@@ -338,7 +334,7 @@ const Sdiv = styled.div`
   `;
 
 const Evaluaciones = () => {
-    return (
+    return(
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <Sobreponer>
@@ -435,7 +431,6 @@ const Evaluaciones = () => {
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -443,6 +438,6 @@ const Evaluaciones = () => {
                     </div>
                 </Sobreponer>
             </div>
-        </main>
+        </main>        
     )
 }
