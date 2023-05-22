@@ -173,7 +173,7 @@ const Information = () => {
 
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
     return (
-        <div>
+        <div className='' style={{paddingBottom:"110px"}}>
             <form onSubmit={handleSubmit}>
                 <div className='' style={{ backgroundColor: "#ECECEC" }}>
                     <SInfo>
@@ -338,6 +338,14 @@ const SContent = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        @media screen and (max-width: 576px) {
+            width: 100px;
+            margin-right: 10px;
+            margin-left: 10px;
+            h6{
+                font-size: 12px;
+            }
+        }
     }
     #btns h6{
         

@@ -7,7 +7,7 @@ import logo_UFPS from '../assets/images/Footer/logo_UFPS.png'
 
 function Footer() {
 
-    return (<div className="container-fluid p-0 d-flex align-items-center justify-content-center w-100" style={{ backgroundColor: "#3B3737" }}>
+    return (<div className="container-fluid p-0 d-flex align-items-center justify-content-center w-100" style={{ backgroundColor: "#3B3737", position:"absolute", bottom: "0" }}>
         <SFoot>
         <div className='d-flex align-items-center justify-content-center w-100'>
             <div className='d-flex align-items-center justify-content-center i' style={{width: "18%"}}>
