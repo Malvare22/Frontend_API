@@ -1,21 +1,12 @@
 import styled from 'styled-components';
 import image from './../../assets/images/Pencil.png'
-
 import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
-export default function EditarPerfilEstudiante() {
-
-    return (
-        <>
-            <Content></Content>
-        </>
-    );
-};
-
 const useForm = (initialData, validar, initialErrors) => {
-
+    const [viewAlert, setViewAlert] = useState(false);
     const [form, setForm] = useState(initialData);
     const [errors, setErrors] = useState(initialErrors);
 
@@ -24,17 +15,21 @@ const useForm = (initialData, validar, initialErrors) => {
         setForm({ ...form, [name]: value });
     };
 
+    const toggleAlert = () => {
+        setViewAlert(!viewAlert);
+    }
+
     /**Función que se aplica al querer efectuar en Submit **/
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
         const state = await validar(form);
         //Si hubo error:
-        if(state!=null){
+        if (state != null) {
             setErrors(state);
         }
-        else{
-            const tmp={
+        else {
+            const tmp = {
                 nombres: false,
                 apellidos: false,
                 fecha_nacimiento: false,
@@ -44,10 +39,11 @@ const useForm = (initialData, validar, initialErrors) => {
                 correo: false,
             };
             setErrors(tmp);
+            toggleAlert();
             console.log("Todo bien");
         }
     };
-
+    //No usado de momento
     const sendInfo = (state) => {
 
         const type = state.tipo_usuario
@@ -64,59 +60,17 @@ const useForm = (initialData, validar, initialErrors) => {
         console.log("Se inició " + state);
     }
 
-    return { form, errors, handleChange, handleSubmit };
+    return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
 
-const SContent = styled.div`
-        #d_head{
-             position: relative;
-             margin-top: 30px;
-        }
-        #head{
-            position: absolute;
-            top: -15px;
-            left: 10px;
-        }
+export default function EditarPerfilEstudiante() {
 
-        #head > div{
-            padding: 30px;
-            padding-top: 2px;
-            padding-bottom: 2px;
-           
-        }
-        #head > div> *{
-            margin: 10px;
-        }
-
-        #info{
-            width: 80%;
-            @media screen and (max-width: 576px) {
-                width: 100%;
-        
-            }
-        }
-        #btns{
-            display: flex;
-            margin-top: 0px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
-        #btns button{
-            background-color:#1C3B57;
-            margin-left: 40px;
-            margin-right:40px;
-            width: 200px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        #btns h6{
-            
-            font-weight: bold;
-            margin: 0px;
-        }
-    `;
+    return (
+        <>
+            <Content></Content>
+        </>
+    );
+};
 
 const Content = () => {
 
@@ -134,38 +88,21 @@ const Content = () => {
     );
 };
 
-
-
 const Head = () => {
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
             <img className='rounded-circle' src={image} style={{ height: "50px" }}></img>
             <h5 className='text-white fw-bold'>Editar Perfil</h5>
-
         </div>
     );
 }
 
 
-const SInfo = styled.div`
-        .row{
-            margin: 3%;
-            display: flex;
-            align-items: center;
-        };
-        @media screen and (max-width: 576px) {
-            font-size: small;
-            .row{
-                margin: 5%;
-            }
-        }
-        label{
-            
-        }
-    `;
+const modalStyles = {
+    transform: 'translate(0%, 0%)'
+}
 
 const Information = () => {
-    
 
     const user = {
         nombres: 'Juanes Anderson',
@@ -230,10 +167,11 @@ const Information = () => {
             errors.correo = true;
             fail = true;
         }
-        if(fail==false) return null;
+        if (fail == false) return null;
         return errors;
     };
-    const { form, errors, handleChange, handleSubmit } = useForm(user, validar, initialErrors);
+
+    const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
     return (
         <div>
             <form onSubmit={handleSubmit}>
@@ -245,7 +183,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} />
-                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -254,7 +192,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} />
-                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -279,7 +217,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="date" className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div class="invalid-feedback">Solo se admiten fechas válidas.</div>
+                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -295,7 +233,7 @@ const Information = () => {
                                         Femenino
                                     </option>
                                 </select>
-                                <div class="invalid-feedback">Este campo solo admite valores Femenino y Masculino.</div>
+                                <div className="invalid-feedback">Este campo solo admite valores Femenino y Masculino.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -304,7 +242,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} />
-                                <div class="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -313,7 +251,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
-                                <div class="invalid-feedback">Este campo solo admite teléfonos válidos</div>
+                                <div className="invalid-feedback">Este campo solo admite teléfonos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -322,7 +260,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div class="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
@@ -341,8 +279,83 @@ const Information = () => {
                     <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
+            <Modal isOpen={viewAlert} style={modalStyles}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Hollaaa</Label>
+                    </FormGroup>
+                </ModalBody>
 
-
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
         </div>
     );
 }
+
+const SContent = styled.div`
+    #d_head{
+            position: relative;
+            margin-top: 30px;
+    }
+    #head{
+        position: absolute;
+        top: -15px;
+        left: 10px;
+    }
+
+    #head > div{
+        padding: 30px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        
+    }
+    #head > div> *{
+        margin: 10px;
+    }
+
+    #info{
+        width: 80%;
+        @media screen and (max-width: 576px) {
+            width: 100%;
+    
+        }
+    }
+    #btns{
+        display: flex;
+        margin-top: 0px;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+    #btns button{
+        background-color:#1C3B57;
+        margin-left: 40px;
+        margin-right:40px;
+        width: 200px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #btns h6{
+        
+        font-weight: bold;
+        margin: 0px;
+    }
+`;
+
+const SInfo = styled.div`
+.row{
+    margin: 3%;
+    display: flex;
+    align-items: center;
+};
+@media screen and (max-width: 576px) {
+    font-size: small;
+    .row{
+        margin: 5%;
+    }
+}
+`;

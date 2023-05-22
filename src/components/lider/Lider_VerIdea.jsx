@@ -334,7 +334,7 @@ const Sdiv = styled.div`
   @media screen and (max-width: 576px){
       th, td {
           width: 60px;
-      }
+      }}
   `;
 
 const Evaluaciones = () => {
