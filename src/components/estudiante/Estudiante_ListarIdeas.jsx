@@ -26,7 +26,6 @@ export default function Estudiante_ListarIdeas() {
 
     }, []);
 
-
     return (
         <div className="container">
             <div className="row">

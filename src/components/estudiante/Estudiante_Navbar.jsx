@@ -11,6 +11,7 @@ const Sidebar = () => {
   const toggleNavbar = () => setCollapsed(!collapsed);
 
   return (
+
     <div className="d-flex flex-column flex-shrink-0 text-white" style={{ height: "100%" }}>
 
       <Nav vertical id='Sidebar' className=' d-flex' style={{ height: "100%" }}>

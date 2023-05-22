@@ -23,7 +23,6 @@ const EstudianteCardIdea = (props) => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
