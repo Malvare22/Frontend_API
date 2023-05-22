@@ -5,13 +5,24 @@ import { useState } from 'react';
 
 const EstudianteCardIdea = (props) => {
 
-
     return (
-        <div class="card rounded m-4 p-2" style={{ width: "90%", height: "90%", backgroundColor: props.color }}>
-            <div class="card-body">
-                <h5 class="card-title">{props.estado}</h5>
-                <h6 class="card-subtitle mb-2 text-muted"> {props.titulo} </h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <div className="container d-flex justify-content-center">
+            <div className="card rounded my-3" style={{ width: "90%", height: "90%", backgroundColor: props.color }}>
+                <div className="card-body">
+                    <div className='row'>
+                        <div className="col-4 d-flex justify-content-center align-items-center">
+                            <img src="https://live.staticflickr.com/65535/52915619231_cf5898c387.jpg" width="100%"></img>
+                        </div>
+                        <div className='col-8'>
+                            <div className='row d-flex justify-content-center align-items-center text-center'>
+                                <h6 className="card-subtitle mb-2"> {props.titulo} </h6>
+                            </div>
+                            <div className='row d-flex justify-content-center align-items-center'>
+                                <button type="button" style={{ background: "#3C3C3C", color: "white", width: "auto" }} className="btn btn-sm">Ver</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

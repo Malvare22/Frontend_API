@@ -1,15 +1,33 @@
 import { Row } from "react-bootstrap";
 import styled from "styled-components";
+import { Collapse, UncontrolledCollapse } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import Historial from "./Lider_Historial";
+import Evaluaciones from "./Lider_Evaluacion";
+
 
 export default function VistaIdea() {
-    return (
+    return (<div className="row">
         <InfoGeneral></InfoGeneral>
+        <Observaciones></Observaciones>
+        <div className="container-fluid" style={{ width: "95%" }}>
+            <div className="row">
+                <div className="col-12">
+                    <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
+                        <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <Historial></Historial>
+    </div>
     )
 };
 
 const InfoGeneral = () => {
     return (
-        <main className="container-fluid mt-4" style={{ width: "95%" }}>
+        <div className="container-fluid mt-4" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
                     <div>
@@ -86,36 +104,14 @@ const InfoGeneral = () => {
                                 </SProgress>
                             </div>
                         </div>
-                        <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
-                            <div className="row">
-                                <div className="d-flex justify-content-center align-items-center col-auto">
-                                    <h5 className="p-2 ms-3" style={{ color: "white" }}>Información general</h5>
-                                </div>
-                                <div className="d-flex justify-align-content-end align-items-center col-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="container"><select className="form-select selector mb-3" aria-label="Default select example">
-                            <option>Seleccione la categoría</option>
-                            <option value="Celulares">Celulares</option>
-                            <option value="Computadores">Computadores</option>
-                            <option value="Teclados">Teclados</option>
-                        </select>
-                        </div>
-                        <div className="output">
-                        </div>
                     </div>
                 </div>
             </div>
-        </main>
-    );
-}
+        </div>
+    )
+};
 
 const SProgress = styled.div`
-
 .progress {
   width: 150px;
   height: 150px !important;
@@ -131,7 +127,7 @@ const SProgress = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 12px solid #B2BABB;
+  border: 12px solid #CECECE;
   position: absolute;
   top: 0;
   left: 0;
@@ -221,4 +217,124 @@ const SProgress = styled.div`
         display:none;
     }
 }
-`; 
+`;
+
+const Observaciones = () => {
+    return (
+        <main className="container-fluid" style={{ width: "95%" }}>
+            <div className="row">
+                <Sobreponer>
+                    <div className="col-12">
+                        <div id="titulo" className="rounded-5 mt-2" style={{ background: "#515454" }}>
+                            <div className="row">
+                                <div className="d-flex col ms-3">
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
+                                </div>
+                                <div className="d-flex justify-content-end align-items-center col-auto me-4">
+                                    <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
+                            <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
+                                <div className="mt-3">
+                                    <Tabla></Tabla>
+                                </div>
+                            </div>
+                        </UncontrolledCollapse>
+                    </div>
+                </Sobreponer>
+            </div>
+        </main>
+    )
+};
+
+const Sobreponer = styled.div`
+#titulo, #cuerpo{
+    position: relative;
+ }
+
+ #titulo{
+    z-index: 2;
+ }
+
+ #cuerpo{
+    z-index: 1;
+    top: -5px;
+ }
+`
+const Sdiv = styled.div`
+  table{
+      table-layout: fixed;
+  }
+  
+  th, td {
+      border: 1px solid;
+      width: 100px;
+      word-wrap: break-word;
+  }
+  table th{
+      background-color: #1C3B57;
+      color: #FFF;
+  }
+  table td{
+    background-color:#FFF;
+  }
+  overflow-y: scroll;
+  height: fit-content;
+  max-height: 66.4vh;
+  
+  @media screen and (max-width: 576px){
+      th, td {
+          width: 60px;
+      }}
+`;
+
+
+function Tabla(props) {
+    const [datos, setDatos] = useState([]);
+    const getIdeas = async () => {
+      let value = null;
+      value = await axios.get('../ideas.json').then(
+        response => {
+          const data = response.data;
+          return data;
+        }).catch(error => {
+          console.error(error);
+        });
+      setDatos(value)
+      console.log(value)
+    };
+    useEffect(() => {
+      getIdeas();
+    }, []);
+    return (
+        <Sdiv>
+            <div className='w-auto m-2'>
+                <table table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th className='text-center' scope="col-auto">Docente</th>
+                            <th className='text-center' scope="col-auto">Fecha</th>
+                            <th className='text-center' scope="col-auto">Observación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {datos.map((d) => (
+                            <tr key={d.id}>
+                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+
+            </div>
+        </Sdiv>
+    );
+}
+

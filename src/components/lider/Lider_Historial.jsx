@@ -1,15 +1,12 @@
+import axios from "axios";
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
-import { Container } from 'reactstrap';
-import CardEs from './Estudiante_Card_Idea';
+import Evaluaciones from "./Lider_Evaluacion";
 
-export default function Estudiante_ListarIdeas() {
-
-
+export default function Historial() {
 
     const [datos, setDatos] = useState([]);
 
-    const definir_Color = async () => {
+    const definir_Estado = async () => {
         let value = null;
         value = await axios.get('../ideas.json').then(
             response => {
@@ -22,7 +19,7 @@ export default function Estudiante_ListarIdeas() {
         console.log(value)
     };
     useEffect(() => {
-        definir_Color();
+        definir_Estado();
 
     }, []);
 
@@ -32,16 +29,21 @@ export default function Estudiante_ListarIdeas() {
                 {datos.map((v, i) => {
 
                     let color = "";
+                    let estado = "";
                     if (v.estado === "a") {
                         color = "#75C47D";
+                        estado = "Aprobado";
                     } else if (v.estado === "r") {
                         color = "#DC4B4B";
+                        estado = "Reprobado";
                     } else {
-                        color = "#ECB904";
+                        color = "#B4B4B4";
+                        estado = "NA";
                     }
 
-                    return (<div key={i} className="col-12 col-lg-4 col-sm-6">
-                        <CardEs key={v.titulo} titulo={v.titulo} color={color}></CardEs>
+
+                    return (<div key={i}>
+                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} observacion={v.observacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}
