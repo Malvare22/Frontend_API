@@ -6,6 +6,7 @@ import axios from "axios";
 import Historial from "./Lider_Historial";
 import Evaluaciones from "./Lider_Evaluacion";
 
+
 export default function VistaIdea() {
     return (<>
 
@@ -258,6 +259,7 @@ const Observaciones = () => {
 
 const Sobreponer = styled.div`
 
+
 #titulo, #cuerpo{
     position: relative;
  }
@@ -271,7 +273,33 @@ const Sobreponer = styled.div`
     top: -5px;
  }
 
-`;
+const Sdiv = styled.div`
+  table{
+      table-layout: fixed;
+  }
+  
+  th, td {
+      border: 1px solid;
+      width: 100px;
+      word-wrap: break-word;
+  }
+  table th{
+      background-color: #1C3B57;
+      color: #FFF;
+  }
+  table td{
+    background-color:#FFF;
+  }
+  overflow-y: scroll;
+  height: fit-content;
+  max-height: 66.4vh;
+  
+  @media screen and (max-width: 576px){
+      th, td {
+          width: 60px;
+      }}
+  `;
+
 
 
 function Tabla(props) {
@@ -312,6 +340,8 @@ function Tabla(props) {
                         ))}
                     </tbody>
                 </table>
+
+
             </div>
         </Sdiv>
     );

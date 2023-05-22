@@ -3,10 +3,6 @@ import axios from 'axios';
 import { Container } from 'reactstrap';
 import CardEs from './Estudiante_Card_Idea';
 
-
-
-
-
 export default function Estudiante_ListarIdeas() {
 
 
@@ -29,7 +25,6 @@ export default function Estudiante_ListarIdeas() {
         definir_Color();
 
     }, []);
-
 
 
     return (

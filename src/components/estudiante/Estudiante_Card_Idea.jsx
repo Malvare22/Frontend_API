@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 const EstudianteCardIdea = (props) => {
 
-
     return (
         <div className="container d-flex justify-content-center">
             <div className="card rounded my-3" style={{ width: "90%", height: "90%", backgroundColor: props.color }}>
@@ -24,6 +23,7 @@ const EstudianteCardIdea = (props) => {
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     );
