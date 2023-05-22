@@ -1,6 +1,6 @@
-{
-    "ideas": [
+[
         {
+            "id": "34234",
             "titulo": "Rubelsanto Airport",
             "area_enfoque": "Hiri Motu",
             "docente_codigo": "92",
@@ -9,6 +9,7 @@
             "documento_idea": "58981"
         },
         {
+            "id": "56787",
             "titulo": "Rochester Airport",
             "area_enfoque": "Burmese",
             "docente_codigo": "93",
@@ -17,6 +18,7 @@
             "documento_idea": "3363"
         },
         {
+            "id": "6457",
             "titulo": "Santa Cruz Air Force Base",
             "area_enfoque": "Georgian",
             "docente_codigo": "53",
@@ -25,6 +27,7 @@
             "documento_idea": "148"
         },
         {
+            "id": "6454",
             "titulo": "Ambatondrazaka Airport",
             "area_enfoque": "Bulgarian",
             "docente_codigo": "775",
@@ -33,6 +36,7 @@
             "documento_idea": "6"
         },
         {
+            "id": "5345",
             "titulo": "Sanggata/Sangkimah Airport",
             "area_enfoque": "Finnish",
             "docente_codigo": "039",
@@ -40,5 +44,4 @@
             "estudiante_codigo": "60253",
             "documento_idea": "0"
         }
-    ]
-}
+]

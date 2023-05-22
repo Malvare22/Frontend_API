@@ -16,6 +16,7 @@ import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
 import VistaIdea from './components/lider/Lider_VerIdea';
+import Listar_Ideas from './components/lider/Listar_ideas';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import Tabla from './components/estudiante/Tabla';
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
@@ -43,7 +44,7 @@ const Enrutado = () => {
             <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Ideas' element={<ListarIdeas></ListarIdeas>}></Route>
+            <Route path='/Lider/Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
             <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
