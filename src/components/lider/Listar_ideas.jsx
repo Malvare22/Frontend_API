@@ -1,5 +1,4 @@
-import { Chart } from "react-google-charts";
-import Tabla from "../estudiante/Tabla";
+import Tabla from "./Lider_Tabla_idea";
 export default function Listar_Ideas() {
     const data = [
         ["Task", "Hours per Day"],
