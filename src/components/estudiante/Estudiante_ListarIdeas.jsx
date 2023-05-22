@@ -18,7 +18,7 @@ export default function Estudiante_ListarIdeas() {
         value = await axios.get('../ideas.json').then(
             response => {
                 const data = response.data;
-                return data.ideas;
+                return data;
             }).catch(error => {
                 console.error(error);
             });
