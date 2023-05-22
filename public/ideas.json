@@ -4,6 +4,7 @@
             "titulo": "Rubelsanto Airport",
             "area_enfoque": "Hiri Motu",
             "docente_codigo": "92",
+            "estado": "a",
             "fecha_creacion": "5/17/2023",
             "estudiante_codigo": "0603",
             "documento_idea": "58981"
@@ -13,6 +14,7 @@
             "titulo": "Rochester Airport",
             "area_enfoque": "Burmese",
             "docente_codigo": "93",
+            "estado": "a",
             "fecha_creacion": "6/6/2022",
             "estudiante_codigo": "63",
             "documento_idea": "3363"
@@ -22,6 +24,7 @@
             "titulo": "Santa Cruz Air Force Base",
             "area_enfoque": "Georgian",
             "docente_codigo": "53",
+            "estado": "r",
             "fecha_creacion": "12/3/2022",
             "estudiante_codigo": "7",
             "documento_idea": "148"
@@ -31,6 +34,7 @@
             "titulo": "Ambatondrazaka Airport",
             "area_enfoque": "Bulgarian",
             "docente_codigo": "775",
+            "estado": "r",
             "fecha_creacion": "12/14/2022",
             "estudiante_codigo": "24244",
             "documento_idea": "6"
@@ -40,6 +44,7 @@
             "titulo": "Sanggata/Sangkimah Airport",
             "area_enfoque": "Finnish",
             "docente_codigo": "039",
+            "estado": "",
             "fecha_creacion": "7/26/2022",
             "estudiante_codigo": "60253",
             "documento_idea": "0"
