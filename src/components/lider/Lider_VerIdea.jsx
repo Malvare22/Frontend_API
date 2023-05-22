@@ -8,12 +8,9 @@ import Evaluaciones from "./Lider_Evaluacion";
 
 
 export default function VistaIdea() {
-    return (<>
-
+    return (<div className="row">
         <InfoGeneral></InfoGeneral>
-
         <Observaciones></Observaciones>
-
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -25,14 +22,14 @@ export default function VistaIdea() {
         </div>
 
         <Historial></Historial>
-
     </>
+
     )
 };
 
 const InfoGeneral = () => {
     return (
-        <main className="container-fluid mt-4" style={{ width: "95%" }}>
+        <div className="container-fluid mt-4" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
                     <div>
@@ -112,7 +109,7 @@ const InfoGeneral = () => {
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     )
 };
 
@@ -373,3 +370,4 @@ const Sdiv = styled.div`
           width: 60px;
       }
   `;
+
