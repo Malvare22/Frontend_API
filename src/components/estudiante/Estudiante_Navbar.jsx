@@ -96,12 +96,12 @@ const Sidebar = () => {
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Evaluacion
+          Nueva idea
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Resultados
+          Gestionar
         </NavLink>
       </NavItem>
       </UncontrolledCollapse>
