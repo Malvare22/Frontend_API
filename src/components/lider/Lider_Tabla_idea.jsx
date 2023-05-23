@@ -11,7 +11,6 @@ const useAlert = () => {
     setState(!state);
     if (v != null) {
       setValor(v);
-      console.log(v);
     }
   }
   return { state, toggleAlert, valor }
@@ -23,6 +22,31 @@ const modalStyles = {
 export default function Tabla(props) {
   const { state, toggleAlert, valor } = useAlert();
   const [datos, setDatos] = useState([]);
+  const [order, setOrder] = useState("ASC");
+  const sorting=(col)=>{
+    if(order==='ASC'){
+      const sorted=[...datos].sort((a,b)=>{
+        if (col === 'date') {
+          return new Date(a[col].replace(/-/g, '/')) - new Date(b[col].replace(/-/g, '/'));
+        } else {
+          return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1;
+        }
+      })
+      setDatos(sorted);
+      setOrder("DSC")
+    }
+    if(order==='DSC'){
+      const sorted=[...datos].sort((a,b)=>{
+        if (col === 'date') {
+          return new Date(b[col].replace(/-/g, '/')) - new Date(a[col].replace(/-/g, '/'));
+        } else {
+          return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1;
+        }
+      })
+      setDatos(sorted);
+      setOrder("ASC")
+    }
+  }
   const getIdeas = async () => {
     let value = null;
     value = await axios.get('../ideas.json').then(
@@ -33,7 +57,6 @@ export default function Tabla(props) {
         console.error(error);
       });
     setDatos(value)
-    console.log(value)
   };
   useEffect(() => {
     getIdeas();
@@ -41,13 +64,13 @@ export default function Tabla(props) {
   return (
     <Sdiv>
       <div className='w-auto'>
-        <table table className="table table-striped">
+        <table className="table table-striped">
           <thead>
             <tr>
-              <th className='text-center' scope="col-auto">Título</th>
-              <th className='text-center' scope="col-auto">Estudiante</th>
-              <th className='text-center' scope="col-auto">Tutor</th>
-              <th className='text-center' scope="col-auto">Fecha de corte</th>
+              <th className='text-center' onClick={()=>sorting("titulo")} scope="col-auto">Título</th>
+              <th className='text-center' onClick={()=>sorting("estudiante_codigo")} scope="col-auto">Estudiante</th>
+              <th className='text-center' onClick={()=>sorting("docente_codigo")} scope="col-auto">Tutor</th>
+              <th className='text-center' onClick={()=>sorting("fecha_creacion")} scope="col-auto">Fecha de corte</th>
               <th className='text-center' scope="col-auto">Acciones</th>
             </tr>
           </thead>
@@ -67,7 +90,7 @@ export default function Tabla(props) {
                           <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                         </svg>
                       </button>
-                      <button type="button" class="btn" value={d.id} style={{ width: "auto" }}>
+                      <button type="button" class="btn" value={d.id} style={{ width: "auto", border: "none"}}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                           <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                           <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
