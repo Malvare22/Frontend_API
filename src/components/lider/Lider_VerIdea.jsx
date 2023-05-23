@@ -313,7 +313,7 @@ function Tabla(props) {
     return (
         <Sdiv>
             <div className='w-auto m-2'>
-                <table table className="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th className='text-center' scope="col-auto">Docente</th>
