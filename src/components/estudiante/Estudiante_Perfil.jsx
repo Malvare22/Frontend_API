@@ -1,6 +1,7 @@
 
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
+import { Link } from 'react-router-dom';
 export default function PerfilEstudiante() {
     return (<VistaGeneral></VistaGeneral>);
 }
@@ -127,11 +128,11 @@ const VistaGeneral = () => {
 
 const Button = ()=>{
     return(
-        <Sdiv04><button className='border rounded-4' style={{backgroundColor:"#1C3B57"}}>
+        <Sdiv04><Link to={"/Estudiante/Perfil/Editar"}><button className='border rounded-4' style={{backgroundColor:"#1C3B57"}}>
         <h5 className='fw-bold text-white text-center'>
             Editar Información de Estudiante
         </h5>
-    </button></Sdiv04>
+    </button></Link></Sdiv04>
     );
 };
 

@@ -99,7 +99,8 @@ const Head = () => {
 
 
 const modalStyles = {
-    transform: 'translate(0%, 0%)'
+    
+    
 }
 
 const Information = () => {
@@ -170,7 +171,10 @@ const Information = () => {
         if (fail == false) return null;
         return errors;
     };
-
+    const updateProfile= ()=>{
+        //Aquí se hace la actualización de la info
+        console.log("Info enviada")
+    }
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
     return (
         <div >
@@ -279,16 +283,14 @@ const Information = () => {
                     <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
-            <Modal isOpen={viewAlert} style={modalStyles}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Hollaaa</Label>
-                    </FormGroup>
+            <Modal isOpen={viewAlert} centered={true} style={modalStyles}>
+                <ModalBody className='d-flex justify-content-center align-content-center p-4'>
+                        <h6 id="texto" className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
                 </ModalBody>
 
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                <ModalFooter className='d-flex justify-content-center'>
+                    <Button color="primary" style={{marginRight:"40px"}} onClick={updateProfile} >Aceptar</Button>
+                    <Button color="secondary" style={{marginLeft:"40px"}} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
         </div>
