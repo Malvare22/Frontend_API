@@ -1,12 +1,16 @@
 [
-
     {
         "id": "34234",
         "titulo": "Rubelsanto Airport",
         "area_enfoque": "Hiri Motu",
         "docente_codigo": "92",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
         "estado": "a",
-        "fecha_creacion": "5/17/2023",
+        "fecha_creacion": "2023/05/22",
         "estudiante_codigo": "0603",
         "documento_idea": "58981",
         "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -16,8 +20,13 @@
         "titulo": "Rochester Airport",
         "area_enfoque": "Burmese",
         "docente_codigo": "93",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
         "estado": "a",
-        "fecha_creacion": "6/6/2022",
+        "fecha_creacion": "2023/06/15",
         "estudiante_codigo": "63",
         "documento_idea": "3363",
         "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -27,8 +36,13 @@
         "titulo": "Santa Cruz Air Force Base",
         "area_enfoque": "Georgian",
         "docente_codigo": "53",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
         "estado": "r",
-        "fecha_creacion": "12/3/2022",
+        "fecha_creacion": "2023/07/01",
         "estudiante_codigo": "7",
         "documento_idea": "148",
         "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -38,8 +52,13 @@
         "titulo": "Ambatondrazaka Airport",
         "area_enfoque": "Bulgarian",
         "docente_codigo": "775",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
         "estado": "r",
-        "fecha_creacion": "12/14/2022",
+        "fecha_creacion": "2023/08/10",
         "estudiante_codigo": "24244",
         "documento_idea": "6",
         "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
@@ -49,11 +68,15 @@
         "titulo": "Sanggata/Sangkimah Airport",
         "area_enfoque": "Finnish",
         "docente_codigo": "039",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
         "estado": "",
-        "fecha_creacion": "7/26/2022",
+        "fecha_creacion": "2023/09/25",
         "estudiante_codigo": "60253",
         "documento_idea": "0",
         "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     }
-
 ]

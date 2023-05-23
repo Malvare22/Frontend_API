@@ -8,12 +8,9 @@ import Evaluaciones from "./Lider_Evaluacion";
 
 
 export default function VistaIdea() {
-    return (<>
-
+    return (<div className="row">
         <InfoGeneral></InfoGeneral>
-
         <Observaciones></Observaciones>
-
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -23,101 +20,124 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-
         <Historial></Historial>
-
-    </>
+    </div>
     )
 };
 
 const InfoGeneral = () => {
+   
+    const [datos, setDatos] = useState([]);
+    const getIdeas = async () => {
+        let value = null;
+        value = await axios.get('../InfoIdea.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
+        console.log(value[0].estudiantes)
+    };
+    useEffect(() => {
+        getIdeas();
+    }, []);
+
+
     return (
-        <main className="container-fluid mt-4" style={{ width: "95%" }}>
-            <div className="row">
-                <div className="col-12">
-                    <div>
-                        <div className="rounded-5" style={{ background: "#1C3B57" }}>
-                            <h5 className="p-2 ms-3" style={{ color: "white" }}>Información general</h5>
-                        </div>
-                        <div className="row mx-4">
-                            <div className="d-flex flex-column col-7">
-                                <div className="m-2">
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Título:</b></h6>
+
+        <div className="container-fluid mt-4" style={{ width: "95%" }}>
+            {datos.map((v, i) => {
+               
+                return (<div className="row">
+                    <div className="col-12">
+                        <div>
+                            <div className="rounded-5" style={{ background: "#1C3B57" }}>
+                                <h5 className="p-2 ms-3" style={{ color: "white" }}>Información general</h5>
+                            </div>
+                            <div className="row mx-4">
+                                <div className="d-flex flex-column col-7">
+                                    <div className="m-2">
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Título:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>{v.titulo}</p>
+                                            </div>
                                         </div>
-                                        <div className="col-auto">
-                                            <p>...</p>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul>
+                                            
+                                            {datos[0].estudiantes.map((l) => {
+                                                return( l);
+
+                                            })}        
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Tutor:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>Lizeth Juliana Navarro Vargas</p>
+                                            </div>
                                         </div>
-                                        <div className="col-auto">
-                                            <ul>
-                                                <li>Coffee</li>
-                                                <li>Tea</li>
-                                                <li>Milk</li>
-                                            </ul>
+                                        <button type="button" className="btn btn-secondary btn-sm rounded-5 m-2">Asignar</button>
+                                        <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Eliminar</button>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>...</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Tutor:</b></h6>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Docentes de apoyo:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul>
+                                                    <li>Coffee</li>
+                                                    <li>Tea</li>
+                                                    <li>Milk</li>
+                                                </ul>
+                                            </div>
+                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
                                         </div>
-                                        <div className="col-auto">
-                                            <p>Lizeth Juliana Navarro Vargas</p>
-                                        </div>
-                                    </div>
-                                    <button type="button" className="btn btn-secondary btn-sm rounded-5 m-2">Asignar</button>
-                                    <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Eliminar</button>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
-                                        </div>
-                                        <div className="col-auto">
-                                            <p>...</p>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Docentes de apoyo:</b></h6>
-                                        </div>
-                                        <div className="col-auto">
-                                            <ul>
-                                                <li>Coffee</li>
-                                                <li>Tea</li>
-                                                <li>Milk</li>
-                                            </ul>
-                                        </div>
-                                        <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="d-flex col-5 justify-content-end">
-                                <SProgress>
-                                    <div id="progreso" className="progress blue">
-                                        <span className="progress-left">
-                                            <span className="progress-bar"></span>
-                                        </span>
-                                        <span className="progress-right">
-                                            <span className="progress-bar"></span>
-                                        </span>
-                                        <div className="progress-value">50%</div>
-                                    </div>
-                                </SProgress>
+                                <div className="d-flex col-5 justify-content-end">
+                                    <SProgress>
+                                        <div id="progreso" className="progress blue">
+                                            <span className="progress-left">
+                                                <span className="progress-bar"></span>
+                                            </span>
+                                            <span className="progress-right">
+                                                <span className="progress-bar"></span>
+                                            </span>
+                                            <div className="progress-value">50%</div>
+                                        </div>
+                                    </SProgress>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </main>
+                );
+            })}
+        </div>
     )
 };
 
 const SProgress = styled.div`
-
 .progress {
   width: 150px;
   height: 150px !important;
@@ -258,8 +278,6 @@ const Observaciones = () => {
 };
 
 const Sobreponer = styled.div`
-
-
 #titulo, #cuerpo{
     position: relative;
  }
@@ -271,52 +289,9 @@ const Sobreponer = styled.div`
  #cuerpo{
     z-index: 1;
     top: -5px;
- }`;
-
-function Tabla(props) {
-    const [datos, setDatos] = useState([]);
-    const getIdeas = async () => {
-      let value = null;
-      value = await axios.get('../ideas.json').then(
-        response => {
-          const data = response.data;
-          return data;
-        }).catch(error => {
-          console.error(error);
-        });
-      setDatos(value)
-      console.log(value)
-    };
-    useEffect(() => {
-      getIdeas();
-    }, []);
-    return (
-        <Sdiv>
-            <div className='w-auto m-2'>
-                <table table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th className='text-center' scope="col-auto">Docente</th>
-                            <th className='text-center' scope="col-auto">Fecha</th>
-                            <th className='text-center' scope="col-auto">Observación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {datos.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
-
-            </div>
-        </Sdiv>
-    );
-}
+ }
+ 
+ `;
 
 const Sdiv = styled.div`
   table{
@@ -343,4 +318,47 @@ const Sdiv = styled.div`
       th, td {
           width: 60px;
       }}
-  `;
+`;
+
+function Tabla(props) {
+    const [datos, setDatos] = useState([]);
+    const getIdeas = async () => {
+        let value = null;
+        value = await axios.get('../ideas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
+    };
+    useEffect(() => {
+        getIdeas();
+    }, []);
+    return (
+        <Sdiv>
+            <div className='w-auto m-2'>
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th className='text-center' scope="col-auto">Docente</th>
+                            <th className='text-center' scope="col-auto">Fecha</th>
+                            <th className='text-center' scope="col-auto">Observación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {datos.map((d) => (
+                            <tr key={d.id}>
+                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </Sdiv>
+    );
+}
+

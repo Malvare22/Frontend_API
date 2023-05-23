@@ -16,7 +16,6 @@ export default function Historial() {
                 console.error(error);
             });
         setDatos(value)
-        console.log(value)
     };
     useEffect(() => {
         definir_Estado();

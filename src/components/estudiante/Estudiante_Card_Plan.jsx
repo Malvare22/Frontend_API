@@ -4,7 +4,7 @@ import { useState } from 'react';
 import imagen from '../../assets/images/imagen idea-plan.png'
 
 
-const EstudianteCardIdea = (props) => {
+const EstudianteCardPlan = (props) => {
 
     return (
         <div className="container d-flex justify-content-center">
@@ -29,4 +29,4 @@ const EstudianteCardIdea = (props) => {
     );
 }
 
-export default EstudianteCardIdea;
+export default EstudianteCardPlan;

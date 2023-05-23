@@ -17,11 +17,13 @@ import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
 import ListarIdeas from './components/lider/Listar_ideas';
 import ListarIdeasEstudiante from './components/estudiante/Estudiante_ListarIdeas';
+import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPlanes';
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
 import VistaIdea from './components/lider/Lider_VerIdea';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
+import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
 import Tabla from './components/estudiante/Tabla';
 
 const Enrutado = () => {
@@ -43,7 +45,9 @@ const Enrutado = () => {
           <Route element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
             <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
+            <Route path='/Estudiante/E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
             <Route path='/Estudiante/ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
+            <Route path='/Estudiante/ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>}/>
             <Route path='/Estudiante/ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
             <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
           </Route>
