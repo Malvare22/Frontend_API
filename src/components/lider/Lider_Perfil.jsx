@@ -2,36 +2,20 @@
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
 import { Link } from 'react-router-dom';
-export default function PerfilEstudiante() {
+
+export default function PerfilLider() {
     return (<VistaGeneral></VistaGeneral>);
 }
 
-const usuario = {
-    id: "1",
-    correo: "example@student.com",
-    contrasenia: "123",
-    apellidos: "Ramirez",
-    nombres: "Jorge",
-    curso: "Septimo",
-    codigo: "112018",
-    sexo: "0",
-    fecha_nacimiento: '2001-04-20',
-    nombre_acudiente: "Luis Sanchez",
-    telefono_acudiente: "305484564",
-    foto: "./images/01.png",
-    tipo_usuario: "estudiante",
-    estado: "1"
-};
-
-const Profile = () => {
+const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
                 <img className='rounded-circle' src={image}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{usuario.nombres}</p>
-                        <p className='text-white'>{usuario.apellidos}</p>
+                        <p className='text-white'>Felipe</p>
+                        <p className='text-white'>Sanguino</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +36,7 @@ const Information = () => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                       {usuario.nombres}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -60,7 +44,7 @@ const Information = () => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.apellidos}
+                        Corozo Ramirez
                     </div>
                 </div>
                 <div className='row'>
@@ -68,7 +52,7 @@ const Information = () => {
                         Curso:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.curso}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -76,7 +60,7 @@ const Information = () => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.fecha_nacimiento}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -84,7 +68,7 @@ const Information = () => {
                         Código:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.codigo}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -92,7 +76,7 @@ const Information = () => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.sexo}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -100,7 +84,7 @@ const Information = () => {
                         Correo eléctronico:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.correo}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -108,7 +92,7 @@ const Information = () => {
                         Nombre del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.nombre_acudiente}
+                        Luis
                     </div>
                 </div>
                 <div className='row'>
@@ -116,7 +100,7 @@ const Information = () => {
                         Teléfono del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.telefono_acudiente}
+                        Luis
                     </div>
                 </div>
             </div>
@@ -124,11 +108,11 @@ const Information = () => {
     );
 }
 //
-const VistaGeneral = () => {
+const VistaGeneral = (props) => {
     return (
         <div className='flex-grow-1'>
             <h2 className='m-4 fw-bold'>Información de Usuario</h2>
-            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+            <div className='justify-content-center' style={{marginTop:"5rem", marginBottom:"2rem"}}>
                 <div className='d-flex justify-content-center'>
                     <div className='w-75 position-relative'>
                         <Information></Information>
@@ -136,20 +120,20 @@ const VistaGeneral = () => {
                     </div>
                 </div>
             </div>
-            <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+            <div className='d-flex justify-content-center' style={{marginBottom:"2rem"}}>
                 <Button></Button>
             </div>
         </div>
     );
 }
 
-const Button = () => {
-    return (
-        <Sdiv04><Link to={"/Estudiante/Perfil/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
-            <h5 className='fw-bold text-white text-center'>
-                Editar Información de Estudiante
-            </h5>
-        </button></Link></Sdiv04>
+const Button = ()=>{
+    return(
+        <Sdiv04><Link to={"/Estudiante/Perfil/Editar"}><button className='border rounded-4' style={{backgroundColor:"#1C3B57"}}>
+        <h5 className='fw-bold text-white text-center'>
+            Editar Información de Estudiante
+        </h5>
+    </button></Link></Sdiv04>
     );
 };
 
@@ -163,7 +147,7 @@ const Sdiv04 = styled.div`
             margin: 20px;
         }
     }
-`;
+`; 
 
 const Sdiv01 = styled.div.attrs({
     className: 'd-inline-flex',

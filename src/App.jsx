@@ -25,6 +25,8 @@ import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
 import Tabla from './components/estudiante/Tabla';
+import PerfilLider from './components/lider/Lider_Perfil';
+import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
 
 const Enrutado = () => {
   /** *
@@ -54,6 +56,8 @@ const Enrutado = () => {
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
             <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>}/>
+            <Route path='/Lider/Perfil' element={<PerfilLider></PerfilLider>}/>
+            <Route path='/Lider/Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>

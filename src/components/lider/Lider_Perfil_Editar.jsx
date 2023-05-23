@@ -63,7 +63,7 @@ const useForm = (initialData, validar, initialErrors) => {
     return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
 
-export default function EditarPerfilEstudiante() {
+export default function EditarPerfilLider() {
 
     return (
         <>
@@ -106,20 +106,16 @@ const modalStyles = {
 const Information = () => {
 
     const user = {
-        id: "1",
-    correo: "example@student.com",
-    contrasenia: "123",
-    apellidos: "Ramirez",
-    nombres: "Jorge",
-    curso: "Septimo",
-    codigo: "112018",
-    sexo: "0",
-    fecha_nacimiento: '2001-04-20',
-    nombre_acudiente: "Luis Sanchez",
-    telefono_acudiente: "305484564",
-    foto: "./images/01.png",
-    tipo_usuario: "estudiante",
-    estado: "1"
+        nombres: 'Juanes Anderson',
+        apellidos: 'Corozo Curacao',
+        codigo: '6545',
+        curso: 'Septimo',
+        fecha_nacimiento: '2001-04-20',
+        sexo: "0",
+        nombre_acudiente: 'Royer Olivia',
+        telefono_acudiente: '564556',
+        correo: 'sdfdsfg@asd.com',
+        foto: './../../assets/images/Users/01.png'
     };
 
     const initialErrors = {
