@@ -273,7 +273,9 @@ const Sobreponer = styled.div`
     top: -5px;
  }
 
-const Sdiv = styled.div`
+ `;
+
+ const Sdiv = styled.div`
   table{
       table-layout: fixed;
   }
@@ -298,7 +300,7 @@ const Sdiv = styled.div`
       th, td {
           width: 60px;
       }}
-  `;
+`;
 
 
 
@@ -322,7 +324,7 @@ function Tabla(props) {
     return (
         <Sdiv>
             <div className='w-auto m-2'>
-                <table table className="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th className='text-center' scope="col-auto">Docente</th>
@@ -340,36 +342,7 @@ function Tabla(props) {
                         ))}
                     </tbody>
                 </table>
-
-
             </div>
         </Sdiv>
     );
 }
-
-const Sdiv = styled.div`
-  table{
-      table-layout: fixed;
-  }
-  
-  th, td {
-      border: 1px solid;
-      width: 100px;
-      word-wrap: break-word;
-  }
-  table th{
-      background-color: #1C3B57;
-      color: #FFF;
-  }
-  table td{
-    background-color:#FFF;
-  }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
-  
-  @media screen and (max-width: 576px){
-      th, td {
-          width: 60px;
-      }
-  `;

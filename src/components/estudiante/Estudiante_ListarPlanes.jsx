@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Container } from 'reactstrap';
-import CardEs from './Estudiante_Card_Idea';
+import CardEs from './Estudiante_Card_Plan';
 import styled from 'styled-components';
 
-export default function Estudiante_ListarIdeas() {
+export default function Estudiante_ListarPlanes() {
 
 
 
@@ -31,15 +31,15 @@ export default function Estudiante_ListarIdeas() {
     return (
         <>
             <div className="container">
-                <img src="https://live.staticflickr.com/65535/52917978152_76ea16ef66_o.png" className='img-fluid mt-2'/>
+                <img src="https://live.staticflickr.com/65535/52918980445_72b8b17b22_o.png" className='img-fluid mt-2'/>
                 <div className="container-fluid" style={{ width: "100%" }}>
                     <div className="row">
                         <Sobreponer>
                             <div className="col-12">
-                                <div id="titulo" className="rounded-3 mt-2" style={{ background: "#ECB904" }}>
+                                <div id="titulo" className="rounded-3 mt-2" style={{ background: "#7FA9FC" }}>
                                     <div className="row">
                                         <div className="d-flex col ms-3">
-                                            <h5 className="m-0 p-2" style={{ color: "black" }}><b>Ideas de negocio</b></h5>
+                                            <h5 className="m-0 p-2" style={{ color: "black" }}><b>Planes de negocio</b></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -75,14 +75,6 @@ export default function Estudiante_ListarIdeas() {
                                             </div>
                                             );
                                         })}
-                                        <div className='col-12 col-lg-4 col-sm-6 d-flex justify-content-center align-items-center '>
-                                            <button className="btn btn-sm" style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-plus-circle mb-3" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                </svg>
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
