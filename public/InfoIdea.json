@@ -1,0 +1,18 @@
+[
+    {
+        "id": "34234",
+        "titulo": "Rubelsanto Airport",
+        "area_enfoque": "Hiri Motu",
+        "docente_codigo": "92",
+        "estudiantes":[
+            "Pinga Alex",
+            "Felipe Sorpreson",
+            "Juliana trepadora"
+        ],
+        "estado": "a",
+        "fecha_creacion": "5/17/2023",
+        "estudiante_codigo": "0603",
+        "documento_idea": "58981",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    }
+]
