@@ -1,5 +1,7 @@
 #Sidebar{
 background-color: #1C3B57;
+min-height: 100%;
+height: 100%;
 }
 
 #despliegue{
@@ -28,4 +30,14 @@ vertical-align: bottom;
         visibility: visible;
         display: block;
     }
+}
+
+#principal_div_nav{
+    min-height: 100%;
+    height: 100%;
+    background-color: #1C3B57;
+}
+
+#closeSession{
+
 }

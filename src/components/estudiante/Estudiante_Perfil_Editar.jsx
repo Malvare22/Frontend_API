@@ -297,8 +297,8 @@ const Information = () => {
 
 const SContent = styled.div`
     #d_head{
-            position: relative;
-            margin-top: 30px;
+        position: relative;
+        margin-top: 30px;
     }
     #head{
         position: absolute;

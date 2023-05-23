@@ -22,9 +22,5 @@ const Contenido = styled.div.attrs({
     className: 'flex-grow-1',
     
 })`
-    
-    padding-bottom: 150px;
-    @media screen and (max-width: 576px) {
-        padding-bottom: 30px;
-    }
+
 `;
