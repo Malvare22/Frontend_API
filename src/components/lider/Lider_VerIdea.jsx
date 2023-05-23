@@ -290,7 +290,9 @@ const Sobreponer = styled.div`
     z-index: 1;
     top: -5px;
  }
-`
+ 
+ `;
+
 const Sdiv = styled.div`
   table{
       table-layout: fixed;
@@ -318,7 +320,6 @@ const Sdiv = styled.div`
       }}
 `;
 
-
 function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
@@ -338,7 +339,7 @@ function Tabla(props) {
     return (
         <Sdiv>
             <div className='w-auto m-2'>
-                <table table className="table table-striped">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th className='text-center' scope="col-auto">Docente</th>
@@ -356,8 +357,6 @@ function Tabla(props) {
                         ))}
                     </tbody>
                 </table>
-
-
             </div>
         </Sdiv>
     );

@@ -75,16 +75,16 @@ export default function EditarPerfilEstudiante() {
 const Content = () => {
 
     return (
-        <div className='container-fluid'>
-            <SContent>
-                <div className='d-flex justify-content-center' id='d_head'>
-                    <div className='' id='head'>
-                        <Head></Head>
-                    </div>
-                    <div className='' id="info"> <Information></Information></div>
+        
+        <SContent>
+            <div className='d-flex justify-content-center' id='d_head'>
+                <div className='' id='head'>
+                    <Head></Head>
                 </div>
-            </SContent>
-        </div>
+                <div className='' id="info"> <Information></Information></div>
+            </div>
+        </SContent>
+    
     );
 };
 
@@ -173,7 +173,7 @@ const Information = () => {
 
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
     return (
-        <div>
+        <div >
             <form onSubmit={handleSubmit}>
                 <div className='' style={{ backgroundColor: "#ECECEC" }}>
                     <SInfo>
@@ -297,8 +297,8 @@ const Information = () => {
 
 const SContent = styled.div`
     #d_head{
-            position: relative;
-            margin-top: 30px;
+        position: relative;
+        margin-top: 30px;
     }
     #head{
         position: absolute;
@@ -319,7 +319,7 @@ const SContent = styled.div`
     #info{
         width: 80%;
         @media screen and (max-width: 576px) {
-            width: 100%;
+            width: 95%;
     
         }
     }
@@ -338,6 +338,14 @@ const SContent = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        @media screen and (max-width: 576px) {
+            width: 100px;
+            margin-right: 10px;
+            margin-left: 10px;
+            h6{
+                font-size: 12px;
+            }
+        }
     }
     #btns h6{
         
