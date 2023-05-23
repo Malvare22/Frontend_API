@@ -2,7 +2,7 @@ import Tabla from "./Lider_Tabla_idea";
 
 export default function Listar_Ideas() {
     return (
-        <div className="container-fluid w-75">
+            <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
                     <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio</h1>
@@ -32,7 +32,6 @@ export default function Listar_Ideas() {
         </div>
     );
 }
-
 function Filtros() {
     return (<form className="row g-7">
         <div className="col-auto d-flex align-items-center mb-2">
