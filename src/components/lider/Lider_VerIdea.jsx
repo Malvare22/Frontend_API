@@ -264,7 +264,9 @@ const Sobreponer = styled.div`
     z-index: 1;
     top: -5px;
  }
-`
+ 
+ `;
+
 const Sdiv = styled.div`
   table{
       table-layout: fixed;
@@ -291,7 +293,6 @@ const Sdiv = styled.div`
           width: 60px;
       }}
 `;
-
 
 function Tabla(props) {
     const [datos, setDatos] = useState([]);
@@ -337,4 +338,3 @@ function Tabla(props) {
         </Sdiv>
     );
 }
-

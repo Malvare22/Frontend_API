@@ -7,7 +7,7 @@ import logo_UFPS from '../assets/images/Footer/logo_UFPS.png'
 
 function Footer() {
 
-    return (<div className="container-fluid p-0 d-flex align-items-center justify-content-center w-100" style={{ backgroundColor: "#3B3737" }}>
+    return (<div className="container-fluid p-0 d-flex align-items-center justify-content-center w-100" style={{ backgroundColor: "#3B3737"}}>
         <SFoot>
         <div className='d-flex align-items-center justify-content-center w-100'>
             <div className='d-flex align-items-center justify-content-center i' style={{width: "18%"}}>
@@ -78,7 +78,6 @@ const SFoot= styled.div`
     @media only screen and (min-width: 1200px) {
         font-size: 0.8rem;
     }
-   
     }
     
 `; 
