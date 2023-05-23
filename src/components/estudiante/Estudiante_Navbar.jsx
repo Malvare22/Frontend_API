@@ -10,8 +10,8 @@ const Sidebar = () => {
 
 const SideBarStatic = () => {
   return (
+    
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
-   
     <Nav vertical className=' d-flex' style={{height :"100%"}}>
       <NavItem>
       <div className='container-fluid w-100 h-100'>

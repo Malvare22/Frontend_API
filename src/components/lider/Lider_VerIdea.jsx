@@ -8,12 +8,9 @@ import Evaluaciones from "./Lider_Evaluacion";
 
 
 export default function VistaIdea() {
-    return (<>
-
+    return (<div className="row">
         <InfoGeneral></InfoGeneral>
-
         <Observaciones></Observaciones>
-
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -23,16 +20,14 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-
         <Historial></Historial>
-
-    </>
+    </div>
     )
 };
 
 const InfoGeneral = () => {
     return (
-        <main className="container-fluid mt-4" style={{ width: "95%" }}>
+        <div className="container-fluid mt-4" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
                     <div>
@@ -112,12 +107,11 @@ const InfoGeneral = () => {
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
     )
 };
 
 const SProgress = styled.div`
-
 .progress {
   width: 150px;
   height: 150px !important;
@@ -258,8 +252,6 @@ const Observaciones = () => {
 };
 
 const Sobreponer = styled.div`
-
-
 #titulo, #cuerpo{
     position: relative;
  }
@@ -271,7 +263,36 @@ const Sobreponer = styled.div`
  #cuerpo{
     z-index: 1;
     top: -5px;
- }`;
+ }
+ 
+ `;
+
+const Sdiv = styled.div`
+  table{
+      table-layout: fixed;
+  }
+  
+  th, td {
+      border: 1px solid;
+      width: 100px;
+      word-wrap: break-word;
+  }
+  table th{
+      background-color: #1C3B57;
+      color: #FFF;
+  }
+  table td{
+    background-color:#FFF;
+  }
+  overflow-y: scroll;
+  height: fit-content;
+  max-height: 66.4vh;
+  
+  @media screen and (max-width: 576px){
+      th, td {
+          width: 60px;
+      }}
+`;
 
 function Tabla(props) {
     const [datos, setDatos] = useState([]);
@@ -317,30 +338,3 @@ function Tabla(props) {
         </Sdiv>
     );
 }
-
-const Sdiv = styled.div`
-  table{
-      table-layout: fixed;
-  }
-  
-  th, td {
-      border: 1px solid;
-      width: 100px;
-      word-wrap: break-word;
-  }
-  table th{
-      background-color: #1C3B57;
-      color: #FFF;
-  }
-  table td{
-    background-color:#FFF;
-  }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
-  
-  @media screen and (max-width: 576px){
-      th, td {
-          width: 60px;
-      }}
-  `;
