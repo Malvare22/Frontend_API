@@ -3,7 +3,9 @@ import image from './../../assets/images/Pencil.png'
 import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+
+
 
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
@@ -63,8 +65,8 @@ const useForm = (initialData, validar, initialErrors) => {
     return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
 
-export default function EditarPerfilEstudiante() {
-
+export default function LiderEditarPerfilEstudiante() {
+    
     return (
         <>
             <Content></Content>
@@ -105,22 +107,7 @@ const modalStyles = {
 
 const Information = () => {
 
-    const user = {
-        id: "1",
-        correo: "example@student.com",
-        contrasenia: "123",
-        apellidos: "Ramirez",
-        nombres: "Jorge",
-        curso: "Septimo",
-        codigo: "112018",
-        sexo: "0",
-        fecha_nacimiento: '2001-04-20',
-        nombre_acudiente: "Luis Sanchez",
-        telefono_acudiente: "305484564",
-        foto: "./images/01.png",
-        tipo_usuario: "estudiante",
-        estado: "1"
-    };
+    const user = JSON.parse(localStorage.getItem("info_estudiante"))
 
     const initialErrors = {
         nombres: false,

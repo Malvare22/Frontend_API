@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Tabla from "./Lider_Tabla_idea";
 import axios from "axios";
 
 export default function Listar_Ideas() {
@@ -11,7 +10,6 @@ export default function Listar_Ideas() {
                     <div className="container">
                         <Filtros></Filtros>
                         <br></br>
-                        <Tabla></Tabla>
                         <br></br>
                         <div className="d-flex justify-content-end">
                         <button type="button" className="btn rounded-3" style={{background: "#1C3B57", color: "#FFFFFF"}}>
