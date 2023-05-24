@@ -15,7 +15,6 @@ import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
-import ListarIdeas from './components/lider/Listar_ideas';
 import ListarIdeasEstudiante from './components/estudiante/Estudiante_ListarIdeas';
 import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPlanes';
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
