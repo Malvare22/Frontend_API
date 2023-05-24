@@ -51,7 +51,8 @@ const searchStudent= async()=> {
 }
 
 const verifyStudent= ()=>{
-    if(localStorage.getItem("info_estudiante")===null) throw new Response("Not Found", { status: 404 })
+  const data = localStorage.getItem("info_estudiante");
+    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
     return true;
 }
 
