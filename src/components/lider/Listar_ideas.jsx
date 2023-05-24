@@ -253,6 +253,7 @@ export default function Listar_Ideas() {
     } catch (error) {
       console.error(error);
     }
+    //ACA IRA LA SOLICITUD A BACK CON LOS PARAMETROS
   };
   return (
     <div className="container-fluid w-75">

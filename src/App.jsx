@@ -55,7 +55,7 @@ const Enrutado = () => {
             <Route path='/Estudiante/AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}/>
+            <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
             <Route path='/Lider/VistaIdea' element={<LiderVistaIdea></LiderVistaIdea>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
