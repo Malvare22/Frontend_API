@@ -279,7 +279,7 @@ const Information = () => {
                     <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
-            <Modal isOpen={viewAlert} style={modalStyles}>
+            <Modal isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">Hollaaa</Label>

@@ -23,6 +23,7 @@ import LiderListarIdeas from './components/lider/Listar_ideas';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
+import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
 
 const Enrutado = () => {
@@ -49,6 +50,7 @@ const Enrutado = () => {
             <Route path='/Estudiante/ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>}/>
             <Route path='/Estudiante/ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
             <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
+            <Route path='/Estudiante/EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}/>

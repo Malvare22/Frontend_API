@@ -1,6 +1,6 @@
 import { Row } from "react-bootstrap";
 import styled from "styled-components";
-import { Collapse, UncontrolledCollapse } from 'reactstrap';
+import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Lider_Historial";
@@ -26,88 +26,211 @@ export default function VistaIdea() {
 };
 
 const InfoGeneral = () => {
+
+    const [viewAlert, setViewAlert] = useState(false);
+    const toggleAlert = () => {
+        setViewAlert(!viewAlert);
+    }
+
+    const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
+    const toggleAlertEliminar = () => {
+        setViewAlertEliminar(!viewAlertEliminar);
+    }
+
+    const [Area, setArea] = useState(String);
+    const setArea_A = (a) => {
+        setArea(a);
+    }
+
+    const [datos, setDatos] = useState([]);
+    const getIdeas = async () => {
+        let value = null;
+        value = await axios.get('../InfoIdea.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
+    };
+    useEffect(() => {
+        getIdeas();
+    }, []);
+
+    const [profesores, setProfesores] = useState([]);
+    const getProfesores = async () => {
+        let value = null;
+        value = await axios.get('../docentes.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setProfesores(value)
+    };
+    useEffect(() => {
+        getProfesores();
+    }, []);
+
+
+    let docente = "";
+    try {
+        if (datos[0].docente) {
+            docente = datos[0].docente;
+        }
+    } catch (error) {
+
+    }
+
+    let set = new Set();
+
     return (
+
         <div className="container-fluid mt-4" style={{ width: "95%" }}>
-            <div className="row">
-                <div className="col-12">
-                    <div>
-                        <div className="rounded-5" style={{ background: "#1C3B57" }}>
-                            <h5 className="p-2 ms-3" style={{ color: "white" }}>Información general</h5>
-                        </div>
-                        <div className="row mx-4">
-                            <div className="d-flex flex-column col-7">
-                                <div className="m-2">
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Título:</b></h6>
+            {datos.map((v, i) => {
+
+                return (<div key={i} className="row">
+                    <div className="col-12">
+                        <div>
+                            <div className="rounded-5" style={{ background: "#1C3B57" }}>
+                                <h5 className="p-2 ms-3" style={{ color: "white" }}>Información general</h5>
+                            </div>
+                            <div className="row mx-4">
+                                <div className="d-flex flex-column col-7">
+                                    <div className="m-2">
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Título:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>{v.titulo}</p>
+                                            </div>
                                         </div>
-                                        <div className="col-auto">
-                                            <p>...</p>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul>
+
+                                                    {datos[0].estudiantes.map((l,i) => {
+                                                        return (<li key={i}>{l}</li>);
+
+                                                    })}
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Tutor:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>{docente}</p>
+                                            </div>
                                         </div>
-                                        <div className="col-auto">
-                                            <ul>
-                                                <li>Coffee</li>
-                                                <li>Tea</li>
-                                                <li>Milk</li>
-                                            </ul>
+
+                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos[0].docente != null ? true : false} >Asignar</button>
+                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos[0].docente != null ? false : true}>Eliminar</button>
+
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <p>{v.area_enfoque}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Tutor:</b></h6>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Docentes de apoyo:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul>
+                                                    {datos[0].docentes_apoyo.map((l,j) => {
+                                                        return (<li key={j} >{l}</li>);
+                                                    })}
+                                                </ul>
+                                            </div>
+                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
                                         </div>
-                                        <div className="col-auto">
-                                            <p>Lizeth Juliana Navarro Vargas</p>
-                                        </div>
-                                    </div>
-                                    <button type="button" className="btn btn-secondary btn-sm rounded-5 m-2">Asignar</button>
-                                    <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Eliminar</button>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
-                                        </div>
-                                        <div className="col-auto">
-                                            <p>...</p>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-2">
-                                        <div className="col-auto">
-                                            <h6 className="font-weight-bold"><b>Docentes de apoyo:</b></h6>
-                                        </div>
-                                        <div className="col-auto">
-                                            <ul>
-                                                <li>Coffee</li>
-                                                <li>Tea</li>
-                                                <li>Milk</li>
-                                            </ul>
-                                        </div>
-                                        <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="d-flex col-5 justify-content-end">
-                                <SProgress>
-                                    <div id="progreso" className="progress blue">
-                                        <span className="progress-left">
-                                            <span className="progress-bar"></span>
-                                        </span>
-                                        <span className="progress-right">
-                                            <span className="progress-bar"></span>
-                                        </span>
-                                        <div className="progress-value">50%</div>
-                                    </div>
-                                </SProgress>
+                                <div className="d-flex col-5 justify-content-end">
+                                    <SProgress>
+                                        <div id="progreso" className="progress blue">
+                                            <span className="progress-left">
+                                                <span className="progress-bar"></span>
+                                            </span>
+                                            <span className="progress-right">
+                                                <span className="progress-bar"></span>
+                                            </span>
+                                            <div className="progress-value">50%</div>
+                                        </div>
+                                    </SProgress>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                );
+            })}
+            <Modal centered isOpen={viewAlert}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {profesores.map((l,i) => {
+                                if (set.has(l.area)) {
+                                    return ("");
+                                } else {
+                                    set.add(l.area);
+                                    return (<option key={i} value={l.area}>{l.area}</option>);
+                                }
+                            })}
+                        </Input>
+
+                        <Label for="exampleSelectMulti">Select Multiple</Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+
+
+                            {profesores.map((l) => {
+                                if (l.area === Area) {
+                                    return (<option value={l.docente}>{l.docente}</option>);
+                                } else {
+                                    return ("");
+                                }
+                            })}
+
+                        </Input>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Asignar</Button>
+                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal centered isOpen={viewAlertEliminar}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">¿Quieres eliminar a este docente tutor?</Label>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
         </div>
+
+
+
     )
 };
 
@@ -232,7 +355,7 @@ const Observaciones = () => {
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
                                     <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                                        <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
                             </div>
@@ -297,19 +420,18 @@ const Sdiv = styled.div`
 function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
-      let value = null;
-      value = await axios.get('../ideas.json').then(
-        response => {
-          const data = response.data;
-          return data;
-        }).catch(error => {
-          console.error(error);
-        });
-      setDatos(value)
-      console.log(value)
+        let value = null;
+        value = await axios.get('../ideas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
     };
     useEffect(() => {
-      getIdeas();
+        getIdeas();
     }, []);
     return (
         <Sdiv>

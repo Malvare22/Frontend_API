@@ -10,6 +10,7 @@ const Sidebar = () => {
 
 const SideBarStatic = () => {
   return (
+
     
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
     <Nav vertical className=' d-flex' style={{height :"100%"}}>
@@ -86,12 +87,12 @@ const SideBarStatic = () => {
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Evaluacion
+          Nueva idea
         </NavLink>
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Resultados
+          Gestionar
         </NavLink>
       </NavItem>
       </UncontrolledCollapse>

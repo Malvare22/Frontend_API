@@ -1,22 +1,47 @@
 [
     {
-        "id": "92",
-        "docente": "Juan Carlos Martínez López"        
+        "id": "34234",
+        "docente": "Juan Carlos Martínez López",    
+        "area": "agropecuaria"    
     },
     {
-        "id": "93",
-        "docente": "María Fernanda García Torres"   
+        "id": "56787",
+        "docente": "María Fernanda García Torres",
+        "area": "agropecuaria"  
     },
     {
-        "id": "53",
-        "docente": "Luis Antonio Rodríguez Herrera"  
+        "id": "6457",
+        "docente": "Luis Antonio Rodríguez Herrera",
+        "area": "comercial" 
     },
     {
-        "id": "775",
-        "docente": "Ana Sofía Morales Cruz"  
+        "id": "6454",
+        "docente": "Ana Sofía Morales Cruz"  ,
+        "area": "comercial" 
     },
     {
-        "id": "039",
-        "docente": "Carlos Alberto Pérez Sánchez"  
+        "id": "5345",
+        "docente": "Carlos Alberto Pérez Sánchez",
+        "area": "mineria"   
+    },
+    {
+        "id": "56787",
+        "docente": "Nalgas veloces García Torres",
+        "area": "mineria"    
+    },
+    {
+        "id": "6457",
+        "docente": "Motomami Rodríguez Herrera" ,
+        "area": "servicios"  
+    },
+    {
+        "id": "6454",
+        "docente": "Alhaimer Morales Cruz"  ,
+        "area": "servicios" 
+    },
+    {
+        "id": "5345",
+        "docente": "Roberto Alfonso Pérez Sánchez"  ,
+        "area": "industrial" 
     }
 ]
