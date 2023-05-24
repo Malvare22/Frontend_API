@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 
 const AgregarIdea = () => {
     return (<>
-
         <div className="container">
             <img src="https://live.staticflickr.com/65535/52923256419_f1155354b4_o.png" className='img-fluid mt-2' />
             <div className="container-fluid" style={{ width: "100%" }}>
