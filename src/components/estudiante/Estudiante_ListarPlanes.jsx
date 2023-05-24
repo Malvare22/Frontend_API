@@ -31,7 +31,7 @@ export default function Estudiante_ListarPlanes() {
     return (
         <>
             <div className="container">
-                <img src="https://live.staticflickr.com/65535/52918980445_72b8b17b22_o.png" className='img-fluid mt-2'/>
+                <img src="https://live.staticflickr.com/65535/52923103551_b041e3079c_o.png" className='img-fluid mt-2'/>
                 <div className="container-fluid" style={{ width: "100%" }}>
                     <div className="row">
                         <Sobreponer>

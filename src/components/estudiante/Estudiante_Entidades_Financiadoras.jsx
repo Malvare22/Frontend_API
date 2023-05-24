@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react'
 import Information from './Estudiante_Info_Entidad_Financiadora'
-import styled from "styled-components";
 
 export default function EntidadesFinanciadoras() {
     const [datos, setDatos] = useState([]);
@@ -25,7 +24,7 @@ export default function EntidadesFinanciadoras() {
 
     return (
         <div className="container">
-            <img src="https://live.staticflickr.com/65535/52918820704_f2c5797969_o.png" className='img-fluid mt-2' />
+            <img src="https://live.staticflickr.com/65535/52923106446_5eeaffda21_o.png" className='img-fluid mt-2' />
             <div className="row">
                 {datos.map((v, i) => {
                     return (<div key={i}>
