@@ -232,7 +232,7 @@ export default function Listar_Ideas() {
   useEffect(() => {
     getIdeas();
   }, []);
-  const handleFilter = (filters) => {
+  const handleFilter = async (filters) => {
     console.log(filters)
     console.log(filters.tutor)
     console.log(filters.estudiante)
@@ -240,7 +240,19 @@ export default function Listar_Ideas() {
     console.log(filters.estado)
     console.log(filters.fechaInicio)
     console.log(filters.fechaFin)
-    //ACA IRA LA SOLICITUD A BACK CON LOS PARAMETROS
+    try {
+      let value = null;
+      value = await axios.get('../ideasFiltradas.json').then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+      setFilteredData(value);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="container-fluid w-75">
