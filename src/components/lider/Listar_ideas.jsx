@@ -69,10 +69,10 @@ const Table = ({ data }) => {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th className='text-center' onClick={() => handleSort('Título')} scope="col-auto">Título</th>
-              <th className='text-center' onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-              <th className='text-center' onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>
-              <th className='text-center' onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
+              <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
+              <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
+              <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>
+              <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
               <th className='text-center' scope="col-auto">Acciones</th>
             </tr>
           </thead>
@@ -255,12 +255,12 @@ export default function Listar_Ideas() {
     try {
       let value = null;
       value = await axios.get('../ideasFiltradas.json').then(
-        response => {
-          const data = response.data;
-          return data;
-        }).catch(error => {
-          console.error(error);
-        });
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
       setFilteredData(value);
     } catch (error) {
       console.error(error);
