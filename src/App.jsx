@@ -31,6 +31,7 @@ import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudi
 import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
 import StorageTest from './components/lider/storage';
 import axios from 'axios';
+import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
@@ -57,6 +58,7 @@ const verifyStudent= ()=>{
 }
 
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -78,6 +80,7 @@ const router = createBrowserRouter(
           <Route path='VistaIdea' element={<VistaIdea></VistaIdea>} />
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
+          <Route path='Registar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='tester' element={<StorageTest></StorageTest>}/>

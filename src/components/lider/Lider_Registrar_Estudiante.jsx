@@ -1,10 +1,12 @@
 import styled from 'styled-components';
-import image from './../../assets/images/Pencil.png'
+import pencil from './../../assets/images/Pencil.png'
+import defaultImage from './../../assets/images/Users/02.png'
 import { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-
-
+import { createRef } from 'react';
+import { useRef } from 'react';
+import { Form } from 'react-bootstrap';
 
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
@@ -64,8 +66,8 @@ const useForm = (initialData, validar, initialErrors) => {
     return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
 
-export default function LiderEditarPerfilEstudiante() {
-    
+export default function RegistrarEstudiantePerfil() {
+
     return (
         <>
             <Content></Content>
@@ -76,7 +78,7 @@ export default function LiderEditarPerfilEstudiante() {
 const Content = () => {
 
     return (
-        
+
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
@@ -85,28 +87,24 @@ const Content = () => {
                 <div className='' id="info"> <Information></Information></div>
             </div>
         </SContent>
-    
+
     );
 };
 
 const Head = () => {
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
-            <img className='rounded-circle' src={image} style={{ height: "50px" }}></img>
+            <img className='rounded-circle' src={pencil} style={{ height: "50px" }}></img>
             <h5 className='text-white fw-bold'>Editar Perfil</h5>
         </div>
     );
 }
 
-
-const modalStyles = {
-    
-    
-}
-
 const Information = () => {
 
-    const user = JSON.parse(localStorage.getItem("info_estudiante"))
+    const user = {
+
+    }
 
     const initialErrors = {
         nombres: false,
@@ -129,39 +127,40 @@ const Information = () => {
             telefono_acudiente: false,
             correo: false,
         };
+
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/g;
-        if (number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
+        if (user.nombre_acudiente===undefined || number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
             errors.nombre_acudiente = true;
             fail = true;
         }
-        if (number_regex.test(user.apellidos) || user.apellidos.length > 50) {
+        if (user.apellidos===undefined || number_regex.test(user.apellidos) || user.apellidos.length > 50) {
             errors.apellidos = true;
             fail = true;
         }
-        if (number_regex.test(user.nombres) || user.nombres.length > 50) {
+        if (user.nombres===undefined || number_regex.test(user.nombres) || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
         }
-        if (!Date.parse(user.fecha_nacimiento)) { errors.fecha_nacimiento = true; }
+        if (user.fecha_nacimiento===undefined || !Date.parse(user.fecha_nacimiento)) { errors.fecha_nacimiento = true; }
         if (user.sexo != '0' && user.sexo != '1') {
             errors.sexo = true;
             fail = true;
         }
 
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length > 10) {
+        if (user.telefono_acudiente===undefined || isNaN(user.telefono_acudiente) || user.telefono_acudiente.length > 10) {
             errors.telefono_acudiente = true;
             fail = true;
         }
-        if (!email_regex.test(user.correo) || user.correo.length > 50) {
+        if (user.correo === undefined || !email_regex.test(user.correo) || user.correo.length > 50) {
             errors.correo = true;
             fail = true;
         }
         if (fail == false) return null;
         return errors;
     };
-    const updateProfile= ()=>{
+    const updateProfile = () => {
         //Aquí se hace la actualización de la info
         console.log("Info enviada")
     }
@@ -194,7 +193,7 @@ const Information = () => {
                                 Código:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {form.codigo}
+                                <input className='form-control' type='number'></input>
                             </div>
                         </div>
                         <div className='row'>
@@ -202,7 +201,20 @@ const Information = () => {
                                 Curso:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {form.curso}
+                            <Form.Select aria-label="Seleccione un curso">
+                            <option>Seleccione un curso</option>
+                            <option value="1">Primero</option>
+                            <option value="2">Segundo</option>
+                            <option value="3">Tercero</option>
+                            <option value="4">Cuarto</option>
+                            <option value="5">Quinto</option>
+                            <option value="6">Sexto</option>
+                            <option value="7">Séptimo</option>
+                            <option value="8">Octavo</option>
+                            <option value="9">Noveno</option>
+                            <option value="10">Décimo</option>
+                            <option value="11">Once</option>
+                            </Form.Select>
                             </div>
                         </div>
                         <div className='row'>
@@ -219,7 +231,7 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange} defaultValue={"0"}>
                                     <option value={"0"}>
                                         Masculino
                                     </option>
@@ -261,8 +273,8 @@ const Information = () => {
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Foto:
                             </div>
-                            <div className='col-sm-8 col-6'>
-                                <img src={form.foto} className='border border-2 border-dark rounded-circle ' style={{ height: "80px" }}></img>
+                            <div className='col-sm-8 col-6' id='div_img'>
+                                <ImageContainer></ImageContainer>
                             </div>
                         </div>
 
@@ -273,19 +285,114 @@ const Information = () => {
                     <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
-            <Modal isOpen={viewAlert} centered={true} style={modalStyles}>
+            <Modal isOpen={viewAlert} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                        <h6 id="texto" className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
+                    <h6 id="texto" className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{marginRight:"40px"}} onClick={updateProfile} >Aceptar</Button>
-                    <Button color="secondary" style={{marginLeft:"40px"}} onClick={toggleAlert}>Cancelar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={updateProfile} >Aceptar</Button>
+                    <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
         </div>
     );
 }
+
+const ImageContainer = () => {
+
+    const [file, setFile] = useState({"name":"Seleccione una imagen", "direction": ""})
+
+    const fileInput = useRef(null)
+
+    const handleButton = (e) =>{
+        e.preventDefault()
+        fileInput.current.click()
+    }
+
+    const handleInput = () =>{
+        if(fileInput.current.files[0]!=null){
+            const newFile = {name:fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0])}
+            setFile(newFile)
+            console.log(newFile)
+        }
+    }
+
+    const removeImage = ()=>{
+        setFile({"name":"Seleccione una imagen", "direction": ""});
+    }
+
+    return (
+        <SImageContainer>
+            <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" onClick={removeImage} style={{cursor: "pointer"}} width="40" height="40" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                    </svg>
+                </div>
+                <div>
+                    <img src={`${file.direction==""? defaultImage: file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
+                </div>
+            </div>
+            <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
+            <input type='file' className='d-none' onChange={handleInput} ref={fileInput}></input>
+                <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
+                    <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
+                    <h6>{file.name}</h6>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                        </svg>
+                    </div>
+                </button>
+
+            </div>
+        </SImageContainer>
+    );
+}
+
+const SImageContainer = styled.div.attrs({
+    className: 'row',
+})
+    `
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        
+        div>img{
+
+            aspect-ratio: 1 / 1;
+            object-fit: cover; 
+            margin: 20px;
+            min-height : 100px;
+            min-height : 100px;
+            max-width: 100px;
+            max-height: 100px;
+        }
+        button{
+            padding: 15px;
+            font-weight: bold;
+        }
+        button > div{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media screen and (max-width: 576px){
+            div>img{
+            margin: 0px;
+            max-width: 100px;
+            max-height: 100px;
+        }
+            #div_02{
+                margin-top: 20px;
+            }
+        }
+
+        h6{
+            word-break: break-all;
+        }
+    `;
 
 const SContent = styled.div`
     #d_head{
@@ -347,6 +454,7 @@ const SContent = styled.div`
 `;
 
 const SInfo = styled.div`
+
 .row{
     margin: 3%;
     display: flex;

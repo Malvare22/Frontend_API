@@ -38,7 +38,7 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={image}></img>
+                <img className='rounded-circle' src={props.usuario.foto}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
                         <p className='text-white'>{props.usuario.nombres}</p>
