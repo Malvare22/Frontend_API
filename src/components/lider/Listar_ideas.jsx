@@ -62,7 +62,7 @@ const Table = ({ data }) => {
   const navigate = useNavigate();
   const toggleA = () => {
     navigate('/Lider/VistaIdea');
-};
+  };
   return (
     <Sdiv>
       <div className='w-auto'>
@@ -166,6 +166,18 @@ const Filters = ({ onFilter }) => {
       fechaInicio,
       fechaFin
     };
+    if ((fechaInicio && !fechaFin) || (!fechaInicio && fechaFin)) {
+      alert("Se requiere tanto la fecha de inicio como la fecha de fin para filtrar.");
+      return;
+    }
+    if (fechaInicio && fechaFin) {
+      const dateInicio = new Date(fechaInicio);
+      const dateFin = new Date(fechaFin);
+      if (dateInicio > dateFin) {
+        alert("La fecha de inicio no puede ser mayor que la fecha de fin.");
+        return;
+      }
+    }
     onFilter(filters);
   };
 
@@ -243,12 +255,12 @@ export default function Listar_Ideas() {
     try {
       let value = null;
       value = await axios.get('../ideasFiltradas.json').then(
-      response => {
-        const data = response.data;
-        return data;
-      }).catch(error => {
-        console.error(error);
-      });
+        response => {
+          const data = response.data;
+          return data;
+        }).catch(error => {
+          console.error(error);
+        });
       setFilteredData(value);
     } catch (error) {
       console.error(error);

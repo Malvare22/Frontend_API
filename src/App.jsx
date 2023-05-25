@@ -20,6 +20,7 @@ import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPla
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
 import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -56,6 +57,7 @@ const Enrutado = () => {
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
+            <Route path='/Lider/Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
             <Route path='/Lider/VistaIdea' element={<LiderVistaIdea></LiderVistaIdea>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
