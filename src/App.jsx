@@ -20,6 +20,7 @@ import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPla
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
 import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
