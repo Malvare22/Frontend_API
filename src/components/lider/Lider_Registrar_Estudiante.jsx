@@ -10,6 +10,8 @@ import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
 
+
+//Almacenamiento de datos, errores y mostrar alerta de envio
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
     const [form, setForm] = useState(initialData);
@@ -28,56 +30,33 @@ const useForm = (initialData, validar, initialErrors) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
-        const state = await validar(form);
-        //Si hubo error:
-        if (state != null) {
-            setErrors(state);
-        }
-        else {
-            const tmp = {
-                nombres: false,
-                apellidos: false,
-                fecha_nacimiento: false,
-                sexo: false,
-                nombre_acudiente: false,
-                telefono_acudiente: false,
-                correo: false,
-            };
-            setErrors(tmp);
-            toggleAlert();
-            console.log("Todo bien");
-        }
+        toggleAlert()
+        // const state = await validar(form);
+        // //Si hubo error:
+        // if (state != null) {
+        //     setErrors(state);
+        // }
+        // else {
+        //     const tmp = {
+        //         nombres: false,
+        //         apellidos: false,
+        //         fecha_nacimiento: false,
+        //         sexo: false,
+        //         nombre_acudiente: false,
+        //         telefono_acudiente: false,
+        //         correo: false,
+        //     };
+        //     setErrors(tmp);
+        //     toggleAlert();
+        //     console.log("Todo bien");
+        // }
     };
-    //No usado de momento
-    const sendInfo = (state) => {
-
-        const type = state.tipo_usuario
-        switch (type) {
-            case 'administrativo':
-                break;
-            case 'lider':
-                break;
-            case 'docente':
-                break;
-            case 'estudiante':
-                break;
-        }
-        console.log("Se inició " + state);
-    }
-
     return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
 
+
+//Componente general
 export default function RegistrarEstudiantePerfil() {
-
-    return (
-        <>
-            <Content></Content>
-        </>
-    );
-};
-
-const Content = () => {
 
     return (
 
@@ -93,12 +72,14 @@ const Content = () => {
     );
 };
 
+
+//Componenete Head
 const Head = () => {
-    
+
     const icon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" className="bi bi-person-plus-fill" viewBox="0 0 16 16" style={{ height: "50px" }}>
-    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-    <path fillRule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-  </svg>;
+        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+        <path fillRule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+    </svg>;
 
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
@@ -108,12 +89,14 @@ const Head = () => {
     );
 }
 
+//Listado de Cursos para combobox (útil para carga y validación de dato curso)
 const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
+//Contenido del formulario
 const Information = () => {
 
     const [codesForStudents, setCodesForStudents] = useState([]);
-    
+
     const getCodesForStudents = async () => {
         let codes = [];
         await axios.get('../../../anotherStudent.json').then(
@@ -138,7 +121,7 @@ const Information = () => {
         "nombres": "",
         "curso": "",
         "codigo": "",
-        "sexo": "",
+        "sexo": "0",
         "fecha_nacimiento": "",
         "nombre_acudiente": "",
         "telefono_acudiente": "",
@@ -181,13 +164,14 @@ const Information = () => {
         };
 
         let fail = false;
-        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        const number_regex = /[0-9]/g;
-        if (user.nombres.trim()=='' || number_regex.test(user.nombres) || user.nombres.length > 50) {
+        let email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        let number_regex = /[0-9]/;
+
+        if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
         }
-        if (user.apellidos.trim()=='' || number_regex.test(user.apellidos) || user.apellidos.length > 50) {
+        if (user.apellidos.trim() == '' || number_regex.exec(user.apellidos) != null || user.apellidos.length > 50) {
             errors.apellidos = true;
             fail = true;
         }
@@ -196,8 +180,7 @@ const Information = () => {
             errors.codigo = true;
             fail = true;
         }
-
-        if (isNaN(user.curso) || !courses.includes(user.curso)) {
+        if (isNaN(user.curso) || courses.length < user.curso) {
             errors.curso = true;
             fail = true;
         }
@@ -211,12 +194,12 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.nombre_acudiente.trim()=='' || number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
+        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
             errors.nombre_acudiente = true;
             fail = true;
         }
 
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length!=10) {
+        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
             errors.telefono_acudiente = true;
             fail = true;
         }
@@ -229,11 +212,29 @@ const Information = () => {
         if (fail == false) return null;
         return errors;
     };
-    const updateProfile = () => {
-        //Aquí se hace la actualización de la info
-        console.log("Info enviada")
-    }
+
+    const defaulFile = { "name": "Seleccione una imagen", "direction": defaultImage }
+    const [file, setFile] = useState(defaulFile)
+
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
+
+    const updateProfile = async () => {
+        
+        try {
+            const response = await fetch(file.direction);
+            const blob = await response.blob(); 
+            console.log(blob)
+            const formData = new FormData();
+            formData.append('archivo', blob, 'nombre_archivo.png');
+        
+            
+        
+            console.log('Archivo enviado correctamente.');
+        } catch (error) {
+            console.error('Error al enviar el archivo:', error);
+        }
+          
+    }
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -244,7 +245,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} maxlength="50"/>
+                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -253,7 +254,7 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50"/>
+                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -310,7 +311,7 @@ const Information = () => {
                                 Nombre del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50"/>
+                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
                             </div>
                         </div>
@@ -319,7 +320,7 @@ const Information = () => {
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange}/>
+                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -337,7 +338,7 @@ const Information = () => {
                                 Foto:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer></ImageContainer>
+                                <ImageContainer setFile={setFile} file={file} defaulFile={defaulFile}></ImageContainer>
                             </div>
                         </div>
 
@@ -362,9 +363,9 @@ const Information = () => {
     );
 }
 
-const ImageContainer = () => {
 
-    const [file, setFile] = useState({ "name": "Seleccione una imagen", "direction": "" })
+//Componente de carga de imagen
+const ImageContainer = (props) => {
 
     const fileInput = useRef(null)
 
@@ -376,13 +377,13 @@ const ImageContainer = () => {
     const handleInput = () => {
         if (fileInput.current.files[0] != null) {
             const newFile = { name: fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0]) }
-            setFile(newFile)
-            console.log(newFile)
+            props.setFile(newFile)
         }
     }
 
     const removeImage = () => {
-        setFile({ "name": "Seleccione una imagen", "direction": "" });
+        props.setFile(props.defaulFile);
+        fileInput.current.value = "";
     }
 
     return (
@@ -394,14 +395,14 @@ const ImageContainer = () => {
                     </svg>
                 </div>
                 <div>
-                    <img src={`${file.direction == "" ? defaultImage : file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
+                    <img src={`${props.file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
                 </div>
             </div>
             <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
                 <input type='file' className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                        <h6>{file.name}</h6>
+                        <h6>{props.file.name}</h6>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>
