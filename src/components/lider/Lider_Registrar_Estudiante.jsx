@@ -7,6 +7,8 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { createRef } from 'react';
 import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
@@ -92,71 +94,138 @@ const Content = () => {
 };
 
 const Head = () => {
+    
+    const icon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" className="bi bi-person-plus-fill" viewBox="0 0 16 16" style={{ height: "50px" }}>
+    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+    <path fillRule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+  </svg>;
+
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
-            <img className='rounded-circle' src={pencil} style={{ height: "50px" }}></img>
-            <h5 className='text-white fw-bold'>Editar Perfil</h5>
+            {icon}
+            <h5 className='text-white fw-bold'>Agregar estudiante</h5>
         </div>
     );
 }
 
+const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
+
 const Information = () => {
 
-    const user = {
+    const [codesForStudents, setCodesForStudents] = useState([]);
+    
+    const getCodesForStudents = async () => {
+        let codes = [];
+        await axios.get('../../../anotherStudent.json').then(
+            response => {
+                const data = response.data;
+                data.map((d) => {
+                    codes.push(d.codigo)
+                })
+            }).catch(error => { console.error(error); })
+        setCodesForStudents(codes);
+    }
 
+    useEffect(() => {
+        getCodesForStudents()
+    }, [])
+
+    const user = {
+        "codigo": "",
+        "correo": "",
+        "contrasenia": "",
+        "apellidos": "",
+        "nombres": "",
+        "curso": "",
+        "codigo": "",
+        "sexo": "",
+        "fecha_nacimiento": "",
+        "nombre_acudiente": "",
+        "telefono_acudiente": "",
+        "foto": "",
+        "tipo_usuario": "",
     }
 
     const initialErrors = {
-        nombres: false,
-        apellidos: false,
-        fecha_nacimiento: false,
-        sexo: false,
-        nombre_acudiente: false,
-        telefono_acudiente: false,
-        correo: false,
+        "codigo": false,
+        "correo": false,
+        "contrasenia": false,
+        "apellidos": false,
+        "nombres": false,
+        "curso": false,
+        "codigo": false,
+        "sexo": false,
+        "fecha_nacimiento": false,
+        "nombre_acudiente": false,
+        "telefono_acudiente": false,
+        "foto": false,
+        "tipo_usuario": false,
     };
 
 
     const validar = (user) => {
         let errors = {
-            nombres: false,
-            apellidos: false,
-            fecha_nacimiento: false,
-            sexo: false,
-            nombre_acudiente: false,
-            telefono_acudiente: false,
-            correo: false,
+            "codigo": false,
+            "correo": false,
+            "contrasenia": false,
+            "apellidos": false,
+            "nombres": false,
+            "curso": false,
+            "codigo": false,
+            "sexo": false,
+            "fecha_nacimiento": false,
+            "nombre_acudiente": false,
+            "telefono_acudiente": false,
+            "foto": false,
+            "tipo_usuario": false,
         };
 
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/g;
-        if (user.nombre_acudiente===undefined || number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
-            fail = true;
-        }
-        if (user.apellidos===undefined || number_regex.test(user.apellidos) || user.apellidos.length > 50) {
-            errors.apellidos = true;
-            fail = true;
-        }
-        if (user.nombres===undefined || number_regex.test(user.nombres) || user.nombres.length > 50) {
+        if (user.nombres.trim()=='' || number_regex.test(user.nombres) || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
         }
-        if (user.fecha_nacimiento===undefined || !Date.parse(user.fecha_nacimiento)) { errors.fecha_nacimiento = true; }
+        if (user.apellidos.trim()=='' || number_regex.test(user.apellidos) || user.apellidos.length > 50) {
+            errors.apellidos = true;
+            fail = true;
+        }
+
+        if (isNaN(user.codigo) || codesForStudents.includes(user.codigo)) {
+            errors.codigo = true;
+            fail = true;
+        }
+
+        if (isNaN(user.curso) || !courses.includes(user.curso)) {
+            errors.curso = true;
+            fail = true;
+        }
+
+        if (!Date.parse(user.fecha_nacimiento)) {
+            errors.fecha_nacimiento = true;
+        }
+
         if (user.sexo != '0' && user.sexo != '1') {
             errors.sexo = true;
             fail = true;
         }
 
-        if (user.telefono_acudiente===undefined || isNaN(user.telefono_acudiente) || user.telefono_acudiente.length > 10) {
+        if (user.nombre_acudiente.trim()=='' || number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
+            errors.nombre_acudiente = true;
+            fail = true;
+        }
+
+        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length!=10) {
             errors.telefono_acudiente = true;
             fail = true;
         }
-        if (user.correo === undefined || !email_regex.test(user.correo) || user.correo.length > 50) {
+
+        if (!email_regex.test(user.correo) || user.correo.length > 50) {
             errors.correo = true;
             fail = true;
         }
+
         if (fail == false) return null;
         return errors;
     };
@@ -175,7 +244,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} maxlength="50"/>
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -184,7 +253,7 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50"/>
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -193,7 +262,8 @@ const Information = () => {
                                 Código:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input className='form-control' type='number'></input>
+                                <input type="number" className={`form-control ${errors.codigo ? "is-invalid" : ""}`} name='codigo' value={form.codigo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite valores númericos, los códigos deben no encontrarse en uso</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -201,20 +271,13 @@ const Information = () => {
                                 Curso:
                             </div>
                             <div className='col-sm-8 col-6'>
-                            <Form.Select aria-label="Seleccione un curso">
-                            <option>Seleccione un curso</option>
-                            <option value="1">Primero</option>
-                            <option value="2">Segundo</option>
-                            <option value="3">Tercero</option>
-                            <option value="4">Cuarto</option>
-                            <option value="5">Quinto</option>
-                            <option value="6">Sexto</option>
-                            <option value="7">Séptimo</option>
-                            <option value="8">Octavo</option>
-                            <option value="9">Noveno</option>
-                            <option value="10">Décimo</option>
-                            <option value="11">Once</option>
-                            </Form.Select>
+                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
+                                    <option>Seleccione un curso</option>
+                                    {courses.map((c, i) => {
+                                        return <option value={i + 1}>{c}</option>
+                                    })}
+                                </Form.Select>
+                                <div className="invalid-feedback">Este campo solo cursos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -247,7 +310,7 @@ const Information = () => {
                                 Nombre del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50"/>
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
                             </div>
                         </div>
@@ -256,8 +319,8 @@ const Information = () => {
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite teléfonos válidos</div>
+                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange}/>
+                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -301,46 +364,46 @@ const Information = () => {
 
 const ImageContainer = () => {
 
-    const [file, setFile] = useState({"name":"Seleccione una imagen", "direction": ""})
+    const [file, setFile] = useState({ "name": "Seleccione una imagen", "direction": "" })
 
     const fileInput = useRef(null)
 
-    const handleButton = (e) =>{
+    const handleButton = (e) => {
         e.preventDefault()
         fileInput.current.click()
     }
 
-    const handleInput = () =>{
-        if(fileInput.current.files[0]!=null){
-            const newFile = {name:fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0])}
+    const handleInput = () => {
+        if (fileInput.current.files[0] != null) {
+            const newFile = { name: fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0]) }
             setFile(newFile)
             console.log(newFile)
         }
     }
 
-    const removeImage = ()=>{
-        setFile({"name":"Seleccione una imagen", "direction": ""});
+    const removeImage = () => {
+        setFile({ "name": "Seleccione una imagen", "direction": "" });
     }
 
     return (
         <SImageContainer>
             <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" onClick={removeImage} style={{cursor: "pointer"}} width="40" height="40" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" onClick={removeImage} style={{ cursor: "pointer" }} width="40" height="40" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
                     </svg>
                 </div>
                 <div>
-                    <img src={`${file.direction==""? defaultImage: file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
+                    <img src={`${file.direction == "" ? defaultImage : file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
                 </div>
             </div>
             <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
-            <input type='file' className='d-none' onChange={handleInput} ref={fileInput}></input>
+                <input type='file' className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                    <h6>{file.name}</h6>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+                        <h6>{file.name}</h6>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
+                            <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>
                     </div>
                 </button>

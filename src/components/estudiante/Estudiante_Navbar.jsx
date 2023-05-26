@@ -5,11 +5,25 @@ import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png
 import '../../css/Sidebar.css';
 
 const Sidebar = () => {
+    
   
   return (<><div id='sbsid01'><SideBarStatic></SideBarStatic></div><div id='sbsid02'><SideBarResponsive></SideBarResponsive></div></>);
 };
 
-const SideBarStatic = () => {
+const SideBarStatic = (props) => {
+
+  const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+</svg>);
+
+  const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+</svg>);
+
+  const[arrow01, setArrow01] = useState(false);
+  const[arrow02, setArrow02] = useState(false);
+  const[arrow03, setArrow03] = useState(false);
+
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
    
@@ -36,7 +50,7 @@ const SideBarStatic = () => {
       </NavLink>
       </NavItem>
 
-      <NavItem>
+      <NavItem onClick={()=>setArrow01(!arrow01)}>
         <NavLink id="Habilidades" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -45,7 +59,7 @@ const SideBarStatic = () => {
               <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
               </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Habilidades de Emprendimiento</Col>
+            <Col xs="9" className="d-flex text-white justify-content-between align-items-center">Habilidades de Emprendimiento{arrow01? arrowDown: arrowUp}</Col>
           </Row>        
         </NavLink>
       </NavItem>
@@ -66,7 +80,7 @@ const SideBarStatic = () => {
       </UncontrolledCollapse>
 
       
-      <NavItem>
+      <NavItem onClick={()=>setArrow02(!arrow02)}>
         <NavLink id="idea" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -74,7 +88,7 @@ const SideBarStatic = () => {
             <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Ideas de Negocio</Col>
+            <Col xs="9" className="d-flex text-white justify-content-between align-items-center">Ideas de Negocio{arrow02? arrowDown: arrowUp}</Col>
           </Row>        
         </NavLink>
       </NavItem>
@@ -96,7 +110,7 @@ const SideBarStatic = () => {
         </NavLink>
       </NavItem>
       </UncontrolledCollapse>
-      <NavItem>
+      <NavItem onClick={()=>setArrow03(!arrow03)}>
         <NavLink id="plan" href="#">
         <Row className='d-flex align-content-center align-items-center justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -105,8 +119,8 @@ const SideBarStatic = () => {
             <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Planes de Negocio</Col>
-          </Row>
+            <Col xs="9" className="d-flex text-white justify-content-between align-items-center">Planes de Negocio {arrow03? arrowDown: arrowUp}</Col>
+            </Row>
         </NavLink>
       </NavItem>
 

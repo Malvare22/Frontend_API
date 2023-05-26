@@ -1,12 +1,11 @@
 [
     {
-        "id": "1",
         "correo": "example@student.com",
         "contrasenia": "123",
         "apellidos": "Ramirez",
         "nombres": "Jorge",
         "curso": "Septimo",
-        "codigo": "112018",
+        "codigo": "1",
         "sexo": "0",
         "fecha_nacimiento": "2001-04-20",
         "nombre_acudiente": "Luis Sanchez",
@@ -16,13 +15,12 @@
         "estado": "1"
     },
     {
-        "id": "2",
         "correo": "example@student.com",
         "contrasenia": "123",
         "apellidos": "Sanchez",
         "nombres": "Valeriana",
         "curso": "Septimo",
-        "codigo": "234",
+        "codigo": "2",
         "sexo": "1",
         "fecha_nacimiento": "2001-12-20",
         "nombre_acudiente": "Blas Sanchez",
@@ -32,13 +30,12 @@
         "estado": "1"
     },
     {
-        "id": "3",
         "correo": "ratamandril@student.com",
         "contrasenia": "123",
         "apellidos": "Sanjapones",
         "nombres": "Pipe",
         "curso": "Noveno",
-        "codigo": "234",
+        "codigo": "3",
         "sexo": "1",
         "fecha_nacimiento": "2001-12-20",
         "nombre_acudiente": "Blas Sanchez",
