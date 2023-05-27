@@ -111,13 +111,12 @@ const Information = () => {
         contrasenia: "123",
         apellidos: "Ramirez",
         nombres: "Jorge",
-        curso: "Septimo",
-        codigo: "112018",
+        curso: "Séptimo",
         sexo: "0",
         fecha_nacimiento: '2001-04-20',
         nombre_acudiente: "Luis Sanchez",
         telefono_acudiente: "305484564",
-        foto: "./images/01.png",
+        foto: "/images/01.png",
         tipo_usuario: "estudiante",
         estado: "1"
     };
@@ -145,29 +144,33 @@ const Information = () => {
         };
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        const number_regex = /[0-9]/g;
-        if (number_regex.test(user.nombre_acudiente) || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
-            fail = true;
-        }
-        if (number_regex.test(user.apellidos) || user.apellidos.length > 50) {
-            errors.apellidos = true;
-            fail = true;
-        }
-        if (number_regex.test(user.nombres) || user.nombres.length > 50) {
+        const number_regex = /[0-9]/;
+        if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
         }
-        if (!Date.parse(user.fecha_nacimiento)) { errors.fecha_nacimiento = true; }
+        if (user.apellidos.trim() == '' || number_regex.exec(user.apellidos) != null || user.apellidos.length > 50) {
+            errors.apellidos = true;
+            fail = true;
+        }
+        if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
+            errors.fecha_nacimiento = true;
+            fail = true;
+        }
         if (user.sexo != '0' && user.sexo != '1') {
             errors.sexo = true;
             fail = true;
         }
+        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
+            errors.nombre_acudiente = true;
+            fail = true;
+        }
 
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length > 10) {
+        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
             errors.telefono_acudiente = true;
             fail = true;
         }
+
         if (!email_regex.test(user.correo) || user.correo.length > 50) {
             errors.correo = true;
             fail = true;
@@ -180,6 +183,21 @@ const Information = () => {
         console.log("Info enviada")
     }
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
+    
+    const getPresentDate =()=>{
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month; // Agrega un cero al mes si es menor a 10
+        }
+        let day = today.getDate();
+        if (day < 10) {
+            day = '0' + day; // Agrega un cero al día si es menor a 10
+        }
+        return `${year}-${month}-${day}`;  
+    }
+    
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -205,14 +223,6 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Código:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                {form.codigo}
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Curso:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -224,7 +234,7 @@ const Information = () => {
                                 Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="date" className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
                                 <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>

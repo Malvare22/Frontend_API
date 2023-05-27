@@ -12,8 +12,7 @@ const usuario = {
     contrasenia: "123",
     apellidos: "Ramirez",
     nombres: "Jorge",
-    curso: "Septimo",
-    codigo: "112018",
+    curso: "Séptimo",
     sexo: "0",
     fecha_nacimiento: '2001-04-20',
     nombre_acudiente: "Luis Sanchez",
@@ -40,6 +39,12 @@ const Profile = () => {
 }
 
 const Information = () => {
+    const edad=()=>{
+        const today = new Date()
+        const birth = Date.parse(usuario.fecha_nacimiento);
+        const ans = new Date(today-birth)
+        return (ans.getUTCFullYear()-1970)
+    }
     return (
         <Sdiv02>
             <div>
@@ -76,15 +81,7 @@ const Information = () => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.fecha_nacimiento}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Código:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                    {usuario.codigo}
+                        {edad()}
                     </div>
                 </div>
                 <div className='row'>
@@ -92,7 +89,7 @@ const Information = () => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.sexo}
+                    {usuario.sexo=='0'? "Masculino":"Femenino"}
                     </div>
                 </div>
                 <div className='row'>
@@ -201,6 +198,10 @@ const Sdiv01 = styled.div.attrs({
 `;
 
 const Sdiv02 = styled.div`
+    .row{
+        display: flex;
+        align-items: center;
+    }
     background-color: #CECECE;
     >div{
         padding: 4%;
