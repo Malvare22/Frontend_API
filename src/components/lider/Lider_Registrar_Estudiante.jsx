@@ -95,32 +95,12 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const [codesForStudents, setCodesForStudents] = useState([]);
-
-    const getCodesForStudents = async () => {
-        let codes = [];
-        await axios.get('../../../anotherStudent.json').then(
-            response => {
-                const data = response.data;
-                data.map((d) => {
-                    codes.push(d.codigo)
-                })
-            }).catch(error => { console.error(error); })
-        setCodesForStudents(codes);
-    }
-
-    useEffect(() => {
-        getCodesForStudents()
-    }, [])
-
     const user = {
-        "codigo": "",
         "correo": "",
         "contrasenia": "",
         "apellidos": "",
         "nombres": "",
         "curso": "",
-        "codigo": "",
         "sexo": "0",
         "fecha_nacimiento": "",
         "nombre_acudiente": "",
@@ -130,13 +110,11 @@ const Information = () => {
     }
 
     const initialErrors = {
-        "codigo": false,
         "correo": false,
         "contrasenia": false,
         "apellidos": false,
         "nombres": false,
         "curso": false,
-        "codigo": false,
         "sexo": false,
         "fecha_nacimiento": false,
         "nombre_acudiente": false,
@@ -148,13 +126,11 @@ const Information = () => {
 
     const validar = (user) => {
         let errors = {
-            "codigo": false,
             "correo": false,
             "contrasenia": false,
             "apellidos": false,
             "nombres": false,
             "curso": false,
-            "codigo": false,
             "sexo": false,
             "fecha_nacimiento": false,
             "nombre_acudiente": false,
@@ -176,10 +152,6 @@ const Information = () => {
             fail = true;
         }
 
-        if (isNaN(user.codigo) || codesForStudents.includes(user.codigo)) {
-            errors.codigo = true;
-            fail = true;
-        }
         if (isNaN(user.curso) || courses.length < user.curso) {
             errors.curso = true;
             fail = true;
@@ -218,6 +190,8 @@ const Information = () => {
 
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
 
+
+    //Método para cargar la información
     const updateProfile = async () => {
         
         try {
@@ -256,15 +230,6 @@ const Information = () => {
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Código:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.codigo ? "is-invalid" : ""}`} name='codigo' value={form.codigo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite valores númericos, los códigos deben no encontrarse en uso</div>
                             </div>
                         </div>
                         <div className='row'>
