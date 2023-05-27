@@ -42,7 +42,7 @@ const searchStudent= async()=> {
           const data = response.data;
           let temp = null;
           data.map((d) => {
-              if (d.id == searchValue) temp = d;
+              if (d.codigo == searchValue) temp = d;
           })
           return temp;
       }).catch(error => { console.error(error); })

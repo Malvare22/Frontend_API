@@ -322,7 +322,7 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"../Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 

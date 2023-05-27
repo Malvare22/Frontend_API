@@ -14,7 +14,6 @@ export default function LiderVerPerfilEstudiante() {
 const VistaGeneral = () => {
 
     const usuario = JSON.parse(localStorage.getItem("info_estudiante"))    
-    console.log(usuario)
 
     return (
         <div className='flex-grow-1'>
@@ -51,6 +50,12 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
+    const edad=()=>{
+        const today = new Date()
+        const birth = Date.parse(props.usuario.fecha_nacimiento);
+        const ans = new Date(today-birth)
+        return (ans.getUTCFullYear()-1970)
+    }
     return (
         <Sdiv02>
             <div>
@@ -87,15 +92,7 @@ const Information = (props) => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.fecha_nacimiento}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Código:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.codigo}
+                        {edad()}
                     </div>
                 </div>
                 <div className='row'>
@@ -103,7 +100,7 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo}
+                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
                     </div>
                 </div>
                 <div className='row'>
