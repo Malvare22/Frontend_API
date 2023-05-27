@@ -155,14 +155,13 @@ const Information = () => {
             errors.apellidos = true;
             fail = true;
         }
-
-        if (isNaN(user.curso) || courses.length < user.curso || user.curso<=0) {
+        if (user.curso==0 || !courses.includes(user.curso)) {
             errors.curso = true;
             fail = true;
         }
-
-        if (!Date.parse(user.fecha_nacimiento)) {
+        if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
+            fail = true;
         }
 
         if (user.sexo != '0' && user.sexo != '1') {
@@ -198,8 +197,19 @@ const Information = () => {
     const [file, setFile] = useState(defaulFile)
 
     const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
-
-
+    const getPresentDate =()=>{
+        const today = new Date();
+        const year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month; // Agrega un cero al mes si es menor a 10
+        }
+        let day = today.getDate();
+        if (day < 10) {
+            day = '0' + day; // Agrega un cero al día si es menor a 10
+        }
+        return `${year}-${month}-${day}`;  
+    }
     //Método para cargar la información
     const updateProfile = async () => {
 
@@ -246,10 +256,10 @@ const Information = () => {
                                 Curso:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
+                            <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
                                     <option value={0}>Seleccione un curso</option>
-                                    {courses.map((c, i) => {
-                                        return <option value={i + 1}>{c}</option>
+                                    {courses.map((c) => {
+                                        return <option value={c}>{c}</option>
                                     })}
                                 </Form.Select>
                                 <div className="invalid-feedback">Solo se admiten cursos válidos</div>
@@ -260,7 +270,7 @@ const Information = () => {
                                 Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="date" className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
                                 <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
@@ -313,7 +323,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.contrasenia ? "is-invalid" : ""}`} name='contrasenia' value={form.contrasenia} onChange={handleChange} />
-                                <div className="invalid-feedback">La contraseña debe tener una longitud mínima de 8 carácteres y no pueden poseer espacios en blanco.</div>
+                                <div className="invalid-feedback">La contraseña debe tener una longitud mínima de 8 carácteres y no puede poseer espacios en blanco.</div>
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
@@ -330,7 +340,7 @@ const Information = () => {
                 </div>
                 <div id='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"/Estudiante/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"/Lider/Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
             <Modal isOpen={viewAlert} centered={true}>
