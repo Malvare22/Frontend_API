@@ -383,7 +383,7 @@ const ImageContainer = (props) => {
                 </div>
             </div>
             <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
-                <input type='file' className='d-none' onChange={handleInput} ref={fileInput}></input>
+                <input type='file' accept="image/png, image/jpeg" className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
                         <h6>{props.file.name}</h6>
