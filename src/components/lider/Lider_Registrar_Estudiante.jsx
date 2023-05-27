@@ -30,26 +30,26 @@ const useForm = (initialData, validar, initialErrors) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
-        toggleAlert()
-        // const state = await validar(form);
-        // //Si hubo error:
-        // if (state != null) {
-        //     setErrors(state);
-        // }
-        // else {
-        //     const tmp = {
-        //         nombres: false,
-        //         apellidos: false,
-        //         fecha_nacimiento: false,
-        //         sexo: false,
-        //         nombre_acudiente: false,
-        //         telefono_acudiente: false,
-        //         correo: false,
-        //     };
-        //     setErrors(tmp);
-        //     toggleAlert();
-        //     console.log("Todo bien");
-        // }
+        //toggleAlert()
+        const state = await validar(form);
+        //Si hubo error:
+        if (state != null) {
+            setErrors(state);
+        }
+        else {
+            const tmp = {
+                nombres: false,
+                apellidos: false,
+                fecha_nacimiento: false,
+                sexo: false,
+                nombre_acudiente: false,
+                telefono_acudiente: false,
+                correo: false,
+            };
+            setErrors(tmp);
+            toggleAlert();
+            console.log("Todo bien");
+        }
     };
     return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
 };
@@ -107,6 +107,7 @@ const Information = () => {
         "telefono_acudiente": "",
         "foto": "",
         "tipo_usuario": "",
+        "contrasenia": ""
     }
 
     const initialErrors = {
@@ -121,6 +122,7 @@ const Information = () => {
         "telefono_acudiente": false,
         "foto": false,
         "tipo_usuario": false,
+        "contrasenia": false
     };
 
 
@@ -137,12 +139,14 @@ const Information = () => {
             "telefono_acudiente": false,
             "foto": false,
             "tipo_usuario": false,
+            "contrasenia": false
         };
 
         let fail = false;
-        let email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        let number_regex = /[0-9]/;
-
+        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const number_regex = /[0-9]/;
+        const espacios = /\s/;
+        console.log(user)
         if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
@@ -152,7 +156,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (isNaN(user.curso) || courses.length < user.curso) {
+        if (isNaN(user.curso) || courses.length < user.curso || user.curso<=0) {
             errors.curso = true;
             fail = true;
         }
@@ -181,6 +185,11 @@ const Information = () => {
             fail = true;
         }
 
+        if (espacios.exec(user.contrasenia)!=null  || user.contrasenia.length < 8) {
+            errors.contrasenia = true;
+            fail = true;
+        }
+
         if (fail == false) return null;
         return errors;
     };
@@ -193,21 +202,21 @@ const Information = () => {
 
     //Método para cargar la información
     const updateProfile = async () => {
-        
+
         try {
             const response = await fetch(file.direction);
-            const blob = await response.blob(); 
+            const blob = await response.blob();
             console.log(blob)
             const formData = new FormData();
             formData.append('archivo', blob, 'nombre_archivo.png');
-        
-            
-        
+
+
+
             console.log('Archivo enviado correctamente.');
         } catch (error) {
             console.error('Error al enviar el archivo:', error);
         }
-          
+
     }
     return (
         <div >
@@ -238,12 +247,12 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option>Seleccione un curso</option>
+                                    <option value={0}>Seleccione un curso</option>
                                     {courses.map((c, i) => {
                                         return <option value={i + 1}>{c}</option>
                                     })}
                                 </Form.Select>
-                                <div className="invalid-feedback">Este campo solo cursos válidos</div>
+                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -298,6 +307,15 @@ const Information = () => {
                                 <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Contraseña:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.contrasenia ? "is-invalid" : ""}`} name='contrasenia' value={form.contrasenia} onChange={handleChange} />
+                                <div className="invalid-feedback">La contraseña debe tener una longitud mínima de 8 carácteres y no pueden poseer espacios en blanco.</div>
+                            </div>
+                        </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Foto:
@@ -306,6 +324,7 @@ const Information = () => {
                                 <ImageContainer setFile={setFile} file={file} defaulFile={defaulFile}></ImageContainer>
                             </div>
                         </div>
+
 
                     </SInfo>
                 </div>
