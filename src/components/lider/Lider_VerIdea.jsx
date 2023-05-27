@@ -42,6 +42,7 @@ const InfoGeneral = () => {
         setArea(a);
     }
 
+
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
@@ -53,6 +54,7 @@ const InfoGeneral = () => {
                 console.error(error);
             });
         setDatos(value)
+
     };
     useEffect(() => {
         getIdeas();
@@ -86,12 +88,14 @@ const InfoGeneral = () => {
 
     let set = new Set();
 
+
     return (
 
         <div className="container-fluid mt-4" style={{ width: "95%" }}>
             {datos.map((v, i) => {
 
                 return (<div key={i} className="row">
+
                     <div className="col-12">
                         <div>
                             <div className="rounded-5" style={{ background: "#1C3B57" }}>
@@ -119,6 +123,7 @@ const InfoGeneral = () => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -127,12 +132,14 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Tutor:</b></h6>
                                             </div>
                                             <div className="col-auto">
+
                                                 <p>{docente}</p>
                                             </div>
                                         </div>
 
                                         <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos[0].docente != null ? true : false} >Asignar</button>
                                         <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos[0].docente != null ? false : true}>Eliminar</button>
+
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -226,7 +233,6 @@ const InfoGeneral = () => {
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
-
         </div>
 
 
