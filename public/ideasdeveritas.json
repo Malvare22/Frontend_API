@@ -1,0 +1,50 @@
+
+    {
+        "id": 104,
+        "titulo": "ideaNegocio1",
+        "estado": "formulado",
+        "areaEnfoque": "minera",
+        "tutorInfo": [
+            [
+                "docenteTutor@gmail.com"
+            ],
+            [
+                "docenteTutor docenteTutor"
+            ]
+        ],
+        "fechaCreacion": [
+            2023,
+            5,
+            27
+        ],
+        "estudianteLiderInfo": [
+            [
+                "estudiante1@gmail.com"
+            ],
+            [
+                "estudiante1 1"
+            ]
+        ],
+        "docentesApoyoInfo": [
+            [
+                "docenteApoyo3@gmail.com",
+                "docenteApoyo1@gmail.com",
+                "docenteApoyo2@gmail.com"
+            ],
+            [
+                "docenteApoyo3 docenteApoyo3",
+                "docenteApoyo1 docenteApoyo1",
+                "docenteApoyo2 docenteApoyo2"
+            ]
+        ],
+        "estudiantesIntegrantesInfo": [
+            [
+                "estudiante4@gmail.com",
+                "estudiante3@gmail.com"
+            ],
+            [
+                "estudiante4 4",
+                "estudiante3 4"
+            ]
+        ]
+    }

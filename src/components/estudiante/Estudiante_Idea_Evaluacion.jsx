@@ -155,31 +155,15 @@ const Evaluaciones = (props) => {
 
                                                             colorin = "#555555"
                                                         }
-                                                        return <div key={i} className="row">
-                                                            <div className="col-12">
+                                                        return <div key={i} className="row mb-2">
+                                                            <div className="col-8">
                                                                 <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
                                                             </div>
-                                                            <div className="col-8">
-                                                                <p style={{ color: "#000" }}>{v.id.codigoDocente}</p>
-                                                            </div>
-                                                            <div className="col-2">
+                                                            <div className="col-4">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={colorin} className="bi bi-square-fill border rounded-2 border-2 border-dark" viewBox="0 0 16 16">
                                                                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z" />
                                                                 </svg>
                                                             </div>
-
-                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
-                                                              
-                                                                <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
-                                                                </svg></p>
-                                                            </div> : <div className="col-2">
-                                                                <p style={{ color: "#000" }}> <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#555555" className="bi bi-x-square-fill disabled" viewBox="0 0 16 16">
-                                                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
-                                                                </svg></p>
-                                                            </div> : ""
-
-                                                            }
                                                         </div>
 
                                                     } else {
@@ -196,17 +180,6 @@ const Evaluaciones = (props) => {
                                                     }
 
                                                 })}
-
-                                                {
-                                                    props.estado == "NA" ? docentes ? "" : <div className="row d-flex justify-content-end">
-                                                        <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
-                                                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-                                                                <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div> : ""
-                                                }
                                             </div>
                                             <div className="row mt-2">
                                                 <div className="col-auto">
@@ -274,7 +247,7 @@ const Evaluaciones = (props) => {
                     <Button color="danger">Eliminar</Button>
                     <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
                 </ModalFooter>
-            </Modal>
+            </Modal>    
         </main>
     )
 };
