@@ -96,7 +96,6 @@ export default function AgregarIdea() {
     )
 }
 
-
 const Sobreponer = styled.div`
 
 #titulo, #cuerpo{
