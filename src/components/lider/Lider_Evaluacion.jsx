@@ -148,6 +148,7 @@ const Evaluaciones = (props) => {
                                                 
 
                                                  { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
                                                     
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
