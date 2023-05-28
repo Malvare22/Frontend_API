@@ -147,7 +147,7 @@ const Evaluaciones = (props) => {
                                                 <p className="py-2 d-flex justify-content-center" style={{ color: "#000" }}><b>Comité de evaluación</b></p>
                                                 
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => 
+                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
                                                     
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
