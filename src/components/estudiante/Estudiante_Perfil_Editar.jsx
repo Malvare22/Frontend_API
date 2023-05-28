@@ -104,7 +104,7 @@ const modalStyles = {
 }
 
 const Information = () => {
-
+    
     const user = {
         id: "1",
         correo: "example@student.com",

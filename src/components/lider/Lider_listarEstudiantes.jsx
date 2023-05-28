@@ -22,9 +22,12 @@ const modalStyles = {
 
 
 // Componente de tabla
-const Table = ({ data }) => {
+const Table = (props) => {
     const [orderBy, setOrderBy] = useState({ column: 'Codigo', ascending: true });
-
+    const [orderData, setOrderData] = useState([])
+    // useEffect(()=>{
+    //     setOrderData()
+    // },[])
     const handleSort = (column) => {
         if (orderBy.column === column) {
           setOrderBy((prevState) => ({
@@ -37,7 +40,7 @@ const Table = ({ data }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Código') {
                 comparison = a.id.localeCompare(b.id, undefined, { numeric: true });
@@ -57,11 +60,12 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('');
+    const toggleA = (value) => {
+        localStorage.setItem('Estudiante', value)
+        navigate('/Lider/Perfil/Estudiante')
     };
     const toggleB = () => {
-        navigate('');
+        
     };
     return (
         <Sdiv>
@@ -76,14 +80,14 @@ const Table = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
+                        {sortData && sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.id}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante}</td>
                                 <td className='text-center align-middle col-auto'>{d.curso}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>{toggleA(d.id)}} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -159,6 +163,10 @@ export default function Listar_Estudiantes() {
             });
         setFilteredData(value)
     };
+    const navigate = useNavigate()
+    const addStudent=()=>{
+        navigate('/Lider/Registrar/Estudiante')
+    }
     useEffect(() => {
         getEstudiantes();
     }, []);
@@ -172,7 +180,7 @@ export default function Listar_Estudiantes() {
                         <Table data={filteredData}></Table>
                         <br></br>
                         <div className="d-flex justify-content-start">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }} onClick={addStudent}>
                                 <div className="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />

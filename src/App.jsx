@@ -30,7 +30,7 @@ import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Ed
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
 import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
-import PerfilLider from './components/lider/Lider_Perfil';
+import PerfilLider from './components/lider/Lider_Perfil_Ver';
 import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
 import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudiante';
 import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
@@ -38,6 +38,11 @@ import StorageTest from './components/lider/storage';
 import axios from 'axios';
 import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
 import Listar_Ideas from './components/lider/Listar_ideas';
+import LiderAdministrativoVer from './components/lider/Lider_Administrador_Ver';
+import LiderVerPerfilDocente from './components/lider/Lider_Docente_Ver';
+import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
+import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
+import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
@@ -88,9 +93,12 @@ const router = createBrowserRouter(
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-          <Route path='Registar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
+          <Route path='Registrar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
+          <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent}/>
+          <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent}/>
           <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
@@ -98,7 +106,8 @@ const router = createBrowserRouter(
           <Route path='tester' element={<StorageTest></StorageTest>}/>
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-          <Route path='Perfil'></Route>
+          <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
+          <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>

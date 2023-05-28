@@ -22,5 +22,5 @@ const Contenido = styled.div.attrs({
     className: 'flex-grow-1',
     
 })`
-
+    min-height:100vh;
 `;
