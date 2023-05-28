@@ -60,6 +60,25 @@ const InfoGeneral = () => {
         getIdeas();
     }, []);
 
+
+    const [datos1, setDatos1] = useState();
+    const getDatos1 = async () => {
+        let value = null;
+        value = await axios.get('../ideasdeveritas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+         setDatos1(value)
+
+    };
+    useEffect(() => {
+        getDatos1();
+    }, []);
+
+
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
@@ -77,24 +96,24 @@ const InfoGeneral = () => {
     }, []);
 
 
-    let docente = "";
-    try {
+     let docente = "";
+     try {
         if (datos[0].docente) {
-            docente = datos[0].docente;
+             docente = datos1.tutorInfo[1];
         }
-    } catch (error) {
+     } catch (error) {
 
-    }
+     }
 
     let set = new Set();
 
-
     return (
 
-        <div className="container-fluid mt-4" style={{ width: "95%" }}>
-            {datos.map((v, i) => {
 
-                return (<div key={i} className="row">
+        <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%"}}>
+            { datos1 && 
+                
+                <div className="row">
 
                     <div className="col-12">
                         <div>
@@ -109,7 +128,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Título:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{v.titulo}</p>
+                                                <p>{datos1.titulo}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2">
@@ -119,7 +138,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos[0].estudiantes.map((l,i) => {
+                                                    {datos1.estudiantesIntegrantesInfo[1].map((l,i) => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
@@ -133,7 +152,9 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
 
-                                                <p>{docente}</p>
+
+                                                <p>{datos1.tutorInfo[1]}</p>
+
                                             </div>
                                         </div>
 
@@ -146,7 +167,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{v.area_enfoque}</p>
+                                                <p>{datos1.areaEnfoque}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2">
@@ -155,7 +176,7 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos[0].docentes_apoyo.map((l,j) => {
+                                                    {datos1.docentesApoyoInfo[1].map((l,j) => {
                                                         return (<li key={j} >{l}</li>);
                                                     })}
                                                 </ul>
@@ -181,8 +202,8 @@ const InfoGeneral = () => {
                         </div>
                     </div>
                 </div>
-                );
-            })}
+                
+            }
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
