@@ -300,8 +300,8 @@ const Information = () => {
             <Modal isOpen={viewAlert} centered={true} style={modalStyles}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
                         <h6 id="texto" className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
-                </ModalBody>
 
+                </ModalBody>
                 <ModalFooter className='d-flex justify-content-center'>
                     <Button color="primary" style={{marginRight:"40px"}} onClick={updateProfile} >Aceptar</Button>
                     <Button color="secondary" style={{marginLeft:"40px"}} onClick={toggleAlert}>Cancelar</Button>

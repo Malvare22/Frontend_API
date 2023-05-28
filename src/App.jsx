@@ -15,15 +15,18 @@ import TemplateDocente from './components/docente/Docente_Template'
 import ContextProvider from './context/UserContext';
 import Template from './components/TemplateGeneral';
 import PerfilEstudiante from './components/estudiante/Estudiante_Perfil'
-import ListarIdeas from './components/lider/Listar_ideas';
 import ListarIdeasEstudiante from './components/estudiante/Estudiante_ListarIdeas';
 import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPlanes';
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
-import VistaIdea from './components/lider/Lider_VerIdea';
-import Listar_Ideas from './components/lider/Listar_ideas';
+import LiderVistaIdea from './components/lider/Lider_VerIdea';
+import LiderListarIdeas from './components/lider/Listar_ideas';
+import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
+import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
+import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
+import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
 import PerfilLider from './components/lider/Lider_Perfil';
 import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
@@ -74,6 +77,13 @@ const router = createBrowserRouter(
           <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
+          <Route path='Test' element={<Tabla></Tabla>} />
+          <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
+          <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
+          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
+          <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
+          <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
+          <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
         </Route>
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
@@ -83,6 +93,12 @@ const router = createBrowserRouter(
           <Route path='Registar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
+          <Route path='VistaIdea' element={<VistaIdea></VistaIdea>} />
+          <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
+          <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
+          <Route path='VistaIdea' element={<LiderVistaIdea></LiderVistaIdea>}/>
+          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
           <Route path='tester' element={<StorageTest></StorageTest>}/>
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -95,53 +111,6 @@ const router = createBrowserRouter(
     </>
   )
 );
-
-const Enrutado = () => {
-  /** *
-   * Todo del sistema de enrutado del sitio Web
-   * Notación en usuarios: Tipo/Sección
-   * Ejemplo: Estudiante/Perfil
-   * Ejemplo: LiderUE/Planes/${id}
-   * Nota: Dentro de cada template de usuario valida el tipo de usuario, para que no vean
-   * funcionalidades que no les corresponden.
-  */
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Template></Template>}>
-          <Route path='/' element={<Home></Home>} />
-          <Route path='/login' element={<Login></Login>} />
-          <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-          <Route element={<TemplateEstudiante></TemplateEstudiante>}>
-            <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
-            <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
-            <Route path='/Estudiante/E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
-            <Route path='/Estudiante/ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
-            <Route path='/Estudiante/ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
-            <Route path='/Estudiante/ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
-            <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
-          </Route>
-          <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
-            <Route path='/Lider/VistaIdea' element={<VistaIdea></VistaIdea>} />
-            <Route path='/Lider/Perfil' element={<PerfilLider></PerfilLider>} />
-            <Route path='/Lider/Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-            <Route path='/Lider/Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} />
-
-          </Route>
-          <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
-            <Route path='/Administrativo/Perfil'></Route>
-          </Route>
-          <Route element={<TemplateDocente></TemplateDocente>}>
-            <Route path='/Docente/Perfil'></Route>
-          </Route>
-        </Route>
-        <Route path='/*' element={<Error404></Error404>} />
-      </Routes>
-    </BrowserRouter>
-  );
-
-}
 
 export default function App() {
   return <><ContextProvider><RouterProvider router={router} /></ContextProvider></>;

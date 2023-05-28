@@ -4,10 +4,16 @@
         "titulo": "Rubelsanto Airport",
         "area_enfoque": "Hiri Motu",
         "docente_codigo": "92",
+        "docente": null,
         "estudiantes":[
             "Pinga Alex",
             "Felipe Sorpreson",
             "Juliana trepadora"
+        ],
+        "docentes_apoyo":[
+            "Pinga ds Alex",
+            "Felipe fds Sorpreson  as",
+            "Juliana sdf sg trepadora"
         ],
         "estado": "a",
         "fecha_creacion": "5/17/2023",

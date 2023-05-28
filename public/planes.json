@@ -1,0 +1,82 @@
+[
+    {
+        "id": "12345",
+        "titulo": "Airport Project",
+        "area_enfoque": "Minera",
+        "docente_codigo": "67",
+        "estudiantes": [
+          "John Smith",
+          "Emily Johnson",
+          "Michael Davis"
+        ],
+        "estado": "Aprobada",
+        "fecha_creacion": "2023/05/23",
+        "estudiante_codigo": "0912",
+        "documento_idea": "67890",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in semper magna. Suspendisse mattis neque id nunc commodo, ut interdum odio dictum. Curabitur facilisis eros vitae iaculis auctor. Ut sit amet dictum enim. Aenean ut lacus et turpis tristique ornare. Donec eu feugiat nunc."
+    },
+    {
+        "id": "98765",
+        "titulo": "Travel App",
+        "area_enfoque": "Agropecuaria",
+        "docente_codigo": "33",
+        "estudiantes": [
+          "María Rodríguez",
+          "Alejandro López",
+          "Lucía Martínez"
+        ],
+        "estado": "Desaprobada",
+        "fecha_creacion": "2023/05/21",
+        "estudiante_codigo": "0415",
+        "documento_idea": "24680",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in semper magna. Suspendisse mattis neque id nunc commodo, ut interdum odio dictum. Curabitur facilisis eros vitae iaculis auctor. Ut sit amet dictum enim. Aenean ut lacus et turpis tristique ornare. Donec eu feugiat nunc."
+    },
+    {
+        "id": "55555",
+        "titulo": "Space Exploration",
+        "area_enfoque": "Comercial",
+        "docente_codigo": "18",
+        "estudiantes": [
+          "Robert Johnson",
+          "Sophia Anderson",
+          "David Thompson"
+        ],
+        "estado": "Vencida",
+        "fecha_creacion": "2023/05/24",
+        "estudiante_codigo": "0827",
+        "documento_idea": "13579",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in semper magna. Suspendisse mattis neque id nunc commodo, ut interdum odio dictum. Curabitur facilisis eros vitae iaculis auctor. Ut sit amet dictum enim. Aenean ut lacus et turpis tristique ornare. Donec eu feugiat nunc."
+      },
+      {
+        "id": "77777",
+        "titulo": "Environmental Conservation",
+        "area_enfoque": "Servicios",
+        "docente_codigo": "42",
+        "estudiantes": [
+          "Emma Wilson",
+          "Daniel Brown",
+          "Olivia Taylor"
+        ],
+        "estado": "Formulación",
+        "fecha_creacion": "2023/05/20",
+        "estudiante_codigo": "0321",
+        "documento_idea": "86420",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in semper magna. Suspendisse mattis neque id nunc commodo, ut interdum odio dictum. Curabitur facilisis eros vitae iaculis auctor. Ut sit amet dictum enim. Aenean ut lacus et turpis tristique ornare. Donec eu feugiat nunc."
+    },
+    {
+        "id": "99999",
+        "titulo": "Mobile App Development",
+        "area_enfoque": "Industrial",
+        "docente_codigo": "76",
+        "estudiantes": [
+          "Sarah Thompson",
+          "Jacob Lee",
+          "Megan Davis"
+        ],
+        "estado": "Pendiente",
+        "fecha_creacion": "2023/05/19",
+        "estudiante_codigo": "0123",
+        "documento_idea": "75309",
+        "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in semper magna. Suspendisse mattis neque id nunc commodo, ut interdum odio dictum. Curabitur facilisis eros vitae iaculis auctor. Ut sit amet dictum enim. Aenean ut lacus et turpis tristique ornare. Donec eu feugiat nunc."
+    }
+]
