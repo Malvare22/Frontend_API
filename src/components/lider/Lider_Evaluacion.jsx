@@ -56,6 +56,7 @@ const Evaluaciones = (props) => {
     }, []);
 
     //AXIOS PARA RECIBIR A LOS DOCENTES CALIFICADORES CON SUS NOTAS Y OBSERVACIONES
+
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
@@ -105,7 +106,6 @@ const Evaluaciones = (props) => {
                                                 {console.log("calificadores",calificadores)}
                                                 {console.log("profesores",profesores)}
                                                 {console.log()} */}
-
                                                  { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {            
                                                     
                                                     if (v.observacion != null ) {
@@ -146,7 +146,8 @@ const Evaluaciones = (props) => {
                                             <div className="container rounded-1 p-4" style={{ background: "#B4B4B4" }}>
                                                 <p className="py-2 d-flex justify-content-center" style={{ color: "#000" }}><b>Comité de evaluación</b></p>
                                                 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => 
                                                     
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
@@ -155,6 +156,7 @@ const Evaluaciones = (props) => {
                                                         } else if (v.estado === 'rechazada') {
                                                             colorin = "#DC4B4B"
                                                         } else {
+
                                                             colorin = "#555555"
                                                         }
                                                         return <div key={i} className="row">
@@ -169,7 +171,9 @@ const Evaluaciones = (props) => {
                                                                     <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z" />
                                                                 </svg>
                                                             </div>
+
                                                             {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
+                                                              
                                                                 <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
                                                                 </svg></p>
@@ -213,7 +217,9 @@ const Evaluaciones = (props) => {
                                                     <p style={{ color: "#000" }}><b>Fecha de corte: </b></p>
                                                 </div>
                                                 <div className="col-auto">
+
                                                     <p style={{ color: "#000" }}>{calificadores ? 
+
                                                     
                                                     calificadores[props.identificador].fechaCorte[2]+"/"+calificadores[props.identificador].fechaCorte[1]+"/"+calificadores[props.identificador].fechaCorte[0]:""}</p>
                                                 </div>

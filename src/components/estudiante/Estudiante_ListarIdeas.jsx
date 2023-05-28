@@ -30,7 +30,7 @@ export default function Estudiante_ListarIdeas() {
     return (
         <>
             <div className="container">
-                <img src="https://live.staticflickr.com/65535/52917978152_76ea16ef66_o.png" className='img-fluid mt-2'/>
+                <img src="https://live.staticflickr.com/65535/52923256419_f1155354b4_o.png" className='img-fluid mt-2'/>
                 <div className="container-fluid" style={{ width: "100%" }}>
                     <div className="row">
                         <Sobreponer>

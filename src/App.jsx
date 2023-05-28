@@ -2,7 +2,7 @@ import './css/App.css';
 import React from "react";
 import { createRoot } from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Home from './routes/Home.jsx'
 import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
@@ -20,57 +20,91 @@ import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPla
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
 import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
+import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
+import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
 import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
+import PerfilLider from './components/lider/Lider_Perfil';
+import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
+import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudiante';
+import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
+import StorageTest from './components/lider/storage';
+import axios from 'axios';
+import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
+import Listar_Ideas from './components/lider/Listar_ideas';
 
-const Enrutado = () => {
-  /** *
-   * Todo del sistema de enrutado del sitio Web
-   * Notación en usuarios: Tipo/Sección
-   * Ejemplo: Estudiante/Perfil
-   * Ejemplo: LiderUE/Planes/${id}
-   * Nota: Dentro de cada template de usuario valida el tipo de usuario, para que no vean
-   * funcionalidades que no les corresponden.
-  */
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Template></Template>}>
-          <Route path='/' element={<Home></Home>} />
-          <Route path='/login' element={<Login></Login>} />
-          <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-          <Route element={<TemplateEstudiante></TemplateEstudiante>}>
-            <Route path='/Estudiante/Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
-            <Route path='/Estudiante/Test' element={<Tabla></Tabla>} />
-            <Route path='/Estudiante/E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
-            <Route path='/Estudiante/ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
-            <Route path='/Estudiante/ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>}/>
-            <Route path='/Estudiante/ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
-            <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
-            <Route path='/Estudiante/EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
-          </Route>
-          <Route element={<TemplateLider></TemplateLider>}>
-            <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}/>
-            <Route path='/Lider/VistaIdea' element={<LiderVistaIdea></LiderVistaIdea>}/>
-          </Route>
-          <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
-            <Route path='/Administrativo/Perfil'></Route>
-          </Route>
-          <Route element={<TemplateDocente></TemplateDocente>}>
-            <Route path='/Docente/Perfil'></Route>
-          </Route>
-        </Route>
-        <Route path='/*' element={<Error404></Error404>} />
-      </Routes>
-    </BrowserRouter>
-  );
-
+const searchStudent= async()=> {
+  //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
+  const searchValue=localStorage.getItem("Estudiante")
+  let value = null;
+  value = await axios.get('../../../anotherStudent.json').then(
+      response => {
+          const data = response.data;
+          let temp = null;
+          data.map((d) => {
+              if (d.codigo == searchValue) temp = d;
+          })
+          return temp;
+      }).catch(error => { console.error(error); })
+  if (value === null) throw new Response("Not Found", { status: 404 })
+  localStorage.setItem("info_estudiante", JSON.stringify(value))
+  return value;
 }
 
+const verifyStudent= ()=>{
+  const data = localStorage.getItem("info_estudiante");
+    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
+}
+
+
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route element={<Template></Template>} errorElement={<Error404></Error404>}>
+        <Route path='/' element={<Home></Home>} />
+        <Route path='/login' element={<Login></Login>} />
+        <Route path='/forgetPassword' element={<Recovery></Recovery>} />
+        <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
+          <Route path='Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
+          <Route path='Test' element={<Tabla></Tabla>} />
+          <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
+          <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
+          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
+          <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
+          <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
+          <Route path='Test' element={<Tabla></Tabla>} />
+          <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
+          <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
+        </Route>
+        <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
+          <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
+          <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
+          <Route path='Registar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
+          <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
+          <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
+          <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
+          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
+          <Route path='tester' element={<StorageTest></StorageTest>}/>
+        </Route>
+        <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
+          <Route path='Perfil'></Route>
+        </Route>
+        <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
+          <Route path='Perfil'></Route>
+        </Route>
+      </Route>
+    </>
+  )
+);
+
 export default function App() {
-  return <><ContextProvider><Enrutado></Enrutado></ContextProvider></>;
+  return <><ContextProvider><RouterProvider router={router} /></ContextProvider></>;
 }
 

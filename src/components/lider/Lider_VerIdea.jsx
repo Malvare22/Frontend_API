@@ -107,13 +107,14 @@ const InfoGeneral = () => {
 
     let set = new Set();
 
-
     return (
+
 
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%"}}>
             { datos1 && 
                 
                 <div className="row">
+
                     <div className="col-12">
                         <div>
                             <div className="rounded-5" style={{ background: "#1C3B57" }}>
@@ -151,7 +152,9 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
 
+
                                                 <p>{datos1.tutorInfo[1]}</p>
+
                                             </div>
                                         </div>
 
