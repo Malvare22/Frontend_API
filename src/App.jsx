@@ -35,6 +35,7 @@ import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_
 import StorageTest from './components/lider/storage';
 import axios from 'axios';
 import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
+import Listar_Ideas from './components/lider/Listar_ideas';
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
@@ -78,26 +79,17 @@ const router = createBrowserRouter(
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
           <Route path='Test' element={<Tabla></Tabla>} />
-          <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
-          <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
-          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
-          <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
           <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
         </Route>
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
-          <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
-          <Route path='VistaIdea' element={<VistaIdea></VistaIdea>} />
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
           <Route path='Registar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
-          <Route path='VistaIdea' element={<VistaIdea></VistaIdea>} />
-          <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
-          <Route path='VistaIdea' element={<LiderVistaIdea></LiderVistaIdea>}/>
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
           <Route path='tester' element={<StorageTest></StorageTest>}/>
         </Route>
