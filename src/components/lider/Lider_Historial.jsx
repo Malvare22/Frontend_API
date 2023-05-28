@@ -8,7 +8,7 @@ export default function Historial() {
 
     const definir_Estado = async () => {
         let value = null;
-        value = await axios.get('../ideas.json').then(
+        value = await axios.get('../calificadores.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -26,13 +26,24 @@ export default function Historial() {
         <div className="container">
             <div className="row">
                 {datos.map((v, i) => {
-
+                    let aprov = 0;
+                    let recha = 0;
+                    let gris = 0;
+                    datos[i].calificacionesInfo.map((l) => {
+                        if (l.estado === "aprobado") {
+                            aprov = aprov + 1;
+                        } else if (l.estado === "rechazada") {
+                            recha = recha + 1;
+                        } else {
+                            gris = gris + 1;
+                        }
+                    })
                     let color = "";
                     let estado = "";
-                    if (v.estado === "a") {
+                    if (aprov >= 2) {
                         color = "#75C47D";
                         estado = "Aprobado";
-                    } else if (v.estado === "r") {
+                    } else if (recha >= 2) {
                         color = "#DC4B4B";
                         estado = "Reprobado";
                     } else {
@@ -40,9 +51,8 @@ export default function Historial() {
                         estado = "NA";
                     }
 
-
                     return (<div key={i}>
-                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} observacion={v.observacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}

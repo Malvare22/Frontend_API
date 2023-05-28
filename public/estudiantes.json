@@ -1,22 +1,64 @@
 [
     {
         "id": "7568",
-        "estudiante": "Alejandro Andrés Salazar Paredes"        
+        "estudiante": "Alejandro Andrés Salazar Paredes",
+        "curso":"Primero"  
     },
     {
         "id": "867867",
-        "estudiante": "Valentina Isabel Silva Medina"   
+        "estudiante": "Valentina Isabel Silva Medina",
+        "curso":"Tercero"
     },
     {
         "id": "9754",
-        "estudiante": "Gabriel Ernesto Mendoza Jiménez"  
+        "estudiante": "Gabriel Ernesto Mendoza Jiménez",
+        "curso":"Quinto"  
     },
     {
         "id": "3453",
-        "estudiante": "Natalia Victoria Ríos Castro"  
+        "estudiante": "Natalia Victoria Ríos Castro",
+        "curso":"Septimo"  
     },
     {
         "id": "1231",
-        "estudiante": "Sebastián Javier Acosta Vargas"  
+        "estudiante": "Sebastián Javier Acosta Vargas",
+        "curso":"Noveno"  
+    },
+    {
+        "id": "76575",
+        "estudiante": "Roberto Guillermo Melkesidec Ayrton",
+        "curso":"Once"   
+    },
+    {
+        "id": "1",
+        "estudiante": "Celestino Balaguer"  
+    },
+    {
+        "id": "2",
+        "estudiante": "Rubén Campoy"  
+    },{
+        "id": "3",
+        "estudiante": "Ignacia Camino Grande"  
+    },{
+        "id": "4",
+        "estudiante": "Chucho Andrés Felipe Almansa Royo"  
+    },{
+        "id": "5",
+        "estudiante": "Mario Barreda-Nadal"  
+    },{
+        "id": "6",
+        "estudiante": "Francisco del Baquero"  
+    },{
+        "id": "7",
+        "estudiante": "Ruben Cáceres Villanueva"  
+    },{
+        "id": "8",
+        "estudiante": "Moreno Codina Pablo"  
+    },{
+        "id": "9",
+        "estudiante": "Virginia Cerezo"  
+    },{
+        "id": "10",
+        "estudiante": "Susana Pla Bárcena"  
     }
 ]
