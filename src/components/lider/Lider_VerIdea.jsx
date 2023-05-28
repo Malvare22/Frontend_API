@@ -417,7 +417,7 @@ const Sdiv = styled.div`
       }}
 `;
 
-function Tabla(props) {
+function Tabla() {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;

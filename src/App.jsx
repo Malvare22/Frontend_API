@@ -21,6 +21,8 @@ import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_I
 import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import LiderListarIdeas from './components/lider/Listar_ideas';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
+import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
+import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -53,6 +55,8 @@ const Enrutado = () => {
             <Route path='/Estudiante/Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
             <Route path='/Estudiante/EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
             <Route path='/Estudiante/AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
+            <Route path='/Estudiante/CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>}/>
+            <Route path='/Estudiante/CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>}/>
           </Route>
           <Route element={<TemplateLider></TemplateLider>}>
             <Route path='/Lider/Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
