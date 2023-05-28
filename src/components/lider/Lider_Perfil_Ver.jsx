@@ -1,21 +1,56 @@
 
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 
-export default function PerfilLider() {
+export default function LiderVerPerfil() {
+
     return (<VistaGeneral></VistaGeneral>);
+}
+
+const VistaGeneral = () => {
+
+    const usuario = {
+        "nombres":"Luis sdfsdfsdfsdf",
+        "apellidos":"Salazar sdfsdfsdfs",
+        "documento":"10213123",
+        "sexo": "0",
+        "correo":"sdfsdf@hotmail.com",
+        "telefono":"4235345433",
+        "foto": "/images/02.png",
+        "fecha_nacimiento":"1991-12-20",
+    }    
+
+    return (
+        <div className='flex-grow-1'>
+            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
+            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+                <div className='d-flex justify-content-center'>
+                    <div className='w-75 position-relative'>
+                        <Information usuario={usuario}></Information>
+                        <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
+                    </div>
+                </div>
+            </div>
+            <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                <Button></Button>
+            </div>
+        </div>
+    );
 }
 
 const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={image}></img>
+                <img className='rounded-circle' src={props.usuario.foto}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>Felipe</p>
-                        <p className='text-white'>Sanguino</p>
+                        <p className='text-white'>{props.usuario.nombres}</p>
+                        <p className='text-white'>{props.usuario.apellidos}</p>
                     </div>
                 </div>
             </div>
@@ -23,7 +58,13 @@ const Profile = (props) => {
     );
 }
 
-const Information = () => {
+const Information = (props) => {
+    const edad=()=>{
+        const today = new Date()
+        const birth = Date.parse(props.usuario.fecha_nacimiento);
+        const ans = new Date(today-birth)
+        return (ans.getUTCFullYear()-1970)
+    }
     return (
         <Sdiv02>
             <div>
@@ -36,7 +77,7 @@ const Information = () => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
+                        {props.usuario.nombres}
                     </div>
                 </div>
                 <div className='row'>
@@ -44,15 +85,15 @@ const Information = () => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Corozo Ramirez
+                        {props.usuario.apellidos}
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Curso:
+                        Documento de identificación:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
+                        {props.usuario.documento}
                     </div>
                 </div>
                 <div className='row'>
@@ -60,15 +101,7 @@ const Information = () => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Código:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        Luis
+                        {edad()}
                     </div>
                 </div>
                 <div className='row'>
@@ -76,64 +109,39 @@ const Information = () => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
+                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
                     </div>
                 </div>
+            
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Correo eléctronico:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
+                        {props.usuario.correo}
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Nombre del acudiente:
+                        Teléfono:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        Luis
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Teléfono del acudiente:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        Luis
+                        {props.usuario.telefono}
                     </div>
                 </div>
             </div>
         </Sdiv02>
     );
 }
-//
-const VistaGeneral = (props) => {
-    return (
-        <div className='flex-grow-1'>
-            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
-            <div className='justify-content-center' style={{marginTop:"5rem", marginBottom:"2rem"}}>
-                <div className='d-flex justify-content-center'>
-                    <div className='w-75 position-relative'>
-                        <Information></Information>
-                        <Sdiv03><Profile></Profile></Sdiv03>
-                    </div>
-                </div>
-            </div>
-            <div className='d-flex justify-content-center' style={{marginBottom:"2rem"}}>
-                <Button></Button>
-            </div>
-        </div>
-    );
-}
 
-const Button = ()=>{
-    return(
-        <Sdiv04><Link to={"/Estudiante/Perfil/Editar"}><button className='border rounded-4' style={{backgroundColor:"#1C3B57"}}>
-        <h5 className='fw-bold text-white text-center'>
-            Editar Información de Estudiante
-        </h5>
-    </button></Link></Sdiv04>
+
+const Button = () => {
+    return (
+        <Sdiv04><Link to={"/Lider/Perfil/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+            <h5 className='fw-bold text-white text-center'>
+                Editar Información del Líder
+            </h5>
+        </button></Link></Sdiv04>
     );
 };
 
@@ -147,7 +155,7 @@ const Sdiv04 = styled.div`
             margin: 20px;
         }
     }
-`; 
+`;
 
 const Sdiv01 = styled.div.attrs({
     className: 'd-inline-flex',

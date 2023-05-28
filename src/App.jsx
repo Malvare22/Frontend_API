@@ -28,7 +28,7 @@ import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Ed
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
 import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
-import PerfilLider from './components/lider/Lider_Perfil';
+import PerfilLider from './components/lider/Lider_Perfil_Ver';
 import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
 import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudiante';
 import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
