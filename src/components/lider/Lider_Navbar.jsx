@@ -12,6 +12,18 @@ const Sidebar = () => {
 }
 
 const SideBarStatic = () => {
+  const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+</svg>);
+
+  const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+</svg>);
+
+  const[arrow01, setArrow01] = useState(false);
+  const[arrow02, setArrow02] = useState(false);
+  const[arrow03, setArrow03] = useState(false);  
+
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
    
@@ -39,7 +51,7 @@ const SideBarStatic = () => {
       </NavItem>
 
 
-      <NavItem>
+      <NavItem onClick={()=>{setArrow01(!arrow01)}}>
         <NavLink id='Usuarios' href="#">
           <Row className='d-flex align-content-center align-items-center'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -47,7 +59,7 @@ const SideBarStatic = () => {
             <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Usuarios</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Usuarios {arrow01? arrowDown:arrowUp}</Col>
           </Row>
 
       </NavLink>
@@ -74,7 +86,7 @@ const SideBarStatic = () => {
       </UncontrolledCollapse>
 
 
-      <NavItem>
+      <NavItem onClick={()=>{setArrow02(!arrow02)}}>
         <NavLink id="Habilidades" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -83,8 +95,7 @@ const SideBarStatic = () => {
               <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
               </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
-          </Row>        
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Evaluacion {arrow02? arrowDown:arrowUp}</Col></Row>        
         </NavLink>
       </NavItem>
 
@@ -133,15 +144,15 @@ const SideBarStatic = () => {
         </NavLink>
       </NavItem>  
       <NavItem>
-        <NavLink id="Documentos" href="#">
+        <NavLink id="Documentos" href="#" onClick={()=>{setArrow03(!arrow03)}}>
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
             <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-file-text-fill" viewBox="0 0 16 16">
             <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Documentos</Col>
-          </Row>        
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Documentos {arrow03? arrowDown: arrowUp}
+            </Col></Row>        
         </NavLink>
       </NavItem>
       <UncontrolledCollapse id="despliegue" toggler="#Documentos">
@@ -240,7 +251,19 @@ const SideBarStatic = () => {
 }
 
 const SideBarResponsive = () => {
+
   const [collapsed, setCollapsed] = useState(false);
+  const[arrow01, setArrow01] = useState(false);
+  const[arrow02, setArrow02] = useState(false);
+  const[arrow03, setArrow03] = useState(false);
+  const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+</svg>);
+
+  const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+</svg>);
+  
 
   const toggleNavbar = () => setCollapsed(!collapsed);
   return (<div className="text-white d-flex flex-column flex-shrink-0" id='principal_div_nav' >
@@ -276,7 +299,7 @@ const SideBarResponsive = () => {
       </NavItem>
 
 
-      <NavItem>
+      <NavItem onTouchEnd={()=>{setArrow01(!arrow01)}}>
         <NavLink id='Usuarios' href="#">
           <Row className='d-flex align-content-center align-items-center'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -284,7 +307,7 @@ const SideBarResponsive = () => {
             <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Usuarios</Col>
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Usuarios{arrow01?arrowDown: arrowUp}</Col>
           </Row>
 
       </NavLink>
@@ -311,7 +334,7 @@ const SideBarResponsive = () => {
       </UncontrolledCollapse>
 
 
-      <NavItem>
+      <NavItem onTouchEnd={()=>{setArrow02(!arrow02)}}>
         <NavLink id="Habilidades" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -320,8 +343,8 @@ const SideBarResponsive = () => {
               <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z"/>
               </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
-          </Row>        
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Evaluación{arrow02?arrowDown: arrowUp}</Col>
+            </Row>        
         </NavLink>
       </NavItem>
 
@@ -373,7 +396,7 @@ const SideBarResponsive = () => {
       </NavItem>
 
       
-      <NavItem>
+      <NavItem onTouchEnd={()=>setArrow03(!arrow03)}>
         <NavLink id="Documentos" href="#">
         <Row className='d-flex align-content-center align-items-center  justify-content-end'>
             <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -381,8 +404,8 @@ const SideBarResponsive = () => {
             <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z"/>
             </svg>
             </Col>
-            <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Documentos</Col>
-          </Row>        
+            <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Documentos{arrow03?arrowDown: arrowUp}</Col>
+            </Row>        
         </NavLink>
       </NavItem>
 

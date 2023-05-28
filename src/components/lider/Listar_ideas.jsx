@@ -229,6 +229,7 @@ const Filters = ({ onFilter }) => {
 
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Ideas() {
+
   const [filteredData, setFilteredData] = useState([]);
   const getIdeas = async () => {
     let value = null;
