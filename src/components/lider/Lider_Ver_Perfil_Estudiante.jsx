@@ -1,36 +1,47 @@
 
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
-import { Link } from 'react-router-dom';
-export default function PerfilEstudiante() {
+import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
+
+export default function LiderVerPerfilEstudiante() {
+
     return (<VistaGeneral></VistaGeneral>);
 }
 
-const usuario = {
-    id: "1",
-    correo: "example@student.com",
-    contrasenia: "123",
-    apellidos: "Ramirez",
-    nombres: "Jorge",
-    curso: "Séptimo",
-    sexo: "0",
-    fecha_nacimiento: '2001-04-20',
-    nombre_acudiente: "Luis Sanchez",
-    telefono_acudiente: "305484564",
-    foto: "./images/01.png",
-    tipo_usuario: "estudiante",
-    estado: "1"
-};
+const VistaGeneral = () => {
 
-const Profile = () => {
+    const usuario = JSON.parse(localStorage.getItem("info_estudiante"))    
+
+    return (
+        <div className='flex-grow-1'>
+            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
+            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+                <div className='d-flex justify-content-center'>
+                    <div className='w-75 position-relative'>
+                        <Information usuario={usuario}></Information>
+                        <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
+                    </div>
+                </div>
+            </div>
+            <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                <Button></Button>
+            </div>
+        </div>
+    );
+}
+
+const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={image}></img>
+                <img className='rounded-circle' src={props.usuario.foto}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{usuario.nombres}</p>
-                        <p className='text-white'>{usuario.apellidos}</p>
+                        <p className='text-white'>{props.usuario.nombres}</p>
+                        <p className='text-white'>{props.usuario.apellidos}</p>
                     </div>
                 </div>
             </div>
@@ -38,10 +49,10 @@ const Profile = () => {
     );
 }
 
-const Information = () => {
+const Information = (props) => {
     const edad=()=>{
         const today = new Date()
-        const birth = Date.parse(usuario.fecha_nacimiento);
+        const birth = Date.parse(props.usuario.fecha_nacimiento);
         const ans = new Date(today-birth)
         return (ans.getUTCFullYear()-1970)
     }
@@ -57,7 +68,7 @@ const Information = () => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                       {usuario.nombres}
+                        {props.usuario.nombres}
                     </div>
                 </div>
                 <div className='row'>
@@ -65,7 +76,7 @@ const Information = () => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.apellidos}
+                        {props.usuario.apellidos}
                     </div>
                 </div>
                 <div className='row'>
@@ -73,7 +84,7 @@ const Information = () => {
                         Curso:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.curso}
+                        {props.usuario.curso}
                     </div>
                 </div>
                 <div className='row'>
@@ -89,7 +100,7 @@ const Information = () => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.sexo=='0'? "Masculino":"Femenino"}
+                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
                     </div>
                 </div>
                 <div className='row'>
@@ -97,7 +108,7 @@ const Information = () => {
                         Correo eléctronico:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.correo}
+                        {props.usuario.correo}
                     </div>
                 </div>
                 <div className='row'>
@@ -105,7 +116,7 @@ const Information = () => {
                         Nombre del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.nombre_acudiente}
+                        {props.usuario.nombre_acudiente}
                     </div>
                 </div>
                 <div className='row'>
@@ -113,36 +124,18 @@ const Information = () => {
                         Teléfono del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.telefono_acudiente}
+                        {props.usuario.telefono_acudiente}
                     </div>
                 </div>
             </div>
         </Sdiv02>
     );
 }
-//
-const VistaGeneral = () => {
-    return (
-        <div className='flex-grow-1'>
-            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
-            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
-                <div className='d-flex justify-content-center'>
-                    <div className='w-75 position-relative'>
-                        <Information></Information>
-                        <Sdiv03><Profile></Profile></Sdiv03>
-                    </div>
-                </div>
-            </div>
-            <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
-                <Button></Button>
-            </div>
-        </div>
-    );
-}
+
 
 const Button = () => {
     return (
-        <Sdiv04><Link to={"/Estudiante/Perfil/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><Link to={"/Lider/Perfil/Estudiante/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
                 Editar Información de Estudiante
             </h5>
@@ -198,10 +191,6 @@ const Sdiv01 = styled.div.attrs({
 `;
 
 const Sdiv02 = styled.div`
-    .row{
-        display: flex;
-        align-items: center;
-    }
     background-color: #CECECE;
     >div{
         padding: 4%;
