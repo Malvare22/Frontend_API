@@ -19,6 +19,8 @@ import ListarIdeasEstudiante from './components/estudiante/Estudiante_ListarIdea
 import ListarPlanesEstudiante from './components/estudiante/Estudiante_ListarPlanes';
 import ListarIdeasEstudiantetest from './components/estudiante/Estudiante_Card_Idea';
 import LiderVistaIdea from './components/lider/Lider_VerIdea';
+import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
+import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
 import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
@@ -75,6 +77,7 @@ const router = createBrowserRouter(
           <Route path='Test' element={<Tabla></Tabla>} />
           <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
           <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
+          <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
           <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
@@ -89,12 +92,14 @@ const router = createBrowserRouter(
           <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
+          <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
           <Route path='tester' element={<StorageTest></StorageTest>}/>
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
           <Route path='Perfil'></Route>
+          <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
           <Route path='Perfil'></Route>
