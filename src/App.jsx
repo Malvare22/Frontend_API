@@ -26,6 +26,15 @@ import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import LiderListarPlanes from './components/lider/Listar_planes';
+import AdministrativoListarIdeas from './components/administrativo/Administrativo_ideasListar';
+import AdministrativoListarPlanes from './components/administrativo/Administrativo_planesListar';
+import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
+import AdministrativoListarEstudiantes from './components/administrativo/Administrativo_estudiantesListar';
+import AdministrativoListarDocentes from './components/administrativo/Administrativo_docentesListar';
+import AdministrativoListarAdministrativos from './components/administrativo/Administrativo_administrativosListar';
+import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
+import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
+import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -70,9 +79,18 @@ const Enrutado = () => {
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>
+            <Route path='/Administrativo/Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>}/>
+            <Route path='/Administrativo/Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>}/>
+            <Route path='/Administrativo/Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>}/>
+            <Route path='/Administrativo/Estudiantes' element={<AdministrativoListarEstudiantes></AdministrativoListarEstudiantes>}/>
+            <Route path='/Administrativo/Docentes' element={<AdministrativoListarDocentes></AdministrativoListarDocentes>}/>
+            <Route path='/Administrativo/Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>}/>            
           </Route>
           <Route element={<TemplateDocente></TemplateDocente>}>
             <Route path='/Docente/Perfil'></Route>
+            <Route path='Docente/Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
+            <Route path='Docente/Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
+            <Route path='Docente/Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />

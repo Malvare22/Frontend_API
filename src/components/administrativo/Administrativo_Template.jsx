@@ -8,7 +8,7 @@ export default function TemplateEstudiante({ children }) {
         <div className="col-12 col-sm-2 m-0 p-0">
             <NavbarAdmin></NavbarAdmin>
         </div>
-        <div className="col-12 col-sm-10 m-0 p-0">
+        <div className="col-12 col-sm-10 m-0 p-0 d-flex align-items-center">
             <Outlet></Outlet>
         </div>
     </div></>);

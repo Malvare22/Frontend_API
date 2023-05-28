@@ -105,7 +105,7 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Entidades() {
+export default function Listar_Administrativos() {
     const [filteredData, setFilteredData] = useState([]);
     const getAdministrativos = async () => {
         let value = null;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
+import styled from 'styled-components';
 import axios from "axios";
 
 const useAlert = () => {
@@ -20,10 +20,9 @@ const modalStyles = {
     transform: 'translate(0%, 120%)'
 }
 
-
 // Componente de tabla
 const Table = ({ data }) => {
-    const [orderBy, setOrderBy] = useState({ column: 'Entidad', ascending: true });
+    const [orderBy, setOrderBy] = useState({ column: 'Administrativo', ascending: true });
 
     const handleSort = (column) => {
         if (orderBy.column === column) {
@@ -39,8 +38,8 @@ const Table = ({ data }) => {
         const { column, ascending } = orderBy;
         return data.slice().sort((a, b) => {
             let comparison = 0;
-            if (column === 'Entidad') {
-                comparison = a.nombre.localeCompare(b.nombre);
+            if (column === 'Administrativo') {
+                comparison = a.administrativo.localeCompare(b.administrativo);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -63,14 +62,14 @@ const Table = ({ data }) => {
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th className='text-center' style={{ cursor: "pointer" }} onClick={() => handleSort('Entidad')} scope="col-auto">Nombre de la Entidad</th>
+                            <th className='text-center' style={{ cursor: "pointer" }} onClick={() => handleSort('Administrativo')} scope="col-auto">Nombre completo</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {sortedData.map((d) => (
                             <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.nombre}</td>
+                                <td className='text-center align-middle col-auto'>{d.administrativo}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -85,7 +84,7 @@ const Table = ({ data }) => {
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-                                        <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, entidad: d.nombre })} className="btn" style={{ width: "auto", border: "none" }}>
+                                        <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, administrativo: d.administrativo })} className="btn" style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                             </svg>
@@ -100,7 +99,7 @@ const Table = ({ data }) => {
             <Modal isOpen={state} style={modalStyles}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Está seguro de que desea eliminar la entidad financiadora {valor.entidad} que tiene como id: {valor.id}?</Label>
+                        <Label id="texto">¿Está seguro de que desea deshabilitar al administrativo {valor.administrativo} que tiene como id: {valor.id}?</Label>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
@@ -136,11 +135,11 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Entidades() {
+export default function Listar_Administrativos() {
     const [filteredData, setFilteredData] = useState([]);
-    const getEntidades = async () => {
+    const getAdministrativos = async () => {
         let value = null;
-        value = await axios.get('../entidadesFinanciadoras.json').then(
+        value = await axios.get('../administrativos.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -150,13 +149,13 @@ export default function Listar_Entidades() {
         setFilteredData(value)
     };
     useEffect(() => {
-        getEntidades();
+        getAdministrativos();
     }, []);
     return (
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Entidades Financiadoras</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Administrativos</h1>
                     <div className="container">
                         <br></br>
                         <Table data={filteredData}></Table>
@@ -164,9 +163,9 @@ export default function Listar_Entidades() {
                         <div className="d-flex justify-content-start">
                             <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                 <div className="col-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
-                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Z" />
-                                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.256A4.493 4.493 0 0 0 12.5 8a4.493 4.493 0 0 0-3.59 1.787A.498.498 0 0 0 9 9.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .39-.187A4.476 4.476 0 0 0 8.027 12H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1V1Zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Zm3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1ZM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5ZM4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                     </svg>
                                 </div>
                             </button>
