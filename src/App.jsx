@@ -22,8 +22,10 @@ import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
+import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
+import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
+import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
@@ -89,6 +91,8 @@ const router = createBrowserRouter(
           <Route path='Test' element={<Tabla></Tabla>} />
           <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
           <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
+          <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>}/>
+          <Route path='CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>}/>
         </Route>
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
