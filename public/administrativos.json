@@ -1,0 +1,38 @@
+[
+    {
+        "id": "123",
+        "administrativo": "Juan-Francisco Jaime"   
+    },
+    {
+        "id": "321",
+        "administrativo": "Esteban Cifuentes"
+    },
+    {
+        "id": "547",
+        "administrativo": "Dionisio Fuertes"
+    },
+    {
+        "id": "975",
+        "administrativo": "Nagore Mansilla"
+    },
+    {
+        "id": "536",
+        "administrativo": "Christopher Arellano"
+    },
+    {
+        "id": "758",
+        "administrativo": "Ferran Fuster"
+    },
+    {
+        "id": "869",
+        "administrativo": "Jacqueline Toro"
+    },
+    {
+        "id": "987",
+        "administrativo": "Gumersindo Valero"
+    },
+    {
+        "id": "756",
+        "administrativo": "Lorena Carrero"
+    }
+]
