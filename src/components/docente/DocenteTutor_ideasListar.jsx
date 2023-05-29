@@ -1,22 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
 import axios from "axios";
-
-const useAlert = () => {
-    const [state, setState] = useState(false);
-    const [valor, setValor] = useState({});
-
-    const toggleAlert = (v) => {
-        setState(!state);
-        if (v != null) {
-            setValor(v);
-        }
-    }
-    return { state, toggleAlert, valor }
-}
-
 
 // Componente de tabla
 const Table = ({ data }) => {
@@ -165,8 +150,8 @@ const Filters = ({ onFilter }) => {
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
-            <select name="actividad" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Actividad</option>
+            <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
+                <option defaultValue="0">Area</option>
                 <option defaultValue="minera">Minera</option>
                 <option defaultValue="agrupecuaria">Agropecuaria</option>
                 <option defaultValue="comercial">Comercial</option>

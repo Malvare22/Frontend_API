@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import styled from 'styled-components';
 import axios from "axios";
 

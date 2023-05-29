@@ -6,6 +6,7 @@ import axios from "axios";
 // Componente de tabla
 const Table = ({ data }) => {
     const [orderBy, setOrderBy] = useState({ column: 'Título', ascending: true });
+
     const handleSort = (column) => {
         if (orderBy.column === column) {
             setOrderBy((prevState) => ({
@@ -27,9 +28,8 @@ const Table = ({ data }) => {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
                 comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
-            } else if (column === 'Tutor') {
-                comparison = a.docente_codigo.localeCompare(b.docente_codigo);
-            } else if (column === 'Area') {
+            }
+            else if (column === 'Area') {
                 comparison = a.area_enfoque.localeCompare(b.area_enfoque);
             }
             if (!ascending) {
@@ -41,7 +41,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Apoyo/VistaIdea');
+        navigate('/Docente/Tutor/VistaPlan');
     };
     return (
         <Sdiv>
@@ -74,14 +74,14 @@ const Table = ({ data }) => {
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
                                             </svg>
-                                        </button>
+                                        </button>                                        
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>        
+            </div>            
         </Sdiv>
     );
 };
@@ -182,11 +182,11 @@ const Filters = ({ onFilter }) => {
 };
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Ideas() {
+export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
-    const getIdeas = async () => {
+    const getPlanes = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+        value = await axios.get('../../../planes.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -196,7 +196,7 @@ export default function Listar_Ideas() {
         setFilteredData(value)
     };
     useEffect(() => {
-        getIdeas();
+        getPlanes();
     }, []);
     const handleFilter = async (filters) => {
         console.log(filters)
@@ -207,7 +207,7 @@ export default function Listar_Ideas() {
         console.log(filters.fechaFin)
         try {
             let value = null;
-            value = await axios.get('../../../ideasFiltradas.json').then(
+            value = await axios.get('../../../planesFiltrados.json').then(
                 response => {
                     const data = response.data;
                     return data;
@@ -224,7 +224,7 @@ export default function Listar_Ideas() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio - Apoyo</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio - Tutor</h1>
                     <div className="container">
                         <Filters onFilter={handleFilter}></Filters>
                         <br></br>
@@ -247,7 +247,6 @@ export default function Listar_Ideas() {
                                 </button>
                             </div>                            
                         </div>
-
                     </div>
                 </div>
             </div>

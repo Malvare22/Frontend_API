@@ -6,6 +6,7 @@ import axios from "axios";
 // Componente de tabla
 const Table = ({ data }) => {
     const [orderBy, setOrderBy] = useState({ column: 'Título', ascending: true });
+
     const handleSort = (column) => {
         if (orderBy.column === column) {
             setOrderBy((prevState) => ({
@@ -27,10 +28,10 @@ const Table = ({ data }) => {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
                 comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
-            } else if (column === 'Tutor') {
-                comparison = a.docente_codigo.localeCompare(b.docente_codigo);
             } else if (column === 'Area') {
                 comparison = a.area_enfoque.localeCompare(b.area_enfoque);
+            } else if (column === 'Fecha de corte') {
+                comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -41,7 +42,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Apoyo/VistaIdea');
+        navigate('/Docente/Evaluador/VistaPlan');
     };
     return (
         <Sdiv>
@@ -51,7 +52,8 @@ const Table = ({ data }) => {
                         <tr>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>                            
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -60,7 +62,8 @@ const Table = ({ data }) => {
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>                                
+                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>
+                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -182,11 +185,11 @@ const Filters = ({ onFilter }) => {
 };
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Ideas() {
+export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
-    const getIdeas = async () => {
+    const getPlanes = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+        value = await axios.get('../../../planes.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -196,7 +199,7 @@ export default function Listar_Ideas() {
         setFilteredData(value)
     };
     useEffect(() => {
-        getIdeas();
+        getPlanes();
     }, []);
     const handleFilter = async (filters) => {
         console.log(filters)
@@ -207,7 +210,7 @@ export default function Listar_Ideas() {
         console.log(filters.fechaFin)
         try {
             let value = null;
-            value = await axios.get('../../../ideasFiltradas.json').then(
+            value = await axios.get('../../../planesFiltradas.json').then(
                 response => {
                     const data = response.data;
                     return data;
@@ -224,7 +227,7 @@ export default function Listar_Ideas() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio - Apoyo</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio - Evaluador</h1>
                     <div className="container">
                         <Filters onFilter={handleFilter}></Filters>
                         <br></br>

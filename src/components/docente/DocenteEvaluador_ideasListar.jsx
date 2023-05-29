@@ -1,22 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
 import axios from "axios";
-
-const useAlert = () => {
-    const [state, setState] = useState(false);
-    const [valor, setValor] = useState({});
-
-    const toggleAlert = (v) => {
-        setState(!state);
-        if (v != null) {
-            setValor(v);
-        }
-    }
-    return { state, toggleAlert, valor }
-}
-
 
 // Componente de tabla
 const Table = ({ data }) => {
@@ -57,7 +42,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Apoyo/VistaIdea');
+        navigate('/Docente/Evaluador/VistaIdea');
     };
     return (
         <Sdiv>
@@ -167,8 +152,8 @@ const Filters = ({ onFilter }) => {
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
-            <select name="actividad" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Actividad</option>
+            <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
+                <option defaultValue="0">Area</option>
                 <option defaultValue="minera">Minera</option>
                 <option defaultValue="agrupecuaria">Agropecuaria</option>
                 <option defaultValue="comercial">Comercial</option>
@@ -242,7 +227,7 @@ export default function Listar_Ideas() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio - Apoyo</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio - Evaluador</h1>
                     <div className="container">
                         <Filters onFilter={handleFilter}></Filters>
                         <br></br>

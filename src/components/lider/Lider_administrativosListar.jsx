@@ -3,19 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from "axios";
 
-const useAlert = () => {
-    const [state, setState] = useState(false);
-    const [valor, setValor] = useState({});
-
-    const toggleAlert = (v) => {
-        setState(!state);
-        if (v != null) {
-            setValor(v);
-        }
-    }
-    return { state, toggleAlert, valor }
-}
-
 // Componente de tabla
 const Table = ({ data }) => {
     const [orderBy, setOrderBy] = useState({ column: 'Administrativo', ascending: true });

@@ -26,6 +26,8 @@ import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import LiderListarPlanes from './components/lider/Listar_planes';
+import LiderListarFormatos from './components/lider/Lider_formatosListar';
+import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
 import AdministrativoListarIdeas from './components/administrativo/Administrativo_ideasListar';
 import AdministrativoListarPlanes from './components/administrativo/Administrativo_planesListar';
 import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
@@ -35,6 +37,11 @@ import AdministrativoListarAdministrativos from './components/administrativo/Adm
 import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
 import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
 import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
+import DocenteTutorListarPlanes from './components/docente/DocenteTutor_planesListar';
+import DocenteApoyoListarPlanes from './components/docente/DocenteApoyo_planesListar';
+import DocenteEvaluadorListarPlanes from './components/docente/DocenteEvaluador_planesListar';
+import DocenteListarEntidades from './components/docente/Docente_entidadesListar';
+import DocenteListarEstudiantes from './components/docente/Docente_estudiantesListar';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -76,6 +83,8 @@ const Enrutado = () => {
             <Route path='/Lider/Docentes' element={<LiderListarDocentes></LiderListarDocentes>}/>
             <Route path='/Lider/Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
             <Route path='/Lider/Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
+            <Route path='/Lider/Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+            <Route path='/Lider/AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           </Route>
           <Route element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='/Administrativo/Perfil'></Route>
@@ -91,6 +100,11 @@ const Enrutado = () => {
             <Route path='Docente/Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
             <Route path='Docente/Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
             <Route path='Docente/Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
+            <Route path='Docente/Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>}/>
+            <Route path='Docente/Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>}/>
+            <Route path='Docente/Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
+            <Route path='Docente/Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
+            <Route path='Docente/Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
           </Route>
         </Route>
         <Route path='/*' element={<Error404></Error404>} />
