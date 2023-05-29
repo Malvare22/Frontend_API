@@ -1,5 +1,9 @@
+import { useRouteError } from 'react-router-dom';
 import ghost from '../assets/images/404_error.png'
 export default function Error404() {
+
+    const error = useRouteError()
+
     return (
         <div className="container-fluid row m-0 p-0 justify-content-center" style={{position: "absolute",top: "50%",left: "50%",transform:"translate(-50%, -50%)",}}>
             <div className='col-md-8 d-flex justify-content-center'>

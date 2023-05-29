@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Lider_Historial";
-import Evaluaciones from "./Lider_Evaluacion";
+import Historial from "./Adminisrativo_Idea_Historial";
+import Evaluaciones from "./Administrativo_Idea_Evaluacion";
 
 
 export default function VistaIdea() {
@@ -140,9 +140,6 @@ const InfoGeneral = () => {
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] != null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] != null ? false : true}>Eliminar</button>
-
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -163,7 +160,8 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
+                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>                                     
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -179,63 +177,16 @@ const InfoGeneral = () => {
                                             <div className="progress-value">50%</div>
                                         </div>
                                     </SProgress>
+                                    
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
                 
             }
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l,i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-
-
-                            {profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal centered isOpen={viewAlertEliminar}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor?</Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
+        
         </div>
 
 
@@ -426,7 +377,7 @@ const Sdiv = styled.div`
       }}
 `;
 
-function Tabla() {
+function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;

@@ -61,7 +61,7 @@ const Table = ({ data }) => {
   const { state, toggleAlert, valor } = useAlert();
   const navigate = useNavigate();
   const toggleA = () => {
-    navigate('/Lider/VistaIdea');
+    navigate('/Lider/Vista');
   };
   return (
     <Sdiv>
@@ -229,6 +229,7 @@ const Filters = ({ onFilter }) => {
 
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Ideas() {
+
   const [filteredData, setFilteredData] = useState([]);
   const getIdeas = async () => {
     let value = null;

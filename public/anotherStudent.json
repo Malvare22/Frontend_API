@@ -1,0 +1,48 @@
+[
+    {
+        "correo": "example@student.com",
+        "contrasenia": "123",
+        "apellidos": "Ramirez",
+        "nombres": "Jorge",
+        "curso": "Séptimo",
+        "codigo": "1",
+        "sexo": "0",
+        "fecha_nacimiento": "2001-04-20",
+        "nombre_acudiente": "Luis Sanchez",
+        "telefono_acudiente": "305484564",
+        "foto": "/images/01.png",
+        "tipo_usuario": "estudiante",
+        "estado": "1"
+    },
+    {
+        "correo": "example@student.com",
+        "contrasenia": "123",
+        "apellidos": "Sanchez",
+        "nombres": "Valeriana",
+        "curso": "Séptimo",
+        "codigo": "2",
+        "sexo": "1",
+        "fecha_nacimiento": "2001-12-20",
+        "nombre_acudiente": "Blas Sanchez",
+        "telefono_acudiente": "4234234",
+        "foto": "/images/02.png",
+        "tipo_usuario": "estudiante",
+        "estado": "1"
+    },
+    {
+        "correo": "ratamandril@student.com",
+        "contrasenia": "123",
+        "apellidos": "Sanjapones",
+        "nombres": "Pipe",
+        "curso": "Noveno",
+        "codigo": "3",
+        "sexo": "1",
+        "fecha_nacimiento": "2001-12-20",
+        "nombre_acudiente": "Blas Sanchez",
+        "telefono_acudiente": "4234234",
+        "foto": "/images/03.png",
+        "tipo_usuario": "estudiante",
+        "estado": "1"
+    }
+    
+]
