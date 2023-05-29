@@ -22,12 +22,9 @@ const modalStyles = {
 
 
 // Componente de tabla
-const Table = (props) => {
+const Table = ({ data }) => {
     const [orderBy, setOrderBy] = useState({ column: 'Codigo', ascending: true });
-    const [orderData, setOrderData] = useState([])
-    // useEffect(()=>{
-    //     setOrderData()
-    // },[])
+
     const handleSort = (column) => {
         if (orderBy.column === column) {
           setOrderBy((prevState) => ({
@@ -40,7 +37,7 @@ const Table = (props) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return props.data.slice().sort((a, b) => {
+        return data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Código') {
                 comparison = a.id.localeCompare(b.id, undefined, { numeric: true });
@@ -60,11 +57,11 @@ const Table = (props) => {
     const sortedData = sortData();
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
-    const toggleA = (value) => {
-        localStorage.setItem('Estudiante', value)
-        navigate('/Lider/Perfil/Estudiante')
+    const toggleA = () => {
+        navigate('');
     };
     const toggleB = () => {
+        navigate('');
     };
     return (
         <Sdiv>
@@ -79,24 +76,23 @@ const Table = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-
-                        {sortData && sortedData.map((d) => (
+                        {sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.id}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante}</td>
                                 <td className='text-center align-middle col-auto'>{d.curso}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={()=>{toggleA(d.id)}} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
                                         <button type="button" className="btn" onClick={toggleB} value={d.id} style={{ width: "auto", border: "none" }}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                                <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
                                         <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, estudiante: d.estudiante })} className="btn" style={{ width: "auto", border: "none" }}>
@@ -163,10 +159,6 @@ export default function Listar_Estudiantes() {
             });
         setFilteredData(value)
     };
-    const navigate = useNavigate()
-    const addStudent=()=>{
-        navigate('/Lider/Registrar/Estudiante')
-    }
     useEffect(() => {
         getEstudiantes();
     }, []);
@@ -180,9 +172,9 @@ export default function Listar_Estudiantes() {
                         <Table data={filteredData}></Table>
                         <br></br>
                         <div className="d-flex justify-content-start">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }} onClick={addStudent}>
+                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                 <div className="col-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                     </svg>

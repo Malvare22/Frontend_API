@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import axios from "axios";
-
-const useAlert = () => {
-    const [state, setState] = useState(false);
-    const [valor, setValor] = useState({});
-
-    const toggleAlert = (v) => {
-        setState(!state);
-        if (v != null) {
-            setValor(v);
-        }
-    }
-    return { state, toggleAlert, valor }
-}
-const modalStyles = {
-    transform: 'translate(0%, 120%)'
-}
-
 
 // Componente de tabla
 const Table = ({ data }) => {
@@ -46,10 +28,9 @@ const Table = ({ data }) => {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
                 comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
-            } else if (column === 'Tutor') {
-                comparison = a.docente_codigo.localeCompare(b.docente_codigo);
-            } else if (column === 'Fecha de corte') {
-                comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
+            }
+            else if (column === 'Area') {
+                comparison = a.area_enfoque.localeCompare(b.area_enfoque);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -58,10 +39,9 @@ const Table = ({ data }) => {
         });
     };
     const sortedData = sortData();
-    const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Lider/VistaPlan');
+        navigate('/Docente/Tutor/VistaPlan');
     };
     return (
         <Sdiv>
@@ -71,9 +51,7 @@ const Table = ({ data }) => {
                         <tr>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
-
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>                            
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -82,8 +60,7 @@ const Table = ({ data }) => {
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>                                
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -97,30 +74,14 @@ const Table = ({ data }) => {
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
                                             </svg>
-                                        </button>
-                                        <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, titulo: d.titulo })} className="btn" style={{ width: "auto", border: "none" }}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
-                                            </svg>
-                                        </button>
+                                        </button>                                        
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>
-            <Modal isOpen={state} style={modalStyles}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Está seguro de que desea eliminar el plan de negocio: {valor.titulo} que tiene como id: {valor.id}?</Label>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={() => toggleAlert(null)}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
+            </div>            
         </Sdiv>
     );
 };
@@ -150,7 +111,6 @@ max-height: 66.4vh;
 
 // Componente de filtros
 const Filters = ({ onFilter }) => {
-    const [tutor, setTutor] = useState('');
     const [estudiante, setEstudiante] = useState('');
     const [area, setArea] = useState('');
     const [estado, setEstado] = useState('');
@@ -160,7 +120,6 @@ const Filters = ({ onFilter }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const filters = {
-            tutor,
             estudiante,
             area,
             estado,
@@ -183,12 +142,6 @@ const Filters = ({ onFilter }) => {
     };
 
     return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
-        <div className="col-auto d-flex align-items-center mb-1">
-            <select name="tutor" onChange={(e) => setTutor(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Tutor</option>
-                <Getdocentes></Getdocentes>
-            </select>
-        </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estudiante" onChange={(e) => setEstudiante(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option defaultValue="0">Estudiante</option>
@@ -233,7 +186,7 @@ export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
         let value = null;
-        value = await axios.get('../planes.json').then(
+        value = await axios.get('../../../planes.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -247,7 +200,6 @@ export default function Listar_Planes() {
     }, []);
     const handleFilter = async (filters) => {
         console.log(filters)
-        console.log(filters.tutor)
         console.log(filters.estudiante)
         console.log(filters.area)
         console.log(filters.estado)
@@ -255,7 +207,7 @@ export default function Listar_Planes() {
         console.log(filters.fechaFin)
         try {
             let value = null;
-            value = await axios.get('../planesFiltrados.json').then(
+            value = await axios.get('../../../planesFiltrados.json').then(
                 response => {
                     const data = response.data;
                     return data;
@@ -272,26 +224,28 @@ export default function Listar_Planes() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio - Tutor</h1>
                     <div className="container">
                         <Filters onFilter={handleFilter}></Filters>
                         <br></br>
                         <Table data={filteredData}></Table>
                         <br></br>
-                        <div className="d-flex justify-content-end">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
-                                <div className="row">
-                                    <div className="col-auto">
-                                        Generar informe
+                        <div className='row'>
+                            <div className="col">
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                    <div className="row">
+                                        <div className="col-auto">
+                                            Formato actual
+                                        </div>
+                                        <div className="col-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                            </svg>
+                                        </div>
                                     </div>
-                                    <div className="col-auto">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-                                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -299,35 +253,11 @@ export default function Listar_Planes() {
         </div>
     );
 }
-function Getdocentes() {
-    const [datos, setDatos] = useState([]);
-    const getDocentes = async () => {
-        let value = null;
-        value = await axios.get('../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-    };
-    useEffect(() => {
-        getDocentes();
-    }, []);
-    return (
-        datos.map((d) => {
-            return (
-                <option value={d.id} key={d.id}>{d.docente}</option>
-            )
-        })
-    )
-}
 function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../estudiantes.json').then(
+        value = await axios.get('../../../estudiantes.json').then(
             response => {
                 const data = response.data;
                 return data;

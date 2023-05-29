@@ -64,7 +64,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function LiderEditarPerfilEstudiante() {
+export default function AdministrativoPerfilEditar() {
 
     return (
 
@@ -103,45 +103,42 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = 
-    {
+    const user = {
         "correo": "ratamandril@student.com",
         "apellidos": "Sanjapones",
         "nombres": "Pipe",
         "documento": "3",
         "sexo": "1",
+        "fecha_nacimiento":"2000-10-23",
         "telefono": "4234234",
-        "contrasenia": "234234",
         "foto": "/images/03.png",
+        "contrasenia": "23453453"
     }
+
     const initialErrors = {
         "correo": false,
-        "contrasenia": false,
-        "apellidos": false,
         "nombres": false,
-        "curso": false,
+        "apellidos": false,
+        "documento": false,
         "sexo": false,
         "fecha_nacimiento": false,
-        "nombre_acudiente": false,
-        "telefono_acudiente": false,
+        "telefono": false,
         "foto": false,
-        "tipo_usuario": false,
+        "contrasenia": false,
     };
 
 
     const validar = (user) => {
         let errors = {
             "correo": false,
-            "contrasenia": false,
-            "apellidos": false,
             "nombres": false,
-            "curso": false,
+            "apellidos": false,
+            "documento": false,
             "sexo": false,
             "fecha_nacimiento": false,
-            "nombre_acudiente": false,
-            "telefono_acudiente": false,
+            "telefono": false,
             "foto": false,
-            "tipo_usuario": false
+            "contrasenia": false,
         };
 
         let fail = false;
@@ -157,10 +154,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.curso==0 || !courses.includes(user.curso)) {
-            errors.curso = true;
-            fail = true;
-        }
+       
         if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
@@ -171,13 +165,14 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
+        if (isNaN(user.documento)) {
+            errors.documento = true;
             fail = true;
         }
+        
 
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
-            errors.telefono_acudiente = true;
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
             fail = true;
         }
 
@@ -252,25 +247,11 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Curso:
+                                Documento de identificación:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0}>Seleccione un curso</option>
-                                    {courses.map((c) => {
-                                        return <option value={c}>{c}</option>
-                                    })}
-                                </Form.Select>
-                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
+                                <input type="number" className={`form-control ${errors.documento ? "is-invalid" : ""}`} name='documento' value={form.documento} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -291,19 +272,19 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombre del acudiente:
+                                Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
-                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Teléfono del acudiente:
+                                Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -331,7 +312,7 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"/Administrativo/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
