@@ -22,6 +22,7 @@ import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
 import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarDocentes from './components/lider/Lider_docentesListar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
@@ -29,7 +30,6 @@ import LiderListarAdministrativos from './components/lider/Lider_administrativos
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
@@ -146,6 +146,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
           <Route path='Perfil'></Route>
+          <Route path='Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
           <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
           <Route path='Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
           <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
