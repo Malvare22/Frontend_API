@@ -22,6 +22,7 @@ import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
 import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import LiderListarPlanes from './components/lider/Listar_planes';
@@ -103,6 +104,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
           <Route path='Perfil'></Route>
+          <Route path='Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
         </Route>
       </Route>
     </>

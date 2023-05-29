@@ -1,10 +1,9 @@
-import { Row } from "react-bootstrap";
 import styled from "styled-components";
-import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Estudiante_Idea_Historial";
-import Evaluaciones from "./Estudiante_Idea_Evaluacion";
+import Historial from "./Docente_Tutor_Idea_Historial.jsx";
+
 
 
 export default function VistaIdea() {
@@ -35,6 +34,11 @@ const InfoGeneral = () => {
     const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
     const toggleAlertEliminar = () => {
         setViewAlertEliminar(!viewAlertEliminar);
+    }
+
+    const [viewAlertEliminarApoyo, setViewAlertEliminarApoyo] = useState(false);
+    const toggleAlertEliminarApoyo = () => {
+        setViewAlertEliminarApoyo(!viewAlertEliminarApoyo);
     }
 
     const [Area, setArea] = useState(String);
@@ -111,9 +115,17 @@ const InfoGeneral = () => {
                                                 <ul>
 
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
-                                                        return (<li key={i}>{l}</li>);
-
+                                                        return (<li key={i}>{l} <svg onClick={toggleAlertEliminar} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                        </svg>
+                                                        </li>);
                                                     })}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+                                                    </svg>
+
 
                                                 </ul>
                                             </div>
@@ -146,8 +158,16 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
                                                     {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j} >{l}</li>);
+                                                        return (<li key={j}>{l} <svg onClick={toggleAlertEliminarApoyo} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                        </svg></li>);
                                                     })}
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+                                                    </svg>
                                                 </ul>
                                             </div>
                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>
@@ -178,7 +198,7 @@ const InfoGeneral = () => {
                 </div>
 
             }
-            
+
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
@@ -201,6 +221,32 @@ const InfoGeneral = () => {
                 <ModalFooter>
                     <Button color="danger">Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal centered isOpen={viewAlertEliminar}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">¿Quieres eliminar a este estudiante?</Label>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal centered isOpen={viewAlertEliminarApoyo}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">¿Quieres eliminar a este docente de apoyo?</Label>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
         </div>
@@ -337,6 +383,44 @@ const Observaciones = () => {
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
                                     <Tabla></Tabla>
+
+                                    <div className=" mt-4 ">
+                                        <div className="row m-4">
+                                            <div className="d-flex justify-content-end">
+                                                <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
+                                                    Agregar
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <div className="row m-4">
+                                            <div className="d-flex justify-content-end">
+                                                <Button color="success">
+                                                    Enviar a Evaluacion
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <UncontrolledCollapse id="observaciones" toggler="#AgregarComentario">
+                                        <Form>
+                                            <FormGroup>
+                                                <div className="row mt-4 justify-content-center text-center">
+
+                                                    <div className="col-6 flex-column justify-content-center">
+                                                        <Label for="exampleEmail"><h3>Observaciones</h3></Label>
+                                                    </div>
+                                                    <div className="col-6 flex-column d-flex justify-content-center">
+                                                        <Input type="textarea" name="email" id="exampleEmail" placeholder="" />
+                                                    </div>
+
+                                                </div>
+                                            </FormGroup>
+                                            <div className=" d-flex justify-content-end">
+                                                <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
+                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                                            </div>
+                                        </Form>
+                                    </UncontrolledCollapse>
                                 </div>
                             </div>
                             <div className="col-12">
