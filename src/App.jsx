@@ -24,6 +24,8 @@ import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
 import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
+import DocenteApoyoVerIdea from './components/docente/Docente_Apoyo_Idea_Ver.jsx';
+import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarDocentes from './components/lider/Lider_docentesListar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
@@ -174,17 +176,27 @@ const router = createBrowserRouter(
           <Route path='Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>}/>
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
+
+          <Route path='Perfil'/>
+          <Route path='Ideas/Tutor/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
+          <Route path='Ideas/Apoyo/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>}/>
+          <Route path='Ideas/Evaluador/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>}/>
+
           <Route path='Perfil'></Route>
-          <Route path='Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
+          <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
           <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
+          <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>}/>
           <Route path='Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
           <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
+
           <Route path='Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>}/>
           <Route path='Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>}/>
           <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
           <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
           <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
+
           <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>}/>
+
         </Route>
       </Route>
     </>

@@ -1,0 +1,192 @@
+[
+    {
+        "codigo": 1,
+        "nombre": "Alex",
+        "apellido": "Alarise",
+        "fecha_nacimiento": [
+            2009,
+            11,
+            4
+        ],
+        "sexo": "M",
+        "correo": "Alex.Alarise@gmail.com",
+        "telefono": "21",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$at9zinUHXRhBGvDxnO/QeQ$0Yd4kZqHQs6UNJMgWchSX8WayKV0zu5Seq9gUXJDJkM",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "860762463",
+        "titulo": "licenciado en lenguaje",
+        "area": "agropecuaria"
+    },
+    {
+        "codigo": 2,
+        "nombre": "Magdalena",
+        "apellido": "Garbe",
+        "fecha_nacimiento": [
+            1999,
+            8,
+            7
+        ],
+        "sexo": "F",
+        "correo": "Magdalena.Garbe@gmail.com",
+        "telefono": "1-645-692-3163",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$VBrbXJng5VgOobZ4+OQkIg$UJN3sleWZFSrRbfqD+3r4+zNRq09XusGT5/vEmhAdNI",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "262322982",
+        "titulo": "licenciado en matemáticas",
+        "area": "agropecuaria"
+    },
+    {
+        "codigo": 3,
+        "nombre": "Charissa",
+        "apellido": "Oriana",
+        "fecha_nacimiento": [
+            2010,
+            11,
+            1
+        ],
+        "sexo": "F",
+        "correo": "Charissa.Oriana@gmail.com",
+        "telefono": "(831) 566-2672",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$ZKSqBUBZw2ldZqtxnu8R7A$Q6Qk/MBTE90EY+EU8nIVK1x14ufmCurdvDtDt7WVSgw",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "329367998",
+        "titulo": "licenciado en ciencias naturales",
+        "area": "minera"
+    },
+    {
+        "codigo": 4,
+        "nombre": "Renae",
+        "apellido": "Woodberry",
+        "fecha_nacimiento": [
+            1990,
+            6,
+            27
+        ],
+        "sexo": "M",
+        "correo": "Renae.Woodberry@gmail.com",
+        "telefono": "1-121-997-5695",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$1+yUNWDGEwcPlV9no6qHuQ$CGYtW8OjXmsukrrObWDT3X9bmGGwxvJ6L4srdO5vuMs",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "754173749",
+        "titulo": "Ingeniero de minas",
+        "area": "minera"
+    },
+    {
+        "codigo": 5,
+        "nombre": "Krystle",
+        "apellido": "Obed",
+        "fecha_nacimiento": [
+            2009,
+            2,
+            5
+        ],
+        "sexo": "M",
+        "correo": "Krystle.Obed@gmail.com",
+        "telefono": "(823) 864-6641",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$CYs9iIkYRxPAj45aOU1Ptw$MfojMtClXefbN9Gk4BFDkeBlO5/TXj6fMnwaoZWFFOo",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "770879830",
+        "titulo": "Administrador de empresas",
+        "area": "comercial"
+    },
+    {
+        "codigo": 6,
+        "nombre": "Luci",
+        "apellido": "Goode",
+        "fecha_nacimiento": [
+            1982,
+            3,
+            18
+        ],
+        "sexo": "F",
+        "correo": "Luci.Goode@gmail.com",
+        "telefono": "(784) 654-8846",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$HTJtPsnXMNbF38gf3YsqaA$NBSDK6SHWLT9co1+aUdrJJBGI2MgLQ1lzhZXz6L8AEY",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "128764170",
+        "titulo": "Contador",
+        "area": "comercial"
+    },
+    {
+        "codigo": 7,
+        "nombre": "Dennie",
+        "apellido": "Norrie",
+        "fecha_nacimiento": [
+            1978,
+            6,
+            26
+        ],
+        "sexo": "F",
+        "correo": "Dennie.Norrie@gmail.com",
+        "telefono": "1-285-744-8521",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$hMUY7KrScjH3oevj8COWqQ$dKNt9bwem9vhc/sGm0mmCPTGYJ42yJ56096PK3uS27I",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "517795769",
+        "titulo": "Ingeniero de minas",
+        "area": "minera"
+    },
+    {
+        "codigo": 16,
+        "nombre": "Hermione",
+        "apellido": "Talia",
+        "fecha_nacimiento": [
+            1999,
+            3,
+            3
+        ],
+        "sexo": "F",
+        "correo": "josejulianalre@gmail.com",
+        "telefono": "1-234-352-2322",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$znp0fWD7RG2AUu0JTNRk9g$uR/D6OQg7P+RK8DNGR9DDa8hmQmL+B7c/6mrl5wwcVw",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "233100794",
+        "titulo": "Licenciada en ciencias naturales ",
+        "area": "agropecuaria"
+    },
+    {
+        "codigo": 17,
+        "nombre": "Letizia",
+        "apellido": "Bronk",
+        "fecha_nacimiento": [
+            1982,
+            4,
+            1
+        ],
+        "sexo": "F",
+        "correo": "mariaalexandraveja@gmail.com",
+        "telefono": "1-918-856-6783",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$AwwZ9r3WxrMGdLjsLHwZPw$LiPzUX66e6IWyQ6THAOn12LANEiNiNoUWR9TAmlH/hk",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "706100715",
+        "titulo": "Ingeniera de minas",
+        "area": "minera"
+    },
+    {
+        "codigo": 18,
+        "nombre": "Elena",
+        "apellido": "Lareena",
+        "fecha_nacimiento": [
+            1966,
+            9,
+            4
+        ],
+        "sexo": "F",
+        "correo": "carlosalbertosame@gmail.com",
+        "telefono": "1-814-795-3382",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$7m9887Y+vVzTutWEIuda4g$REb/RNPSGIVRUjmayreox3blqJ0UgP4p9SAqWw+ErEc",
+        "tipoUsuario": "docente",
+        "fotoUsuarioId": null,
+        "cedula": "351100483",
+        "titulo": "Ingeniera industrial",
+        "area": "industrial"
+    }
+]

@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "titulo": "Esto es una idea",
+        "docenteInfo": [
+            [
+                "mamarm@gmail.com"
+            ],
+            [
+                "mamar3me capito"
+            ]
+        ],
+        "retroalimentacion": "Aqui va la observacion",
+        "fecha": [
+            2023,
+            5,
+            29,
+            18,
+            3,
+            58
+        ]
+    },
+    {
+        "id": 2,
+        "titulo": "Esto es una idea",
+        "docenteInfo": [
+            [
+                "mamarm@gmail.com"
+            ],
+            [
+                "Chuparme capito"
+            ]
+        ],
+        "retroalimentacion": "Aqui va la observacion x2",
+        "fecha": [
+            2023,
+            5,
+            29,
+            18,
+            4,
+            26
+        ]
+    }
+]
