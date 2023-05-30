@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import pencil from './../../assets/images/Pencil.png'
 import defaultImage from './../../assets/images/Users/02.png'
+import pencil from './../../assets/images/Pencil.png'
 import { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ import axios from 'axios';
 //Almacenamiento de datos, errores y mostrar alerta de envio
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
+    const [viewAlertPassword, setViewAlertPassword] = useState(false);
     const [form, setForm] = useState(initialData);
     const [errors, setErrors] = useState(initialErrors);
 
@@ -26,11 +27,14 @@ const useForm = (initialData, validar, initialErrors) => {
         setViewAlert(!viewAlert);
     }
 
+    const toggleAlertPassword = () => {
+        setViewAlertPassword(!viewAlertPassword)
+    }
+
     /**Función que se aplica al querer efectuar en Submit **/
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
-        //toggleAlert()
         const state = await validar(form);
         //Si hubo error:
         if (state != null) {
@@ -38,25 +42,29 @@ const useForm = (initialData, validar, initialErrors) => {
         }
         else {
             const tmp = {
-                nombres: false,
-                apellidos: false,
-                fecha_nacimiento: false,
-                sexo: false,
-                nombre_acudiente: false,
-                telefono_acudiente: false,
-                correo: false,
+                "correo": false,
+                "contrasenia": false,
+                "apellidos": false,
+                "nombres": false,
+                "curso": false,
+                "sexo": false,
+                "fecha_nacimiento": false,
+                "nombre_acudiente": false,
+                "telefono_acudiente": false,
+                "foto": false,
+                "tipo_usuario": false
             };
             setErrors(tmp);
             toggleAlert();
             console.log("Todo bien");
         }
     };
-    return { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit };
+    return { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit };
 };
 
 
 //Componente general
-export default function RegistrarEstudiantePerfil() {
+export default function LiderEditarPerfilEstudiante() {
 
     return (
 
@@ -83,8 +91,8 @@ const Head = () => {
 
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
-            {icon}
-            <h5 className='text-white fw-bold'>Agregar estudiante</h5>
+            <img src={pencil} className='' style={{ width: "50px", height: "50px" }}></img>
+            <h5 className='text-white fw-bold'>Editar Información</h5>
         </div>
     );
 }
@@ -95,21 +103,8 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = {
-        "correo": "",
-        "contrasenia": "",
-        "apellidos": "",
-        "nombres": "",
-        "curso": "",
-        "sexo": "0",
-        "fecha_nacimiento": "",
-        "nombre_acudiente": "",
-        "telefono_acudiente": "",
-        "foto": "",
-        "tipo_usuario": "",
-        "contrasenia": ""
-    }
-
+    let user = JSON.parse(localStorage.getItem("INFO_Estudiante"))    
+    
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
@@ -122,7 +117,6 @@ const Information = () => {
         "telefono_acudiente": false,
         "foto": false,
         "tipo_usuario": false,
-        "contrasenia": false
     };
 
 
@@ -138,15 +132,13 @@ const Information = () => {
             "nombre_acudiente": false,
             "telefono_acudiente": false,
             "foto": false,
-            "tipo_usuario": false,
-            "contrasenia": false
+            "tipo_usuario": false
         };
 
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
         const espacios = /\s/;
-        console.log(user)
         if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
@@ -155,6 +147,7 @@ const Information = () => {
             errors.apellidos = true;
             fail = true;
         }
+
         if (user.curso==0 || !courses.includes(user.curso)) {
             errors.curso = true;
             fail = true;
@@ -184,11 +177,6 @@ const Information = () => {
             fail = true;
         }
 
-        if (espacios.exec(user.contrasenia)!=null  || user.contrasenia.length < 8) {
-            errors.contrasenia = true;
-            fail = true;
-        }
-
         if (fail == false) return null;
         return errors;
     };
@@ -196,7 +184,8 @@ const Information = () => {
     const defaulFile = { "name": "Seleccione una imagen", "direction": defaultImage }
     const [file, setFile] = useState(defaulFile)
 
-    const { form, errors, viewAlert, handleChange, toggleAlert, handleSubmit } = useForm(user, validar, initialErrors);
+    const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
+
     const getPresentDate =()=>{
         const today = new Date();
         const year = today.getFullYear();
@@ -210,6 +199,7 @@ const Information = () => {
         }
         return `${year}-${month}-${day}`;  
     }
+
     //Método para cargar la información
     const updateProfile = async () => {
 
@@ -256,7 +246,7 @@ const Information = () => {
                                 Curso:
                             </div>
                             <div className='col-sm-8 col-6'>
-                            <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
+                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
                                     <option value={0}>Seleccione un curso</option>
                                     {courses.map((c) => {
                                         return <option value={c}>{c}</option>
@@ -317,35 +307,28 @@ const Information = () => {
                                 <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Contraseña:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.contrasenia ? "is-invalid" : ""}`} name='contrasenia' value={form.contrasenia} onChange={handleChange} />
-                                <div className="invalid-feedback">La contraseña debe tener una longitud mínima de 8 carácteres y no puede poseer espacios en blanco.</div>
-                            </div>
+                        <div className='row btns d-flex justify-content-end m-0 p-0'>
+                            <button className='btn d-inline-flex text-white' onClick={(e) => { e.preventDefault(); toggleAlertPassword() }}>Cambiar contraseña</button>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Foto:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer setFile={setFile} file={file} defaulFile={defaulFile}></ImageContainer>
+                                <ImageContainer setFile={setFile} file={file} defaulFile={defaulFile} form={form} setForm={setForm}></ImageContainer>
                             </div>
                         </div>
-
-
                     </SInfo>
                 </div>
-                <div id='btns'>
+                <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"/Lider/Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"../Estudiantes/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
+
             <Modal isOpen={viewAlert} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                    <h6 id="texto" className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
+                    <h6 className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
@@ -353,13 +336,96 @@ const Information = () => {
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
+            <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
+
         </div>
     );
+}
+
+const WindowForPassword = (props) => {
+    const [valid, setValid] = useState(true)
+    const [view1, setView1] = useState(false)
+    const [view2, setView2] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [inputs, setInputs] = useState({ first: '', second: '' })
+
+    const toggleInputs = (e) => {
+        const { value, name } = e.target
+        setInputs({ ...inputs, [name]: value })
+    }
+
+    const iconEye = <svg xmlns="http://www.w3.org/2000/svg" className='ms-2 bi bi-eye-fill' width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+    </svg>;
+    const iconEyeClose = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="ms-2 bi bi-eye-slash-fill" viewBox="0 0 16 16">
+        <path d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
+        <path d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
+    </svg>
+
+    const verifyPassword = (e) => {
+        e.preventDefault()
+        const espacios = /\s/;
+        if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
+            setSuccess(true)
+            setValid(true)
+            props.setForm({...props.form, ["contrasenia"]: inputs.first})
+            props.toggleAlertPassword()
+
+        }
+        else {
+            setValid(false)
+            setSuccess(false)
+        }
+    }
+
+    return (<Modal isOpen={props.viewAlertPassword} size='' centered={true}>
+        <ModalBody className='' >
+            <div>
+                <div className='row m-3'>
+                    <div className='col-4'>
+                        <h6>Contraseña nueva</h6>
+                    </div>
+                    <div className='col-8 d-flex align-items-center'>
+                        <input type={`${view1 ? "text" : "password"}`} onChange={toggleInputs} name='first' value={inputs.first} className='form-control'></input>
+                        <div onClick={() => setView1(!view1)}>{view1 ? iconEye : iconEyeClose}</div>
+                    </div>
+                </div>
+                <div className='row m-3'>
+                    <div className='col-4'>
+                        <h6>Confirmar contraseña</h6>
+                    </div>
+                    <div className='col-8 d-flex align-items-center'>
+                        <input type={`${view2 ? "text" : "password"}`} onChange={toggleInputs} name='second' value={inputs.second} className='form-control'></input>
+                        <div onClick={() => setView2(!view2)}>{view2 ? iconEye : iconEyeClose}</div>
+                    </div>
+                </div>
+                {!valid && <div class="alert alert-danger" role="alert">
+                    La contraseña debe tener una longitud mínima de 8 carácteres y no puede poseer espacios en blanco. (Ambos campos deben coincidir).
+                </div>}
+                {success && <div class="alert alert-success" role="alert">Contraseña válida (Recuerda guardar los cambios)</div>}
+            </div>
+        </ModalBody>
+
+        <ModalFooter className='d-flex justify-content-center'>
+            <Button color="primary" style={{ marginRight: "40px" }} onClick={verifyPassword}>Aceptar</Button>
+            <Button color="secondary" style={{ marginLeft: "40px" }} onClick={props.toggleAlertPassword}>Cancelar</Button>
+        </ModalFooter>
+    </Modal>)
 }
 
 
 //Componente de carga de imagen
 const ImageContainer = (props) => {
+
+    useEffect(()=>{
+        props.setFile({name: props.form.nombres, direction: props.form.foto})
+    },[])
+
+    useEffect(()=>{
+        props.setForm({...props.form, ["foto"]:props.file.direction})
+    
+    },[props.file])
 
     const fileInput = useRef(null)
 
@@ -480,13 +546,13 @@ const SContent = styled.div`
     
         }
     }
-    #btns{
+    .btns{
         display: flex;
         margin-top: 0px;
         margin-bottom: 20px;
         justify-content: center;
     }
-    #btns button{
+    .btns button{
         background-color:#1C3B57;
         margin-left: 40px;
         margin-right:40px;
@@ -504,7 +570,7 @@ const SContent = styled.div`
             }
         }
     }
-    #btns h6{
+    .btns h6{
         
         font-weight: bold;
         margin: 0px;

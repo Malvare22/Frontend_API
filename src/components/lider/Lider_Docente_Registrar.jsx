@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import defaultImage from './../../assets/images/Users/02.png'
 import pencil from './../../assets/images/Pencil.png'
 import { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input } from 'reactstrap';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { createRef } from 'react';
 import { useRef } from 'react';
@@ -10,6 +10,7 @@ import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
 
+const areas = ["Minera", "Agropecuaria", "Comercial", "Servicios", "Industrial"]
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
 const useForm = (initialData, validar, initialErrors) => {
@@ -64,7 +65,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function LiderEditarPerfilEstudiante() {
+export default function LiderDocenteRegistrar() {
 
     return (
 
@@ -103,65 +104,77 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = 
-    {
-        "correo": "ratamandril@student.com",
-        "apellidos": "Sanjapones",
-        "nombres": "Pipe",
-        "documento": "3",
-        "sexo": "1",
-        "telefono": "4234234",
-        "contrasenia": "234234",
-        "foto": "/images/03.png",
+    const user = {
+        "id": "",
+        "nombres": "",
+        "apellidos": "",
+        "documento": "",
+        "titulo": "",
+        "area": "",
+        "correo": "",
+        "contrasenia": "",
+        "telefono": "",
+        "foto": "",
+        "fecha_nacimiento": "",
+        "sexo": "0"
     }
+
     const initialErrors = {
+        "nombres": false,
+        "apellidos": false,
+        "documento": false,
+        "titulo": false,
+        "area": false,
         "correo": false,
         "contrasenia": false,
-        "apellidos": false,
-        "nombres": false,
-        "curso": false,
-        "sexo": false,
-        "fecha_nacimiento": false,
-        "nombre_acudiente": false,
-        "telefono_acudiente": false,
+        "telefono": false,
         "foto": false,
-        "tipo_usuario": false,
+        "fecha_nacimiento": false,
+        "sexo": false
     };
 
 
     const validar = (user) => {
         let errors = {
+            "nombres": false,
+            "apellidos": false,
+            "documento": false,
+            "titulo": false,
+            "area": false,
             "correo": false,
             "contrasenia": false,
-            "apellidos": false,
-            "nombres": false,
-            "curso": false,
-            "sexo": false,
-            "fecha_nacimiento": false,
-            "nombre_acudiente": false,
-            "telefono_acudiente": false,
+            "telefono": false,
             "foto": false,
-            "tipo_usuario": false
+            "fecha_nacimiento": false,
+            "sexo": false
         };
 
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
-        const espacios = /\s/;
-        if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
+        const caracteresEspeciales = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
+        if (user.nombres.trim() == '' || caracteresEspeciales.exec(user.nombres) == null || user.nombres.length > 50) {
             errors.nombres = true;
             fail = true;
         }
-        if (user.apellidos.trim() == '' || number_regex.exec(user.apellidos) != null || user.apellidos.length > 50) {
+        if (user.apellidos.trim() == '' || caracteresEspeciales.exec(user.apellidos) == null || user.apellidos.length > 50) {
             errors.apellidos = true;
             fail = true;
         }
-
-        if (user.curso==0 || !courses.includes(user.curso)) {
-            errors.curso = true;
+        if (isNaN(user.documento)) {
+            errors.documento = true;
             fail = true;
         }
-        if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
+        if (user.titulo.trim() == '' || caracteresEspeciales.exec(user.titulo) == null) {
+            errors.titulo = true;
+            fail = true;
+        }
+        if (!areas.includes(user.area)) {
+            errors.area = true;
+            fail = true;
+        }
+        console.log((new Date(user.fecha_nacimiento)))
+        if (!(Date.parse(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
@@ -171,13 +184,8 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
-            fail = true;
-        }
-
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
-            errors.telefono_acudiente = true;
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
             fail = true;
         }
 
@@ -195,7 +203,7 @@ const Information = () => {
 
     const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
 
-    const getPresentDate =()=>{
+    const getPresentDate = () => {
         const today = new Date();
         const year = today.getFullYear();
         let month = today.getMonth() + 1;
@@ -206,9 +214,8 @@ const Information = () => {
         if (day < 10) {
             day = '0' + day; // Agrega un cero al día si es menor a 10
         }
-        return `${year}-${month}-${day}`;  
+        return `${year}-${month}-${day}`;
     }
-
     //Método para cargar la información
     const updateProfile = async () => {
 
@@ -252,16 +259,34 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Curso:
+                                Documento de identificación:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0}>Seleccione un curso</option>
-                                    {courses.map((c) => {
-                                        return <option value={c}>{c}</option>
+                                <input type="text" className={`form-control ${errors.documento ? "is-invalid" : ""}`} name='documento' value={form.documento} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite documentos de identificación válidos.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Título académico:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.titulo ? "is-invalid" : ""}`} name='titulo' value={form.titulo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo no admite valores númericos.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Área espacializada:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <Input className={`form-control ${errors.area ? "is-invalid" : ""}`} name='area' value={form.area} onChange={handleChange} type="select">
+                                <option value={0} selected={"selected"}>Seleccione un área</option>
+                                    {areas.map((a) => {
+                                        return <option value={a}>{a}</option>;
                                     })}
-                                </Form.Select>
-                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
+                                </Input>
+                                <div className="invalid-feedback">Este campo solo admite las áreas de conocimientos registradas.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -291,19 +316,10 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombre del acudiente:
+                                Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
-                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Teléfono del acudiente:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -331,7 +347,7 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"/Lider/Docentes/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
@@ -378,7 +394,7 @@ const WindowForPassword = (props) => {
         if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
             setSuccess(true)
             setValid(true)
-            props.setForm({...props.form, ["contrasenia"]: inputs.first})
+            props.setForm({ ...props.form, ["contrasenia"]: inputs.first })
             props.toggleAlertPassword()
 
         }
@@ -427,14 +443,14 @@ const WindowForPassword = (props) => {
 //Componente de carga de imagen
 const ImageContainer = (props) => {
 
-    useEffect(()=>{
-        props.setFile({name: props.form.nombres, direction: props.form.foto})
-    },[])
+    useEffect(() => {
+        removeImage()
+    }, [])
 
-    useEffect(()=>{
-        props.setForm({...props.form, ["foto"]:props.file.direction})
-    
-    },[props.file])
+    useEffect(() => {
+        props.setForm({ ...props.form, ["foto"]: props.file.direction })
+
+    }, [props.file])
 
     const fileInput = useRef(null)
 
