@@ -1,4 +1,8 @@
-import React from 'react'
+import styled from "styled-components";
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import Historial from "./Docente_Tutor_Idea_Historial.jsx";
 
 // Componente principal que contiene la tabla y los filtros
 export default function Aceptar_Tutoria() {
