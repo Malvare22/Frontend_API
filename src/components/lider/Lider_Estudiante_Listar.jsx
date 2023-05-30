@@ -61,8 +61,8 @@ const Table = (props) => {
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
     const toggleA = (value) => {
-        localStorage.setItem('Estudiante', value)
-        navigate('/Lider/Perfil/Estudiante')
+        localStorage.setItem('ID_Estudiante', value)
+        navigate('../Estudiantes/Perfil')
     };
     const toggleB = () => {
         
@@ -165,7 +165,7 @@ export default function Listar_Estudiantes() {
     };
     const navigate = useNavigate()
     const addStudent=()=>{
-        navigate('/Lider/Registrar/Estudiante')
+        navigate('../Estudiantes/Registrar')
     }
     useEffect(() => {
         getEstudiantes();

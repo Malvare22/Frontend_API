@@ -25,7 +25,7 @@ import LiderListarIdeas from './components/lider/Listar_ideas';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
+import LiderListarEstudiantes from './components/lider/Lider_Estudiante_Listar';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
@@ -34,11 +34,11 @@ import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades
 import Tabla from './components/estudiante/Tabla';
 import PerfilLider from './components/lider/Lider_Perfil_Ver';
 import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
-import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudiante';
-import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
+import LiderVerPerfilEstudiante from './components/lider/Lider_Estudiante_Ver';
+import LiderEditarPerfilEstudiante from './components/lider/Lider_Estudiante_Editar';
 import StorageTest from './components/lider/storage';
 import axios from 'axios';
-import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
+import RegistrarEstudiantePerfil from './components/lider/Lider_Estudiante_Registrar';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import LiderAdministrativoVer from './components/lider/Lider_Administrador_Ver';
 import LiderVerPerfilDocente from './components/lider/Lider_Docente_Ver';
@@ -48,20 +48,26 @@ import AdministrativoPerfilEditar from './components/administrativo/Administrati
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
-  const searchValue=localStorage.getItem("Estudiante")
+  const searchValue=localStorage.getItem("ID_Estudiante")
   let value = null;
   value = await axios.get('../../../anotherStudent.json').then(
       response => {
           const data = response.data;
           let temp = null;
           data.map((d) => {
-              if (d.codigo == searchValue) temp = d;
+              if (d.id == searchValue) temp = d;
           })
           return temp;
       }).catch(error => { console.error(error); })
   if (value === null) throw new Response("Not Found", { status: 404 })
-  localStorage.setItem("info_estudiante", JSON.stringify(value))
+  localStorage.setItem("INFO_Estudiante", JSON.stringify(value))
   return value;
+}
+
+const verifyStudent= ()=>{
+  const data = localStorage.getItem("INFO_Estudiante");
+    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
 }
 
 const verifyPlanNegocio= async()=>{
@@ -78,11 +84,6 @@ const verifyIdeaNegocio= async()=>{
 
 }
 
-const verifyStudent= ()=>{
-  const data = localStorage.getItem("info_estudiante");
-    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
-}
 
 
 
@@ -111,17 +112,19 @@ const router = createBrowserRouter(
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-          <Route path='Registrar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
-          <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
-          <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
           <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent}/>
           <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent}/>
           <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
-          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
+          {/**Rutas de Estudiantes**/}
+          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
+          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           <Route path='tester' element={<StorageTest></StorageTest>}/>
+          {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
           <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>

@@ -64,7 +64,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function LiderEditarPerfilEstudiante() {
+export default function RegistrarEstudiantePerfil() {
 
     return (
 
@@ -103,21 +103,20 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = 
-    {
-        "id": "1",
-        "correo": "ratamandril@student.com",
-        "apellidos": "Sanjapones",
-        "fecha_nacimiento":"2000-12-12",
-        "nombre_acudiente":"Rodriguez Manuel",
-        "curso":"Séptimo",
-        "nombres": "Pipe",
-        "documento": "3",
-        "sexo": "1",
-        "telefono_acudiente": "1234567891",
-        "contrasenia": "234234",
-        "foto": "/images/03.png"
-    }
+    let user = {
+        "correo": "",
+        "contrasenia": "",
+        "apellidos": "",
+        "nombres": "",
+        "curso": "",
+        "sexo": "",
+        "fecha_nacimiento": "",
+        "nombre_acudiente": "",
+        "telefono_acudiente": "",
+        "foto": "",
+        "tipo_usuario": "",
+    };    
+    
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
@@ -335,7 +334,7 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"../Estudiantes"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
@@ -432,7 +431,7 @@ const WindowForPassword = (props) => {
 const ImageContainer = (props) => {
 
     useEffect(()=>{
-        props.setFile({name: props.form.nombres, direction: props.form.foto})
+        props.setFile(props.defaulFile)
     },[])
 
     useEffect(()=>{
