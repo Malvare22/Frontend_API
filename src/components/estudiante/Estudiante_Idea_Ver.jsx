@@ -1,10 +1,8 @@
-import { Row } from "react-bootstrap";
 import styled from "styled-components";
-import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Estudiante_Idea_Historial";
-import Evaluaciones from "./Estudiante_Idea_Evaluacion";
 
 
 export default function VistaIdea() {
@@ -31,17 +29,6 @@ const InfoGeneral = () => {
     const toggleAlert = () => {
         setViewAlert(!viewAlert);
     }
-
-    const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
-    const toggleAlertEliminar = () => {
-        setViewAlertEliminar(!viewAlertEliminar);
-    }
-
-    const [Area, setArea] = useState(String);
-    const setArea_A = (a) => {
-        setArea(a);
-    }
-
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
@@ -186,7 +173,7 @@ const InfoGeneral = () => {
                         <Input type="text" name="name" id="exampleSelect"></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <Input type="select" name="select" id="exampleSelect">
                             {profesores.map((l, i) => {
                                 if (set.has(l.area)) {
                                     return ("");
@@ -397,7 +384,7 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+        value = await axios.get('../../../Observaciones.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -421,11 +408,11 @@ function Tabla(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {datos.map((d) => (
+                    {datos && datos.map((d) => (
                             <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
+                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
                             </tr>
                         ))}
                     </tbody>

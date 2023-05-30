@@ -1,10 +1,8 @@
-import { Row } from "react-bootstrap";
 import styled from "styled-components";
-import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Lider_Historial";
-import Evaluaciones from "./Lider_Evaluacion";
 
 
 export default function VistaIdea() {
@@ -53,7 +51,7 @@ const InfoGeneral = () => {
             }).catch(error => {
                 console.error(error);
             });
-         setDatos1(value)
+        setDatos1(value)
 
     };
     useEffect(() => {
@@ -64,7 +62,7 @@ const InfoGeneral = () => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-        value = await axios.get('../../../docentes.json').then(
+        value = await axios.get('../../../docentesdeveritas.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -78,23 +76,14 @@ const InfoGeneral = () => {
     }, []);
 
 
-     let docente = "";
-     try {
-        if (datos1.tutorInfo[1]) {
-             docente = datos1.tutorInfo[1];
-        }
-     } catch (error) {
-
-     }
-
     let set = new Set();
 
     return (
 
 
-        <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%"}}>
-            { datos1 && 
-                
+        <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
+            {datos1 &&
+
                 <div className="row">
 
                     <div className="col-12">
@@ -120,7 +109,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l,i) => {
+                                                    {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
@@ -140,8 +129,8 @@ const InfoGeneral = () => {
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] != null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] != null ? false : true}>Eliminar</button>
+                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] === null ? true : false} >Asignar</button>
+                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] === null ? false : true }>Eliminar</button>
 
 
                                         <div className="row mt-2">
@@ -158,7 +147,7 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l,j) => {
+                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
                                                     })}
                                                 </ul>
@@ -184,7 +173,7 @@ const InfoGeneral = () => {
                         </div>
                     </div>
                 </div>
-                
+
             }
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
@@ -192,7 +181,7 @@ const InfoGeneral = () => {
                         <Label id="texto">Escoge al docente que necesitas</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l,i) => {
+                            {profesores && profesores.map((l, i) => {
                                 if (set.has(l.area)) {
                                     return ("");
                                 } else {
@@ -206,9 +195,9 @@ const InfoGeneral = () => {
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
 
 
-                            {profesores.map((l) => {
+                            {profesores && profesores.map((l) => {
                                 if (l.area === Area) {
-                                    return (<option value={l.docente}>{l.docente}</option>);
+                                    return (<option value={l.docente}>{l.nombre+l.apellido}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -430,7 +419,7 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+        value = await axios.get('../../../Observaciones.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -454,11 +443,11 @@ function Tabla(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {datos.map((d) => (
+                        {datos && datos.map((d) => (
                             <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
+                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
                             </tr>
                         ))}
                     </tbody>

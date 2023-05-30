@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Docente_Tutor_Idea_Historial.jsx";
+import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
 
 
 
@@ -155,18 +155,8 @@ const InfoGeneral = () => {
                                                 <ul>
 
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
-                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
-                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                        </svg>
-                                                        </li>);
+                                                        return (<li key={i}>{l}</li>);
                                                     })}
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
-                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
-                                                    </svg>
-
-
                                                 </ul>
                                             </div>
                                         </div>
@@ -198,22 +188,11 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
                                                     {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
-                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                        </svg></li>);
+                                                        return (<li key={j}>{l}</li>);
                                                     })}
-
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
-                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
-                                                    </svg>
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>
-                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Editar</button></div>
-
-
+                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -479,22 +458,6 @@ const SProgress = styled.div`
 
 const Observaciones = () => {
 
-    const [datos, setDatos] = useState([]);
-    const getDatos = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-    };
-    useEffect(() => {
-        getDatos();
-    }, []);
-
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -525,19 +488,12 @@ const Observaciones = () => {
                                                 </Button>
                                             </div>
                                         </div>
-                                        <div className="row m-4">
-                                            <div className="d-flex justify-content-end">
-                                                <Button color="success" disabled={datos && datos.estado === "formulado" ? false : true} >
-                                                    Enviar a Evaluacion
-                                                </Button>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <UncontrolledCollapse id="observaciones" toggler="#AgregarComentario">
                                         <Form>
                                             <FormGroup>
-                                                <div className="row mt-4 justify-content-center text-center">
+                                                <div className="row m-4 justify-content-center text-center">
 
                                                     <div className="col-6 flex-column justify-content-center">
                                                         <Label for="exampleEmail"><h3>Observaciones</h3></Label>
@@ -548,7 +504,7 @@ const Observaciones = () => {
 
                                                 </div>
                                             </FormGroup>
-                                            <div className=" d-flex justify-content-end">
+                                            <div className=" d-flex m-4 justify-content-end">
                                                 <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
                                                 <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
                                             </div>
@@ -610,7 +566,7 @@ const Sdiv = styled.div`
                 }}
           `;
 
-function Tabla(props) {
+function Tabla() {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
@@ -626,6 +582,7 @@ function Tabla(props) {
     useEffect(() => {
         getIdeas();
     }, []);
+
     return (
         <Sdiv>
             <div className='w-auto m-2'>
