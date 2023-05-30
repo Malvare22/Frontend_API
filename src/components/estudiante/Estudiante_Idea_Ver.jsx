@@ -40,7 +40,7 @@ const InfoGeneral = () => {
             }).catch(error => {
                 console.error(error);
             });
-        setDatos1(value)
+         setDatos1(value)
 
     };
     useEffect(() => {
@@ -67,6 +67,7 @@ const InfoGeneral = () => {
     let set = new Set();
 
     return (
+
 
 
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
@@ -97,7 +98,9 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
 
+
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
+
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
@@ -132,14 +135,14 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
+
+                                                    {datos1.docentesApoyoInfo[1].map((l,j) => {
                                                         return (<li key={j} >{l}</li>);
                                                     })}
                                                 </ul>
                                             </div>
                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>
                                             <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Editar</button></div>
-
 
                                         </div>
                                     </div>
@@ -157,12 +160,15 @@ const InfoGeneral = () => {
                                         </div>
                                     </SProgress>
 
+
                                 </div>
+
 
                             </div>
                         </div>
                     </div>
                 </div>
+
 
             }
             
@@ -175,6 +181,7 @@ const InfoGeneral = () => {
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" id="exampleSelect">
                             {profesores.map((l, i) => {
+
                                 if (set.has(l.area)) {
                                     return ("");
                                 } else {
@@ -329,6 +336,7 @@ const Observaciones = () => {
                             <div className="col-12">
 
                             </div>
+
                         </UncontrolledCollapse>
                     </div>
                 </Sobreponer>

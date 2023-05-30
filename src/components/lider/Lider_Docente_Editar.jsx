@@ -64,7 +64,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function LiderEditarPerfilEstudiante() {
+export default function LiderDocenteEditar() {
 
     return (
 
@@ -103,45 +103,48 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = 
-    {
-        "correo": "ratamandril@student.com",
-        "apellidos": "Sanjapones",
-        "nombres": "Pipe",
-        "documento": "3",
-        "sexo": "1",
-        "telefono": "4234234",
-        "contrasenia": "234234",
+    const user = {
+        "nombres":"Luis",
+        "apellidos":"Salazar",
+        "documento":"10213123",
+        "titulo":"Técnico en Inglés",
+        "area":"Salud",
+        "correo":"sdfsdf@hotmail.com",
+        "contrasenia":"32454345",
+        "telefono":"4235345433",
         "foto": "/images/03.png",
+        "fecha_nacimiento":"1991-12-20",
+        "sexo": "0"
     }
+
     const initialErrors = {
-        "correo": false,
-        "contrasenia": false,
-        "apellidos": false,
-        "nombres": false,
-        "curso": false,
-        "sexo": false,
-        "fecha_nacimiento": false,
-        "nombre_acudiente": false,
-        "telefono_acudiente": false,
+        "nombres":false,
+        "apellidos":false,
+        "documento":false,
+        "titulo":false,
+        "area":false,
+        "correo":false,
+        "contrasenia":false,
+        "telefono":false,
         "foto": false,
-        "tipo_usuario": false,
+        "fecha_nacimiento":false,
+        "sexo": false
     };
 
 
     const validar = (user) => {
         let errors = {
-            "correo": false,
-            "contrasenia": false,
-            "apellidos": false,
-            "nombres": false,
-            "curso": false,
-            "sexo": false,
-            "fecha_nacimiento": false,
-            "nombre_acudiente": false,
-            "telefono_acudiente": false,
-            "foto": false,
-            "tipo_usuario": false
+            "nombres":false,
+        "apellidos":false,
+        "documento":false,
+        "titulo":false,
+        "area":false,
+        "correo":false,
+        "contrasenia":false,
+        "telefono":false,
+        "foto": false,
+        "fecha_nacimiento":false,
+        "sexo": false
         };
 
         let fail = false;
@@ -156,11 +159,19 @@ const Information = () => {
             errors.apellidos = true;
             fail = true;
         }
-
-        if (user.curso==0 || !courses.includes(user.curso)) {
-            errors.curso = true;
+        if (isNaN(user.documento)) {
+            errors.documento = true;
             fail = true;
         }
+        if (user.titulo.trim() == '' || number_regex.exec(user.titulo) != null) {
+            errors.titulo = true;
+            fail = true;
+        }
+        if (user.area.trim() == '' || number_regex.exec(user.area) != null) {
+            errors.titulo = true;
+            fail = true;
+        }
+
         if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
@@ -171,13 +182,8 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
-            fail = true;
-        }
-
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
-            errors.telefono_acudiente = true;
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
             fail = true;
         }
 
@@ -252,16 +258,29 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Curso:
+                                Documento de identificación:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0}>Seleccione un curso</option>
-                                    {courses.map((c) => {
-                                        return <option value={c}>{c}</option>
-                                    })}
-                                </Form.Select>
-                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
+                                <input type="text" className={`form-control ${errors.documento ? "is-invalid" : ""}`} name='documento' value={form.documento} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite documentos de identificación válidos.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Título académico:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.titulo ? "is-invalid" : ""}`} name='titulo' value={form.titulo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo valores válidos.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Área espacializada:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.area ? "is-invalid" : ""}`} name='area' value={form.area} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite las áreas de conocimientos registradas.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -291,19 +310,10 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombre del acudiente:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
-                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -331,7 +341,7 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Perfil/Estudiante"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"/Lider/Perfil/Docente"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 

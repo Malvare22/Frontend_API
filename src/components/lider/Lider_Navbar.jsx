@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
 import '../../css/Sidebar.css';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
 
@@ -79,7 +80,7 @@ const SideBarStatic = () => {
       </NavItem>
       <NavItem>
         <NavLink className='offset-md-3 text-white text-start' href="#">
-          Estudiantes
+          <Link to={'Estudiantes'}>Estudiantes</Link>
         </NavLink>
       </NavItem>
       
