@@ -7,6 +7,7 @@ import Home from './routes/Home.jsx'
 import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
 import Recovery from './routes/login/Recovery';
+import ResetPassword from './routes/login/ResetPassword';
 import Error404 from './routes/404_error'
 import TemplateEstudiante from './components/estudiante/Estudiante_Template'
 import TemplateLider from './components/lider/Lider_Template'
@@ -46,6 +47,7 @@ import DocenteApoyoListarPlanes from './components/docente/DocenteApoyo_planesLi
 import DocenteEvaluadorListarPlanes from './components/docente/DocenteEvaluador_planesListar';
 import DocenteListarEntidades from './components/docente/Docente_entidadesListar';
 import DocenteListarEstudiantes from './components/docente/Docente_estudiantesListar';
+import DocenteAceptarTutoria from './components/docente/Docente_TutoriaAceptar';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -98,6 +100,7 @@ const router = createBrowserRouter(
         <Route path='/' element={<Home></Home>} />
         <Route path='/login' element={<Login></Login>} />
         <Route path='/forgetPassword' element={<Recovery></Recovery>} />
+        <Route path='/resetPassword' element={<ResetPassword></ResetPassword>} />
         <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
           <Route path='Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
           <Route path='Test' element={<Tabla></Tabla>} />
@@ -153,6 +156,7 @@ const router = createBrowserRouter(
           <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
           <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
           <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
+          <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>}/>
         </Route>
       </Route>
     </>
