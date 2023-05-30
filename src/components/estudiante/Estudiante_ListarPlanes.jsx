@@ -3,10 +3,11 @@ import axios from 'axios';
 import { Container } from 'reactstrap';
 import CardEs from './Estudiante_Card_Plan';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 export default function Estudiante_ListarPlanes() {
 
-
+    const navigate = useNavigate()
 
     const [datos, setDatos] = useState([]);
 
@@ -27,6 +28,14 @@ export default function Estudiante_ListarPlanes() {
 
     }, []);
 
+    const setInfo=(plan_id)=>{
+        let plan=null;
+        datos.map((v)=>{
+            if(v.id==plan_id)
+                plan=JSON.stringify(v)
+        })
+        localStorage.setItem('plan_info', plan)
+    }
 
     return (
         <>
@@ -71,7 +80,7 @@ export default function Estudiante_ListarPlanes() {
                                             }
 
                                             return (<div key={i} className="col-12 col-lg-4 col-sm-6">
-                                                <CardEs key={v.titulo} titulo={v.titulo} color={color}></CardEs>
+                                                <CardEs key={v.titulo} setInfo={setInfo} id={v.id} titulo={v.titulo} color={color}></CardEs>
                                             </div>
                                             );
                                         })}

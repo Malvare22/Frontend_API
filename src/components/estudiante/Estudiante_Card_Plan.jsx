@@ -19,7 +19,7 @@ const EstudianteCardPlan = (props) => {
                                 <h6 className="card-subtitle mb-2"> {props.titulo} </h6>
                             </div>
                             <div className='row d-flex justify-content-center align-items-center'>
-                                <button type="button" style={{ background: "#3C3C3C", color: "white", width: "auto" }} className="btn btn-sm">Ver</button>
+                                <button type="button" style={{ background: "#3C3C3C", color: "white", width: "auto" }} onClick={(e)=>{e.preventDefault();  props.setInfo(props.id);}} className="btn btn-sm">Ver</button>
                             </div>
                         </div>
                     </div>

@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Lider_Historial";
+import Historial from "./Docente_Tutor_Idea_Historial.jsx";
+
 
 
 export default function VistaIdea() {
     return (<div className="row">
         <InfoGeneral></InfoGeneral>
-        <Observaciones></Observaciones>
+        <Observaciones ></Observaciones>
+
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -30,14 +32,43 @@ const InfoGeneral = () => {
         setViewAlert(!viewAlert);
     }
 
+
+    const [viewAlertDocente, setViewAlertDocente] = useState(false);
+    const toggleAlertDocente = () => {
+        setViewAlertDocente(!viewAlertDocente);
+    }
+
+    const [viewAlertEstudiante, setViewAlertEstudiante] = useState(false);
+    const toggleAlertEstudiante = () => {
+        setViewAlertEstudiante(!viewAlertEstudiante);
+    }
+
     const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
     const toggleAlertEliminar = () => {
         setViewAlertEliminar(!viewAlertEliminar);
     }
 
+    const [viewAlertEliminarApoyo, setViewAlertEliminarApoyo] = useState(false);
+    const toggleAlertEliminarApoyo = () => {
+        setViewAlertEliminarApoyo(!viewAlertEliminarApoyo);
+    }
+
     const [Area, setArea] = useState(String);
     const setArea_A = (a) => {
         setArea(a);
+    }
+
+    const [Agregar, setAgregar] = useState(String);
+    const setAgregare = (a) => {
+        setAgregar(a);
+    }
+    const eliminarEstudiantes = (a) => {
+        setAgregare(a);
+        toggleAlertEliminar();
+    }
+    const eliminarApoyo = (a) => {
+        setAgregare(a);
+        toggleAlertEliminarApoyo();
     }
 
 
@@ -75,8 +106,25 @@ const InfoGeneral = () => {
         getProfesores();
     }, []);
 
+    const [estudiantes, setEstudiantes] = useState([]);
+    const getEstudiantes = async () => {
+        let value = null;
+        value = await axios.get('../../../estudiantesdeveritas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setEstudiantes(value)
+    };
+    useEffect(() => {
+        getEstudiantes();
+    }, []);
 
     let set = new Set();
+    let set1 = new Set();
+    let set2 = new Set();
 
     return (
 
@@ -110,9 +158,21 @@ const InfoGeneral = () => {
                                                 <ul>
 
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
-                                                        return (<li key={i}>{l}</li>);
 
+                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
+
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                        </svg>
+                                                        </li>);
                                                     })}
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
+
+                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+                                                    </svg>
+
 
                                                 </ul>
                                             </div>
@@ -128,9 +188,6 @@ const InfoGeneral = () => {
 
                                             </div>
                                         </div>
-
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] === null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] === null ? false : true }>Eliminar</button>
 
 
                                         <div className="row mt-2">
@@ -148,11 +205,24 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
                                                     {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j} >{l}</li>);
+                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" className="bi bi-x-circle" viewBox="0 0 16 16">
+
+                                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                                        </svg></li>);
                                                     })}
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
+
+                                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                        <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+                                                    </svg>
                                                 </ul>
                                             </div>
-                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
+                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>
+                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Editar</button></div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -168,20 +238,27 @@ const InfoGeneral = () => {
                                             <div className="progress-value">50%</div>
                                         </div>
                                     </SProgress>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
             }
+
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
+                        <Input type="text" name="name" id="exampleSelect"></Input>
+                        <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+
+                        <Input type="select" name="select" id="exampleSelect">
                             {profesores && profesores.map((l, i) => {
+
                                 if (set.has(l.area)) {
                                     return ("");
                                 } else {
@@ -190,23 +267,8 @@ const InfoGeneral = () => {
                                 }
                             })}
                         </Input>
-
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-
-
-                            {profesores && profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option value={l.docente}>{l.nombre+l.apellido}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
                     </FormGroup>
                 </ModalBody>
-
                 <ModalFooter>
                     <Button color="danger">Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
@@ -216,7 +278,8 @@ const InfoGeneral = () => {
             <Modal centered isOpen={viewAlertEliminar}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor?</Label>
+                        <Label id="texto">¿Quieres eliminar a este estudiante {Agregar}?</Label>
+
                     </FormGroup>
                 </ModalBody>
 
@@ -225,10 +288,91 @@ const InfoGeneral = () => {
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
+
+            <Modal centered isOpen={viewAlertEliminarApoyo}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">¿Quieres eliminar a este docente de apoyo {Agregar}? </Label>
+
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
+            <Modal centered isOpen={viewAlertDocente}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {profesores && profesores.map((l, i) => {
+                                if (set1.has(l.area)) {
+                                    return ("");
+                                } else {
+                                    set1.add(l.area);
+                                    return (<option key={i} value={l.area}>{l.area}</option>);
+                                }
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Select Multiple</Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                            {profesores && profesores.map((l) => {
+                                if (l.area === Area) {
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                } else {
+                                    return ("");
+                                }
+                            })}
+
+                        </Input>
+                    </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger">Asignar</Button>
+                        <Button color="primary" onClick={toggleAlertDocente}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
+            </Modal>
+
+
+            <Modal centered isOpen={viewAlertEstudiante}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge el curso del estudiante</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {estudiantes && estudiantes.map((l, i) => {
+                                if (set2.has(l.curso)) {
+                                    return ("");
+                                } else {
+                                    set2.add(l.curso);
+                                    return (<option key={i} value={l.curso}>{l.curso}</option>);
+                                }
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                            {estudiantes && estudiantes.map((l) => {
+                                if (l.curso === Area) {
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                } else {
+                                    return ("");
+                                }
+                            })}
+
+                        </Input>
+                    </FormGroup>
+
+                    <ModalFooter>
+                        <Button color="danger">Asignar</Button>
+                        <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
+            </Modal>
         </div>
-
-
-
     )
 };
 
@@ -341,6 +485,22 @@ const SProgress = styled.div`
 `;
 
 const Observaciones = () => {
+
+    const [datos, setDatos] = useState([]);
+    const getDatos = async () => {
+        let value = null;
+        value = await axios.get('../../../ideasdeveritas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
+    };
+    useEffect(() => {
+        getDatos();
+    }, []);
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -362,7 +522,49 @@ const Observaciones = () => {
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
                                     <Tabla></Tabla>
+
+                                    <div className=" mt-4 ">
+                                        <div className="row m-4">
+                                            <div className="d-flex justify-content-end">
+                                                <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
+                                                    Agregar
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <div className="row m-4">
+                                            <div className="d-flex justify-content-end">
+                                                <Button color="success" disabled={datos && datos.estado === "formulado" ? false : true} >
+
+                                                    Enviar a Evaluacion
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <UncontrolledCollapse id="observaciones" toggler="#AgregarComentario">
+                                        <Form>
+                                            <FormGroup>
+                                                <div className="row mt-4 justify-content-center text-center">
+
+                                                    <div className="col-6 flex-column justify-content-center">
+                                                        <Label for="exampleEmail"><h3>Observaciones</h3></Label>
+                                                    </div>
+                                                    <div className="col-6 flex-column d-flex justify-content-center">
+                                                        <Input type="textarea" name="email" id="exampleEmail" placeholder="" />
+                                                    </div>
+
+                                                </div>
+                                            </FormGroup>
+                                            <div className=" d-flex justify-content-end">
+                                                <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
+                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                                            </div>
+                                        </Form>
+                                    </UncontrolledCollapse>
                                 </div>
+                            </div>
+                            <div className="col-12">
+
                             </div>
                         </UncontrolledCollapse>
                     </div>
@@ -389,37 +591,38 @@ const Sobreponer = styled.div`
  `;
 
 const Sdiv = styled.div`
-  table{
-      table-layout: fixed;
-  }
-  
-  th, td {
-      border: 1px solid;
-      width: 100px;
-      word-wrap: break-word;
-  }
-  table th{
-      background-color: #1C3B57;
-      color: #FFF;
-  }
-  table td{
-    background-color:#FFF;
-  }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
-  
-  @media screen and (max-width: 576px){
-      th, td {
-          width: 60px;
-      }}
-`;
+            table{
+                table-layout: fixed;
+            }
+            
+            th, td {
+                border: 1px solid;
+                width: 100px;
+                word-wrap: break-word;
+            }
+            table th{
+                background-color: #1C3B57;
+                color: #FFF;
+            }
+            table td{
+              background-color:#FFF;
+            }
+            overflow-y: scroll;
+            height: fit-content;
+            max-height: 66.4vh;
+            
+            @media screen and (max-width: 576px){
+                th, td {
+                    width: 60px;
+                }}
+          `;
 
-function Tabla() {
+function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
         value = await axios.get('../../../Observaciones.json').then(
+
             response => {
                 const data = response.data;
                 return data;
@@ -448,6 +651,7 @@ function Tabla() {
                                 <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
                                 <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
                                 <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
+
                             </tr>
                         ))}
                     </tbody>
