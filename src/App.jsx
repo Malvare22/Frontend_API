@@ -23,7 +23,6 @@ import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
 import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarDocentes from './components/lider/Lider_docentesListar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
@@ -139,22 +138,24 @@ const router = createBrowserRouter(
           <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
-          {/**Rutas de Estudiantes**/}
+          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
+          {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
           <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
-          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
-          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
-          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
-          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**--------------------**/}
-          {/**Rutas de Docentes**/}
+          {/**Rutas de gestión de Docentes**/}
           <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
           <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={searchStudent}/>
           <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
           <Route path='tester' element={<StorageTest></StorageTest>}/>
+          {/**--------------------**/}
+          {/**Rutas de gestión de Administradores**/}
+          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
           {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>

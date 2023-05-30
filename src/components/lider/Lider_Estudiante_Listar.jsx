@@ -81,9 +81,9 @@ const Table = (props) => {
                     <tbody>
 
                         {sortData && sortedData.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.id}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante}</td>
+                            <tr key={d.correo}>
+                                <td className='text-center align-middle col-auto'>{d.codigo}</td>
+                                <td className='text-center align-middle col-auto'>{d.nombre}</td>
                                 <td className='text-center align-middle col-auto'>{d.curso}</td>
                                 <td className='text-center align-middle'>
                                     <div>
@@ -154,14 +154,13 @@ export default function Listar_Estudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../estudiantes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setFilteredData(value)
+        const config = {
+            headers:{
+                "X-Softue-JWT":localStorage.getItem('token_access')
+            }
+        }
+        value = await axios.get('http://localhost:8080/estudiante/listar', config)
+        setFilteredData(value.data)
     };
     const navigate = useNavigate()
     const addStudent=()=>{
