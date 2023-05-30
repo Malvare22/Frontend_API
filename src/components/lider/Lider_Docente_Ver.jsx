@@ -154,7 +154,7 @@ const Information = (props) => {
 
 const Button = () => {
     return (
-        <Sdiv04><Link to={"/Lider/Perfil/Docente/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><Link to={"Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
                 Editar Información de Estudiante
             </h5>

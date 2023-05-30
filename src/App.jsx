@@ -23,13 +23,13 @@ import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
 import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarDocentes from './components/lider/Lider_docentesListar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
+import LiderListarEstudiantes from './components/lider/Lider_Estudiante_Listar';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
@@ -54,41 +54,57 @@ import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades
 import Tabla from './components/estudiante/Tabla';
 import PerfilLider from './components/lider/Lider_Perfil_Ver';
 import EditarPerfilLider from './components/lider/Lider_Perfil_Editar';
-import LiderVerPerfilEstudiante from './components/lider/Lider_Ver_Perfil_Estudiante';
-import LiderEditarPerfilEstudiante from './components/lider/Lider_Editar_Perfil_Estudiante';
+import LiderVerPerfilEstudiante from './components/lider/Lider_Estudiante_Ver';
+import LiderEditarPerfilEstudiante from './components/lider/Lider_Estudiante_Editar';
 import StorageTest from './components/lider/storage';
 import axios from 'axios';
-import RegistrarEstudiantePerfil from './components/lider/Lider_Registrar_Estudiante';
+import RegistrarEstudiantePerfil from './components/lider/Lider_Estudiante_Registrar';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import LiderAdministrativoVer from './components/lider/Lider_Administrador_Ver';
 import LiderVerPerfilDocente from './components/lider/Lider_Docente_Ver';
 import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
+import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
-  const searchValue=localStorage.getItem("Estudiante")
+  const searchValue=localStorage.getItem("ID_Estudiante")
   let value = null;
   value = await axios.get('../../../anotherStudent.json').then(
       response => {
           const data = response.data;
           let temp = null;
           data.map((d) => {
-              if (d.codigo == searchValue) temp = d;
+              if (d.id == searchValue) temp = d;
           })
           return temp;
       }).catch(error => { console.error(error); })
   if (value === null) throw new Response("Not Found", { status: 404 })
-  localStorage.setItem("info_estudiante", JSON.stringify(value))
+  localStorage.setItem("INFO_Estudiante", JSON.stringify(value))
   return value;
 }
 const verifyStudent= ()=>{
-  const data = localStorage.getItem("info_estudiante");
+  const data = localStorage.getItem("INFO_Estudiante");
     if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
     return true;
 }
+
+const verifyPlanNegocio= async()=>{
+  const data = localStorage.getItem('plan_info');
+  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
+
+}
+
+const verifyIdeaNegocio= async()=>{
+  const data = localStorage.getItem('idea_info');
+  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
+
+}
+
 
 
 
@@ -116,22 +132,31 @@ const router = createBrowserRouter(
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-          <Route path='Registrar/Estudiante' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
-          <Route path='Perfil/Estudiante' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
-          <Route path='Perfil/Estudiante/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
           <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent}/>
           <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent}/>
           <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
-          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}/>
-          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}/>
           <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
-          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
           <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
           <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
+          {/**Rutas de gestión de Estudiantes**/}
+          <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
+          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
+          {/**--------------------**/}
+          {/**Rutas de gestión de Docentes**/}
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={searchStudent}/>
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
+          <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
           <Route path='tester' element={<StorageTest></StorageTest>}/>
+          {/**--------------------**/}
+          {/**Rutas de gestión de Administradores**/}
+          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
+          {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
           <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
