@@ -29,7 +29,6 @@ import LiderListarAdministrativos from './components/lider/Lider_administrativos
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
