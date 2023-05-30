@@ -105,14 +105,18 @@ const Information = () => {
 
     const user = 
     {
+        "id": "1",
         "correo": "ratamandril@student.com",
         "apellidos": "Sanjapones",
+        "fecha_nacimiento":"2000-12-12",
+        "nombre_acudiente":"Rodriguez Manuel",
+        "curso":"Séptimo",
         "nombres": "Pipe",
         "documento": "3",
         "sexo": "1",
-        "telefono": "4234234",
+        "telefono_acudiente": "1234567891",
         "contrasenia": "234234",
-        "foto": "/images/03.png",
+        "foto": "/images/03.png"
     }
     const initialErrors = {
         "correo": false,

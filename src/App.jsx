@@ -64,6 +64,20 @@ const searchStudent= async()=> {
   return value;
 }
 
+const verifyPlanNegocio= async()=>{
+  const data = localStorage.getItem('plan_info');
+  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
+
+}
+
+const verifyIdeaNegocio= async()=>{
+  const data = localStorage.getItem('idea_info');
+  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+    return true;
+
+}
+
 const verifyStudent= ()=>{
   const data = localStorage.getItem("info_estudiante");
     if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })

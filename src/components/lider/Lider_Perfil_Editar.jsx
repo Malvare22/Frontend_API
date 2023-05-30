@@ -104,41 +104,42 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 const Information = () => {
 
     const user = {
-        "nombres":"Luis sdfsdfsdfsdf",
-        "apellidos":"Salazar sdfsdfsdfs",
-        "documento":"10213123",
+        "id" : "1",
+        "nombres": "Luis sdfsdfsdfsdf",
+        "apellidos": "Salazar sdfsdfsdfs",
+        "documento": "10213123",
         "sexo": "0",
-        "correo":"sdfsdf@hotmail.com",
-        "telefono":"4235345433",
+        "correo": "sdfsdf@hotmail.com",
+        "telefono": "4235345433",
         "foto": "/images/02.png",
         "contrasenia": "345345fdsg",
-        "fecha_nacimiento":"1991-12-20",
+        "fecha_nacimiento": "1991-12-20",
     }
 
     const initialErrors = {
-        "nombres":false,
-        "apellidos":false,
-        "documento":false,
+        "nombres": false,
+        "apellidos": false,
+        "documento": false,
         "sexo": false,
-        "correo":false,
-        "telefono":false,
+        "correo": false,
+        "telefono": false,
         "contrasenia": false,
         "foto": false,
-        "fecha_nacimiento":false,
+        "fecha_nacimiento": false,
     };
 
 
     const validar = (user) => {
         let errors = {
-            "nombres":false,
-        "apellidos":false,
-        "documento":false,
-        "sexo": false,
-        "correo":false,
-        "telefono":false,
-        "contrasenia": false,
-        "foto": false,
-        "fecha_nacimiento":false,
+            "nombres": false,
+            "apellidos": false,
+            "documento": false,
+            "sexo": false,
+            "correo": false,
+            "telefono": false,
+            "contrasenia": false,
+            "foto": false,
+            "fecha_nacimiento": false,
         };
 
         let fail = false;
@@ -158,7 +159,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
+        if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
@@ -187,7 +188,7 @@ const Information = () => {
 
     const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
 
-    const getPresentDate =()=>{
+    const getPresentDate = () => {
         const today = new Date();
         const year = today.getFullYear();
         let month = today.getMonth() + 1;
@@ -198,7 +199,7 @@ const Information = () => {
         if (day < 10) {
             day = '0' + day; // Agrega un cero al día si es menor a 10
         }
-        return `${year}-${month}-${day}`;  
+        return `${year}-${month}-${day}`;
     }
 
     //Método para cargar la información
@@ -356,7 +357,7 @@ const WindowForPassword = (props) => {
         if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
             setSuccess(true)
             setValid(true)
-            props.setForm({...props.form, ["contrasenia"]: inputs.first})
+            props.setForm({ ...props.form, ["contrasenia"]: inputs.first })
             props.toggleAlertPassword()
 
         }
@@ -405,14 +406,14 @@ const WindowForPassword = (props) => {
 //Componente de carga de imagen
 const ImageContainer = (props) => {
 
-    useEffect(()=>{
-        props.setFile({name: props.form.nombres, direction: props.form.foto})
-    },[])
+    useEffect(() => {
+        props.setFile({ name: props.form.nombres, direction: props.form.foto })
+    }, [])
 
-    useEffect(()=>{
-        props.setForm({...props.form, ["foto"]:props.file.direction})
-    
-    },[props.file])
+    useEffect(() => {
+        props.setForm({ ...props.form, ["foto"]: props.file.direction })
+
+    }, [props.file])
 
     const fileInput = useRef(null)
 
