@@ -259,7 +259,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0}>Seleccione un curso</option>
+                                    <option value={0} selected={"selected"}>Seleccione un curso</option>
                                     {courses.map((c) => {
                                         return <option value={c}>{c}</option>
                                     })}
@@ -431,7 +431,7 @@ const WindowForPassword = (props) => {
 const ImageContainer = (props) => {
 
     useEffect(()=>{
-        props.setFile(props.defaulFile)
+        removeImage()
     },[])
 
     useEffect(()=>{

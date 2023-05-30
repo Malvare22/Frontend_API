@@ -45,6 +45,7 @@ import LiderVerPerfilDocente from './components/lider/Lider_Docente_Ver';
 import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
+import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
@@ -123,6 +124,13 @@ const router = createBrowserRouter(
           <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
+          <Route path='tester' element={<StorageTest></StorageTest>}/>
+          {/**--------------------**/}
+          {/**Rutas de Docentes**/}
+          <Route path='Docentes' element={""}></Route>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={searchStudent}/>
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
+          <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
           <Route path='tester' element={<StorageTest></StorageTest>}/>
           {/**--------------------**/}
         </Route>

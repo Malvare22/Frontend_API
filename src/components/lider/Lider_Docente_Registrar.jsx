@@ -65,7 +65,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function LiderDocenteEditar() {
+export default function LiderDocenteRegistrar() {
 
     return (
 
@@ -105,17 +105,17 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 const Information = () => {
 
     const user = {
-        "id": "1",
-        "nombres": "Luis",
-        "apellidos": "Salazar",
-        "documento": "10213123",
-        "titulo": "Técnico en Inglés",
-        "area": "Comercial",
-        "correo": "sdfsdf@hotmail.com",
-        "contrasenia": "32454345",
-        "telefono": "4235345433",
-        "foto": "/images/03.png",
-        "fecha_nacimiento": "1991-12-20",
+        "id": "",
+        "nombres": "",
+        "apellidos": "",
+        "documento": "",
+        "titulo": "",
+        "area": "",
+        "correo": "",
+        "contrasenia": "",
+        "telefono": "",
+        "foto": "",
+        "fecha_nacimiento": "",
         "sexo": "0"
     }
 
@@ -281,6 +281,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <Input className={`form-control ${errors.area ? "is-invalid" : ""}`} name='area' value={form.area} onChange={handleChange} type="select">
+                                <option value={0} selected={"selected"}>Seleccione un área</option>
                                     {areas.map((a) => {
                                         return <option value={a}>{a}</option>;
                                     })}
@@ -443,7 +444,7 @@ const WindowForPassword = (props) => {
 const ImageContainer = (props) => {
 
     useEffect(() => {
-        props.setFile({ name: props.form.nombres, direction: props.form.foto })
+        removeImage()
     }, [])
 
     useEffect(() => {
