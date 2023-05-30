@@ -22,11 +22,32 @@ import LiderVistaIdea from './components/lider/Lider_VerIdea';
 import EstudianteVistaIdea from './components/estudiante/Estudiante_Idea_Ver';
 import AdministrativoVistaIdea from './components/administrativo/Administrativo_Idea_Ver';
 import LiderListarIdeas from './components/lider/Listar_ideas';
+import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
+import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
+import LiderListarDocentes from './components/lider/Lider_docentesListar';
+import LiderListarEntidades from './components/lider/Lider_entidadesListar';
+import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
 import LiderListarEstudiantes from './components/lider/Lider_Estudiante_Listar';
 import LiderListarPlanes from './components/lider/Listar_planes';
+import LiderListarFormatos from './components/lider/Lider_formatosListar';
+import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
+import AdministrativoListarIdeas from './components/administrativo/Administrativo_ideasListar';
+import AdministrativoListarPlanes from './components/administrativo/Administrativo_planesListar';
+import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
+import AdministrativoListarEstudiantes from './components/administrativo/Administrativo_estudiantesListar';
+import AdministrativoListarDocentes from './components/administrativo/Administrativo_docentesListar';
+import AdministrativoListarAdministrativos from './components/administrativo/Administrativo_administrativosListar';
+import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
+import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
+import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
+import DocenteTutorListarPlanes from './components/docente/DocenteTutor_planesListar';
+import DocenteApoyoListarPlanes from './components/docente/DocenteApoyo_planesListar';
+import DocenteEvaluadorListarPlanes from './components/docente/DocenteEvaluador_planesListar';
+import DocenteListarEntidades from './components/docente/Docente_entidadesListar';
+import DocenteListarEstudiantes from './components/docente/Docente_estudiantesListar';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
 import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion';
@@ -47,6 +68,7 @@ import AdministrativoPerfil from './components/administrativo/Administrativo_Per
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 
+
 const searchStudent= async()=> {
   //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
   const searchValue=localStorage.getItem("ID_Estudiante")
@@ -64,7 +86,6 @@ const searchStudent= async()=> {
   localStorage.setItem("INFO_Estudiante", JSON.stringify(value))
   return value;
 }
-
 const verifyStudent= ()=>{
   const data = localStorage.getItem("INFO_Estudiante");
     if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
@@ -101,10 +122,9 @@ const router = createBrowserRouter(
           <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
           <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
           <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
-          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
+          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>}/>
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
-          <Route path='Test' element={<Tabla></Tabla>} />
           <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
           <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
           <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>}/>
@@ -116,7 +136,7 @@ const router = createBrowserRouter(
           <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
           <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent}/>
           <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent}/>
-          <Route path='Ideas' element={<Listar_Ideas></Listar_Ideas>}></Route>
+          <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
           {/**Rutas de Estudiantes**/}
@@ -124,10 +144,13 @@ const router = createBrowserRouter(
           <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
           <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
-          <Route path='tester' element={<StorageTest></StorageTest>}/>
+          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
+          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**--------------------**/}
           {/**Rutas de Docentes**/}
-          <Route path='Docentes' element={""}></Route>
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
           <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={searchStudent}/>
           <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
@@ -138,9 +161,24 @@ const router = createBrowserRouter(
           <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
           <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
+          <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>}/>
+          <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>}/>
+          <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>}/>
+          <Route path='Docentes' element={<AdministrativoListarDocentes></AdministrativoListarDocentes>}/>
+          <Route path='Estudiantes' element={<AdministrativoListarEstudiantes></AdministrativoListarEstudiantes>}/>
+          <Route path='Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>}/>
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
           <Route path='Perfil'></Route>
+          <Route path='Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
+          <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
+          <Route path='Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
+          <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
+          <Route path='Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>}/>
+          <Route path='Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>}/>
+          <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
+          <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
+          <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
         </Route>
       </Route>
     </>

@@ -48,8 +48,6 @@ const Table = ({ data }) => {
                 comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
             } else if (column === 'Tutor') {
                 comparison = a.docente_codigo.localeCompare(b.docente_codigo);
-            } else if (column === 'Fecha de corte') {
-                comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -61,7 +59,7 @@ const Table = ({ data }) => {
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Lider/VistaPlan');
+        navigate('/Lider/VistaIdea');
     };
     return (
         <Sdiv>
@@ -71,9 +69,7 @@ const Table = ({ data }) => {
                         <tr>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
-
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>                            
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -82,8 +78,7 @@ const Table = ({ data }) => {
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                                <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>                                
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -113,7 +108,7 @@ const Table = ({ data }) => {
             <Modal isOpen={state} style={modalStyles}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Está seguro de que desea eliminar el plan de negocio: {valor.titulo} que tiene como id: {valor.id}?</Label>
+                        <Label id="texto">¿Está seguro de que desea eliminar la idea de negocio: {valor.titulo} que tiene como id: {valor.id}?</Label>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
@@ -229,11 +224,11 @@ const Filters = ({ onFilter }) => {
 };
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Planes() {
+export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
-    const getPlanes = async () => {
+    const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../planes.json').then(
+        value = await axios.get('../ideas.json').then(
             response => {
                 const data = response.data;
                 return data;
@@ -243,7 +238,7 @@ export default function Listar_Planes() {
         setFilteredData(value)
     };
     useEffect(() => {
-        getPlanes();
+        getIdeas();
     }, []);
     const handleFilter = async (filters) => {
         console.log(filters)
@@ -255,7 +250,7 @@ export default function Listar_Planes() {
         console.log(filters.fechaFin)
         try {
             let value = null;
-            value = await axios.get('../planesFiltrados.json').then(
+            value = await axios.get('../ideasFiltradas.json').then(
                 response => {
                     const data = response.data;
                     return data;
@@ -272,27 +267,45 @@ export default function Listar_Planes() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Ideas de Negocio</h1>
                     <div className="container">
                         <Filters onFilter={handleFilter}></Filters>
                         <br></br>
                         <Table data={filteredData}></Table>
                         <br></br>
-                        <div className="d-flex justify-content-end">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
-                                <div className="row">
-                                    <div className="col-auto">
-                                        Generar informe
+                        <div className='row'>
+                            <div className="col">
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                    <div className="row">
+                                        <div className="col-auto">
+                                            Formato actual
+                                        </div>
+                                        <div className="col-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                            </svg>
+                                        </div>
                                     </div>
-                                    <div className="col-auto">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
-                                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
-                                        </svg>
+                                </button>
+                            </div>
+                            <div className="col d-flex justify-content-end">
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                    <div className="row">
+                                        <div className="col-auto">
+                                            Generar informe
+                                        </div>
+                                        <div className="col-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                            </svg>
+                                        </div>
                                     </div>
-                                </div>
-                            </button>
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
