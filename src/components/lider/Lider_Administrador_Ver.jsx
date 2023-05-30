@@ -18,7 +18,8 @@ const VistaGeneral = () => {
         "correo": "ratamandril@student.com",
         "apellidos": "Sanjapones",
         "nombres": "Pipe",
-        "documento": "3",
+        "documento":"12435345",
+        "fecha_nacimiento":"1992-01-03",
         "sexo": "1",
         "telefono": "4234234",
         "foto": "/images/03.png",
@@ -57,6 +58,13 @@ const Profile = (props) => {
 
 const Information = (props) => {
 
+    const edad=()=>{
+        const today = new Date()
+        const birth = Date.parse(props.usuario.fecha_nacimiento);
+        const ans = new Date(today-birth)
+        return (ans.getUTCFullYear()-1970)
+    }
+
     return (
         <Sdiv02>
             <div>
@@ -80,8 +88,22 @@ const Information = (props) => {
                         {props.usuario.apellidos}
                     </div>
                 </div>
-               
-                
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Documento de identificación:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.documento}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Edad:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {edad()}
+                    </div>
+                </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Sexo:

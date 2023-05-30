@@ -13,8 +13,7 @@ export default function LiderVerPerfilEstudiante() {
 
 const VistaGeneral = () => {
 
-    const usuario = JSON.parse(localStorage.getItem("info_estudiante"))    
-
+    let usuario = JSON.parse(localStorage.getItem("INFO_Estudiante"))    
     return (
         <div className='flex-grow-1'>
             <h2 className='m-4 fw-bold'>Información de Usuario</h2>
@@ -135,7 +134,7 @@ const Information = (props) => {
 
 const Button = () => {
     return (
-        <Sdiv04><Link to={"/Lider/Perfil/Estudiante/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><Link to={"Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
                 Editar Información de Estudiante
             </h5>
