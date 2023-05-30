@@ -25,7 +25,6 @@ import LiderListarIdeas from './components/lider/Listar_ideas';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
-import LiderListarEstudiantes from './components/lider/Lider_listarEstudiantes';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import EditarPerfilEstudiante from './components/estudiante/Estudiante_Perfil_Editar';
