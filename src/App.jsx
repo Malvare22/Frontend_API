@@ -68,14 +68,10 @@ import AdministrativoPerfilEditar from './components/administrativo/Administrati
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 
 const verifyStudent= ()=>{
-  const data = localStorage.getItem("INFO_ESTUDIANTE");
-    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
+  const data = localStorage.getItem("ESTUDIANTE_EMAIL");
+    if(data===null ) throw new Response("Not Found", { status: 404 })
     return true;
 }
-
-
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(

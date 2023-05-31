@@ -5,6 +5,7 @@ import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 're
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import { toLiderFormatStudentsFromImport } from '../../context/functions_general';
 
 export default function LiderVerPerfilEstudiante() {
 
@@ -13,7 +14,50 @@ export default function LiderVerPerfilEstudiante() {
 
 const VistaGeneral = () => {
 
-    let usuario = JSON.parse(localStorage.getItem("INFO_Estudiante"))    
+    const [usuario, setUsuario] = useState({})
+
+    const getStudent = async () => {
+        let prototype = {}
+        try {
+            let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+            const value = await axios.get(zelda, {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            })
+
+            let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+
+
+            zelda = 'http://localhost:8080/coordinador/foto/'
+            const foto = await axios.get(zelda + value.data.codigo, {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                },
+                responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+            }).then(response => {
+                const base64Image = btoa(
+                    new Uint8Array(response.data)
+                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                );
+                const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+            
+                return imageUrl;
+            });
+
+
+            setUsuario({ ...temp_user, foto: foto })
+        }
+        catch (error) {
+            console.log(error)
+
+        }
+    }
+
+    useEffect(() => {
+        getStudent()
+    }, [])
+
     return (
         <div className='flex-grow-1'>
             <h2 className='m-4 fw-bold'>Información de Usuario</h2>
@@ -33,6 +77,7 @@ const VistaGeneral = () => {
 }
 
 const Profile = (props) => {
+
     return (
         <Sdiv01>
             <div id='principal' className=''>
@@ -49,7 +94,7 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
-    
+
     return (
         <Sdiv02>
             <div>
@@ -94,7 +139,7 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
+                        {props.usuario.sexo == '0' ? "Masculino" : "Femenino"}
                     </div>
                 </div>
                 <div className='row'>
@@ -110,7 +155,7 @@ const Information = (props) => {
                         Nombre del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.nombre_acudiente}
+                        {props.usuario.nombreAcudiente}
                     </div>
                 </div>
                 <div className='row'>
@@ -118,7 +163,7 @@ const Information = (props) => {
                         Teléfono del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.telefono_acudiente}
+                        {props.usuario.telefono}
                     </div>
                 </div>
             </div>

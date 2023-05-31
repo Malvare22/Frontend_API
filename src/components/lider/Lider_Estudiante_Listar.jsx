@@ -62,7 +62,7 @@ const Table = (props) => {
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
     const toggleA = (value) => {
-        localStorage.setItem('INFO_ESTUDIANTE', JSON.stringify(value))
+        localStorage.setItem('ESTUDIANTE_EMAIL',value.correo)
         navigate('../Estudiantes/Perfil')
     };
     const toggleB = () => {

@@ -17,7 +17,7 @@ export function toLiderFormatStudentsFromImport(students){
         student.curso = grades[student.curso]
         setDateAndYearsOld(student)
         student.sexo = setGenreToImport(student)
-        return student
+        return student;
     });
 }
 
