@@ -98,37 +98,7 @@ const Head = () => {
 //Listado de Cursos para combobox (útil para carga y validación de dato curso)
 
 //Contenido del formulario
-const Information = () => {
-    const [formData, setFormData] = useState({
-        nombre: '',
-        apellido: '',
-        fecha_nacimiento: '',
-        sexo: '',
-        telefono: '',
-        correo: '',
-        contrasenia: ''
-    });
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('../../liderUE.json');
-                const data = response.data[0];
-                setFormData({
-                    nombre: data.nombre,
-                    apellido: data.apellido,
-                    fecha_nacimiento: data.fecha_nacimiento,
-                    sexo: data.sexo,
-                    telefono: data.telefono,
-                    correo: data.correo,
-                    contrasenia: data.contrasenia
-                });
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        fetchData();
-    }, []);
+const Information = () => {  
     const navigate = useNavigate();
     const jesucristo = useRef(null)
     let user = {
@@ -139,9 +109,9 @@ const Information = () => {
         "sexo": "",
         "fecha_nacimiento": "",
         "telefono": "",
-        "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" },
+        "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "../images/03.png" },
         "tipo_usuario": "",
-    };
+    };    
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
@@ -274,6 +244,20 @@ const Information = () => {
         })
 
     }
+    const usuarioString = localStorage.getItem("usuario");
+    const usuarioObjeto = JSON.parse(usuarioString);
+    const [sexo, setSexo] = useState('');
+
+    useEffect(() => {
+      const usuarioString = localStorage.getItem('usuario');
+      const usuarioObjeto = JSON.parse(usuarioString);
+  
+      if (usuarioObjeto && usuarioObjeto.sexo) {
+        setSexo(usuarioObjeto.sexo);
+      }
+    }, []);
+    var telefonoNumero = parseFloat(usuarioObjeto.telefono);
+    console.log(`${usuarioObjeto.fecha_nacimiento[0]}-${usuarioObjeto.fecha_nacimiento[1]}-${usuarioObjeto.fecha_nacimiento[2]}`)
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -284,7 +268,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} name="nombre" value={formData.nombre} onChange={handleChange} maxLength="50" />
+                                <input type="text" className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} defaultValue={usuarioObjeto.nombre}  name="nombre" onChange={handleChange} maxLength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -293,7 +277,7 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={formData.apellido} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.apellido} name='apellido' onChange={handleChange} maxLength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -302,7 +286,7 @@ const Information = () => {
                                 Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={formData.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} defaultValue={`${usuarioObjeto.fecha_nacimiento[0]}-${String(usuarioObjeto.fecha_nacimiento[1]).padStart(2, '0')}-${String(usuarioObjeto.fecha_nacimiento[2]).padStart(2, '0')}`}  onChange={handleChange} name='fecha_nacimiento' />
                                 <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
@@ -311,14 +295,14 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={formData.sexo} onChange={handleChange}>
-                                    <option value={""} selected={"select"}>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.sexo == 'M' ? "Masculino" : "Femenino"} name='sexo' onChange={handleChange} >
+                                    <option defaultValue={"select"}>
                                         Selecciona un género
                                     </option>
-                                    <option value={"Masculino"}>
+                                    <option defaultValue={"Masculino"}>
                                         Masculino
                                     </option>
-                                    <option value={"Femenino"}>
+                                    <option defaultValue={"Femenino"}>
                                         Femenino
                                     </option>
                                 </select>
@@ -330,7 +314,7 @@ const Information = () => {
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={formData.telefono} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} defaultValue={telefonoNumero} name='telefono' onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -339,7 +323,7 @@ const Information = () => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={formData.correo} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.correo} name='correo' onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>                        
@@ -348,7 +332,7 @@ const Information = () => {
                                 Foto de perfil:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                                <ImageContainer form={form} defaultImage={"./images/03.png"} setForm={setForm}></ImageContainer>
                             </div>
                         </div>
                     </SInfo>
@@ -400,6 +384,7 @@ const ImageContainer = (props) => {
         if (fileInput.current.files[0]) {
             const reader = new FileReader()
             reader.onload = () => {
+                console.log(reader)
                 props.setForm({ ...props.form, ["foto"]: { "nombre": fileInput.current.files[0].name, "archivo": fileInput.current.files[0], "direccion": reader.result } })
             }
             reader.readAsDataURL(fileInput.current.files[0])

@@ -13,6 +13,8 @@ export default function AdministrativoVerPerfilLider() {
 const VistaGeneral = () => {
     const [usuario, setUsuario] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalJsonVacio, setModalJsonVacio] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsuario = async () => {
@@ -20,13 +22,23 @@ const VistaGeneral = () => {
                 const response = await axios.get('../../liderUE.json');
                 const data = response.data;
                 console.log(data[0]);
-                setUsuario(data[0]);
+                if (data.length === 0) {
+                    setModalJsonVacio(true);
+                } else {
+                    setUsuario(data[0]);
+                    localStorage.setItem('usuario', JSON.stringify(data[0]));
+                }
             } catch (error) {
                 console.error(error);
             }
         };
         fetchUsuario();
     }, []);
+
+    const handleModalJsonVacioClose = () => {
+        setModalJsonVacio(false);
+        navigate('../Perfil');
+    };
 
     const handleDeshabilitarClick = () => {
         setModalOpen(true);
@@ -57,6 +69,17 @@ const VistaGeneral = () => {
                 <ModalFooter>
                     <Button color="danger">Confirmar</Button>
                     <Button color="primary" onClick={handleModalClose}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+            <Modal isOpen={modalJsonVacio} onRequestClose={handleModalJsonVacioClose} style={modalStyles}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">No hay un lider de unidad de emprendimiento asignado, ¿desea asignar uno?</Label>
+                    </FormGroup>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary">Agregar</Button>
+                    <Button color="danger" onClick={handleModalJsonVacioClose}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
         </div>
