@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
+import Historial from "./Docente_Apoyo_Plan_Historial.jsx";
 
 
 
@@ -59,14 +59,6 @@ const InfoGeneral = () => {
     const [Agregar, setAgregar] = useState(String);
     const setAgregare = (a) => {
         setAgregar(a);
-    }
-    const eliminarEstudiantes = (a) => {
-        setAgregare(a);
-        toggleAlertEliminar();
-    }
-    const eliminarApoyo = (a) => {
-        setAgregare(a);
-        toggleAlertEliminarApoyo();
     }
 
 
@@ -165,14 +157,9 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Tutor:</b></h6>
                                             </div>
                                             <div className="col-auto">
-
-
                                                 <p>{datos1.tutorInfo[1]}</p>
-
                                             </div>
                                         </div>
-
-
                                         <div className="row mt-2">
                                             <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
@@ -192,7 +179,15 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Descripción:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                {datos1 && datos1.descripcion}
+                                            </div>
+                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 m-2 p-2 px-3">Descargar formato completo</button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +200,7 @@ const InfoGeneral = () => {
                                             <span className="progress-right">
                                                 <span className="progress-bar"></span>
                                             </span>
-                                            <div className="progress-value">50%</div>
+                                            <div className="progress-value">75%</div>
                                         </div>
                                     </SProgress>
 
@@ -218,10 +213,10 @@ const InfoGeneral = () => {
 
             }
 
-            <Modal centered isOpen={viewAlert}>
+            {/* <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
+                        <Label for="Nombre">Escribe el nuevo nombre de tu Plan de negocio</Label>
                         <Input type="text" name="name" id="exampleSelect"></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
@@ -340,10 +335,7 @@ const InfoGeneral = () => {
                         <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
                     </ModalFooter>
                 </ModalBody>
-            </Modal>
-
-
-
+            </Modal> */}
         </div>
     )
 };
@@ -445,8 +437,8 @@ const SProgress = styled.div`
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
   }
 }
 @media screen and (max-width:576px){
@@ -466,10 +458,12 @@ const Observaciones = () => {
                         <div id="titulo" className="rounded-5 mt-2" style={{ background: "#515454" }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de Plan de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg style={{ cursor: "pointer" }}  id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -479,37 +473,6 @@ const Observaciones = () => {
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
                                     <Tabla></Tabla>
-
-                                    <div className=" mt-4 ">
-                                        <div className="row m-4">
-                                            <div className="d-flex justify-content-end">
-                                                <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
-                                                    Agregar
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <UncontrolledCollapse id="observaciones" toggler="#AgregarComentario">
-                                        <Form>
-                                            <FormGroup>
-                                                <div className="row m-4 justify-content-center text-center">
-
-                                                    <div className="col-6 flex-column justify-content-center">
-                                                        <Label for="exampleEmail"><h3>Observaciones</h3></Label>
-                                                    </div>
-                                                    <div className="col-6 flex-column d-flex justify-content-center">
-                                                        <Input type="textarea" name="email" id="exampleEmail" placeholder="" />
-                                                    </div>
-
-                                                </div>
-                                            </FormGroup>
-                                            <div className=" d-flex m-4 justify-content-end">
-                                                <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
-                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
-                                            </div>
-                                        </Form>
-                                    </UncontrolledCollapse>
                                 </div>
                             </div>
                             <div className="col-12">
@@ -567,44 +530,34 @@ const Sdiv = styled.div`
           `;
 
 function Tabla() {
-    const [datos, setDatos] = useState([]);
-    const getIdeas = async () => {
-        let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-    };
-    useEffect(() => {
-        getIdeas();
-    }, []);
 
     return (
         <Sdiv>
-            <div className='w-auto m-2'>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th className='text-center' scope="col-auto">Docente</th>
-                            <th className='text-center' scope="col-auto">Fecha</th>
-                            <th className='text-center' scope="col-auto">Observación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {datos && datos.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
-                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
-                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <Form>
+                <div className='w-auto  row m-2'>
+
+                    <div className="col-12 col-sm-6 align-content-center justify-content-center ">
+                        <FormGroup>
+                            <Label for="estado">Asigna una calificacion al proyecto</Label>
+                            <Input type="select" name="estado" id="estado">
+                                <option value="Aprobado">Aprobado</option>
+                                <option value="Rechazado">Rechazado</option>
+                            </Input>
+                        </FormGroup>
+                    </div>
+
+                    <div className="col-12 col-sm-6 align-content-center justify-content-center ">
+                        <FormGroup>
+                            <Label for="Observacion">Observaciones</Label>
+                            <Input type="textarea" name="Observacion" id="Observacion" />
+                        </FormGroup>
+                    </div>
+                    <div className="d-flex justify-content-center  ">
+                        <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                    </div>
+
+                </div>
+            </Form>
         </Sdiv>
     );
 }

@@ -17,8 +17,9 @@
                     "codigoDocente": 5,
                     "evaluacionIdeaId": 1
                 },
+                "nombreDocente": "docenteEvaluador1 docenteEvaluador1",
                 "estado": "aprobado",
-                "observacion": null,
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,
@@ -35,8 +36,9 @@
                     "codigoDocente": 6,
                     "evaluacionIdeaId": 1
                 },
-                "estado": "pendiente",
-                "observacion": null,
+                "nombreDocente": "docenteEvaluador2 docenteEvaluador2",
+                "estado": "aprobado",
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,
@@ -53,8 +55,9 @@
                     "codigoDocente": 7,
                     "evaluacionIdeaId": 1
                 },
+                "nombreDocente": "docenteEvaluador3 docenteEvaluador3",
                 "estado": "rechazada",
-                "observacion": null,
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,
@@ -85,9 +88,11 @@
                 "id": {
                     "codigoDocente": 2,
                     "evaluacionIdeaId": 2
+                    
                 },
-                "estado": "aprobado",
-                "observacion": null,
+                "nombreDocente": "docenteEvaluador1 docenteEvaluador1",
+                "estado": "rechazada",
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,
@@ -104,8 +109,9 @@
                     "codigoDocente": 5,
                     "evaluacionIdeaId": 2
                 },
-                "estado": "aprobado",
-                "observacion": null,
+                "nombreDocente": "docenteEvaluador3 docenteEvaluador3",
+                "estado": "rechazada",
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,
@@ -122,8 +128,9 @@
                     "codigoDocente": 7,
                     "evaluacionIdeaId": 2
                 },
+                "nombreDocente": "docenteEvaluador2 docenteEvaluador2",
                 "estado": "aprobado",
-                "observacion": null,
+                "observacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies.",
                 "fechaInicio": [
                     2023,
                     5,

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
+import Historial from "./Docente_Apoyo_Plan_Historial.jsx";
 
 
 
@@ -192,7 +192,15 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Descripción:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                {datos1 && datos1.descripcion}
+                                            </div>
+                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 m-2 p-2 px-3">Descargar formato completo</button></div>  
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +213,7 @@ const InfoGeneral = () => {
                                             <span className="progress-right">
                                                 <span className="progress-bar"></span>
                                             </span>
-                                            <div className="progress-value">50%</div>
+                                            <div className="progress-value">75%</div>
                                         </div>
                                     </SProgress>
 
@@ -221,7 +229,7 @@ const InfoGeneral = () => {
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
+                        <Label for="Nombre">Escribe el nuevo nombre de tu Plan de negocio</Label>
                         <Input type="text" name="name" id="exampleSelect"></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
@@ -445,8 +453,8 @@ const SProgress = styled.div`
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
   }
 }
 @media screen and (max-width:576px){
@@ -466,10 +474,12 @@ const Observaciones = () => {
                         <div id="titulo" className="rounded-5 mt-2" style={{ background: "#515454" }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de Plan de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg style={{ cursor: "pointer" }}  id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
+                                    <svg style={{ cursor: "pointer" }}   id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>

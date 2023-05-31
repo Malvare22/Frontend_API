@@ -4,13 +4,13 @@
         "titulo": "Esto es una idea",
         "docenteInfo": [
             [
-                "mamarm@gmail.com"
+                "Lorem@gmail.com"
             ],
             [
-                "mamar3me capito"
+                "Docente 1 "
             ]
         ],
-        "retroalimentacion": "Aqui va la observacion",
+        "retroalimentacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id",
         "fecha": [
             2023,
             5,
@@ -25,13 +25,13 @@
         "titulo": "Esto es una idea",
         "docenteInfo": [
             [
-                "mamarm@gmail.com"
+                "Docente@gmail.com"
             ],
             [
-                "Chuparme capito"
+                "Docente 2"
             ]
         ],
-        "retroalimentacion": "Aqui va la observacion x2",
+        "retroalimentacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id",
         "fecha": [
             2023,
             5,
