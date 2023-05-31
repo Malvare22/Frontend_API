@@ -269,7 +269,9 @@ const Observaciones = () => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de Plan de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -336,7 +338,9 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+
+        value = await axios.get('../../../Observaciones.json').then(
+
             response => {
                 const data = response.data;
                 return data;
@@ -362,9 +366,9 @@ function Tabla(props) {
                     <tbody>
                         {datos.map((d) => (
                             <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
+                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
                             </tr>
                         ))}
                     </tbody>

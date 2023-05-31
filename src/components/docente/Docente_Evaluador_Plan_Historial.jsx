@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react'
-import Evaluaciones from "./Docente_Apoyo_Idea_Evaluacion.jsx";
+import Evaluaciones from "./Docente_Apoyo_Plan_Evaluacion.jsx";
+
 
 export default function Historial() {
 
