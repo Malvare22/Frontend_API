@@ -1,14 +1,15 @@
 import styled from "styled-components";
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Lider_Historial";
+import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
+
 
 
 export default function VistaIdea() {
     return (<div className="row">
         <InfoGeneral></InfoGeneral>
-        <Observaciones></Observaciones>
+        <Observaciones ></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -30,14 +31,42 @@ const InfoGeneral = () => {
         setViewAlert(!viewAlert);
     }
 
+    const [viewAlertDocente, setViewAlertDocente] = useState(false);
+    const toggleAlertDocente = () => {
+        setViewAlertDocente(!viewAlertDocente);
+    }
+
+    const [viewAlertEstudiante, setViewAlertEstudiante] = useState(false);
+    const toggleAlertEstudiante = () => {
+        setViewAlertEstudiante(!viewAlertEstudiante);
+    }
+
     const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
     const toggleAlertEliminar = () => {
         setViewAlertEliminar(!viewAlertEliminar);
     }
 
+    const [viewAlertEliminarApoyo, setViewAlertEliminarApoyo] = useState(false);
+    const toggleAlertEliminarApoyo = () => {
+        setViewAlertEliminarApoyo(!viewAlertEliminarApoyo);
+    }
+
     const [Area, setArea] = useState(String);
     const setArea_A = (a) => {
         setArea(a);
+    }
+
+    const [Agregar, setAgregar] = useState(String);
+    const setAgregare = (a) => {
+        setAgregar(a);
+    }
+    const eliminarEstudiantes = (a) => {
+        setAgregare(a);
+        toggleAlertEliminar();
+    }
+    const eliminarApoyo = (a) => {
+        setAgregare(a);
+        toggleAlertEliminarApoyo();
     }
 
 
@@ -75,9 +104,25 @@ const InfoGeneral = () => {
         getProfesores();
     }, []);
 
+    const [estudiantes, setEstudiantes] = useState([]);
+    const getEstudiantes = async () => {
+        let value = null;
+        value = await axios.get('../../../estudiantesdeveritas.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setEstudiantes(value)
+    };
+    useEffect(() => {
+        getEstudiantes();
+    }, []);
 
     let set = new Set();
-
+    let set1 = new Set();
+    let set2 = new Set();
     return (
 
 
@@ -111,9 +156,7 @@ const InfoGeneral = () => {
 
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
-
                                                     })}
-
                                                 </ul>
                                             </div>
                                         </div>
@@ -128,9 +171,6 @@ const InfoGeneral = () => {
 
                                             </div>
                                         </div>
-
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] === null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] === null ? false : true }>Eliminar</button>
 
 
                                         <div className="row mt-2">
@@ -148,7 +188,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
                                                     {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j} >{l}</li>);
+                                                        return (<li key={j}>{l}</li>);
                                                     })}
                                                 </ul>
                                             </div>
@@ -168,19 +208,24 @@ const InfoGeneral = () => {
                                             <div className="progress-value">50%</div>
                                         </div>
                                     </SProgress>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
             }
+
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
+                        <Input type="text" name="name" id="exampleSelect"></Input>
+                        <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <Input type="select" name="select" id="exampleSelect">
                             {profesores && profesores.map((l, i) => {
                                 if (set.has(l.area)) {
                                     return ("");
@@ -190,33 +235,20 @@ const InfoGeneral = () => {
                                 }
                             })}
                         </Input>
-
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-
-
-                            {profesores && profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option value={l.docente}>{l.nombre+l.apellido}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
                     </FormGroup>
                 </ModalBody>
-
                 <ModalFooter>
                     <Button color="danger">Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
 
+
+
             <Modal centered isOpen={viewAlertEliminar}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor?</Label>
+                        <Label id="texto">¿Quieres eliminar a este estudiante {Agregar}?</Label>
                     </FormGroup>
                 </ModalBody>
 
@@ -225,10 +257,94 @@ const InfoGeneral = () => {
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
+
+            <Modal centered isOpen={viewAlertEliminarApoyo}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">¿Quieres eliminar a este docente de apoyo {Agregar}? </Label>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter>
+                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
+                </ModalFooter>
+            </Modal>
+
+
+            <Modal centered isOpen={viewAlertDocente}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {profesores && profesores.map((l, i) => {
+                                if (set1.has(l.area)) {
+                                    return ("");
+                                } else {
+                                    set1.add(l.area);
+                                    return (<option key={i} value={l.area}>{l.area}</option>);
+                                }
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Select Multiple</Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                            {profesores && profesores.map((l) => {
+                                if (l.area === Area) {
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                } else {
+                                    return ("");
+                                }
+                            })}
+
+                        </Input>
+                    </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger">Asignar</Button>
+                        <Button color="primary" onClick={toggleAlertDocente}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
+            </Modal>
+
+
+            <Modal centered isOpen={viewAlertEstudiante}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge el curso del estudiante</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {estudiantes && estudiantes.map((l, i) => {
+                                if (set2.has(l.curso)) {
+                                    return ("");
+                                } else {
+                                    set2.add(l.curso);
+                                    return (<option key={i} value={l.curso}>{l.curso}</option>);
+                                }
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                            {estudiantes && estudiantes.map((l) => {
+                                if (l.curso === Area) {
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                } else {
+                                    return ("");
+                                }
+                            })}
+
+                        </Input>
+                    </FormGroup>
+
+                    <ModalFooter>
+                        <Button color="danger">Asignar</Button>
+                        <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
+            </Modal>
+
+
+
         </div>
-
-
-
     )
 };
 
@@ -341,6 +457,7 @@ const SProgress = styled.div`
 `;
 
 const Observaciones = () => {
+
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -363,6 +480,9 @@ const Observaciones = () => {
                                 <div className="mt-3">
                                     <Tabla></Tabla>
                                 </div>
+                            </div>
+                            <div className="col-12">
+
                             </div>
                         </UncontrolledCollapse>
                     </div>
@@ -389,70 +509,61 @@ const Sobreponer = styled.div`
  `;
 
 const Sdiv = styled.div`
-  table{
-      table-layout: fixed;
-  }
-  
-  th, td {
-      border: 1px solid;
-      width: 100px;
-      word-wrap: break-word;
-  }
-  table th{
-      background-color: #1C3B57;
-      color: #FFF;
-  }
-  table td{
-    background-color:#FFF;
-  }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
-  
-  @media screen and (max-width: 576px){
-      th, td {
-          width: 60px;
-      }}
-`;
+            table{
+                table-layout: fixed;
+            }
+            
+            th, td {
+                border: 1px solid;
+                width: 100px;
+                word-wrap: break-word;
+            }
+            table th{
+                background-color: #1C3B57;
+                color: #FFF;
+            }
+            table td{
+              background-color:#FFF;
+            }
+            overflow-y: scroll;
+            height: fit-content;
+            max-height: 66.4vh;
+            
+            @media screen and (max-width: 576px){
+                th, td {
+                    width: 60px;
+                }}
+          `;
 
 function Tabla() {
-    const [datos, setDatos] = useState([]);
-    const getIdeas = async () => {
-        let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-    };
-    useEffect(() => {
-        getIdeas();
-    }, []);
+
     return (
         <Sdiv>
-            <div className='w-auto m-2'>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th className='text-center' scope="col-auto">Docente</th>
-                            <th className='text-center' scope="col-auto">Fecha</th>
-                            <th className='text-center' scope="col-auto">Observación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {datos && datos.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
-                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
-                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <Form>
+                <div className='w-auto  row m-2'>
+
+                    <div className="col-12 col-sm-6 align-content-center justify-content-center ">
+                        <FormGroup>
+                            <Label for="estado">Asigna una calificacion al proyecto</Label>
+                            <Input type="select" name="estado" id="estado">
+                                <option value="Aprobado">Aprobado</option>
+                                <option value="Rechazado">Rechazado</option>
+                            </Input>
+                        </FormGroup>
+                    </div>
+
+                    <div className="col-12 col-sm-6 align-content-center justify-content-center ">
+                        <FormGroup>
+                            <Label for="Observacion">Observaciones</Label>
+                            <Input type="textarea" name="Observacion" id="Observacion" />
+                        </FormGroup>
+                    </div>
+                    <div className="d-flex justify-content-center  ">
+                        <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                    </div>
+
+                </div>
+            </Form>
         </Sdiv>
     );
 }

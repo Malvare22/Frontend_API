@@ -41,6 +41,7 @@ const Profile = (props) => {
                     <div>
                         <p className='text-white'>{props.usuario.nombre}</p>
                         <p className='text-white'>{props.usuario.apellido}</p>
+
                     </div>
                 </div>
             </div>
@@ -49,7 +50,7 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
-    
+
     return (
         <Sdiv02>
             <div>
@@ -63,6 +64,7 @@ const Information = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.nombre}
+
                     </div>
                 </div>
                 <div className='row'>
@@ -70,7 +72,8 @@ const Information = (props) => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellido}
+
+                        {props.usuario.apellidos}
                     </div>
                 </div>
                 <div className='row'>
@@ -87,6 +90,7 @@ const Information = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.edad}
+
                     </div>
                 </div>
                 <div className='row'>
