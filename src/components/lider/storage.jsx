@@ -3,11 +3,11 @@ import axios from "axios";
 const generarToken=()=>{
     axios.post('http://localhost:8080/login',{
         
-        email: 'jose21xdd@gmail.com',
-        password: 'pepe'
+        email: 'Ericka.Eckblad@gmail.com',
+        password: 'A12345678!'
         
     }).then((response)=>{
-        console.log(response.data.token)
+
         localStorage.setItem('token_access', response.data.token)
     })
 }
