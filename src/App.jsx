@@ -67,43 +67,12 @@ import AdministrativoPerfil from './components/administrativo/Administrativo_Per
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 
-
-const searchStudent= async()=> {
-  //Valor que se va a buscar en el .json -> id estudiante en este caso (codigo)
-  const searchValue=localStorage.getItem("ID_Estudiante")
-  let value = null;
-  value = await axios.get('../../../anotherStudent.json').then(
-      response => {
-          const data = response.data;
-          let temp = null;
-          data.map((d) => {
-              if (d.id == searchValue) temp = d;
-          })
-          return temp;
-      }).catch(error => { console.error(error); })
-  if (value === null) throw new Response("Not Found", { status: 404 })
-  localStorage.setItem("INFO_Estudiante", JSON.stringify(value))
-  return value;
-}
 const verifyStudent= ()=>{
-  const data = localStorage.getItem("INFO_Estudiante");
+  const data = localStorage.getItem("INFO_ESTUDIANTE");
     if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
     return true;
 }
 
-const verifyPlanNegocio= async()=>{
-  const data = localStorage.getItem('plan_info');
-  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
-
-}
-
-const verifyIdeaNegocio= async()=>{
-  const data = localStorage.getItem('idea_info');
-  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
-
-}
 
 
 
@@ -143,14 +112,14 @@ const router = createBrowserRouter(
           <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={searchStudent}/>
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Docentes**/}
           <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
-          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={searchStudent}/>
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>}/>
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
           <Route path='tester' element={<StorageTest></StorageTest>}/>
           {/**--------------------**/}

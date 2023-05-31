@@ -39,8 +39,8 @@ const Profile = (props) => {
                 <img className='rounded-circle' src={props.usuario.foto}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{props.usuario.nombres}</p>
-                        <p className='text-white'>{props.usuario.apellidos}</p>
+                        <p className='text-white'>{props.usuario.nombre}</p>
+                        <p className='text-white'>{props.usuario.apellido}</p>
                     </div>
                 </div>
             </div>
@@ -49,12 +49,7 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
-    const edad=()=>{
-        const today = new Date()
-        const birth = Date.parse(props.usuario.fecha_nacimiento);
-        const ans = new Date(today-birth)
-        return (ans.getUTCFullYear()-1970)
-    }
+    
     return (
         <Sdiv02>
             <div>
@@ -67,7 +62,7 @@ const Information = (props) => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.nombres}
+                        {props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -75,7 +70,7 @@ const Information = (props) => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellidos}
+                        {props.usuario.apellido}
                     </div>
                 </div>
                 <div className='row'>
@@ -91,7 +86,7 @@ const Information = (props) => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {edad()}
+                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>
