@@ -2,57 +2,11 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { UncontrolledCollapse } from 'reactstrap';
 
 const Evaluaciones = (props) => {
     let identificador = "#a" + props.identificador;
     let identificador2 = "a" + props.identificador;
-    let estado = props.estado;
-
-    let set = new Set();
-
-    const [Area, setArea] = useState(String);
-    const setArea_A = (a) => {
-        setArea(a);
-    }
-
-    const [viewAlert, setViewAlert] = useState(false);
-    const toggleAlert = () => {
-        setViewAlert(!viewAlert);
-    }
-
-    const eliminar = (a) => {
-        ObtenerIdElimnar(a);
-        bottomEliminar();
-        
-    }
-
-    const [viewEliminar, setViewEliminar] = useState(false);
-    const bottomEliminar = () => {
-        setViewEliminar(!viewEliminar);
-    }
-
-    const [idEliminar, setidEliminar] = useState(String);
-    const ObtenerIdElimnar = (a) => {
-        setidEliminar(a);
-    }
-
-    //AXIOS PARA RECIBIR LOS DOCENTES
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-    };
-    useEffect(() => {
-        getProfesores();
-    }, []);
 
     //AXIOS PARA RECIBIR A LOS DOCENTES CALIFICADORES CON SUS NOTAS Y OBSERVACIONES
 
@@ -72,8 +26,6 @@ const Evaluaciones = (props) => {
         getCalificadores();
     }, []);
 
-    let docentes = true;
-
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -82,7 +34,7 @@ const Evaluaciones = (props) => {
                         <div id="titulo" className="rounded-5 my-2" style={{ background: props.color }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de idea de negocio - {props.estado} </h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de Plan de negocio - {props.estado} </h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
                                     <svg id={identificador2} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
@@ -117,7 +69,6 @@ const Evaluaciones = (props) => {
                                                         </div>
 
                                                     } else {
-                                                        docentes = false;
                                                         return <div key={i} className="row">
                                                             <div className="row">
                                                                 <div className="col-auto">
@@ -170,7 +121,6 @@ const Evaluaciones = (props) => {
                                                         </div>
 
                                                     } else {
-                                                        docentes = false;
                                                         return <div key={i} className="row">
                                                             <div className="col-12">
                                                                 <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
@@ -205,52 +155,7 @@ const Evaluaciones = (props) => {
                     </div>
                 </Sobreponer>
             </div>
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l,i) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.docente+i} value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal centered isOpen={viewEliminar}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor {idEliminar}?</Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>    
+             
         </main>
     )
 };

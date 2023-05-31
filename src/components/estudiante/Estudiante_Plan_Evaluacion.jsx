@@ -82,7 +82,7 @@ const Evaluaciones = (props) => {
                         <div id="titulo" className="rounded-5 my-2" style={{ background: props.color }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de idea de negocio - {props.estado} </h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de Plan de negocio - {props.estado} </h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
                                     <svg id={identificador2} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
@@ -156,11 +156,8 @@ const Evaluaciones = (props) => {
                                                             colorin = "#555555"
                                                         }
                                                         return <div key={i} className="row mb-2">
-                                                            <div className="col-12">
-                                                                <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
-                                                            </div>
                                                             <div className="col-8">
-                                                                <p style={{ color: "#000" }}>{v.nombreDocente}</p>
+                                                                <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
                                                             </div>
                                                             <div className="col-4">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={colorin} className="bi bi-square-fill border rounded-2 border-2 border-dark" viewBox="0 0 16 16">
