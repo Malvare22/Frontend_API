@@ -15,6 +15,7 @@ export default function LiderVerPerfilEstudiante() {
 const VistaGeneral = () => {
 
     const [usuario, setUsuario] = useState({})
+    const navigate = useNavigate()
 
     const getStudent = async () => {
         let prototype = {}
@@ -70,7 +71,7 @@ const VistaGeneral = () => {
                 </div>
             </div>
             <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
-                <Button></Button>
+                <Button navigate={navigate} usuario={usuario}></Button>
             </div>
         </div>
     );
@@ -172,13 +173,13 @@ const Information = (props) => {
 }
 
 
-const Button = () => {
+const Button = (props) => {
     return (
-        <Sdiv04><Link to={"Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><button onClick={()=>{localStorage.setItem('ESTUDIANTE_EMAIL',props.usuario.correo); props.navigate('Editar')}} className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
                 Editar Información de Estudiante
             </h5>
-        </button></Link></Sdiv04>
+        </button></Sdiv04>
     );
 };
 

@@ -3,12 +3,13 @@ import defaultImage from './../../assets/images/Users/02.png'
 import pencil from './../../assets/images/Pencil.png'
 import { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
 import { createRef } from 'react';
 import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { toLiderFormatStudentsFromImport, toLiderFormatStudentsToExport } from '../../context/functions_general';
 
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -44,13 +45,13 @@ const useForm = (initialData, validar, initialErrors) => {
             const tmp = {
                 "correo": false,
                 "contrasenia": false,
-                "apellidos": false,
-                "nombres": false,
+                "apellido": false,
+                "nombre": false,
                 "curso": false,
                 "sexo": false,
                 "fecha_nacimiento": false,
                 "nombre_acudiente": false,
-                "telefono_acudiente": false,
+                "telefono": false,
                 "foto": false,
                 "tipo_usuario": false
             };
@@ -65,6 +66,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 //Componente general
 export default function LiderEditarPerfilEstudiante() {
+
 
     return (
 
@@ -103,18 +105,20 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    let user = JSON.parse(localStorage.getItem("INFO_Estudiante"))    
+    const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
     
+
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
-        "apellidos": false,
-        "nombres": false,
+        "apellido": false,
+        "nombre": false,
         "curso": false,
         "sexo": false,
         "fecha_nacimiento": false,
         "nombre_acudiente": false,
-        "telefono_acudiente": false,
+        "telefono": false,
         "foto": false,
         "tipo_usuario": false,
     };
@@ -124,13 +128,13 @@ const Information = () => {
         let errors = {
             "correo": false,
             "contrasenia": false,
-            "apellidos": false,
-            "nombres": false,
+            "apellido": false,
+            "nombre": false,
             "curso": false,
             "sexo": false,
             "fecha_nacimiento": false,
             "nombre_acudiente": false,
-            "telefono_acudiente": false,
+            "telefono": false,
             "foto": false,
             "tipo_usuario": false
         };
@@ -139,25 +143,31 @@ const Information = () => {
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
         const espacios = /\s/;
-        if (user.nombres.trim() == '' || number_regex.exec(user.nombres) != null || user.nombres.length > 50) {
-            errors.nombres = true;
+        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
+        if (user.nombre.trim() == '' || number_regex.exec(user.nombre) != null || user.nombre.length > 50) {
+            errors.nombre = true;
             fail = true;
         }
-        if (user.apellidos.trim() == '' || number_regex.exec(user.apellidos) != null || user.apellidos.length > 50) {
-            errors.apellidos = true;
+        if (user.apellido.trim() == '' || number_regex.exec(user.apellido) != null || user.apellido.length > 50) {
+            errors.apellido = true;
             fail = true;
         }
 
-        if (user.curso==0 || !courses.includes(user.curso)) {
+        if (user.contrasenia.trim() == '' || password.exec(user.contrasenia) == null) {
+            errors.contrasenia = true;
+            fail = true;
+        }
+
+        if (user.curso == 0 || !courses.includes(user.curso)) {
             errors.curso = true;
             fail = true;
         }
-        if (!(new Date(user.fecha_nacimiento))|| ((new Date())).getTime()<((new Date(user.fecha_nacimiento)).getTime())) {
+        if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
 
-        if (user.sexo != '0' && user.sexo != '1') {
+        if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
             errors.sexo = true;
             fail = true;
         }
@@ -167,8 +177,8 @@ const Information = () => {
             fail = true;
         }
 
-        if (isNaN(user.telefono_acudiente) || user.telefono_acudiente.length != 10) {
-            errors.telefono_acudiente = true;
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
             fail = true;
         }
 
@@ -181,12 +191,9 @@ const Information = () => {
         return errors;
     };
 
-    const defaulFile = { "name": "Seleccione una imagen", "direction": defaultImage }
-    const [file, setFile] = useState(defaulFile)
-
     const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
 
-    const getPresentDate =()=>{
+    const getPresentDate = () => {
         const today = new Date();
         const year = today.getFullYear();
         let month = today.getMonth() + 1;
@@ -197,27 +204,64 @@ const Information = () => {
         if (day < 10) {
             day = '0' + day; // Agrega un cero al día si es menor a 10
         }
-        return `${year}-${month}-${day}`;  
+        return `${year}-${month}-${day}`;
     }
 
     //Método para cargar la información
     const updateProfile = async () => {
 
-        try {
-            const response = await fetch(file.direction);
-            const blob = await response.blob();
-            console.log(blob)
-            const formData = new FormData();
-            formData.append('archivo', blob, 'nombre_archivo.png');
+        const formData = new FormData();
+        formData.append('foto', form.foto.archivo);
+        formData.append('correo', form.correo)
 
 
-
-            console.log('Archivo enviado correctamente.');
-        } catch (error) {
-            console.error('Error al enviar el archivo:', error);
+        const prototype = {
+            "nombre": form.nombre,
+            "apellido": form.apellido,
+            "fecha_nacimiento": form.fecha_nacimiento,
+            "sexo": form.sexo,
+            "correo": form.correo,
+            "telefono": form.telefono,
+            "contrasenia": form.contrasenia,
+            "tipoUsuario": "estudiante",
+            "curso": form.curso,
+            "nombreAcudiente": form.nombre_acudiente,
+            "capacitacionAprobada": "aprobada"
         }
+        const toSend = toLiderFormatStudentsToExport([prototype])[0]
+        /*Registro*/
+        await axios.post('http://localhost:8080/register/estudiante', toSend).then(
+
+        ).catch((error) => { alert(error) })
+
+
+        /*Set Foto*/
+        const zelda = "http://localhost:8080/coordinador/guardarFoto";
+
+        await axios({
+            method: "post",
+            url: zelda,
+            data: formData,
+            headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
+        }).then(
+            (response) => {
+                console.log("ENTER->", response)
+                navigate('../Estudiantes')
+            }
+        ).catch(async (error) => {
+            const value = await (error)
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+            } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+            } else {
+                console.log('Error al realizar la solicitud:', error.message);
+            }
+        })
 
     }
+
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -228,7 +272,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -237,7 +281,7 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -247,7 +291,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0}>Seleccione un curso</option>
+                                    <option value={0} selected={"selected"}>Seleccione un curso</option>
                                     {courses.map((c) => {
                                         return <option value={c}>{c}</option>
                                     })}
@@ -269,11 +313,14 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange} defaultValue={"0"}>
-                                    <option value={"0"}>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
+                                    <option value={""} selected={"select"}>
+                                        Selecciona un género
+                                    </option>
+                                    <option value={"Masculino"}>
                                         Masculino
                                     </option>
-                                    <option value={"1"}>
+                                    <option value={"Femenino"}>
                                         Femenino
                                     </option>
                                 </select>
@@ -294,7 +341,7 @@ const Information = () => {
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono_acudiente ? "is-invalid" : ""}`} name='telefono_acudiente' value={form.telefono_acudiente} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -315,14 +362,14 @@ const Information = () => {
                                 Foto:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer setFile={setFile} file={file} defaulFile={defaulFile} form={form} setForm={setForm}></ImageContainer>
+                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
                             </div>
                         </div>
                     </SInfo>
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Estudiantes/Perfil"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"../Estudiantes"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
@@ -332,7 +379,15 @@ const Information = () => {
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={updateProfile} >Aceptar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => {
+                        updateProfile();
+                        //console.log(tempo)
+                        // const myUrl = new URL('http://example.com');
+                        // const myUrlString = myUrl.toString();
+                        // console.log(myUrlString)
+                        //navigate("../Estudiantes")
+                    }
+                    } >Aceptar</Button>
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -369,7 +424,7 @@ const WindowForPassword = (props) => {
         if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
             setSuccess(true)
             setValid(true)
-            props.setForm({...props.form, ["contrasenia"]: inputs.first})
+            props.setForm({ ...props.form, ["contrasenia"]: inputs.first })
             props.toggleAlertPassword()
 
         }
@@ -414,18 +469,12 @@ const WindowForPassword = (props) => {
     </Modal>)
 }
 
-
 //Componente de carga de imagen
 const ImageContainer = (props) => {
 
-    useEffect(()=>{
-        props.setFile({name: props.form.nombres, direction: props.form.foto})
-    },[])
-
-    useEffect(()=>{
-        props.setForm({...props.form, ["foto"]:props.file.direction})
-    
-    },[props.file])
+    // useEffect(()=>{
+    //     return () => URL.revokeObjectURL(fileInput.current.files[0])
+    // },[props.form.foto])
 
     const fileInput = useRef(null)
 
@@ -435,34 +484,39 @@ const ImageContainer = (props) => {
     }
 
     const handleInput = () => {
-        if (fileInput.current.files[0] != null) {
-            const newFile = { name: fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0]) }
-            props.setFile(newFile)
-        }
+        if (fileInput.current.files[0]) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                props.setForm({ ...props.form, ["foto"]: { "nombre": fileInput.current.files[0].name, "archivo": fileInput.current.files[0], "direccion": reader.result } })
+            }
+            reader.readAsDataURL(fileInput.current.files[0])
+
+        };
     }
 
     const removeImage = () => {
-        props.setFile(props.defaulFile);
-        fileInput.current.value = "";
+        props.setForm({ ...props.form, ["foto"]: { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" } })
+        fileInput.current.value = ''
     }
 
     return (
         <SImageContainer>
-            <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
+            {props.form.foto.archivo != "" && <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" onClick={removeImage} style={{ cursor: "pointer" }} width="40" height="40" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
                     </svg>
                 </div>
                 <div>
-                    <img src={`${props.file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
+                    <img src={props.form.foto.direccion} className='border border-2 border-dark rounded-circle img-fluid'></img>
                 </div>
-            </div>
+            </div>}
+
             <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
-                <input type='file' accept="image/png, image/jpeg" className='d-none' onChange={handleInput} ref={fileInput}></input>
+                <input type='file' accept=".png, .jpg" className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                        <h6>{props.file.name}</h6>
+                        <h6>{props.form.foto.nombre}</h6>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>
