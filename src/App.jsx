@@ -66,7 +66,7 @@ import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
-import { toLiderFormatStudentsFromImport } from './context/functions_general';
+import { importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
 
 const verifyStudent= ()=>{
   const data = localStorage.getItem("ESTUDIANTE_EMAIL");
@@ -109,6 +109,51 @@ const getAllInfoStudent = async () => {
   // }
 }
 
+const getAllDocents= async()=>{
+  let zelda = "http://localhost:8080/docente/listar";
+  const value = await axios.get(zelda, {
+      headers: {
+          "X-Softue-JWT": localStorage.getItem('token_access')
+      }
+  })
+
+  let temp_user = importDocents(value.data)
+  console.log(temp_user)
+
+  localStorage.setItem("DOCENTES_LISTA", JSON.stringify(temp_user))
+  return true;
+}
+
+const getAllInfoDocent = async ()=>{
+  let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+  const value = await axios.get(zelda, {
+      headers: {
+          "X-Softue-JWT": localStorage.getItem('token_access')
+      }
+  })
+
+  let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  const foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+          "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+  }).then(response => {
+      const base64Image = btoa(
+          new Uint8Array(response.data)
+              .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+
+      return imageUrl;
+  });
+
+  localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia:"" ,foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+  return true;
+}
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -149,7 +194,7 @@ const router = createBrowserRouter(
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Docentes**/}
-          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
           <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>}/>
           <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />

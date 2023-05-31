@@ -40,9 +40,9 @@ const Table = ({ data }) => {
         return data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Cedula') {
-                comparison = a.id.localeCompare(b.id, undefined, { numeric: true });
+                comparison = a.cedula.localeCompare(b.cedula, undefined, { numeric: true });
             } else if (column === 'Docente') {
-                comparison = a.docente.localeCompare(b.docente);
+                comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Area') {
                 comparison = a.area.localeCompare(b.area);
             }
@@ -75,25 +75,25 @@ const Table = ({ data }) => {
                     </thead>
                     <tbody>
                         {sortedData.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.id}</td>
-                                <td className='text-center align-middle col-auto'>{d.docente}</td>
+                            <tr key={d.cedula}>
+                                <td className='text-center align-middle col-auto'>{d.cedula}</td>
+                                <td className='text-center align-middle col-auto'>{d.nombre}</td>
                                 <td className='text-center align-middle col-auto'>{d.area}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={toggleA} value={d.cedula} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
-                                        <button type="button" className="btn" onClick={toggleB} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={toggleB} value={d.cedula} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-                                        <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, docente: d.docente })} className="btn" style={{ width: "auto", border: "none" }}>
+                                        <button type="button" id="eliminar" value={d.cedula} onClick={() => toggleAlert({ id: d.cedula, docente: d.nombre })} className="btn" style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                             </svg>
@@ -108,7 +108,7 @@ const Table = ({ data }) => {
             <Modal isOpen={state} style={modalStyles}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Está seguro de que desea deshabilitar al docente {valor.docente} que tiene como id: {valor.id}?</Label>
+                        <Label id="texto">¿Está seguro de que desea deshabilitar al docente {valor.nombre} que tiene como CC: {valor.id}?</Label>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
@@ -144,22 +144,10 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Docentes() {
-    const [filteredData, setFilteredData] = useState([]);
-    const getDocentes = async () => {
-        let value = null;
-        value = await axios.get('../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setFilteredData(value)
-    };
-    useEffect(() => {
-        getDocentes();
-    }, []);
+export default function Listar_Docentes() {    
+    
+    const filteredData  = (JSON.parse(localStorage.getItem('DOCENTES_LISTA')))
+    console.log(filteredData,"FF")
     return (
         <div className="container-fluid w-75">
             <div className="row">

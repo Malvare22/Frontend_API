@@ -64,3 +64,15 @@ export function toLiderFormatStudentsToExport(students){
 function confirmPassword(password){
     //...
 }
+
+export function importDocents(docentes){
+    const areas = {
+        "agropecuaria":"primero",
+        "minera":"segundo", 
+    }
+    return docentes.map((elemento)=>{
+        elemento.sexo = setGenreToImport(elemento)
+        setDateAndYearsOld(elemento)
+        return elemento
+    })
+}
