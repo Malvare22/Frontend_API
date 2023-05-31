@@ -37,7 +37,7 @@ const setDateAndYearsOld=(user)=>{
     const birth = Date.parse(date);
     const ans = new Date(today-birth)
     user.edad = ans.getUTCFullYear()-1970
-    user.fecha_nacimiento = date;
+    user.fecha_nacimiento = new Date(date).toISOString().split('T')[0];
 }
 
 export function toLiderFormatStudentsToExport(students){
@@ -57,6 +57,7 @@ export function toLiderFormatStudentsToExport(students){
     return students.map((student)=>{
         student.curso = grades[student.curso]
         student.sexo = setGenreToExport(student)
+        student.nombreAcudiente = student.nombre_acudiente
         return student
     })
 
@@ -68,12 +69,32 @@ function confirmPassword(password){
 
 export function importDocents(docentes){
     const areas = {
-        "agropecuaria":"primero",
-        "minera":"segundo", 
+        "minera":"Minera",
+        "agropecuaria":"Agropecuaria", 
+        "comercial": "Comercial",
+        "servicios":"Servicios", 
+        "industrial":"Industrial"
     }
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
         setDateAndYearsOld(elemento)
+        elemento.area= areas[elemento.area]
+        return elemento
+    })
+}
+
+export function exportDocents(docentes){
+    const areas = {
+        "Minera":"minera",
+        "Agropecuaria":"agropecuaria", 
+        "Comercial": "comercial",
+        "Servicios":"servicios", 
+        "Industrial":"industrial"
+    }
+    let nuevo;
+    return docentes.map((elemento)=>{
+        elemento.sexo = setGenreToExport(elemento)
+        elemento.area= areas[elemento.area]
         return elemento
     })
 }

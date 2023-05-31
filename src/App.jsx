@@ -149,12 +149,15 @@ const getAllInfoDocent = async () => {
       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
       return imageUrl;
     });
+
+    await fetch(foto).then(response => response.blob())
+    
   }
   catch{
     foto='';
   }
   
-  localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+  localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
   return true;
 }
 
@@ -200,7 +203,7 @@ const router = createBrowserRouter(
           {/**Rutas de gestión de Docentes**/}
           <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
           <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={getAllInfoDocent} />
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} />
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
           <Route path='tester' element={<StorageTest></StorageTest>} />
           {/**--------------------**/}

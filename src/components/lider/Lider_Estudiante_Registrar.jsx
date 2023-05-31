@@ -396,15 +396,7 @@ const Information = () => {
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={ async () => {
-                        updateProfile();
-                        //console.log(tempo)
-                        // const myUrl = new URL('http://example.com');
-                        // const myUrlString = myUrl.toString();
-                        // console.log(myUrlString)
-                        //navigate("../Estudiantes")
-                    }
-                    } >Aceptar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={ async () => {updateProfile();}} >Aceptar</Button>
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
