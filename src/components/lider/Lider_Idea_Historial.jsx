@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react'
-import Evaluaciones from "./Lider_Evaluacion";
+import Evaluaciones from "./Lider_Idea_Evaluacion";
 
 export default function Historial() {
 
@@ -8,6 +8,7 @@ export default function Historial() {
 
     const definir_Estado = async () => {
         let value = null;
+        
         value = await axios.get('../../../calificadores.json').then(
             response => {
                 const data = response.data;

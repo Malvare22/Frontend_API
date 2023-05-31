@@ -85,7 +85,7 @@ const Evaluaciones = (props) => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de idea de negocio - {props.estado} </h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id={identificador2} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg id={identificador2} style={{ cursor: "pointer" }}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -160,7 +160,7 @@ const Evaluaciones = (props) => {
                                                                 <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
                                                             </div>
                                                             <div className="col-8">
-                                                                <p style={{ color: "#000" }}>{v.id.codigoDocente}</p>
+                                                                <p style={{ color: "#000" }}>{v.nombreDocente}</p>
                                                             </div>
                                                             <div className="col-4">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={colorin} className="bi bi-square-fill border rounded-2 border-2 border-dark" viewBox="0 0 16 16">

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Estudiante_Idea_Historial";
@@ -40,7 +40,7 @@ const InfoGeneral = () => {
             }).catch(error => {
                 console.error(error);
             });
-         setDatos1(value)
+        setDatos1(value)
 
     };
     useEffect(() => {
@@ -129,20 +129,19 @@ const InfoGeneral = () => {
                                                 <p>{datos1.areaEnfoque}</p>
                                             </div>
                                         </div>
-                                        <div className="row mt-2">
+                                        <div className="row mt-2 mb-2">
                                             <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Docentes de apoyo:</b></h6>
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-
-                                                    {datos1.docentesApoyoInfo[1].map((l,j) => {
+                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
                                                     })}
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button></div>
-                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Editar</button></div>
+                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
 
                                         </div>
                                     </div>
@@ -159,11 +158,7 @@ const InfoGeneral = () => {
                                             <div className="progress-value">50%</div>
                                         </div>
                                     </SProgress>
-
-
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -171,7 +166,7 @@ const InfoGeneral = () => {
 
 
             }
-            
+
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
@@ -321,7 +316,7 @@ const Observaciones = () => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -331,11 +326,26 @@ const Observaciones = () => {
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
                                     <Tabla></Tabla>
+                                    <div className="d-flex m-3 align-content-center justify-content-center col-12">
+                                        <Form >
+                                            <FormGroup>
+                                                <div className="d-flex justify-content-center">
+                                                <Label for="exampleFile"><b>Subir archivo:</b></Label>
+                                                
+                                                </div>
+                                                <Input type="file" name="file" id="exampleFile" />
+                                                
+                                            </FormGroup>
+                                            <div className="d-flex justify-content-center">
+                                                <Button style={{backgroundColor : "#1C3B57"}} >Enviar</Button>
+                                            </div>
+                                            
+                                        </Form>
+                                    </div>
+
                                 </div>
                             </div>
-                            <div className="col-12">
 
-                            </div>
 
                         </UncontrolledCollapse>
                     </div>
@@ -416,7 +426,7 @@ function Tabla(props) {
                         </tr>
                     </thead>
                     <tbody>
-                    {datos && datos.map((d) => (
+                        {datos && datos.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
                                 <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>

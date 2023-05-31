@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import defaultImage from './../../assets/images/Users/02.png'
-import pencil from './../../assets/images/Pencil.png'
+import add from './../../assets/images/persona.png'
 import { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
 import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
@@ -47,10 +47,8 @@ const useForm = (initialData, validar, initialErrors) => {
                 "contrasenia": false,
                 "apellido": false,
                 "nombre": false,
-                "curso": false,
                 "sexo": false,
                 "fecha_nacimiento": false,
-                "nombre_acudiente": false,
                 "telefono": false,
                 "foto": false,
                 "tipo_usuario": false
@@ -65,7 +63,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function RegistrarEstudiantePerfil() {
+export default function RegistrarLiderPerfil() {
 
     return (
 
@@ -91,66 +89,56 @@ const Head = () => {
     </svg>;
 
     return (
-        <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
-            <img src={pencil} className='' style={{ width: "50px", height: "50px" }}></img>
-            <h5 className='text-white fw-bold'>Editar Información</h5>
+        <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57", color: "#FFFFFF" }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
+                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
+            </svg>
+            <h5 className='text-white fw-bold'>Agregar liderUE</h5>
         </div>
     );
 }
 
 //Listado de Cursos para combobox (útil para carga y validación de dato curso)
-const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
 //Contenido del formulario
 const Information = () => {
     const navigate = useNavigate();
     const jesucristo = useRef(null)
-
-
     let user = {
         "correo": "",
         "contrasenia": "",
         "apellido": "",
         "nombre": "",
-        "curso": "",
         "sexo": "",
         "fecha_nacimiento": "",
-        "nombre_acudiente": "",
         "telefono": "",
         "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" },
         "tipo_usuario": "",
     };
-
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
         "apellido": false,
         "nombre": false,
-        "curso": false,
         "sexo": false,
         "fecha_nacimiento": false,
-        "nombre_acudiente": false,
         "telefono": false,
         "foto": false,
         "tipo_usuario": false,
     };
-
-
     const validar = (user) => {
         let errors = {
             "correo": false,
             "contrasenia": false,
             "apellido": false,
             "nombre": false,
-            "curso": false,
             "sexo": false,
             "fecha_nacimiento": false,
-            "nombre_acudiente": false,
             "telefono": false,
             "foto": false,
             "tipo_usuario": false
         };
-
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
@@ -169,11 +157,6 @@ const Information = () => {
             errors.contrasenia = true;
             fail = true;
         }
-
-        if (user.curso == 0 || !courses.includes(user.curso)) {
-            errors.curso = true;
-            fail = true;
-        }
         if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
@@ -181,11 +164,6 @@ const Information = () => {
 
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
             errors.sexo = true;
-            fail = true;
-        }
-
-        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
             fail = true;
         }
 
@@ -235,33 +213,30 @@ const Information = () => {
             "correo": form.correo,
             "telefono": form.telefono,
             "contrasenia": form.contrasenia,
-            "tipoUsuario": "estudiante",
-            "curso": form.curso,
-            "nombreAcudiente": form.nombre_acudiente,
-            "capacitacionAprobada": "aprobada"
+            "tipoUsuario": "coordinador"
         }
         const toSend = toLiderFormatStudentsToExport([prototype])[0]
         /*Registro*/
-        await axios.post('http://localhost:8080/register/estudiante', toSend).then(
+        await axios.post('http://localhost:8080/register', toSend).then(
 
         ).catch((error) => { alert(error) })
 
 
         /*Set Foto*/
         const zelda = "http://localhost:8080/coordinador/guardarFoto";
-        
+
         await axios({
             method: "post",
             url: zelda,
             data: formData,
             headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
         }).then(
-            (response)=>{
+            (response) => {
                 console.log("ENTER->", response)
-                navigate('../Estudiantes')
+                navigate('../Lider')
             }
-        ).catch(async (error)=>{
-            const value = await(error)
+        ).catch(async (error) => {
+            const value = await (error)
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 console.log('Respuesta del backend:', error.response.data);
@@ -270,8 +245,8 @@ const Information = () => {
             } else {
                 console.log('Error al realizar la solicitud:', error.message);
             }
-            })
-        
+        })
+
     }
     return (
         <div >
@@ -295,21 +270,7 @@ const Information = () => {
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Curso:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0} selected={"selected"}>Seleccione un curso</option>
-                                    {courses.map((c) => {
-                                        return <option value={c}>{c}</option>
-                                    })}
-                                </Form.Select>
-                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
-                            </div>
-                        </div>
+                        </div>                        
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Fecha de Nacimiento:
@@ -340,16 +301,7 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombre del acudiente:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
-                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Teléfono del acudiente:
+                                Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
@@ -376,7 +328,7 @@ const Information = () => {
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Foto:
+                                Foto de perfil:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
                                 <ImageContainer form={form} setForm={setForm}></ImageContainer>
@@ -385,19 +337,26 @@ const Information = () => {
                     </SInfo>
                 </div>
                 <div className='btns'>
-                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Estudiantes"} ref={jesucristo} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Añadir liderUE</h6></button>
+                    <Link to={"../Lider"} ref={jesucristo} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
             <Modal isOpen={viewAlert} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                    <h6 className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
+                    <h6 className='m-0 p-0'>¿Está seguro de añadir este lider a la unidad de emprendimiento?</h6>
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={ async () => {updateProfile();}} >Aceptar</Button>
-
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => {
+                        updateProfile();
+                        //console.log(tempo)
+                        // const myUrl = new URL('http://example.com');
+                        // const myUrlString = myUrl.toString();
+                        // console.log(myUrlString)
+                        //navigate("../Estudiantes")
+                    }
+                    } >Aceptar</Button>
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>

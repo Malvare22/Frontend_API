@@ -21,7 +21,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+        setForm({ ...form, [name]: value });        
     };
 
     const toggleAlert = () => {
@@ -47,10 +47,8 @@ const useForm = (initialData, validar, initialErrors) => {
                 "contrasenia": false,
                 "apellido": false,
                 "nombre": false,
-                "curso": false,
                 "sexo": false,
                 "fecha_nacimiento": false,
-                "nombre_acudiente": false,
                 "telefono": false,
                 "foto": false,
                 "tipo_usuario": false
@@ -65,8 +63,7 @@ const useForm = (initialData, validar, initialErrors) => {
 
 
 //Componente general
-export default function RegistrarEstudiantePerfil() {
-
+export default function AdministrativoEditarPerfilLider() {
     return (
 
         <SContent>
@@ -91,66 +88,83 @@ const Head = () => {
     </svg>;
 
     return (
-        <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
+        <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57", color: "#FFFFFF" }}>
             <img src={pencil} className='' style={{ width: "50px", height: "50px" }}></img>
-            <h5 className='text-white fw-bold'>Editar Información</h5>
+            <h5 className='text-white fw-bold'>Editar información del liderUE</h5>
         </div>
     );
 }
 
 //Listado de Cursos para combobox (útil para carga y validación de dato curso)
-const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
 //Contenido del formulario
-const Information = () => {
+const Information = () => {  
+    const [formData, setFormData] = useState({
+        nombre: '',
+        apellido: '',
+        fecha_nacimiento: '',
+        sexo: '',
+        telefono: '',
+        correo: '',
+        contrasenia: ''
+    });
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('../../liderUE.json');
+                const data = response.data[0];
+                setFormData({
+                    nombre: data.nombre,
+                    apellido: data.apellido,
+                    fecha_nacimiento: data.fecha_nacimiento,
+                    sexo: data.sexo,
+                    telefono: data.telefono,
+                    correo: data.correo,
+                    contrasenia: data.contrasenia
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchData();
+    }, []);
     const navigate = useNavigate();
     const jesucristo = useRef(null)
-
-
     let user = {
         "correo": "",
         "contrasenia": "",
         "apellido": "",
         "nombre": "",
-        "curso": "",
         "sexo": "",
         "fecha_nacimiento": "",
-        "nombre_acudiente": "",
         "telefono": "",
-        "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" },
+        "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "../images/03.png" },
         "tipo_usuario": "",
-    };
-
+    };    
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
         "apellido": false,
         "nombre": false,
-        "curso": false,
         "sexo": false,
         "fecha_nacimiento": false,
-        "nombre_acudiente": false,
         "telefono": false,
         "foto": false,
         "tipo_usuario": false,
     };
-
-
     const validar = (user) => {
         let errors = {
             "correo": false,
             "contrasenia": false,
             "apellido": false,
             "nombre": false,
-            "curso": false,
             "sexo": false,
             "fecha_nacimiento": false,
-            "nombre_acudiente": false,
             "telefono": false,
             "foto": false,
             "tipo_usuario": false
         };
-
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
@@ -169,11 +183,6 @@ const Information = () => {
             errors.contrasenia = true;
             fail = true;
         }
-
-        if (user.curso == 0 || !courses.includes(user.curso)) {
-            errors.curso = true;
-            fail = true;
-        }
         if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
@@ -181,11 +190,6 @@ const Information = () => {
 
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
             errors.sexo = true;
-            fail = true;
-        }
-
-        if (user.nombre_acudiente.trim() == '' || number_regex.exec(user.nombre_acudiente) != null || user.nombre_acudiente.length > 50) {
-            errors.nombre_acudiente = true;
             fail = true;
         }
 
@@ -235,33 +239,30 @@ const Information = () => {
             "correo": form.correo,
             "telefono": form.telefono,
             "contrasenia": form.contrasenia,
-            "tipoUsuario": "estudiante",
-            "curso": form.curso,
-            "nombreAcudiente": form.nombre_acudiente,
-            "capacitacionAprobada": "aprobada"
+            "tipoUsuario": "coordinador"
         }
         const toSend = toLiderFormatStudentsToExport([prototype])[0]
         /*Registro*/
-        await axios.post('http://localhost:8080/register/estudiante', toSend).then(
+        await axios.post('http://localhost:8080/register', toSend).then(
 
         ).catch((error) => { alert(error) })
 
 
         /*Set Foto*/
         const zelda = "http://localhost:8080/coordinador/guardarFoto";
-        
+
         await axios({
             method: "post",
             url: zelda,
             data: formData,
             headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
         }).then(
-            (response)=>{
+            (response) => {
                 console.log("ENTER->", response)
-                navigate('../Estudiantes')
+                navigate('../Lider')
             }
-        ).catch(async (error)=>{
-            const value = await(error)
+        ).catch(async (error) => {
+            const value = await (error)
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 console.log('Respuesta del backend:', error.response.data);
@@ -270,9 +271,23 @@ const Information = () => {
             } else {
                 console.log('Error al realizar la solicitud:', error.message);
             }
-            })
-        
+        })
+
     }
+    const usuarioString = localStorage.getItem("usuario");
+    const usuarioObjeto = JSON.parse(usuarioString);
+    const [sexo, setSexo] = useState('');
+
+    useEffect(() => {
+      const usuarioString = localStorage.getItem('usuario');
+      const usuarioObjeto = JSON.parse(usuarioString);
+  
+      if (usuarioObjeto && usuarioObjeto.sexo) {
+        setSexo(usuarioObjeto.sexo);
+      }
+    }, []);
+    var telefonoNumero = parseFloat(usuarioObjeto.telefono);
+    console.log(`${usuarioObjeto.fecha_nacimiento[0]}-${usuarioObjeto.fecha_nacimiento[1]}-${usuarioObjeto.fecha_nacimiento[2]}`)
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -283,7 +298,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} defaultValue={usuarioObjeto.nombre}  name="nombre" onChange={handleChange} maxLength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -292,22 +307,8 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.apellido} name='apellido' onChange={handleChange} maxLength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Curso:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <Form.Select aria-label="Seleccione un curso" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange}>
-                                    <option value={0} selected={"selected"}>Seleccione un curso</option>
-                                    {courses.map((c) => {
-                                        return <option value={c}>{c}</option>
-                                    })}
-                                </Form.Select>
-                                <div className="invalid-feedback">Solo se admiten cursos válidos</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -315,7 +316,7 @@ const Information = () => {
                                 Fecha de Nacimiento:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} defaultValue={`${usuarioObjeto.fecha_nacimiento[0]}-${String(usuarioObjeto.fecha_nacimiento[1]).padStart(2, '0')}-${String(usuarioObjeto.fecha_nacimiento[2]).padStart(2, '0')}`}  onChange={handleChange} name='fecha_nacimiento' />
                                 <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
@@ -324,14 +325,14 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
-                                    <option value={""} selected={"select"}>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.sexo == 'M' ? "Masculino" : "Femenino"} name='sexo' onChange={handleChange} >
+                                    <option defaultValue={"select"}>
                                         Selecciona un género
                                     </option>
-                                    <option value={"Masculino"}>
+                                    <option defaultValue={"Masculino"}>
                                         Masculino
                                     </option>
-                                    <option value={"Femenino"}>
+                                    <option defaultValue={"Femenino"}>
                                         Femenino
                                     </option>
                                 </select>
@@ -340,19 +341,10 @@ const Information = () => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombre del acudiente:
+                                Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombre_acudiente ? "is-invalid" : ""}`} name='nombre_acudiente' value={form.nombre_acudiente} onChange={handleChange} maxlength="50" />
-                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Teléfono del acudiente:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} defaultValue={telefonoNumero} name='telefono' onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -361,43 +353,41 @@ const Information = () => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} defaultValue={usuarioObjeto.correo} name='correo' onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Contraseña:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.contrasenia ? "is-invalid" : ""}`} name='contrasenia' value={form.contrasenia} onChange={handleChange} />
-                                <div className="invalid-feedback">La contraseña debe cumplir con los siguientes requisitos mínimos: almenos 6 carácteres, una letra en mayúscula, un número y un caracter especial</div>
-                            </div>
-                        </div>
+                        </div>                        
                         <div className='row' style={{ paddingBottom: "3%" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Foto:
+                                Foto de perfil:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                                <ImageContainer form={form} defaultImage={"./images/03.png"} setForm={setForm}></ImageContainer>
                             </div>
                         </div>
                     </SInfo>
                 </div>
                 <div className='btns'>
-                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Estudiantes"} ref={jesucristo} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Añadir liderUE</h6></button>
+                    <Link to={"../Lider"} ref={jesucristo} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
             <Modal isOpen={viewAlert} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                    <h6 className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
+                    <h6 className='m-0 p-0'>¿Está seguro de añadir este lider a la unidad de emprendimiento?</h6>
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={ async () => {updateProfile();}} >Aceptar</Button>
-
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => {
+                        updateProfile();
+                        //console.log(tempo)
+                        // const myUrl = new URL('http://example.com');
+                        // const myUrlString = myUrl.toString();
+                        // console.log(myUrlString)
+                        //navigate("../Estudiantes")
+                    }
+                    } >Aceptar</Button>
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>

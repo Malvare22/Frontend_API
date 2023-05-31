@@ -20,6 +20,7 @@ export function toLiderFormatStudentsFromImport(students){
         student.nombre_acudiente = student.nombreAcudiente
         console.log(i,student)
         return student;
+
     });
 }
 
@@ -38,6 +39,7 @@ const setDateAndYearsOld=(user)=>{
     const ans = new Date(today-birth)
     user.edad = ans.getUTCFullYear()-1970
     user.fecha_nacimiento = new Date(date).toISOString().split('T')[0];
+
 }
 
 export function toLiderFormatStudentsToExport(students){
@@ -58,6 +60,7 @@ export function toLiderFormatStudentsToExport(students){
         student.curso = grades[student.curso]
         student.sexo = setGenreToExport(student)
         student.nombreAcudiente = student.nombre_acudiente
+
         return student
     })
 
@@ -97,4 +100,5 @@ export function exportDocents(docentes){
         elemento.area= areas[elemento.area]
         return elemento
     })
+
 }
