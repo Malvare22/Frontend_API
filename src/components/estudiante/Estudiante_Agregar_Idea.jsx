@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
 import styled from 'styled-components';
-
-const opcionesAutocompletar = [
-    { id: 1, nombre: 'Opción 1' },
-    { id: 2, nombre: 'Opción 2' },
-    { id: 3, nombre: 'Opción 3' },
-    { id: 4, nombre: 'Opción 4' },
-    { id: 5, nombre: 'Opción 5' },
-];
 
 
 const Formulario = () => {
@@ -66,11 +59,9 @@ const Formulario = () => {
 
     const estudiantes = async () => {
         let value = null;
-<<<<<<< Updated upstream
-        value = await axios.get('http://localhost:8080/estudiante/listar').then(
-=======
+
         value = await axios.get('../estudiantesdeveritas.json').then(
->>>>>>> Stashed changes
+
             response => {
                 const data = response.data;
                 return data;
