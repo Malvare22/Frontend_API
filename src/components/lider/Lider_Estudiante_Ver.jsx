@@ -14,50 +14,11 @@ export default function LiderVerPerfilEstudiante() {
 
 const VistaGeneral = () => {
 
-    const [usuario, setUsuario] = useState({})
+    const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
+    console.log(usuario)
     const navigate = useNavigate()
 
-    const getStudent = async () => {
-        let prototype = {}
-        try {
-            let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
-            const value = await axios.get(zelda, {
-                headers: {
-                    "X-Softue-JWT": localStorage.getItem('token_access')
-                }
-            })
-
-            let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
-
-
-            zelda = 'http://localhost:8080/coordinador/foto/'
-            const foto = await axios.get(zelda + value.data.codigo, {
-                headers: {
-                    "X-Softue-JWT": localStorage.getItem('token_access')
-                },
-                responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-            }).then(response => {
-                const base64Image = btoa(
-                    new Uint8Array(response.data)
-                        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                );
-                const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
-            
-                return imageUrl;
-            });
-
-
-            setUsuario({ ...temp_user, foto: foto })
-        }
-        catch (error) {
-            console.log(error)
-
-        }
-    }
-
-    useEffect(() => {
-        getStudent()
-    }, [])
+   
 
     return (
         <div className='flex-grow-1'>
@@ -82,7 +43,7 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto}></img>
+                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
                         <p className='text-white'>{props.usuario.nombre}</p>

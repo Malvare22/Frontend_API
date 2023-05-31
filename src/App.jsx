@@ -100,7 +100,6 @@ const getAllInfoStudent = async () => {
 
           return imageUrl;
       });
-
       localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia:"" ,foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
       return true;
       // }
@@ -189,7 +188,7 @@ const router = createBrowserRouter(
           <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={getAllInfoStudent}/>
           <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={getAllInfoStudent}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}

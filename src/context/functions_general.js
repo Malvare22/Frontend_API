@@ -13,11 +13,12 @@ export function toLiderFormatStudentsFromImport(students){
         "once": "Once",
     }
 
-    return students.map((student)=>{
+    return students.map((student,i)=>{
         student.curso = grades[student.curso]
         setDateAndYearsOld(student)
         student.sexo = setGenreToImport(student)
         student.nombre_acudiente = student.nombreAcudiente
+        console.log(i,student)
         return student;
     });
 }
