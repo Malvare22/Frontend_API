@@ -34,7 +34,6 @@ const VistaGeneral = () => {
         };
         fetchUsuario();
     }, []);
-
     const handleModalJsonVacioClose = () => {
         setModalJsonVacio(false);
         navigate('../Perfil');

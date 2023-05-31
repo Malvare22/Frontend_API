@@ -99,6 +99,36 @@ const Head = () => {
 
 //Contenido del formulario
 const Information = () => {  
+    const [formData, setFormData] = useState({
+        nombre: '',
+        apellido: '',
+        fecha_nacimiento: '',
+        sexo: '',
+        telefono: '',
+        correo: '',
+        contrasenia: ''
+    });
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('../../liderUE.json');
+                const data = response.data[0];
+                setFormData({
+                    nombre: data.nombre,
+                    apellido: data.apellido,
+                    fecha_nacimiento: data.fecha_nacimiento,
+                    sexo: data.sexo,
+                    telefono: data.telefono,
+                    correo: data.correo,
+                    contrasenia: data.contrasenia
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchData();
+    }, []);
     const navigate = useNavigate();
     const jesucristo = useRef(null)
     let user = {
@@ -384,7 +414,6 @@ const ImageContainer = (props) => {
         if (fileInput.current.files[0]) {
             const reader = new FileReader()
             reader.onload = () => {
-                console.log(reader)
                 props.setForm({ ...props.form, ["foto"]: { "nombre": fileInput.current.files[0].name, "archivo": fileInput.current.files[0], "direccion": reader.result } })
             }
             reader.readAsDataURL(fileInput.current.files[0])
