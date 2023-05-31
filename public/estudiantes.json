@@ -25,6 +25,31 @@
         "curso":"Sexto"
     },
     {
+        "id": "867867",
+        "estudiante": "Valentina Isabel Silva Medina",
+        "curso":"Quinto"
+    },
+    {
+        "id": "9754",
+        "estudiante": "Gabriel Ernesto Mendoza Jiménez",
+        "curso":"Noveno"
+    },
+    {
+        "id": "3453",
+        "estudiante": "Natalia Victoria Ríos Castro",
+        "curso":"Segundo"
+    },
+    {
+        "id": "1231",
+        "estudiante": "Sebastián Javier Acosta Vargas",
+        "curso":"Cuarto"
+    },
+    {
+        "id": "1",
+        "estudiante": "Celestino Balaguer",
+        "curso":"Sexto"
+    },
+    {
         "id": "2",
         "estudiante": "Rubén Campoy",
         "curso":"Octavo"

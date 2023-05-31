@@ -61,12 +61,7 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
-    const edad=()=>{
-        const today = new Date()
-        const birth = Date.parse(props.usuario.fecha_nacimiento);
-        const ans = new Date(today-birth)
-        return (ans.getUTCFullYear()-1970)
-    }
+    
     return (
         <Sdiv02>
             <div>
@@ -103,7 +98,7 @@ const Information = (props) => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {edad()}
+                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>
