@@ -45,9 +45,9 @@ const Table = (props) => {
         return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Código') {
-                comparison = a.id.localeCompare(b.id, undefined, { numeric: true });
+                comparison = a.codigo.localeCompare(b.codigo, undefined, { numeric: true });
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante.localeCompare(b.estudiante);
+                comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Curso') {
                 const cursoA = parseInt(a.curso.split(' ')[0], 10);
                 const cursoB = parseInt(b.curso.split(' ')[0], 10);
@@ -156,13 +156,21 @@ export default function Listar_Estudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        const config = {
-            headers:{
-                "X-Softue-JWT":localStorage.getItem('token_access')
-            }
-        }
-        value = await axios.get('http://localhost:8080/estudiante/listar', config)
-        setFilteredData(toLiderFormatStudentsFromImport(value.data))
+        value = await axios.get('../estudiantes.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setFilteredData(value)
+        // const config = {
+        //     headers:{
+        //         "X-Softue-JWT":localStorage.getItem('token_access')
+        //     }
+        // }
+        // value = await axios.get('http://localhost:8080/estudiante/listar', config)
+        // setFilteredData(toLiderFormatStudentsFromImport(value.data))
 
     };
     const navigate = useNavigate()
