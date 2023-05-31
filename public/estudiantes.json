@@ -25,33 +25,33 @@
         "curso":"Sexto"
     },
     {
-        "codigo": "867867",
-        "nombre": "Valentina Isabel Silva Medina",
+        "id": "867867",
+        "estudiante": "Valentina Isabel Silva Medina",
         "curso":"Quinto"
     },
     {
-        "codigo": "9754",
-        "nombre": "Gabriel Ernesto Mendoza Jiménez",
+        "id": "9754",
+        "estudiante": "Gabriel Ernesto Mendoza Jiménez",
         "curso":"Noveno"
     },
     {
-        "codigo": "3453",
-        "nombre": "Natalia Victoria Ríos Castro",
+        "id": "3453",
+        "estudiante": "Natalia Victoria Ríos Castro",
         "curso":"Segundo"
     },
     {
-        "codigo": "1231",
-        "nombre": "Sebastián Javier Acosta Vargas",
+        "id": "1231",
+        "estudiante": "Sebastián Javier Acosta Vargas",
         "curso":"Cuarto"
     },
     {
-        "codigo": "1",
-        "nombre": "Celestino Balaguer",
+        "id": "1",
+        "estudiante": "Celestino Balaguer",
         "curso":"Sexto"
     },
     {
-        "codigo": "2",
-        "nombre": "Rubén Campoy",
+        "id": "2",
+        "estudiante": "Rubén Campoy",
         "curso":"Octavo"
     },
     {

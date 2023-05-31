@@ -1,9 +1,10 @@
 
     {
         "id": 104,
-        "titulo": "ideaNegocio1",
+        "titulo": "Proyecto1",
         "estado": "formulado",
         "areaEnfoque": "minera",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id, vestibulum nisi. Etiam pharetra urna a ex luctus, quis bibendum tortor ultricies. Aenean convallis ligula ut elit ultrices, a volutpat lorem faucibus. ",
         "tutorInfo": [
             [
                 "docenteTutor@gmail.com"

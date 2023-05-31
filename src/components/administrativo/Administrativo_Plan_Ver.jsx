@@ -1,10 +1,9 @@
-import { Row } from "react-bootstrap";
 import styled from "styled-components";
-import { Button, Collapse, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import {  UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Lider_Historial";
-import Evaluaciones from "./Lider_Evaluacion";
+import Historial from "./Administrativo_Plan_Historial";
+
 
 
 export default function VistaIdea() {
@@ -27,21 +26,6 @@ export default function VistaIdea() {
 
 const InfoGeneral = () => {
 
-    const [viewAlert, setViewAlert] = useState(false);
-    const toggleAlert = () => {
-        setViewAlert(!viewAlert);
-    }
-
-    const [viewAlertEliminar, setViewAlertEliminar] = useState(false);
-    const toggleAlertEliminar = () => {
-        setViewAlertEliminar(!viewAlertEliminar);
-    }
-
-    const [Area, setArea] = useState(String);
-    const setArea_A = (a) => {
-        setArea(a);
-    }
-
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
@@ -59,35 +43,6 @@ const InfoGeneral = () => {
     useEffect(() => {
         getDatos1();
     }, []);
-
-
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-    };
-    useEffect(() => {
-        getProfesores();
-    }, []);
-
-
-     let docente = "";
-     try {
-        if (datos1.tutorInfo[1]) {
-             docente = datos1.tutorInfo[1];
-        }
-     } catch (error) {
-
-     }
-
-    let set = new Set();
 
     return (
 
@@ -140,9 +95,6 @@ const InfoGeneral = () => {
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1.tutorInfo[1] != null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1.tutorInfo[1] != null ? false : true}>Eliminar</button>
-
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -163,7 +115,15 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Descripción:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                {datos1 && datos1.descripcion}
+                                            </div>
+                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 mb-3">Descargar formato completo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -176,70 +136,16 @@ const InfoGeneral = () => {
                                             <span className="progress-right">
                                                 <span className="progress-bar"></span>
                                             </span>
-                                            <div className="progress-value">50%</div>
+                                            <div className="progress-value">75%</div>
                                         </div>
                                     </SProgress>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </div>   
             }
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l,i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-
-
-                            {profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal centered isOpen={viewAlertEliminar}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor?</Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
         </div>
-
-
-
     )
 };
 
@@ -340,8 +246,8 @@ const SProgress = styled.div`
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
   }
 }
 @media screen and (max-width:576px){
@@ -360,10 +266,12 @@ const Observaciones = () => {
                         <div id="titulo" className="rounded-5 mt-2" style={{ background: "#515454" }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de Plan de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -426,11 +334,13 @@ const Sdiv = styled.div`
       }}
 `;
 
-function Tabla() {
+function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+
+        value = await axios.get('../../../Observaciones.json').then(
+
             response => {
                 const data = response.data;
                 return data;
@@ -456,9 +366,9 @@ function Tabla() {
                     <tbody>
                         {datos.map((d) => (
                             <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
-                                <td className='text-center align-middle col-auto'>{d.titulo}</td>
+                                <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
+                                <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.retroalimentacion}</td>
                             </tr>
                         ))}
                     </tbody>

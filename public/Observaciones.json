@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "titulo": "Esto es una idea",
+        "docenteInfo": [
+            [
+                "Lorem@gmail.com"
+            ],
+            [
+                "Docente 1 "
+            ]
+        ],
+        "retroalimentacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id",
+        "fecha": [
+            2023,
+            5,
+            29,
+            18,
+            3,
+            58
+        ]
+    },
+    {
+        "id": 2,
+        "titulo": "Esto es una idea",
+        "docenteInfo": [
+            [
+                "Docente@gmail.com"
+            ],
+            [
+                "Docente 2"
+            ]
+        ],
+        "retroalimentacion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac lacus sollicitudin, fringilla dui id",
+        "fecha": [
+            2023,
+            5,
+            29,
+            18,
+            4,
+            26
+        ]
+    }
+]

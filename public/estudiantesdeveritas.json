@@ -1,0 +1,116 @@
+[
+    {
+        "codigo": 8,
+        "nombre": "Rebeca",
+        "apellido": "Brunell",
+        "fecha_nacimiento": [
+            1974,
+            3,
+            8
+        ],
+        "sexo": "F",
+        "correo": "Rebeca.Brunell@gmail.com",
+        "telefono": "1-278-845-6355",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$NwZ7/9jmoytqh047ReEHyg$D/FOKtKA2Zb78CJRe0yMcEWWiAAbftWrjdyiOy9l1d8",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "noveno",
+        "nombreAcudiente": "Jorry Dorine",
+        "capacitacionAprobada": "aprobada"
+    },
+    {
+        "codigo": 9,
+        "nombre": "Dorothy",
+        "apellido": "Pulsifer",
+        "fecha_nacimiento": [
+            1972,
+            5,
+            31
+        ],
+        "sexo": "F",
+        "correo": "Dorothy.Pulsifer@gmail.com",
+        "telefono": "1-328-367-3111",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$sbZWzpx2k1Ug1gH5VWvAnA$bRQLov2k71g0OGbrRIHagRyhGBlUP7bV4hDojZtT8BY",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "noveno",
+        "nombreAcudiente": "Jean Zaslow",
+        "capacitacionAprobada": "aprobada"
+    },
+    {
+        "codigo": 10,
+        "nombre": "Selia",
+        "apellido": "Kosey",
+        "fecha_nacimiento": [
+            2001,
+            5,
+            22
+        ],
+        "sexo": "F",
+        "correo": "Selia.Kosey@gmail.com",
+        "telefono": "(702) 802-0155",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$lNqUhjlk6YjEfXrU/ALlJA$k0syd0nfuUNlIoUAOxWJZROHmf/5i86ECkaQRRYbVqk",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "decimo",
+        "nombreAcudiente": "Sonni Linehan",
+        "capacitacionAprobada": "aprobada"
+    },
+    {
+        "codigo": 11,
+        "nombre": "Jany",
+        "apellido": "Viddah",
+        "fecha_nacimiento": [
+            1995,
+            7,
+            20
+        ],
+        "sexo": "M",
+        "correo": "Jany.Viddah@gmail.com",
+        "telefono": "1-473-977-7838",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$4uMiAUPnsdG78IWwgzOHCg$Frpt/hnQOx71G6Kg2prz3U/M3XHTuZ0FRtCnHH7xHhw",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "decimo",
+        "nombreAcudiente": "Winny Goode",
+        "capacitacionAprobada": "aprobada"
+    },
+    {
+        "codigo": 12,
+        "nombre": "Shaine",
+        "apellido": "Chapland",
+        "fecha_nacimiento": [
+            1967,
+            1,
+            19
+        ],
+        "sexo": "F",
+        "correo": "Shaine.Chapland@gmail.com",
+        "telefono": "(814) 748-4435",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$dal5SX3fMDLG9YSM6W4T6w$1NZdxAHcVK23buQ59/auI1DFo0YQeSNWm3KhIQcVyxc",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "once",
+        "nombreAcudiente": "Gianina Gilbertson",
+        "capacitacionAprobada": "aprobada"
+    },
+    {
+        "codigo": 13,
+        "nombre": "Belinda",
+        "apellido": "Ariella",
+        "fecha_nacimiento": [
+            2015,
+            1,
+            21
+        ],
+        "sexo": "F",
+        "correo": "Belinda.Ariella@gmail.com",
+        "telefono": "(180) 134-2385",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$KtYISPqlGw533crimZmQ9A$XJeeqatA0N1y17h9nGAwHPSVl2emFetb8NDzQMDqw+k",
+        "tipoUsuario": "estudiante",
+        "fotoUsuarioId": null,
+        "curso": "once",
+        "nombreAcudiente": "Marcy Tremayne",
+        "capacitacionAprobada": "aprobada"
+    }
+]
