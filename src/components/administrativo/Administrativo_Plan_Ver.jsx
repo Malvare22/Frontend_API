@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {  UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Administrativo_Idea_Historial";
+import Historial from "./Administrativo_Plan_Historial";
 
 
 
@@ -115,7 +115,15 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Descripción:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                {datos1 && datos1.descripcion}
+                                            </div>
+                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 mb-3">Descargar formato completo</button>
                                         </div>
                                     </div>
                                 </div>
@@ -128,12 +136,10 @@ const InfoGeneral = () => {
                                             <span className="progress-right">
                                                 <span className="progress-bar"></span>
                                             </span>
-                                            <div className="progress-value">50%</div>
+                                            <div className="progress-value">75%</div>
                                         </div>
                                     </SProgress>
-                                    
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -240,8 +246,8 @@ const SProgress = styled.div`
     transform: rotate(0deg);
   }
   100% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
   }
 }
 @media screen and (max-width:576px){
@@ -260,7 +266,7 @@ const Observaciones = () => {
                         <div id="titulo" className="rounded-5 mt-2" style={{ background: "#515454" }}>
                             <div className="row">
                                 <div className="d-flex col ms-3">
-                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
+                                    <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de Plan de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
                                     <svg id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">

@@ -192,7 +192,7 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 m-2">Descargar formato completo</button>
+                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
                                         </div>
                                     </div>
                                 </div>
