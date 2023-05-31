@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import axios from 'axios';
 import styled from 'styled-components';
-
-const opcionesAutocompletar = [
-    { id: 1, nombre: 'Opción 1' },
-    { id: 2, nombre: 'Opción 2' },
-    { id: 3, nombre: 'Opción 3' },
-    { id: 4, nombre: 'Opción 4' },
-    { id: 5, nombre: 'Opción 5' },
-];
 
 
 const Formulario = () => {
@@ -47,14 +40,15 @@ const Formulario = () => {
 
     const estudiantes = async () => {
         let value = null;
-        value = await axios.get('http://localhost:8080/estudiante/listar').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
+        await axios(`http://localhost:8080/estudiante/listar`, {
+            method: "get",
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access")}
+        }).then((response) => {
+            console.log(response.data)
+            setDatos(response.data)
+        }).catch((error) => {
+            console.log(error);
+        });
     };
     useEffect(() => {
         estudiantes();
