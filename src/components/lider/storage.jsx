@@ -7,6 +7,7 @@ const generarToken=()=>{
         password: 'A12345678!'
         
     }).then((response)=>{
+
         localStorage.setItem('token_access', response.data.token)
     })
 }

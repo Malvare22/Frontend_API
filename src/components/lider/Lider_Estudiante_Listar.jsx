@@ -182,6 +182,7 @@ export default function Listar_Estudiantes() {
         }
         value = await axios.get('http://localhost:8080/estudiante/listar', config)
         setFilteredData(toLiderFormatStudentsFromImport(value.data))
+
     };
     const navigate = useNavigate()
     const addStudent = () => {
