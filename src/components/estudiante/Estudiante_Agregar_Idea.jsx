@@ -36,19 +36,39 @@ const Formulario = () => {
         console.log('Formato Idea:', formatoIdea);
     };
 
+    // const [datos, setDatos] = useState([]);
+
+    // const estudiantes = async () => {
+    //     let value = null;
+    //     await axios(`http://localhost:8080/estudiante/listar`, {
+    //         method: "get",
+    //         headers: { "X-Softue-JWT": localStorage.getItem("token_access")}
+    //     }).then((response) => {
+    //         console.log(response.data)
+    //         setDatos(response.data)
+    //     }).catch((error) => {
+    //         console.log(error);
+    //     });
+    // };
+    // useEffect(() => {
+    //     estudiantes();
+
+    // }, []);
+
     const [datos, setDatos] = useState([]);
 
     const estudiantes = async () => {
         let value = null;
-        await axios(`http://localhost:8080/estudiante/listar`, {
-            method: "get",
-            headers: { "X-Softue-JWT": localStorage.getItem("token_access")}
-        }).then((response) => {
-            console.log(response.data)
-            setDatos(response.data)
-        }).catch((error) => {
-            console.log(error);
-        });
+
+        value = await axios.get('../estudiantesdeveritas.json').then(
+
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos(value)
     };
     useEffect(() => {
         estudiantes();
