@@ -43,9 +43,9 @@ const Table = (props) => {
         return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Código') {
-                comparison = a.id.localeCompare(b.id, undefined, { numeric: true });
+                comparison = a.codigo.localeCompare(b.codigo, undefined, { numeric: true });
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante.localeCompare(b.estudiante);
+                comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Curso') {
                 const cursoA = parseInt(a.curso.split(' ')[0], 10);
                 const cursoB = parseInt(b.curso.split(' ')[0], 10);
@@ -87,7 +87,7 @@ const Table = (props) => {
                                 <td className='text-center align-middle col-auto'>{d.curso}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={()=>{toggleA(d.id)}} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>{toggleA(d)}} value={d.id} style={{ width: "auto", border: "none" }}>                                        
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -154,13 +154,22 @@ export default function Listar_Estudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        const config = {
-            headers:{
-                "X-Softue-JWT":localStorage.getItem('token_access')
-            }
-        }
-        value = await axios.get('http://localhost:8080/estudiante/listar', config)
-        setFilteredData(value.data)
+        value = await axios.get('../estudiantes.json').then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setFilteredData(value)
+        // const config = {
+        //     headers:{
+        //         "X-Softue-JWT":localStorage.getItem('token_access')
+        //     }
+        // }
+        // value = await axios.get('http://localhost:8080/estudiante/listar', config)
+        // setFilteredData(toLiderFormatStudentsFromImport(value.data))
+
     };
     const navigate = useNavigate()
     const addStudent=()=>{

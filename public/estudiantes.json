@@ -1,122 +1,147 @@
 [
     {
-        "id": "867867",
-        "estudiante": "Valentina Isabel Silva Medina",
+        "codigo": "867867",
+        "nombre": "Valentina Isabel Silva Medina",
         "curso":"Quinto"
     },
     {
-        "id": "9754",
-        "estudiante": "Gabriel Ernesto Mendoza Jiménez",
+        "codigo": "9754",
+        "nombre": "Gabriel Ernesto Mendoza Jiménez",
         "curso":"Noveno"
     },
     {
-        "id": "3453",
-        "estudiante": "Natalia Victoria Ríos Castro",
+        "codigo": "3453",
+        "nombre": "Natalia Victoria Ríos Castro",
         "curso":"Segundo"
     },
     {
-        "id": "1231",
-        "estudiante": "Sebastián Javier Acosta Vargas",
+        "codigo": "1231",
+        "nombre": "Sebastián Javier Acosta Vargas",
         "curso":"Cuarto"
     },
     {
-        "id": "1",
-        "estudiante": "Celestino Balaguer",
+        "codigo": "1",
+        "nombre": "Celestino Balaguer",
         "curso":"Sexto"
     },
     {
-        "id": "2",
-        "estudiante": "Rubén Campoy",
-        "curso":"Octavo"
-    },
-    {
-        "id": "3",
-        "estudiante": "Ignacia Camino Grande",
-        "curso":"Once"
-    },
-    {
-        "id": "4",
-        "estudiante": "Chucho Andrés Felipe Almansa Royo",
-        "curso":"Primero"
-    },
-    {
-        "id": "5",
-        "estudiante": "Mario Barreda-Nadal",
-        "curso":"Tercero"
-    },
-    {
-        "id": "6",
-        "estudiante": "Francisco del Baquero",
-        "curso":"Sexto"
-    },
-    {
-        "id": "7",
-        "estudiante": "Ruben Cáceres Villanueva",
-        "curso":"Primero"
-    },
-    {
-        "id": "8",
-        "estudiante": "Moreno Codina Pablo",
+        "codigo": "867867",
+        "nombre": "Valentina Isabel Silva Medina",
         "curso":"Quinto"
     },
     {
-        "id": "9",
-        "estudiante": "Virginia Cerezo",
-        "curso":"Octavo"
-    },
-    {
-        "id": "10",
-        "estudiante": "Susana Pla Bárcena",
-        "curso":"Primero"
-    },
-    {
-        "id": "11",
-        "estudiante": "Rodrigo Andrés Malaver Suarez",
-        "curso":"Once"
-    },
-    {
-        "id": "12",
-        "estudiante": "Andres Felipe Sanguino Sanguino",
-        "curso":"Cuarto"
-    },
-    {
-        "id": "13",
-        "estudiante": "José David Castillo Buitrago",
+        "codigo": "9754",
+        "nombre": "Gabriel Ernesto Mendoza Jiménez",
         "curso":"Noveno"
     },
     {
-        "id": "14",
-        "estudiante": "Carlos Alberto Salazar Meza",
+        "codigo": "3453",
+        "nombre": "Natalia Victoria Ríos Castro",
+        "curso":"Segundo"
+    },
+    {
+        "codigo": "1231",
+        "nombre": "Sebastián Javier Acosta Vargas",
+        "curso":"Cuarto"
+    },
+    {
+        "codigo": "1",
+        "nombre": "Celestino Balaguer",
+        "curso":"Sexto"
+    },
+    {
+        "codigo": "2",
+        "nombre": "Rubén Campoy",
+        "curso":"Octavo"
+    },
+    {
+        "codigo": "3",
+        "nombre": "Ignacia Camino Grande",
         "curso":"Once"
     },
     {
-        "id": "15",
-        "estudiante": "Lizeth Juliana Navarro Vargas",
+        "codigo": "4",
+        "nombre": "Chucho Andrés Felipe Almansa Royo",
+        "curso":"Primero"
+    },
+    {
+        "codigo": "5",
+        "nombre": "Mario Barreda-Nadal",
+        "curso":"Tercero"
+    },
+    {
+        "codigo": "6",
+        "nombre": "Francisco del Baquero",
+        "curso":"Sexto"
+    },
+    {
+        "codigo": "7",
+        "nombre": "Ruben Cáceres Villanueva",
+        "curso":"Primero"
+    },
+    {
+        "codigo": "8",
+        "nombre": "Moreno Codina Pablo",
+        "curso":"Quinto"
+    },
+    {
+        "codigo": "9",
+        "nombre": "Virginia Cerezo",
+        "curso":"Octavo"
+    },
+    {
+        "codigo": "10",
+        "nombre": "Susana Pla Bárcena",
+        "curso":"Primero"
+    },
+    {
+        "codigo": "11",
+        "nombre": "Rodrigo Andrés Malaver Suarez",
         "curso":"Once"
     },
     {
-        "id": "16",
-        "estudiante": "José Julián Álvarez Reyes",
+        "codigo": "12",
+        "nombre": "Andres Felipe Sanguino Sanguino",
+        "curso":"Cuarto"
+    },
+    {
+        "codigo": "13",
+        "nombre": "José David Castillo Buitrago",
+        "curso":"Noveno"
+    },
+    {
+        "codigo": "14",
+        "nombre": "Carlos Alberto Salazar Meza",
         "curso":"Once"
     },
     {
-        "id": "17",
-        "estudiante": "Maria Alexandra Velázquez Jaimes",
+        "codigo": "15",
+        "nombre": "Lizeth Juliana Navarro Vargas",
         "curso":"Once"
     },
     {
-        "id": "18",
-        "estudiante": "Julian Quiroz García",
+        "codigo": "16",
+        "nombre": "José Julián Álvarez Reyes",
         "curso":"Once"
     },
     {
-        "id": "19",
-        "estudiante": "Rubén Campoy",
+        "codigo": "17",
+        "nombre": "Maria Alexandra Velázquez Jaimes",
+        "curso":"Once"
+    },
+    {
+        "codigo": "18",
+        "nombre": "Julian Quiroz García",
+        "curso":"Once"
+    },
+    {
+        "codigo": "19",
+        "nombre": "Rubén Campoy",
         "curso":"Once" 
     },
     {
-        "id": "20",
-        "estudiante": "Ignacia Camino Grande",
+        "codigo": "20",
+        "nombre": "Ignacia Camino Grande",
         "curso":"Once" 
     }
 ]
