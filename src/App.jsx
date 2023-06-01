@@ -52,7 +52,8 @@ import AdministrativoListarAdministrativos from './components/administrativo/Adm
 import AdministrativoVerPerfilLider from './components/administrativo/Administrativo_Lider_Ver';
 import AdministrativoRegistrarLiderPerfil from './components/administrativo/Administrativo_Lider_Registrar';
 import AdministrativoEditarPerfilLider from './components/administrativo/Administrativo_Lider_Editar';
-import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras'
+import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras';
+import PerfilDocente from './components/docente/Docente_Perfil';
 import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
 import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
 import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
@@ -102,8 +103,6 @@ const getAllInfoStudent = async () => {
   })
 
   let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
-
-
   zelda = 'http://localhost:8080/coordinador/foto/'
   const foto = await axios.get(zelda + value.data.codigo, {
     headers: {
@@ -134,10 +133,8 @@ const getAllDocents = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
-
   let temp_user = importDocents(value.data)
   console.log(temp_user)
-
   localStorage.setItem("DOCENTES_LISTA", JSON.stringify(temp_user))
   return true;
 }
@@ -149,7 +146,6 @@ const getAllInfoDocent = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
-
   let temp_user = importDocents([value.data])[0]
 
   zelda = 'http://localhost:8080/coordinador/foto/'
@@ -168,18 +164,16 @@ const getAllInfoDocent = async () => {
       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
       return imageUrl;
     });
-
     await fetch(foto).then(response => response.blob())
-
+    
   }
-  catch {
-    foto = '';
+  catch{
+    foto='';
   }
-
+  
   localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
   return true;
 }
-
 
 
 
@@ -225,14 +219,14 @@ const router = createBrowserRouter(
           {/**Rutas de gestión de Docentes**/}
           <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
           <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={getAllInfoDocent} />
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent} />
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
 
-          <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>} />
-          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>} />
-          <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>} />
-          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
-          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
+          <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
+          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>}/>
+          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           <Route path='tester' element={<StorageTest></StorageTest>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Administradores**/}
@@ -243,7 +237,6 @@ const router = createBrowserRouter(
           <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
           <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
-
           <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
           <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />
           <Route path='Planes/Vista' element={<AdministrativoPlanIdea></AdministrativoPlanIdea>} />
@@ -258,7 +251,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
 
-          <Route path='Perfil' />
+          <Route path='Perfil' element={<PerfilDocente></PerfilDocente>}/>
           <Route path='Perfil'></Route>
           <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>} />
           <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>} />
