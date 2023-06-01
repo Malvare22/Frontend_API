@@ -372,7 +372,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.contrasenia ? "is-invalid" : ""}`} name='contrasenia' value={form.contrasenia} onChange={handleChange} />
-                                <div className="invalid-feedback">La contraseña debe cumplir con los siguientes requisitos mínimos: almenos 6 carácteres, una letra en mayúscula, un número y un caracter especial.</div>
+                                <div className="invalid-feedback">La contraseña debe cumplir con los siguientes requisitos mínimos: almenos 6 caracteres, una letra en mayúscula, un número y un carácter especial.</div>
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>

@@ -20,8 +20,7 @@ export default function Screen() {
         navigate('/login');
     };
     const handleSubmit = async (e) => {
-        e.preventDefault();
-    
+        e.preventDefault();    
         if (confirmPassword === '') {
             alert('Ingresa la confirmación de la contraseña.');
         } else if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {

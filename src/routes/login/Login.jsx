@@ -16,8 +16,6 @@ const useForm = (initialData, validar, navigate) => {
 
     const [fail, setFail] = useState(false);
     const [form, setForm] = useState(initialData);
-    const userSession = useUserSession();
-    const togglerUserSession = useUserTogglerSession();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,26 +28,31 @@ const useForm = (initialData, validar, navigate) => {
         //Validar -> verificación de campos
         const state = await validar(form)
         //Si hubo error:
-        if (state === undefined) setFail(true);
+        if (state) {console.log('Iniciaste'); iniciarSesion()}
         else {
-            iniciarSesion(state, togglerUserSession)
+            setFail(true)
         }
     };
 
-    const iniciarSesion = (state, togglerUserSession) => {
-        togglerUserSession(state);
-        const type = state.tipo_usuario
+    const iniciarSesion = () => {
+        const type = JSON.parse(localStorage.getItem('session')).rol;
+        let direction='/';
         switch (type) {
             case 'administrativo':
+                direction='../Administrativo/Perfil';
                 break;
-            case 'lider':
+            case 'coordinador':
+                direction='../Lider/Perfil';
                 break;
             case 'docente':
+                direction='../Docente/Perfil';
                 break;
             case 'estudiante':
+                direction='../Estudiante/Perfil';
                 break;
         }
-        console.log("Se inició " + state);
+        navigate(direction)    
+
     }
 
     return { form, fail, handleChange, handleSubmit };
@@ -81,34 +84,34 @@ const Panel = () => {
     };
     //Aquí se hace toda la validación de los campos
     const validar = async (form) => {
-        let temp = undefined;
         //Colocar método de verificación de clave (Cada input está en form)
-        if (form.userName.trim() && form.password.trim()) {
-            temp = await busquedaUsuario(form);
+        let condition = undefined
+        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
+        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim()=='' || form.password.trim() == '' || password.exec(form.password) == null) {
+            return undefined;
         }
-        console.log(temp)
+       
+        else {
+            try {
+                condition = await axios.post('http://localhost:8080/login', {
+                    email: form.userName,
+                    password: form.password
+                }).then((response) => {
+                    localStorage.setItem('token_access', response.data.token)
+                    localStorage.setItem('session', JSON.stringify({"email": response.data.email, "rol": response.data.rol}))
+                    return true;
+                })
+            }
+            catch {
+            }     
+        }
+        return condition;
         // if(form.userName=="estudiante") navigate('/estudiante');
         // if(form.userName=="lider") navigate('/lider');
         // if(form.userName=="docente") navigate('/docente');
         // if(form.userName=="admin") navigate('/admin');
-        return temp;
     };
-
-    const busquedaUsuario = async (user) => {
-        let value = null;
-        value = await axios.get('database.json').then(
-            response => {
-                const data = response.data;
-                //let tipos = ["administradores","lider","docentes","estudiantes"];
-                for (let i = 0; i < data.usuarios.length; i++) {
-                    if (data.usuarios[i].correo === form.userName && data.usuarios[i].contraseña === form.password) return data.usuarios[i];
-                }
-            }).catch(error => {
-                console.error(error);
-            });
-        return value;
-    };
-
 
     //Plantilla del objeto user
     const user = {
