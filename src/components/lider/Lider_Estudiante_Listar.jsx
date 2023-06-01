@@ -110,7 +110,8 @@ const Table = (props) => {
                                 <td className='text-center align-middle col-auto'>{d.curso}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={() => { toggleA(d) }} value={d.id} style={{ width: "auto", border: "none" }}>
+
+                                        <button type="button" className="btn" onClick={()=>{toggleA(d)}} value={d.id} style={{ width: "auto", border: "none" }}>
 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
