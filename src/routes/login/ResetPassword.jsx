@@ -21,23 +21,25 @@ export default function Screen() {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password === '') {
-            alert('Ingresa una contraseña.');
-        } else if (/^(?=.[A-Z])(?=.\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {
+    
+        if (confirmPassword === '') {
+            alert('Ingresa la confirmación de la contraseña.');
+        } else if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {
             alert('La contraseña no cumple los requisitos. Debe tener al menos una letra mayúscula, un dígito y un carácter especial (!@#$%^&), y tener una longitud mínima de 6 caracteres.');
         } else if (password === confirmPassword) {
-            axios.patch('localhost:8080/coordinador/resetPassword', { "password": password }, { headers: { 'X-Softue-JWT': token } })
+            axios.patch('http://localhost:8080/administrativo/resetPassword', { "password": password }, { headers: { 'X-Softue-Reset': token } })
                 .then((response) => {
-                    navigate('../../Login')                    
+                    navigate('../../Login');                    
                 })
                 .catch((error) => {
-                    alert('No se ha podido reestablecer su contraseña, por favor contacte al lider de la unidad de emprendimiento.')
-                    navigate('../../Login')     
+                    alert('No se ha podido restablecer su contraseña, por favor contacte al líder de la unidad de emprendimiento.');
+                    navigate('../../Login');
                 });
         } else {
             alert('Las contraseñas no coinciden, por favor verifique.');
         }
     };
+    
     return (<div className="container-fluid" style={{ background: "#1C3B57" }}>
         <div className="row p-5 d-flex justify-content-center">
             <div className="col-md-6 col-12 p-5 d-flex justify-content-center align-items-center" style={{ background: "#68462C" }}>
