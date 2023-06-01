@@ -47,7 +47,11 @@ import AdministrativoListarEntidades from './components/administrativo/Administr
 import AdministrativoListarEstudiantes from './components/administrativo/Administrativo_estudiantesListar';
 import AdministrativoListarDocentes from './components/administrativo/Administrativo_docentesListar';
 import AdministrativoListarAdministrativos from './components/administrativo/Administrativo_administrativosListar';
-import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras'
+import AdministrativoVerPerfilLider from './components/administrativo/Administrativo_Lider_Ver';
+import AdministrativoRegistrarLiderPerfil from './components/administrativo/Administrativo_Lider_Registrar';
+import AdministrativoEditarPerfilLider from './components/administrativo/Administrativo_Lider_Editar';
+import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras';
+import PerfilDocente from './components/docente/Docente_Perfil';
 import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
 import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
 import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
@@ -175,7 +179,7 @@ const router = createBrowserRouter(
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
 
-          <Route path='Perfil'/>
+          <Route path='Perfil' element={<PerfilDocente></PerfilDocente>}/>
           <Route path='Perfil'></Route>
           <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
           <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
