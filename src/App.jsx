@@ -286,6 +286,11 @@ const router = createBrowserRouter(
           <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
+          <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
+          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>}/>
+          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
           <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>}/>

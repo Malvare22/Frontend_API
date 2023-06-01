@@ -5,13 +5,14 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const Formulario = () => {
-  const [nombre, setNombre] = useState('');
+
+  const [titulo, setTitulo] = useState('');
   const [integrantesIdea, setIntegrantesIdea] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
   const [formatoIdea, setFormatoIdea] = useState(null);
 
-  const handleNombreChange = (e) => {
-    setNombre(e.target.value);
+  const handleTituloChange = (e) => {
+    setTitulo(e.target.value);
   };
 
   const handleintegrantesIdeaChange = (event, values) => {
@@ -26,27 +27,41 @@ const Formulario = () => {
     setFormatoIdea(e.target.files[0]);
   };
 
+  const [error, setError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('nombre', nombre);
-    formData.append('integrantesIdea', JSON.stringify(integrantesIdea));
-    formData.append('areaEnfoque', areaEnfoque);
-    formData.append('formatoIdea', formatoIdea);
+    if (formatoIdea) {
+      setError(null);
+      var formData = new FormData();
+      formData.append('titulo', titulo);
+      formData.append('integrantesIdea', JSON.stringify(integrantesIdea));
+      formData.append('areaEnfoque', areaEnfoque);
+      formData.append('formatoIdea', formatoIdea);
 
-    try {
-      const response = await axios.post('http://localhost:8080', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-Softue-JWT': localStorage.getItem('token_access'),
-        },
-      });
-      
-      console.log(response.data);
-      
-    } catch (error) {
-      console.error(error);
+      console.log(formatoIdea)
+
+      let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
+      let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
+        .then((response) => {
+          console.log("hecho")
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log('Código de estado:', error.response.status);
+            console.log('Respuesta del backend:', error.response.data);
+          } else if (error.request) {
+            console.log('No se recibió respuesta del backend');
+          } else {
+            console.log('Error al realizar la solicitud:', error.message);
+          }
+        });
+      setFormatoIdea(null);
+      //window.location.reload();
+
+    } else {
+      setError('Por favor, selecciona un archivo');
     }
   };
 
@@ -55,9 +70,7 @@ const Formulario = () => {
   const estudiantes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/estudiante/listar', {
-        headers: {
-          'X-Softue-JWT': localStorage.getItem('token_access'),
-        },
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
       console.log(response.data);
       setDatos(response.data);
@@ -78,7 +91,7 @@ const Formulario = () => {
           <div className="row">
             <Sobreponer>
               <div className="col-12">
-                <div id="titulo" className="rounded-3 mt-4" style={{ background: '#ECB904' }}>
+                <div id="titulo1" className="rounded-3 mt-4" style={{ background: '#ECB904' }}>
                   <div className="row">
                     <div className="d-flex col ms-3">
                       <h5 className="m-0 p-2" style={{ color: 'black' }}>
@@ -97,9 +110,10 @@ const Formulario = () => {
                         <input
                           type="text"
                           placeholder="Nombre"
-                          id="nombre"
-                          value={nombre}
-                          onChange={handleNombreChange}
+                          id="titulo"
+                          value={titulo}
+                          onChange={handleTituloChange}
+                          pattern="[A-Za-z\s]+"
                           required
                         />
                       </div>
@@ -163,12 +177,13 @@ const Formulario = () => {
 export default Formulario;
 
 const Sobreponer = styled.div`
-  #titulo,
+
+  #titulo1,
   #cuerpo {
     position: relative;
   }
 
-  #titulo {
+  #titulo1 {
     z-index: 2;
   }
 
@@ -177,7 +192,7 @@ const Sobreponer = styled.div`
     top: -15px;
   }
 
-  #nombre {
+  #titulo {
     width: 100%;
     border: 1px solid grey;
     border-radius: 4px;
