@@ -45,8 +45,6 @@ const Formulario = () => {
       
       console.log(response.data);
       
-      // Aquí puedes realizar las acciones correspondientes después de enviar el formulario
-      
     } catch (error) {
       console.error(error);
     }

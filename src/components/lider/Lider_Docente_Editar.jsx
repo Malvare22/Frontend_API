@@ -45,8 +45,8 @@ const useForm = (initialData, validar, initialErrors) => {
             const tmp = {
                 "correo": false,
                 "contrasenia": false,
-                "apellidos": false,
-                "nombres": false,
+                "apellido": false,
+                "nombre": false,
                 "curso": false,
                 "sexo": false,
                 "fecha_nacimiento": false,
@@ -104,25 +104,13 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 //Contenido del formulario
 const Information = () => {
 
-    const user = {
-        "id": "1",
-        "nombres": "Luis",
-        "apellidos": "Salazar",
-        "documento": "10213123",
-        "titulo": "Técnico en Inglés",
-        "area": "Comercial",
-        "correo": "sdfsdf@hotmail.com",
-        "contrasenia": "32454345",
-        "telefono": "4235345433",
-        "foto": "/images/03.png",
-        "fecha_nacimiento": "1991-12-20",
-        "sexo": "0"
-    }
+    const user = JSON.parse(localStorage.getItem('DOCENTE_ALL'))
+
 
     const initialErrors = {
-        "nombres": false,
-        "apellidos": false,
-        "documento": false,
+        "nombre": false,
+        "apellido": false,
+        "cedula": false,
         "titulo": false,
         "area": false,
         "correo": false,
@@ -136,9 +124,9 @@ const Information = () => {
 
     const validar = (user) => {
         let errors = {
-            "nombres": false,
-            "apellidos": false,
-            "documento": false,
+            "nombre": false,
+            "apellido": false,
+            "cedula": false,
             "titulo": false,
             "area": false,
             "correo": false,
@@ -153,16 +141,16 @@ const Information = () => {
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
         const caracteresEspeciales = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
-        if (user.nombres.trim() == '' || caracteresEspeciales.exec(user.nombres) == null || user.nombres.length > 50) {
-            errors.nombres = true;
+        if (user.nombre.trim() == '' || caracteresEspeciales.exec(user.nombre) == null || user.nombre.length > 50) {
+            errors.nombre = true;
             fail = true;
         }
-        if (user.apellidos.trim() == '' || caracteresEspeciales.exec(user.apellidos) == null || user.apellidos.length > 50) {
-            errors.apellidos = true;
+        if (user.apellido.trim() == '' || caracteresEspeciales.exec(user.apellido) == null || user.apellido.length > 50) {
+            errors.apellido = true;
             fail = true;
         }
-        if (isNaN(user.documento)) {
-            errors.documento = true;
+        if (isNaN(user.cedula)) {
+            errors.cedula = true;
             fail = true;
         }
         if (user.titulo.trim() == '' || caracteresEspeciales.exec(user.titulo) == null) {
@@ -179,7 +167,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.sexo != '0' && user.sexo != '1') {
+        if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
             errors.sexo = true;
             fail = true;
         }
@@ -244,7 +232,7 @@ const Information = () => {
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.nombres ? "is-invalid" : ""}`} name='nombres' value={form.nombres} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -253,7 +241,7 @@ const Information = () => {
                                 Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.apellidos ? "is-invalid" : ""}`} name='apellidos' value={form.apellidos} onChange={handleChange} maxlength="50" />
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
@@ -262,8 +250,8 @@ const Information = () => {
                                 Documento de identificación:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.documento ? "is-invalid" : ""}`} name='documento' value={form.documento} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite documentos de identificación válidos.</div>
+                                <input type="text" className={`form-control ${errors.cedula ? "is-invalid" : ""}`} name='cedula' value={form.cedula} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite cedulas de identificación válidos.</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -302,11 +290,14 @@ const Information = () => {
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange} defaultValue={"0"}>
-                                    <option value={"0"}>
+                            <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
+                                    <option value={""} selected={"select"}>
+                                        Selecciona un género
+                                    </option>
+                                    <option value={"Masculino"}>
                                         Masculino
                                     </option>
-                                    <option value={"1"}>
+                                    <option value={"Femenino"}>
                                         Femenino
                                     </option>
                                 </select>
@@ -389,8 +380,8 @@ const WindowForPassword = (props) => {
 
     const verifyPassword = (e) => {
         e.preventDefault()
-        const espacios = /\s/;
-        if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
+        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
+        if (inputs.first == inputs.second && password.exec(inputs.first) == null) {
             setSuccess(true)
             setValid(true)
             props.setForm({ ...props.form, ["contrasenia"]: inputs.first })
@@ -442,14 +433,9 @@ const WindowForPassword = (props) => {
 //Componente de carga de imagen
 const ImageContainer = (props) => {
 
-    useEffect(() => {
-        props.setFile({ name: props.form.nombres, direction: props.form.foto })
-    }, [])
-
-    useEffect(() => {
-        props.setForm({ ...props.form, ["foto"]: props.file.direction })
-
-    }, [props.file])
+    // useEffect(()=>{
+    //     return () => URL.revokeObjectURL(fileInput.current.files[0])
+    // },[props.form.foto])
 
     const fileInput = useRef(null)
 
@@ -459,34 +445,39 @@ const ImageContainer = (props) => {
     }
 
     const handleInput = () => {
-        if (fileInput.current.files[0] != null) {
-            const newFile = { name: fileInput.current.files[0].name, direction: URL.createObjectURL(fileInput.current.files[0]) }
-            props.setFile(newFile)
-        }
+        if (fileInput.current.files[0]) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                props.setForm({ ...props.form, ["foto"]: { "archivo": fileInput.current.files[0], "direccion": reader.result } })
+            }
+            reader.readAsDataURL(fileInput.current.files[0])
+
+        };
     }
 
     const removeImage = () => {
-        props.setFile(props.defaulFile);
-        fileInput.current.value = "";
+        props.setForm({ ...props.form, ["foto"]: { "archivo": "", "direccion": "" } })
+        fileInput.current.value = ''
     }
 
     return (
         <SImageContainer>
-            <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
+            {props.form.foto.archivo != "" && <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" onClick={removeImage} style={{ cursor: "pointer" }} width="40" height="40" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                         <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
                     </svg>
                 </div>
                 <div>
-                    <img src={`${props.file.direction}`} className='border border-2 border-dark rounded-circle img-fluid'></img>
+                    <img src={props.form.foto.direccion} className='border border-2 border-dark rounded-circle img-fluid'></img>
                 </div>
-            </div>
+            </div>}
+
             <div className='col-12 col-sm-7 d-flex justify-content-center' id='div_02'>
-                <input type='file' accept="image/png, image/jpeg" className='d-none' onChange={handleInput} ref={fileInput}></input>
+                <input type='file' accept=".png, .jpg" className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                        <h6>{props.file.name}</h6>
+                        <h6>Seleccionar archivo</h6>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>

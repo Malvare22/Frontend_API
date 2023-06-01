@@ -1,0 +1,18 @@
+[
+    {
+        "codigo": 22,
+        "nombre": "Ericka",
+        "apellido": "Eckblad",
+        "fecha_nacimiento": [
+            2022,
+            3,
+            20
+        ],
+        "sexo": "F",
+        "correo": "Ericka.Eckblad@gmail.com",
+        "telefono": "3204042500",
+        "contrasenia": "$argon2id$v=19$m=1024,t=1,p=1$lO+mNu1GBBmq9cTT2C6LRg$ahWvgTSeQeC6Xh00pT3fIdxwKRtraKcRRnjn30abM+Y",
+        "tipoUsuario": "coordinador",
+        "fotoUsuarioId": null
+    }
+]
