@@ -23,7 +23,7 @@ export default function Screen() {
         e.preventDefault();
         if (password === '') {
             alert('Ingresa una contraseña.');
-        } else if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&]).{6,}$/.test(password)) {
+        } else if (/^(?=.[A-Z])(?=.\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {
             alert('La contraseña no cumple los requisitos. Debe tener al menos una letra mayúscula, un dígito y un carácter especial (!@#$%^&), y tener una longitud mínima de 6 caracteres.');
         } else if (password === confirmPassword) {
             axios.patch('localhost:8080/coordinador/resetPassword', { "password": password }, { headers: { 'X-Softue-JWT': token } })
