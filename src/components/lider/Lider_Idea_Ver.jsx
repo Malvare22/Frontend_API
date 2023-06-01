@@ -7,8 +7,8 @@ import Historial from "./Lider_Idea_Historial";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones></Observaciones>
+        <InfoGeneral Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></InfoGeneral>
+        <Observaciones Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -18,12 +18,12 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Historial>
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
@@ -44,11 +44,10 @@ const InfoGeneral = () => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        let nombre="Idea de negocio de Rebeca.Brunell@gmail.com";
-        let URL = 'http://localhost:8080/ideaNegocio/'+nombre;
-        let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
+        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
         
-        value = await  axios.get('../../../ideasdeveritas.json' 
+        // value = await  axios.get('../../../ideasdeveritas.json' 
+        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
             //method: "get",
       //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
         ).then(
@@ -59,6 +58,7 @@ const InfoGeneral = () => {
                 console.error(error);
             });
         setDatos1(value)
+        console.log(value)
 
     };
     useEffect(() => {
@@ -69,11 +69,10 @@ const InfoGeneral = () => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-       // let URL = 'http://localhost:8080/docente/listar';
-       // let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
-        value = await axios('../../../docentesdeveritas.json' 
-          //  method: "get",
-          //  headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        let URL = 'http://localhost:8080/docente/listar';
+        let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODA4OTksInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4NDQ5OX0.6tcUXqDKRcFPyyAX8Z7PSdilnfcgymCUaln4Ih5b6-Y';
+        //value = await axios('../../../docentesdeveritas.json' 
+        value = await axios.get(URL, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
         ).then(
             response => {
                 const data = response.data;
@@ -121,11 +120,13 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    <li>{datos1.estudianteLiderInfo[1]}</li>
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
+                                                    <li>{datos1 && datos1.estudianteLiderInfo[1]}</li>
+                                                    {datos1.estudiantesIntegrantesInfo != null ? datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
 
-                                                    })}
+                                                    })
+                                                    :"No se ha asignado docente tutor"
+                                                    }
 
                                                 </ul>
                                             </div>
@@ -137,13 +138,13 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
 
 
-                                                <p>{datos1.tutorInfo[1]}</p>
+                                                 <p>{datos1.tutorInfo != null ? datos1.tutorInfo[1] :<p>Pendiente...</p>}</p>
 
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo[1][0] !== null ? true : false } >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo[1][0] !== null ? false : true }>Eliminar</button>
+                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false } >Asignar</button>
+                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true }>Eliminar</button>
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -159,9 +160,11 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
+                                                    {datos1.docentesApoyoInfo[1].lenght == 0 ? datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
-                                                    })}
+                                                    })
+                                                    :<p>No hay docentes de apoyo asignados</p> 
+                                                    }
                                                 </ul>
                                             </div>
                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
@@ -352,7 +355,7 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -375,7 +378,7 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla Token={props.Token} nombre={props.nombre}></Tabla>
                                 </div>
                             </div>
                         </UncontrolledCollapse>
@@ -429,17 +432,20 @@ const Sdiv = styled.div`
       }}
 `;
 
-function Tabla() {
+
+
+
+function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
        // let nombre="Idea de negocio de Rebeca.Brunell@gmail.com";
-        //let URL = 'http://localhost:8080/observacionIdea/'+nombre;
-        //let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
+        let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
         
-        value = await  axios.get('../../../Observaciones.json'
+        //value = await  axios.get('../../../Observaciones.json'
         //    method: "get",
         //    headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
         ).then(
             response => {
                 const data = response.data;
