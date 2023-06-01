@@ -1,7 +1,7 @@
 
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
-import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, json, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
@@ -13,16 +13,8 @@ export default function LiderVerPerfil() {
 
 const VistaGeneral = () => {
 
-    const usuario = {
-        "nombres":"Luis sdfsdfsdfsdf",
-        "apellidos":"Salazar sdfsdfsdfs",
-        "documento":"10213123",
-        "sexo": "0",
-        "correo":"sdfsdf@hotmail.com",
-        "telefono":"4235345433",
-        "foto": "/images/02.png",
-        "fecha_nacimiento":"1991-12-20",
-    }    
+    const usuario = JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))
+    console.log(usuario)
 
     return (
         <div className='flex-grow-1'>
@@ -46,11 +38,11 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto}></img>
+                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{props.usuario.nombres}</p>
-                        <p className='text-white'>{props.usuario.apellidos}</p>
+                        <p className='text-white'>{props.usuario.nombre}</p>
+                        <p className='text-white'>{props.usuario.apellido}</p>
                     </div>
                 </div>
             </div>
@@ -60,10 +52,11 @@ const Profile = (props) => {
 
 const Information = (props) => {
     const edad=()=>{
+        const date = props.usuario.fecha_nacimiento[0]+"-"+props.usuario.fecha_nacimiento[1]+"-"+props.usuario.fecha_nacimiento[2];
         const today = new Date()
-        const birth = Date.parse(props.usuario.fecha_nacimiento);
+        const birth = Date.parse(date);
         const ans = new Date(today-birth)
-        return (ans.getUTCFullYear()-1970)
+        return ans.getUTCFullYear()-1970
     }
     return (
         <Sdiv02>
@@ -77,7 +70,7 @@ const Information = (props) => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.nombres}
+                        {props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -85,17 +78,10 @@ const Information = (props) => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellidos}
+                        {props.usuario.apellido}
                     </div>
                 </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Documento de identificación:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.documento}
-                    </div>
-                </div>
+
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Edad:
@@ -109,7 +95,7 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
+                        {props.usuario.sexo=='M'? "Masculino":"Femenino"}
                     </div>
                 </div>
             

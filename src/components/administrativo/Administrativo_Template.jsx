@@ -6,7 +6,7 @@ import Footer from "../Footer";
 
 export default function TemplateEstudiante({ children }) {
     /*Método de validación: aplica para todo usuario, es preguntar si el usuario corresponde al rol*/
-    if (JSON.parse(localStorage.getItem('session')).rol == 'administrativo')
+    //if (JSON.parse(localStorage.getItem('session')).rol == 'administrativo')
         return (<><div className="container-fluid row m-0 p-0">
             <div className="col-12 col-sm-2 m-0 p-0">
                 <NavbarAdmin></NavbarAdmin>
@@ -19,7 +19,7 @@ export default function TemplateEstudiante({ children }) {
         </div>
             <Footer></Footer>
         </>);
-    else return (<Error404></Error404>)
+    //else return (<Error404></Error404>)
 }
 
 const Contenido = styled.div.attrs({

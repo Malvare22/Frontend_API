@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { toLiderFormatStudentsFromImport, toLiderFormatStudentsToExport } from '../../context/functions_general';
+import { confirmPassword, contraseniaNoCumple, toLiderFormatStudentsToExport } from '../../context/functions_general';
 
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -36,6 +36,7 @@ const useForm = (initialData, validar, initialErrors) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //Validar -> verificación de campos
+        console.log(form)
         const state = await validar(form);
         //Si hubo error:
         if (state != null) {
@@ -66,7 +67,6 @@ const useForm = (initialData, validar, initialErrors) => {
 
 //Componente general
 export default function LiderEditarPerfilEstudiante() {
-
 
     return (
 
@@ -104,10 +104,11 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 
 //Contenido del formulario
 const Information = () => {
+    const navigate = useNavigate();
+    const jesucristo = useRef(null)
 
-    const navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
-    
+
+    let user = JSON.parse(localStorage.getItem("ESTUDIANTE_INFO"))
 
     const initialErrors = {
         "correo": false,
@@ -143,7 +144,12 @@ const Information = () => {
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
         const espacios = /\s/;
-        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
+
+        if (user.foto.direccion == '') {
+            fail = true;
+            errors.foto = true;
+        }
+
         if (user.nombre.trim() == '' || number_regex.exec(user.nombre) != null || user.nombre.length > 50) {
             errors.nombre = true;
             fail = true;
@@ -153,16 +159,11 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.contrasenia.trim() == '' || password.exec(user.contrasenia) == null) {
-            errors.contrasenia = true;
-            fail = true;
-        }
-
         if (user.curso == 0 || !courses.includes(user.curso)) {
             errors.curso = true;
             fail = true;
         }
-        if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
+        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
@@ -211,57 +212,61 @@ const Information = () => {
     const updateProfile = async () => {
 
         const formData = new FormData();
-        formData.append('foto', form.foto.archivo);
+
+        const blob = await fetch(form.foto.direccion).then(response => response.blob());
+        const archivo = new File([blob], "IMG.png", { type: "image/png" });
+        formData.append('foto', archivo);
         formData.append('correo', form.correo)
 
-
         const prototype = {
-            "nombre": form.nombre,
-            "apellido": form.apellido,
-            "fecha_nacimiento": form.fecha_nacimiento,
-            "sexo": form.sexo,
-            "correo": form.correo,
-            "telefono": form.telefono,
-            "contrasenia": form.contrasenia,
+            ...form,
             "tipoUsuario": "estudiante",
-            "curso": form.curso,
-            "nombreAcudiente": form.nombre_acudiente,
             "capacitacionAprobada": "aprobada"
         }
         const toSend = toLiderFormatStudentsToExport([prototype])[0]
-        /*Registro*/
-        await axios.post('http://localhost:8080/register/estudiante', toSend).then(
+        try {
+            /*Registro*/
+            await axios({
+                method: "patch",
+                url: "http://localhost:8080/estudiante/actualizar",
+                data: toSend,
+                headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
+            }).then(
+                (response) => {
+                    console.log("Exito?")
 
-        ).catch((error) => { alert(error) })
+                }
+            )
 
+            /*Set Foto*/
+            const zelda = "http://localhost:8080/coordinador/guardarFoto";
 
-        /*Set Foto*/
-        const zelda = "http://localhost:8080/coordinador/guardarFoto";
-
-        await axios({
-            method: "post",
-            url: zelda,
-            data: formData,
-            headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
-        }).then(
-            (response) => {
-                console.log("ENTER->", response)
-                navigate('../Estudiantes')
-            }
-        ).catch(async (error) => {
-            const value = await (error)
+            await axios({
+                method: "post",
+                url: zelda,
+                data: formData,
+                headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
+            }).then(
+                (response) => {
+                    navigate('../Estudiantes')
+                }
+            )
+        }
+        catch(error){
+            let msg='';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
-                console.log('Respuesta del backend:', error.response.data);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
             } else if (error.request) {
-                console.log('No se recibió respuesta del backend');
+                msg='Error: No se recibió respuesta de la base de datos';
             } else {
-                console.log('Error al realizar la solicitud:', error.message);
+                msg= "Error al realizar la solicitud: " + error.message;
             }
-        })
-
+            alert(msg)
+            
+        }
+        
     }
-
     return (
         <div >
             <form onSubmit={handleSubmit}>
@@ -342,7 +347,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
+                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos (10 dígitos en total)</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -362,14 +367,14 @@ const Information = () => {
                                 Foto:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                                <ImageContainer form={form} setForm={setForm} errors={errors}></ImageContainer>
                             </div>
                         </div>
                     </SInfo>
                 </div>
                 <div className='btns'>
                     <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
-                    <Link to={"../Estudiantes"} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                    <Link to={"../Estudiantes"} ref={jesucristo} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
                 </div>
             </form>
 
@@ -379,15 +384,8 @@ const Information = () => {
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => {
-                        updateProfile();
-                        //console.log(tempo)
-                        // const myUrl = new URL('http://example.com');
-                        // const myUrlString = myUrl.toString();
-                        // console.log(myUrlString)
-                        //navigate("../Estudiantes")
-                    }
-                    } >Aceptar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => { updateProfile(); }} >Aceptar</Button>
+
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -420,8 +418,7 @@ const WindowForPassword = (props) => {
 
     const verifyPassword = (e) => {
         e.preventDefault()
-        const espacios = /\s/;
-        if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
+        if (inputs.first == inputs.second && !contraseniaNoCumple(inputs.first)) {
             setSuccess(true)
             setValid(true)
             props.setForm({ ...props.form, ["contrasenia"]: inputs.first })
@@ -456,7 +453,7 @@ const WindowForPassword = (props) => {
                     </div>
                 </div>
                 {!valid && <div class="alert alert-danger" role="alert">
-                    La contraseña debe tener una longitud mínima de 8 carácteres y no puede poseer espacios en blanco. (Ambos campos deben coincidir).
+                La contraseña debe cumplir con los siguientes requisitos mínimos: almenos 6 carácteres, una letra en mayúscula, un número y un caracter especial (Ambos campos deben coincidir).
                 </div>}
                 {success && <div class="alert alert-success" role="alert">Contraseña válida (Recuerda guardar los cambios)</div>}
             </div>
@@ -487,7 +484,7 @@ const ImageContainer = (props) => {
         if (fileInput.current.files[0]) {
             const reader = new FileReader()
             reader.onload = () => {
-                props.setForm({ ...props.form, ["foto"]: { "nombre": fileInput.current.files[0].name, "archivo": fileInput.current.files[0], "direccion": reader.result } })
+                props.setForm({ ...props.form, ["foto"]: { "archivo": fileInput.current.files[0], "direccion": reader.result } })
             }
             reader.readAsDataURL(fileInput.current.files[0])
 
@@ -516,14 +513,16 @@ const ImageContainer = (props) => {
                 <input type='file' accept=".png, .jpg" className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                        <h6>{props.form.foto.nombre}</h6>
+                        <h6>Seleccionar archivo</h6>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>
                     </div>
                 </button>
 
+
             </div>
+            {props.form.foto.archivo == "" && <div className='mt-3 text-danger'>Es obligatorio adjuntar una imagen de perfil</div>}
         </SImageContainer>
     );
 }
