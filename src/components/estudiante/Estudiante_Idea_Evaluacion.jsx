@@ -42,8 +42,13 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
+
         let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+        //let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        //value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+
         ).then(
             response => {
                 const data = response.data;

@@ -10,7 +10,6 @@ export default function VistaIdea() {
 
         <InfoGeneral Token='' nombre={localStorage.getItem("titulo")}></InfoGeneral>
         <Observaciones Token='' nombre={localStorage.getItem("titulo")}></Observaciones>
-
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -21,7 +20,6 @@ export default function VistaIdea() {
             </div>
         </div>
         <Historial Token='' nombre={localStorage.getItem("titulo")}></Historial>
-
     </div>
     )
 };
@@ -51,8 +49,13 @@ const InfoGeneral = (props) => {
 
         // value = await  axios.get('../../../ideasdeveritas.json' 
 
-        //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+
+        //  headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+      //   headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        //value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
 
         ).then(
             response => {
@@ -73,15 +76,21 @@ const InfoGeneral = (props) => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
+
         let ruta = 'http://144.22.37.238:8080/docente/listar';
 
         value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+        //let URL = 'http://localhost:8080/docente/listar';
+
+        //value = await axios.get(URL, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
         ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.error("Historial",error);
             });
         setProfesores(value)
         console.log("Docentes", value)
@@ -546,8 +555,13 @@ function Tabla(props) {
     const getIdeas = async () => {
         let value = null;
 
+
         let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+       // let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
+       // value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
         ).then(
             response => {
                 const data = response.data;
