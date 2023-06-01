@@ -1,6 +1,6 @@
 
 import styled from 'styled-components';
-import image from './../../assets/images/Users/01.png'
+import imageDefault from './../../assets/images/Users/01.png'
 import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -15,7 +15,6 @@ export default function LiderVerPerfilEstudiante() {
 const VistaGeneral = () => {
 
     const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
-    console.log(usuario)
     const navigate = useNavigate()
 
    
@@ -43,7 +42,7 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
+                <img className='rounded-circle' src={`${props.usuario.foto.direccion==''?imageDefault : props.usuario.foto.direccion}`}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
                         <p className='text-white'>{props.usuario.nombre}</p>
