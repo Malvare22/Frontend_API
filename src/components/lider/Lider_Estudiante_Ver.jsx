@@ -17,9 +17,6 @@ const VistaGeneral = () => {
     const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_INFO"))
     console.log(usuario)
     const navigate = useNavigate()
-
-   
-
     return (
         <div className='flex-grow-1'>
             <h2 className='m-4 fw-bold'>Información de Usuario</h2>
@@ -43,7 +40,7 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
+                <img className='rounded-circle' style={{height:"100px",width:"100px"}} src={props.usuario.foto.direccion}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
                         <p className='text-white'>{props.usuario.nombre}</p>
@@ -80,7 +77,7 @@ const Information = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
 
-                        {props.usuario.apellidos}
+                        {props.usuario.apellido}
                     </div>
                 </div>
                 <div className='row'>
