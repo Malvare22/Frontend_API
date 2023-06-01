@@ -7,8 +7,8 @@ import Historial from "./Lider_Idea_Historial";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></InfoGeneral>
-        <Observaciones Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Observaciones>
+        <InfoGeneral Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1OTMzMjgsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU5NjkyOH0.iMAH5xiEKqurxM4qFGBAtil3jeAJseoyCSBzkqoi_9w' nombre="Idea de negocio 2 de Rebeca.Brunell@gmail.com"></InfoGeneral>
+        <Observaciones Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1OTMzMjgsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU5NjkyOH0.iMAH5xiEKqurxM4qFGBAtil3jeAJseoyCSBzkqoi_9w' nombre="Idea de negocio 2 de Rebeca.Brunell@gmail.com"></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -18,7 +18,7 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Historial>
+        <Historial Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1OTMzMjgsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU5NjkyOH0.iMAH5xiEKqurxM4qFGBAtil3jeAJseoyCSBzkqoi_9w' nombre="Idea de negocio 2 de Rebeca.Brunell@gmail.com"></Historial>
     </div>
     )
 };
@@ -47,9 +47,10 @@ const InfoGeneral = (props) => {
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
         
         // value = await  axios.get('../../../ideasdeveritas.json' 
-        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-            //method: "get",
+         //method: "get",
       //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
         ).then(
             response => {
                 const data = response.data;
@@ -70,15 +71,13 @@ const InfoGeneral = (props) => {
     const getProfesores = async () => {
         let value = null;
         let URL = 'http://localhost:8080/docente/listar';
-        let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODA4OTksInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4NDQ5OX0.6tcUXqDKRcFPyyAX8Z7PSdilnfcgymCUaln4Ih5b6-Y';
-        //value = await axios('../../../docentesdeveritas.json' 
         value = await axios.get(URL, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
         ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.error("Historial",error);
             });
         setProfesores(value)
         
@@ -439,12 +438,7 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-       // let nombre="Idea de negocio de Rebeca.Brunell@gmail.com";
         let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
-        
-        //value = await  axios.get('../../../Observaciones.json'
-        //    method: "get",
-        //    headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
         value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
         ).then(
             response => {
@@ -458,6 +452,7 @@ function Tabla(props) {
     useEffect(() => {
         getIdeas();
     }, []);
+
     return (
         <Sdiv>
             <div className='w-auto m-2'>
