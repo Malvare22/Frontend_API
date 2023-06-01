@@ -10,7 +10,6 @@ export default function Historial(props) {
         let value = null;
         
         let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
-        //value = await axios.get('../../../calificadores.json').then(
         value = await axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
             ).then(
             response => {

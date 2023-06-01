@@ -24,7 +24,7 @@ const Evaluaciones = (props) => {
     const eliminar = (a) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
-        
+
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -37,29 +37,14 @@ const Evaluaciones = (props) => {
         setidEliminar(a);
     }
 
-    //AXIOS PARA RECIBIR LOS DOCENTES
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-    };
-    useEffect(() => {
-        getProfesores();
-    }, []);
-
     //AXIOS PARA RECIBIR A LOS DOCENTES CALIFICADORES CON SUS NOTAS Y OBSERVACIONES
 
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -67,6 +52,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
+        console.log(value)
     };
     useEffect(() => {
         getCalificadores();
@@ -101,14 +87,14 @@ const Evaluaciones = (props) => {
                                                 <p className="d-flex justify-content-end" style={{ color: "#000", fontSize: "30px" }}><b>{props.estado}</b></p>
                                                 <p className="py-2" style={{ color: "#000" }}><b>Observaciones:</b></p>
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {            
-                                                    
-                                                    if (v.observacion != null ) {
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+                                                    if (v.observacion != null) {
 
                                                         return <div key={i} className="row">
-                                                        <div className="row">
+                                                            <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}>{v.observacion}</p>
@@ -121,7 +107,7 @@ const Evaluaciones = (props) => {
                                                         return <div key={i} className="row">
                                                             <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}></p>
@@ -140,11 +126,11 @@ const Evaluaciones = (props) => {
                                         <div className="col-6">
                                             <div className="container rounded-1 p-4" style={{ background: "#B4B4B4" }}>
                                                 <p className="py-2 d-flex justify-content-center" style={{ color: "#000" }}><b>Comité de evaluación</b></p>
-                                                
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
 
-                                                    
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
                                                         if (v.estado === 'aprobado') {
@@ -187,10 +173,10 @@ const Evaluaciones = (props) => {
                                                 </div>
                                                 <div className="col-auto">
 
-                                                    <p style={{ color: "#000" }}>{calificadores ? 
+                                                    <p style={{ color: "#000" }}>{calificadores ?
 
-                                                    
-                                                    calificadores[props.identificador].fechaCorte[2]+"/"+calificadores[props.identificador].fechaCorte[1]+"/"+calificadores[props.identificador].fechaCorte[0]:""}</p>
+
+                                                        calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -202,39 +188,6 @@ const Evaluaciones = (props) => {
                     </div>
                 </Sobreponer>
             </div>
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l,i) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.docente+i} value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
 
             <Modal centered isOpen={viewEliminar}>
                 <ModalBody>
@@ -244,10 +197,10 @@ const Evaluaciones = (props) => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" >Eliminar</Button>
                     <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
                 </ModalFooter>
-            </Modal>    
+            </Modal>
         </main>
     )
 };

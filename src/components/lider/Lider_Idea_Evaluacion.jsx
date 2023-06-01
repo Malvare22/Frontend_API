@@ -67,8 +67,6 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        //value = await axios.get('../../../calificadores.json').then(
-        
         let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
         ).then(
@@ -92,11 +90,9 @@ const Evaluaciones = (props) => {
     const getDatos1 = async () => {
         let value = null;
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-        
-        // value = await  axios.get('../../../ideasdeveritas.json' 
+
         value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-            //method: "get",
-      //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+
         ).then(
             response => {
                 const data = response.data;
@@ -122,7 +118,6 @@ const Evaluaciones = (props) => {
                 console.error(error);
                 setAdverten()
             });
-        
     };
     
 
@@ -272,7 +267,6 @@ const Evaluaciones = (props) => {
                                                 <div className="col-auto">
 
                                                     <p style={{ color: "#000" }}>{calificadores ?
-
 
                                                         calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
