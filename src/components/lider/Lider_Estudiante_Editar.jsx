@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { toLiderFormatStudentsFromImport, toLiderFormatStudentsToExport } from '../../context/functions_general';
+import { contraseniaNoCumple, toLiderFormatStudentsFromImport, toLiderFormatStudentsToExport } from '../../context/functions_general';
 
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -106,7 +106,7 @@ const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "
 const Information = () => {
 
     const navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
+    const user = JSON.parse(localStorage.getItem("ESTUDIANTE_INFO"))
     
 
     const initialErrors = {
@@ -153,8 +153,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.contrasenia.trim() == '' || password.exec(user.contrasenia) == null) {
-            errors.contrasenia = true;
+        if (contrasenia!='') {
             fail = true;
         }
 
@@ -420,8 +419,7 @@ const WindowForPassword = (props) => {
 
     const verifyPassword = (e) => {
         e.preventDefault()
-        const espacios = /\s/;
-        if (inputs.first == inputs.second && inputs.first.length >= 8 && espacios.exec(inputs.first) == null) {
+        if (inputs.first == inputs.second && !contraseniaNoCumple(inputs.first)) {
             setSuccess(true)
             setValid(true)
             props.setForm({ ...props.form, ["contrasenia"]: inputs.first })

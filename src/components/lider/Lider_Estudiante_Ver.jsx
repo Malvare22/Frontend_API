@@ -14,7 +14,7 @@ export default function LiderVerPerfilEstudiante() {
 
 const VistaGeneral = () => {
 
-    const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
+    const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_INFO"))
     console.log(usuario)
     const navigate = useNavigate()
 
