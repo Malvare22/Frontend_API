@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {  UncontrolledCollapse } from 'reactstrap';
+import { UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Administrativo_Idea_Historial";
@@ -8,8 +8,8 @@ import Historial from "./Administrativo_Idea_Historial";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -19,37 +19,79 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        // value = await  axios.get('../../../ideasdeveritas.json' 
+        //  headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+            //   headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+            //value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
                 console.error(error);
             });
-         setDatos1(value)
+        setDatos1(value)
+        console.log(value)
 
     };
     useEffect(() => {
         getDatos1();
     }, []);
 
+    const getArchi = async () => {
+        let value = null;
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    };
+
     return (
 
 
-        <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%"}}>
-            { datos1 && 
-                
+        <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
+            {datos1 &&
+
                 <div className="row">
 
                     <div className="col-12">
@@ -65,7 +107,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Título:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{datos1.titulo}</p>
+                                                <p>{datos1 && datos1.titulo}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2">
@@ -75,7 +117,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l,i) => {
+                                                    {datos1 && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
@@ -90,7 +132,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
 
 
-                                                <p>{datos1.tutorInfo[1]}</p>
+                                                <p>{datos1.tutorInfo != null ? datos1.tutorInfo[1] : <p>Pendiente...</p>}</p>
 
                                             </div>
                                         </div>
@@ -110,12 +152,16 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l,j) => {
+                                                    {datos1.docentesApoyoInfo[1][0] != null ? datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
-                                                    })}
+                                                    })
+                                                        : <p>No hay docentes de apoyo asignados</p>
+                                                    }
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                            <div className="row">
+                                                <div className="col-auto"><button onClick={() => { getArchi() }} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -131,13 +177,13 @@ const InfoGeneral = () => {
                                             <div className="progress-value">50%</div>
                                         </div>
                                     </SProgress>
-                                    
+
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
-                </div>   
+                </div>
             }
         </div>
     )
@@ -251,7 +297,7 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -263,7 +309,7 @@ const Observaciones = () => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg style={{ cursor: "pointer" }}  id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg style={{ cursor: "pointer" }} id="arrowObservaciones" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -272,7 +318,7 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla nombre={props.nombre}></Tabla>
                                 </div>
                             </div>
                         </UncontrolledCollapse>
@@ -330,7 +376,13 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
+        //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+            // let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
+            // value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -342,6 +394,8 @@ function Tabla(props) {
     useEffect(() => {
         getIdeas();
     }, []);
+
+
     return (
         <Sdiv>
             <div className='w-auto m-2'>
@@ -354,7 +408,7 @@ function Tabla(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {datos.map((d) => (
+                        {datos && datos.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
                                 <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>
@@ -367,4 +421,3 @@ function Tabla(props) {
         </Sdiv>
     );
 }
-

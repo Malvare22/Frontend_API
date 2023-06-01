@@ -48,7 +48,8 @@ const Evaluaciones = (props) => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-        let URLs = 'http://144.22.37.238:8080/docente/listar';
+        //let URLs = 'http://144.22.37.238:8080/docente/listar';
+        let URLs = 'http://localhost:8080/docente/listar';
         value = await axios.get(URLs, {headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
         ).then(
             response => {
@@ -69,7 +70,11 @@ const Evaluaciones = (props) => {
     const getCalificadores = async () => {
         let value = null;
 
-        let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
+
+        //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
+        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        
+
         value = await axios.get(URLs, { headers: { "X-Softue-JWT":localStorage.getItem("token_access")} }
 
        // let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
@@ -96,13 +101,13 @@ const Evaluaciones = (props) => {
     const getDatos1 = async () => {
         let value = null;
 
-        let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
 
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
         value = await  axios.get(URL,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
-
         //let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-
        // value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
 
 
         ).then(
@@ -121,7 +126,11 @@ const Evaluaciones = (props) => {
     const ElimnarCalificadores = async (a,b) => {
         bottomEliminar()
         let value = null;
-        let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
+
+        //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
+        let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
+        
+
         value = await axios.delete(URLd, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, body : {    "codigoDocente" : a,
         "evaluacionIdeaId" : b} }
         ).then(

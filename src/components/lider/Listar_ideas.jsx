@@ -43,9 +43,9 @@ const Table = ({ data }) => {
     return data.slice().sort((a, b) => {
       let comparison = 0;
       if (column === 'Título') {
-        comparison = a.titulo.localeCompare(b.titulo);
+        comparison = a.titulo && a.titulo.localeCompare(b.titulo);
       } else if (column === 'Estudiante') {
-        comparison = a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo[0][0]);
+        comparison =  a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
       } else if (column === 'Tutor') {
         comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
       } else if (column === 'Fecha de corte') {
@@ -78,10 +78,10 @@ const Table = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((d) => (
+            {sortedData && sortedData.map((d) => (
               <tr key={d.id}>
                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1][0]}</td>
+                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
                 <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1][0]}</td>
                 <td className='text-center align-middle'>TBP</td>
                 <td className='text-center align-middle'>
@@ -324,7 +324,7 @@ function Getdocentes() {
     getDocentes();
   }, []);
   return (
-    datos.map((d) => {
+    datos && datos.map((d) => {
       return (
         <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
@@ -349,7 +349,7 @@ function Getestudiantes() {
     getEstudiantes();
   }, []);
   return (
-    datos2.map((d) => {
+    datos2 && datos2.map((d) => {
       return (
         <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
