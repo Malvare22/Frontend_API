@@ -11,6 +11,7 @@ export default function TemplateLider({ children }) {
     const navigate = useNavigate()
     const Token = localStorage.getItem('token_access')
     const Usuario = JSON.parse(localStorage.getItem('session'))
+
     if(JSON.parse(localStorage.getItem('session')).rol == 'coordinador')
     return (
         <>
@@ -27,6 +28,7 @@ export default function TemplateLider({ children }) {
             <Footer></Footer>
         </>
     );
+
     else return(<Error404></Error404>)
 
 }

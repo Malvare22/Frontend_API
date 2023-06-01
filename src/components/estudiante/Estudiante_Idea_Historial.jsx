@@ -2,13 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react'
 import Evaluaciones from "./Estudiante_Idea_Evaluacion";
 
-export default function Historial() {
+export default function Historial(props) {
 
     const [datos, setDatos] = useState([]);
 
     const definir_Estado = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+
+        let URLs='http://144.22.37.238:8080/ideaNegocio/evaluacion/'+props.nombre;
+        value = await axios.get(URLs,{headers: { "X-Softue-JWT":localStorage.getItem("token_access")}}
+
+       // let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
+       // value = await axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
+            ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -19,13 +26,15 @@ export default function Historial() {
     };
     useEffect(() => {
         definir_Estado();
-
     }, []);
+
 
     return (
         <div className="container">
             <div className="row">
-                {datos.map((v, i) => {
+
+                {datos &&   datos.map((v, i) => {
+
                     let aprov = 0;
                     let recha = 0;
                     let gris = 0;
@@ -52,7 +61,7 @@ export default function Historial() {
                     }
 
                     return (<div key={i}>
-                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones Token={props.Token} nombre={props.nombre} key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}
