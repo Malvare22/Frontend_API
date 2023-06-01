@@ -228,7 +228,7 @@ export default function Listar_Ideas() {
   const [filteredData, setFilteredData] = useState([]);
   const getIdeas = async () => {
     let value = null;
-    value = await axios.get("http://144.22.37.238:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -252,7 +252,7 @@ export default function Listar_Ideas() {
     formData.append('fechaFin', filters.fechaFin);
     try {      
       let value;
-      value = await axios.get("http://144.22.37.238:8080/ideaNegocio/filtrar", {headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData}      
+      value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", {headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData}      
       ).then(
         response => {
           const data = response.data;
@@ -310,7 +310,7 @@ function Getdocentes() {
   const [datos, setDatos] = useState([]);
   const getDocentes = async () => {
     let value = null;
-    value = await axios.get('http://144.22.37.238:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -335,7 +335,7 @@ function Getestudiantes() {
   const [datos2, setDatos] = useState([]);
   const getEstudiantes = async () => {
     let value = null;
-    value = await axios.get('http://144.22.37.238:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
