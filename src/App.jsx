@@ -208,6 +208,44 @@ const getAllInfoDocent = async () => {
 //   return true;
 // }
 
+/**Obtener información propia del perfil de Administrativo**/
+const getAdminPerfilInfo=async()=>{
+  let zelda = "http://localhost:8080/coordinador/" + JSON.parse(localStorage.getItem('session')).email;
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
+
+  let temp_user = importAdmins([value.data])[0]
+  console.log(temp_user)
+
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto;
+  try{
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+      return imageUrl;
+    });
+    
+  }
+  catch{
+    foto='';
+  }
+  
+  localStorage.setItem("My_Info", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+  return true;
+}
+
 const verifySession = async ()=>{
   try {
    
@@ -272,7 +310,7 @@ const router = createBrowserRouter(
           {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-          <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
+          <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>} loader={getAdminPerfilInfo}></Route>
           <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
           <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />

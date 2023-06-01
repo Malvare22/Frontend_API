@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Estudiante_Idea_Historial";
@@ -7,8 +7,10 @@ import Historial from "./Estudiante_Idea_Historial";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones></Observaciones>
+
+        <InfoGeneral Token='' nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones Token='' nombre={localStorage.getItem("titulo")}></Observaciones>
+
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -18,22 +20,33 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+
+        <Historial Token='' nombre={localStorage.getItem("titulo")}></Historial>
+
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
         setViewAlert(!viewAlert);
+        tituloNuevo(datos1 && datos1.titulo)
+        areaNueva(datos1 && datos1.areaEnfoque)
     }
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
+
+        let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
+        value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
+
+       // let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+       // value = await axios.get(URL, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -41,30 +54,94 @@ const InfoGeneral = () => {
                 console.error(error);
             });
         setDatos1(value)
-
     };
     useEffect(() => {
         getDatos1();
     }, []);
 
 
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-    };
-    useEffect(() => {
-        getProfesores();
-    }, []);
-
     let set = new Set();
+
+
+    const [titleNuevo, settNuevo] = useState(null);
+    const tituloNuevo = (e) => {
+        settNuevo(e);
+    };
+
+    const [areaNuevo, setAreaNueva] = useState(null);
+    const areaNueva = (e) => {
+        setAreaNueva(e);
+    };
+
+
+    const editarIdea = async (areaN, TNuevo) => {
+        toggleAlert()
+        var formData = new FormData();
+        formData.append('tituloActual', datos1 && datos1.titulo);
+
+        if (areaN != null) {
+            formData.append('area', areaN);
+        } else {
+            formData.append('area', datos1 && datos1.areaEnfoque);
+        }
+
+        if (TNuevo != undefined && TNuevo != null) {
+            formData.append('tituloNuevo', TNuevo);
+        } else {
+            formData.append('tituloNuevo', datos1 && datos1.titulo);
+        }
+
+        let ruta = "http://144.22.37.238:8080/ideaNegocio/Actualizar";
+        axios.patch(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
+
+       // let ruta = "http://localhost:8080/ideaNegocio/Actualizar";
+       // axios.patch(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
+
+            .then(function (response) {
+                console.log("Hecho");
+            })
+            .catch(function (error) {
+                console.error(error);
+
+            });
+
+        window.location.reload();
+
+    }
+
+    
+    const getArchi = async () => {
+        let value = null;
+        let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+            
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+            
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+            
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
+            });
+    };
+
 
     return (
 
@@ -97,14 +174,10 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-
-
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
-
+                                                    <li>{datos1.estudianteLiderInfo[1]}</li>
+                                                    {datos1.estudiantesIntegrantesInfo && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
-
                                                     })}
-
                                                 </ul>
                                             </div>
                                         </div>
@@ -140,9 +213,12 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
-                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
+                                            <div className="row">
 
+                                                <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+
+                                                <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -171,24 +247,19 @@ const InfoGeneral = () => {
                 <ModalBody>
                     <FormGroup>
                         <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
-                        <Input type="text" name="name" id="exampleSelect"></Input>
+                        <Input type="text" name="name" id="exampleSelect" onChange={(e) => { tituloNuevo(e.target.value) }} defaultValue={datos1 && datos1.titulo}></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" id="exampleSelect">
-                            {profesores.map((l, i) => {
-
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
+                        <Input type="select" name="select" id="exampleSelect" onChange={(e) => { areaNueva(e.target.value) }} defaultValue={datos1 && datos1.areaEnfoque}>
+                            <option value="minera">minera</option>
+                            <option value="agropecuaria">agropecuaria</option>
+                            <option value="comercial">comercial</option>
+                            <option value="industrial">industrial</option>
                         </Input>
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger">Asignar</Button>
+                    <Button color="danger" onClick={() => { editarIdea(areaNuevo, titleNuevo) }} >Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -304,7 +375,80 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+
+const Observaciones = (props) => {
+
+    const [error, setError] = useState(null);
+
+    const [datos1, setDatos1] = useState();
+    const getDatos1 = async () => {
+        let value = null;
+
+        let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
+        value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+        //let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        //value = await axios.get(URL, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+
+        ).then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.log(error);
+            });
+        setDatos1(value)
+    };
+    useEffect(() => {
+        getDatos1();
+    }, []);
+
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const subirIdea = async () => {
+
+        if (selectedFile) {
+            setError(null);
+            var formData = new FormData();
+            formData.append('titulo', datos1 && datos1.titulo);
+            formData.append('documento', selectedFile);
+
+            console.log(datos1 && datos1.titulo)
+            console.log(selectedFile)
+
+
+            let ruta = "http://144.22.37.238:8080/ideaNegocio/agregarDocumento";
+             let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
+
+           // let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
+            // let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
+
+                 .then((response) => {
+                     console.log("hecho")
+                 })
+                 .catch((error) => {
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                      } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                      } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                      }
+                 });
+            setSelectedFile(null);
+            window.location.reload();
+
+        }else {
+            setError('Por favor, selecciona un archivo');
+          }
+    }
+
+
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -325,28 +469,26 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla Token={props.Token} nombre={props.nombre}></Tabla>
                                     <div className="d-flex m-3 align-content-center justify-content-center col-12">
                                         <Form >
                                             <FormGroup>
                                                 <div className="d-flex justify-content-center">
-                                                <Label for="exampleFile"><b>Subir archivo:</b></Label>
-                                                
+                                                    <Label for="exampleFile"><b> Subir archivo: </b></Label>
+
                                                 </div>
-                                                <Input type="file" name="file" id="exampleFile" />
-                                                
+                                                <Input type="file" name="file" onChange={handleFileChange} id="exampleFile" />
+                                                {error &&    <Alert color="danger">{error}</Alert>}
                                             </FormGroup>
                                             <div className="d-flex justify-content-center">
-                                                <Button style={{backgroundColor : "#1C3B57"}} >Enviar</Button>
+                                                <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
                                             </div>
-                                            
+
                                         </Form>
                                     </div>
 
                                 </div>
                             </div>
-
-
                         </UncontrolledCollapse>
                     </div>
                 </Sobreponer>
@@ -399,10 +541,18 @@ const Sdiv = styled.div`
 `;
 
 function Tabla(props) {
+
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
+
+        let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+
+       // let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
+      //  value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+
+        ).then(
             response => {
                 const data = response.data;
                 return data;
