@@ -2,7 +2,7 @@ import './css/App.css';
 import React from "react";
 import { createRoot } from "react-dom/client";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter, createRoutesFromElements, json } from 'react-router-dom'
 import Home from './routes/Home.jsx'
 import Login from './routes/login/Login.jsx'
 import Footer from './components/Footer';
@@ -29,7 +29,9 @@ import LiderListarIdeas from './components/lider/Listar_ideas';
 import DocenteTutorVerIdea from './components/docente/Docente_Tutor_Idea_Ver.jsx';
 import DocenteTutorVerPlan from './components/docente/Docente_Tutor_Plan_Ver.jsx';
 import DocenteApoyoVerIdea from './components/docente/Docente_Apoyo_Idea_Ver.jsx';
+
 import DocenteApoyoVerPlan from './components/docente/Docente_Apoyo_Plan_Ver.jsx';
+
 import LiderListarDocentes from './components/lider/Lider_docentesListar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
@@ -40,12 +42,18 @@ import LiderListarEstudiantes from './components/lider/Lider_Estudiante_Listar';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
+import LiderVistaEntidadFinanciadora from './components/lider/Lider_Entidades_Financiadoras';
 import AdministrativoListarIdeas from './components/administrativo/Administrativo_ideasListar';
 import AdministrativoListarPlanes from './components/administrativo/Administrativo_planesListar';
 import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
 import AdministrativoListarEstudiantes from './components/administrativo/Administrativo_estudiantesListar';
 import AdministrativoListarDocentes from './components/administrativo/Administrativo_docentesListar';
 import AdministrativoListarAdministrativos from './components/administrativo/Administrativo_administrativosListar';
+import AdministrativoVerPerfilLider from './components/administrativo/Administrativo_Lider_Ver';
+import AdministrativoRegistrarLiderPerfil from './components/administrativo/Administrativo_Lider_Registrar';
+import AdministrativoEditarPerfilLider from './components/administrativo/Administrativo_Lider_Editar';
+import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras';
+import PerfilDocente from './components/docente/Docente_Perfil';
 import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
 import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
 import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
@@ -55,6 +63,7 @@ import DocenteEvaluadorListarPlanes from './components/docente/DocenteEvaluador_
 import DocenteListarEntidades from './components/docente/Docente_entidadesListar';
 import DocenteListarEstudiantes from './components/docente/Docente_estudiantesListar';
 import DocenteAceptarTutoria from './components/docente/Docente_TutoriaAceptar';
+import DocenteVistaEntidadFinanciadora from './components/docente/Docente_Entidades_Financiadoras'
 import Sidebar from './components/estudiante/Estudiante_Navbar'
 import DocenteEvaluadorVerIdea from './components/docente/Docente_Evaluador_Idea_Ver.jsx';
 import DocenteEvaluadorVerPlan from './components/docente/Docente_Evaluador_Plan_Ver.jsx';
@@ -76,30 +85,101 @@ import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
+import { importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
 
-const verifyStudent= ()=>{
-  const data = localStorage.getItem("INFO_ESTUDIANTE");
-
-    if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
+const verifyStudent = () => {
+  const data = localStorage.getItem("ESTUDIANTE_EMAIL");
+  if (data === null) throw new Response("Not Found", { status: 404 })
+  return true;
 }
 
-const verifyPlanNegocio= async()=>{
-  const data = localStorage.getItem('plan_info');
-  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
+const getAllInfoStudent = async () => {
+  // try {
+  let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
 
+  let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+
+
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  const foto = await axios.get(zelda + value.data.codigo, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    },
+    responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+  }).then(response => {
+    const base64Image = btoa(
+      new Uint8Array(response.data)
+        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
+    const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+
+    return imageUrl;
+  });
+  localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+  return true;
+  // }
+  // catch (error) {
+  //     throw new Response("Not Found", { status: 404 })
+  // }
 }
 
-const verifyIdeaNegocio= async()=>{
-  const data = localStorage.getItem('idea_info');
-  if(data===null || !JSON.parse(data)) throw new Response("Not Found", { status: 404 })
-    return true;
+const getAllDocents = async () => {
+  let zelda = "http://localhost:8080/docente/listar";
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
 
+  let temp_user = importDocents(value.data)
+  console.log(temp_user)
+
+  localStorage.setItem("DOCENTES_LISTA", JSON.stringify(temp_user))
+  return true;
 }
 
+const getAllInfoDocent = async () => {
+  let zelda = "http://localhost:8080/docente/" + localStorage.getItem('DOCENTE_EMAIL');
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
 
+  let temp_user = importDocents([value.data])[0]
 
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto;
+  try{
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+      return imageUrl;
+    });
+
+    await fetch(foto).then(response => response.blob())
+    
+  }
+  catch{
+    foto='';
+  }
+  
+  localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
+  return true;
+}
 
 
 
@@ -121,56 +201,68 @@ const router = createBrowserRouter(
           <Route path='Planes/Vista' element={<EstudianteVistaPlan></EstudianteVistaPlan>} />
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
-          <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>}/>
-          <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>}/>
-          <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>}/>
-          <Route path='CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>}/>
+          <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>} />
+          <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>} />
+          <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>} />
+          <Route path='CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>} />
         </Route>
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-          <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent}/>
-          <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent}/>
-          <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent}/>
+          <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent} />
+          <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent} />
+          <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent} />
           <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
           <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
           <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>}/>
           <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
           <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={verifyStudent}/>
-          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={verifyStudent}/>
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={getAllInfoStudent} />
+          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={getAllInfoStudent} />
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Docentes**/}
-          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
-          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>}/>
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>}/>
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={getAllInfoDocent} />
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent}/>
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
-          <Route path='tester' element={<StorageTest></StorageTest>}/>
+
+          <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
+          <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>}/>
+          <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>}/>
+          <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>}/>
+          <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
+          <Route path='tester' element={<StorageTest></StorageTest>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Administradores**/}
-          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>}/>
+          <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
           {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
           <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
           <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
+
           <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>}/>
           <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>}/>
           <Route path='Planes/Vista' element={<AdministrativoPlanIdea></AdministrativoPlanIdea>} />
           <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>}/>
+          <Route path='VistaEntidades' element={<AdministrativoVistaEntidadFinanciadora></AdministrativoVistaEntidadFinanciadora>}/>
           <Route path='Docentes' element={<AdministrativoListarDocentes></AdministrativoListarDocentes>}/>
           <Route path='Estudiantes' element={<AdministrativoListarEstudiantes></AdministrativoListarEstudiantes>}/>
           <Route path='Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>}/>
+          <Route path='Lider' element={<AdministrativoVerPerfilLider></AdministrativoVerPerfilLider>}/>          
+          <Route path='Lider/Registrar' element={<AdministrativoRegistrarLiderPerfil></AdministrativoRegistrarLiderPerfil>}/>          
+          <Route path='Lider/Editar' element={<AdministrativoEditarPerfilLider></AdministrativoEditarPerfilLider>}/>          
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
 
-          <Route path='Perfil'/>
+          <Route path='Perfil' element={<PerfilDocente></PerfilDocente>}/>
           <Route path='Perfil'></Route>
           <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
           <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
@@ -185,6 +277,7 @@ const router = createBrowserRouter(
           <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
           <Route path='Evaluador/Planes/Vista' element={<DocenteEvaluadorVerPlan></DocenteEvaluadorVerPlan>}/>
           <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
+          <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>}/>
           <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
 
           <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>}/>

@@ -5,20 +5,26 @@ import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 're
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
-import { toLiderFormatStudentsFromImport } from '../../context/functions_general';
 
-export default function LiderVerPerfilEstudiante() {
+export default function LiderVerPerfilDocente() {
 
     return (<VistaGeneral></VistaGeneral>);
 }
 
 const VistaGeneral = () => {
 
-    const usuario = JSON.parse(localStorage.getItem("ESTUDIANTE_ALL"))
-    console.log(usuario)
-    const navigate = useNavigate()
-
-   
+    const usuario = {
+        "nombres":"Luis",
+        "apellidos":"Salazar",
+        "documento":"10213123",
+        "titulo":"Técnico en Inglés",
+        "area":"Salud",
+        "correo":"sdfsdf@hotmail.com",
+        "telefono":"4235345433",
+        "foto": "/images/02.png",
+        "fecha_nacimiento":"1991-12-20",
+        "sexo": "0"
+    }    
 
     return (
         <div className='flex-grow-1'>
@@ -32,23 +38,21 @@ const VistaGeneral = () => {
                 </div>
             </div>
             <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
-                <Button navigate={navigate} usuario={usuario}></Button>
+                <Button></Button>
             </div>
         </div>
     );
 }
 
 const Profile = (props) => {
-
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
+                <img className='rounded-circle' src={props.usuario.foto}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{props.usuario.nombre}</p>
-                        <p className='text-white'>{props.usuario.apellido}</p>
-
+                        <p className='text-white'>{props.usuario.nombres}</p>
+                        <p className='text-white'>{props.usuario.apellidos}</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +61,7 @@ const Profile = (props) => {
 }
 
 const Information = (props) => {
-
+    
     return (
         <Sdiv02>
             <div>
@@ -70,8 +74,7 @@ const Information = (props) => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.nombre}
-
+                        {props.usuario.nombres}
                     </div>
                 </div>
                 <div className='row'>
@@ -79,16 +82,15 @@ const Information = (props) => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-
                         {props.usuario.apellidos}
                     </div>
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Curso:
+                        Documento de identificación:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.curso}
+                        {props.usuario.documento}
                     </div>
                 </div>
                 <div className='row'>
@@ -97,7 +99,6 @@ const Information = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.edad}
-
                     </div>
                 </div>
                 <div className='row'>
@@ -105,7 +106,23 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo == '0' ? "Masculino" : "Femenino"}
+                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Título acádemico:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.titulo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Área:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.area}
                     </div>
                 </div>
                 <div className='row'>
@@ -118,15 +135,7 @@ const Information = (props) => {
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Nombre del acudiente:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.nombreAcudiente}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Teléfono del acudiente:
+                        Teléfono:
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.telefono}
@@ -138,13 +147,13 @@ const Information = (props) => {
 }
 
 
-const Button = (props) => {
+const Button = () => {
     return (
-        <Sdiv04><button onClick={()=>{localStorage.setItem('ESTUDIANTE_EMAIL',props.usuario.correo); props.navigate('Editar')}} className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><Link to={"Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
-                Editar Información de Estudiante
+                Editar Información de Usuario
             </h5>
-        </button></Sdiv04>
+        </button></Link></Sdiv04>
     );
 };
 
