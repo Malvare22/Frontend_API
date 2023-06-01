@@ -5,6 +5,6 @@ export default function Template({ children }) {
     /*Método de autenticación*/
 
     /**/
-    return <><Outlet></Outlet><Footer></Footer></>;
+    return <><Outlet></Outlet></>;
     
 }

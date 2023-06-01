@@ -5,9 +5,13 @@ import logo from '../../assets/images/Login/Emprender_Aprender.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function Screen() {
+    const { token } = useParams();
+    console.log(token)
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmationMessage, setConfirmationMessage] = useState('');
@@ -15,17 +19,26 @@ export default function Screen() {
     const backToggler = () => {
         navigate('/login');
     };
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (password === '') {
-            console.log('Ingresa una contraseña.');
-        }
-        else if (password === confirmPassword) {
-            setConfirmationMessage('¡Contraseña cambiada exitosamente!');
+    const handleSubmit = async (e) => {
+        e.preventDefault();    
+        if (confirmPassword === '') {
+            alert('Ingresa la confirmación de la contraseña.');
+        } else if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {
+            alert('La contraseña no cumple los requisitos. Debe tener al menos una letra mayúscula, un dígito y un carácter especial (!@#$%^&), y tener una longitud mínima de 6 caracteres.');
+        } else if (password === confirmPassword) {
+            axios.patch('http://localhost:8080/administrativo/resetPassword', { "password": password }, { headers: { 'X-Softue-Reset': token } })
+                .then((response) => {
+                    navigate('../../Login');                    
+                })
+                .catch((error) => {
+                    alert('No se ha podido restablecer su contraseña, por favor contacte al líder de la unidad de emprendimiento.');
+                    navigate('../../Login');
+                });
         } else {
-            console.log('Las contraseñas no coinciden, por favor verifique.');
+            alert('Las contraseñas no coinciden, por favor verifique.');
         }
     };
+    
     return (<div className="container-fluid" style={{ background: "#1C3B57" }}>
         <div className="row p-5 d-flex justify-content-center">
             <div className="col-md-6 col-12 p-5 d-flex justify-content-center align-items-center" style={{ background: "#68462C" }}>
@@ -46,12 +59,12 @@ export default function Screen() {
                                         <p className="text-center mt-4 fw-bold">Introduzca la nueva contraseña</p>
 
                                         <div className="d-flex justify-content-center">
-                                            <input className="form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75" style={{ backgroundColor: "#D9D9D9" }} type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                                            <input className="form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75" style={{ backgroundColor: "#D9D9D9" }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                                         </div>
                                         <p className="text-center mt-4 fw-bold">Repita la nueva contraseña</p>
 
                                         <div className="d-flex justify-content-center">
-                                            <input className="form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75" style={{ backgroundColor: "#D9D9D9" }} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
+                                            <input className="form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75" style={{ backgroundColor: "#D9D9D9" }} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                                         </div>
                                     </div>
                                     <div className="d-flex justify-content-center align-content-center">

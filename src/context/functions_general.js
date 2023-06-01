@@ -70,6 +70,15 @@ function confirmPassword(password){
     //...
 }
 
+export function importAdmins(admins){
+
+    return admins.map((elemento)=>{
+        elemento.sexo = setGenreToExport(elemento)
+        setDateAndYearsOld(elemento)
+        return elemento
+    })
+}
+
 export function importDocents(docentes){
     const areas = {
         "minera":"Minera",

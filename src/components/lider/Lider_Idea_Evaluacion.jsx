@@ -90,7 +90,9 @@ const Evaluaciones = (props) => {
     const getDatos1 = async () => {
         let value = null;
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
+
         value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
         ).then(
             response => {
                 const data = response.data;
@@ -265,7 +267,6 @@ const Evaluaciones = (props) => {
                                                 <div className="col-auto">
 
                                                     <p style={{ color: "#000" }}>{calificadores ?
-
 
                                                         calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
