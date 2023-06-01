@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { toLiderFormatStudentsToExport } from '../../context/functions_general';
+import { confirmPassword, contraseniaNoCumple, toLiderFormatStudentsToExport } from '../../context/functions_general';
 
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -155,7 +155,12 @@ const Information = () => {
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         const number_regex = /[0-9]/;
         const espacios = /\s/;
-        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
+
+        if (user.foto.direccion == '') {
+            fail = true;
+            errors.foto = true;
+        }
+
         if (user.nombre.trim() == '' || number_regex.exec(user.nombre) != null || user.nombre.length > 50) {
             errors.nombre = true;
             fail = true;
@@ -165,7 +170,7 @@ const Information = () => {
             fail = true;
         }
 
-        if (user.contrasenia.trim() == '' || password.exec(user.contrasenia) == null) {
+        if (contraseniaNoCumple(user.contrasenia)) {
             errors.contrasenia = true;
             fail = true;
         }
@@ -174,7 +179,7 @@ const Information = () => {
             errors.curso = true;
             fail = true;
         }
-        if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
+        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
@@ -226,51 +231,44 @@ const Information = () => {
         formData.append('foto', form.foto.archivo);
         formData.append('correo', form.correo)
 
-
         const prototype = {
-            "nombre": form.nombre,
-            "apellido": form.apellido,
-            "fecha_nacimiento": form.fecha_nacimiento,
-            "sexo": form.sexo,
-            "correo": form.correo,
-            "telefono": form.telefono,
-            "contrasenia": form.contrasenia,
+            ...form,
             "tipoUsuario": "estudiante",
-            "curso": form.curso,
-            "nombreAcudiente": form.nombre_acudiente,
             "capacitacionAprobada": "aprobada"
         }
+        console.log(form.nombre_acudiente)
         const toSend = toLiderFormatStudentsToExport([prototype])[0]
-        /*Registro*/
-        await axios.post('http://localhost:8080/register/estudiante', toSend).then(
+        console.log(toSend)
+        try {
+            /*Registro*/
+            await axios.post('http://localhost:8080/register/estudiante', toSend)
+            /*Set Foto*/
+            const zelda = "http://localhost:8080/coordinador/guardarFoto";
 
-        ).catch((error) => { alert(error) })
-
-
-        /*Set Foto*/
-        const zelda = "http://localhost:8080/coordinador/guardarFoto";
-        
-        await axios({
-            method: "post",
-            url: zelda,
-            data: formData,
-            headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
-        }).then(
-            (response)=>{
-                console.log("ENTER->", response)
-                navigate('../Estudiantes')
-            }
-        ).catch(async (error)=>{
-            const value = await(error)
+            await axios({
+                method: "post",
+                url: zelda,
+                data: formData,
+                headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
+            }).then(
+                (response) => {
+                    navigate('../Estudiantes')
+                }
+            )
+        }
+        catch(error){
+            let msg='';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
-                console.log('Respuesta del backend:', error.response.data);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
             } else if (error.request) {
-                console.log('No se recibió respuesta del backend');
+                msg='Error: No se recibió respuesta de la base de datos';
             } else {
-                console.log('Error al realizar la solicitud:', error.message);
-            }
-            })
+                msg= "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+            
+        }
         
     }
     return (
@@ -353,7 +351,7 @@ const Information = () => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
+                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos (10 dígitos en total)</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -379,7 +377,7 @@ const Information = () => {
                                 Foto:
                             </div>
                             <div className='col-sm-8 col-6' id='div_img'>
-                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                                <ImageContainer form={form} setForm={setForm} errors={errors}></ImageContainer>
                             </div>
                         </div>
                     </SInfo>
@@ -396,7 +394,7 @@ const Information = () => {
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={ async () => {updateProfile();}} >Aceptar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async () => { updateProfile(); }} >Aceptar</Button>
 
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
@@ -460,7 +458,9 @@ const ImageContainer = (props) => {
                     </div>
                 </button>
 
+
             </div>
+            {props.form.foto.archivo == "" && <div className='mt-3 text-danger'>Es obligatorio adjuntar una imagen de perfil</div>}
         </SImageContainer>
     );
 }

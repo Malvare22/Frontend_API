@@ -87,44 +87,39 @@ import AdministrativoPerfilEditar from './components/administrativo/Administrati
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
 
-const verifyStudent = () => {
-  const data = localStorage.getItem("ESTUDIANTE_EMAIL");
-  if (data === null) throw new Response("Not Found", { status: 404 })
-  return true;
-}
 
-const getAllInfoStudent = async () => {
-  // try {
-  let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
-  const value = await axios.get(zelda, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    }
-  })
+// const getAllInfoStudent = async () => {
+//   // try {
+//   let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+//   const value = await axios.get(zelda, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     }
+//   })
 
-  let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
-  zelda = 'http://localhost:8080/coordinador/foto/'
-  const foto = await axios.get(zelda + value.data.codigo, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    },
-    responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-  }).then(response => {
-    const base64Image = btoa(
-      new Uint8Array(response.data)
-        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+//   let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+//   zelda = 'http://localhost:8080/coordinador/foto/'
+//   const foto = await axios.get(zelda + value.data.codigo, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     },
+//     responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+//   }).then(response => {
+//     const base64Image = btoa(
+//       new Uint8Array(response.data)
+//         .reduce((data, byte) => data + String.fromCharCode(byte), '')
+//     );
+//     const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
 
-    return imageUrl;
-  });
-  localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
-  return true;
-  // }
-  // catch (error) {
-  //     throw new Response("Not Found", { status: 404 })
-  // }
-}
+//     return imageUrl;
+//   });
+//   localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+//   return true;
+//   // }
+//   // catch (error) {
+//   //     throw new Response("Not Found", { status: 404 })
+//   // }
+// }
 
 const getAllDocents = async () => {
   let zelda = "http://localhost:8080/docente/listar";
@@ -135,7 +130,7 @@ const getAllDocents = async () => {
   })
   let temp_user = importDocents(value.data)
   console.log(temp_user)
-  localStorage.setItem("DOCENTES_LISTA", JSON.stringify(temp_user))
+  localStorage.setItem("LISTA_DOCENTES", JSON.stringify(temp_user))
   return true;
 }
 
@@ -171,9 +166,47 @@ const getAllInfoDocent = async () => {
     foto='';
   }
   
-  localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
+  localStorage.setItem("INFO_DOCENTES", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
   return true;
 }
+
+// /**Obtener información propia del perfil de Administrativo**/
+// const getAdminPerfilInfo=async()=>{
+//   let zelda = "http://localhost:8080/coordinador/" + JSON.parse(localStorage.getItem('session')).email;
+//   const value = await axios.get(zelda, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     }
+//   })
+
+//   let temp_user = importAdmins([value.data])[0]
+//   console.log(temp_user)
+
+//   zelda = 'http://localhost:8080/coordinador/foto/'
+//   let foto;
+//   try{
+//     foto = await axios.get(zelda + value.data.codigo, {
+//       headers: {
+//         "X-Softue-JWT": localStorage.getItem('token_access')
+//       },
+//       responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+//     }).then(response => {
+//       const base64Image = btoa(
+//         new Uint8Array(response.data)
+//           .reduce((data, byte) => data + String.fromCharCode(byte), '')
+//       );
+//       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+//       return imageUrl;
+//     });
+    
+//   }
+//   catch{
+//     foto='';
+//   }
+  
+//   localStorage.setItem("My_Info", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+//   return true;
+// }
 
 /**Obtener información propia del perfil de Administrativo**/
 const getAdminPerfilInfo=async()=>{
@@ -255,14 +288,14 @@ const router = createBrowserRouter(
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={getAllInfoStudent} />
-          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={getAllInfoStudent} />
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>}/>
+          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Docentes**/}
-          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
-          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={getAllInfoDocent} />
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent}/>
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} />
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} />
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
 
           <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
