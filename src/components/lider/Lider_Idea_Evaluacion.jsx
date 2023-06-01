@@ -16,6 +16,12 @@ const Evaluaciones = (props) => {
         setArea(a);
     }
 
+    const [Advertencia, setAdvertencia] = useState(false);
+    const setAdverten = () => {
+        setAdvertencia(!Advertencia);
+    }
+
+
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
         setViewAlert(!viewAlert);
@@ -24,7 +30,8 @@ const Evaluaciones = (props) => {
     const eliminar = (a) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
-        
+
+
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -41,7 +48,13 @@ const Evaluaciones = (props) => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-        value = await axios.get('../../../docentes.json').then(
+
+        //let URLs = 'http://144.22.37.238:8080/docente/listar';
+        let URLs = 'http://localhost:8080/docente/listar';
+        
+
+        value = await axios.get(URLs, {headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -59,7 +72,18 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+
+
+        //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
+        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        
+
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT":localStorage.getItem("token_access")} }
+
+       // let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        //value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -67,12 +91,59 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
+        console.log(value)
     };
     useEffect(() => {
         getCalificadores();
     }, []);
 
     let docentes = true;
+
+
+    const [datos1, setDatos1] = useState();
+    const getDatos1 = async () => {
+        let value = null;
+
+
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
+        value = await  axios.get(URL,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
+        //let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
+       // value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
+
+
+        ).then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.error(error);
+            });
+        setDatos1(value)
+    };
+    useEffect(() => {
+        getDatos1();
+    }, []);
+
+    const ElimnarCalificadores = async (a,b) => {
+        bottomEliminar()
+        let value = null;
+
+        //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
+        let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
+        
+
+        value = await axios.delete(URLd, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, body : {    "codigoDocente" : a,
+        "evaluacionIdeaId" : b} }
+        ).then(
+            console.log("hecho")
+            ).catch(error => {
+                console.error(error);
+                setAdverten()
+            });
+    };
+    
 
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
@@ -103,14 +174,14 @@ const Evaluaciones = (props) => {
                                                 <p className="d-flex justify-content-end" style={{ color: "#000", fontSize: "30px" }}><b>{props.estado}</b></p>
                                                 <p className="py-2" style={{ color: "#000" }}><b>Observaciones:</b></p>
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {            
-                                                    
-                                                    if (v.observacion != null ) {
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+                                                    if (v.observacion != null) {
 
                                                         return <div key={i} className="row">
-                                                        <div className="row">
+                                                            <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}>{v.observacion}</p>
@@ -122,7 +193,7 @@ const Evaluaciones = (props) => {
                                                         return <div key={i} className="row">
                                                             <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}></p>
@@ -141,11 +212,11 @@ const Evaluaciones = (props) => {
                                         <div className="col-6">
                                             <div className="container rounded-1 p-4" style={{ background: "#B4B4B4" }}>
                                                 <p className="py-2 d-flex justify-content-center" style={{ color: "#000" }}><b>Comité de evaluación</b></p>
-                                                
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
 
-                                                    
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
                                                         if (v.estado === 'aprobado') {
@@ -169,13 +240,13 @@ const Evaluaciones = (props) => {
                                                                 </svg>
                                                             </div>
 
-                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
-                                                              
+                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2"> 
+
                                                                 <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
                                                                 </svg></p>
                                                             </div> : <div className="col-2">
-                                                                <p style={{ color: "#000" }}> <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#555555" className="bi bi-x-square-fill disabled" viewBox="0 0 16 16">
+                                                                <p style={{ color: "#000" }}> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#555555" className="bi bi-x-square-fill disabled" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
                                                                 </svg></p>
                                                             </div> : ""
@@ -212,17 +283,16 @@ const Evaluaciones = (props) => {
 
 
                                             </div>
-                                            
+
                                             <div className="row mt-2">
                                                 <div className="col-auto">
                                                     <p style={{ color: "#000" }}><b>Fecha de corte: </b></p>
                                                 </div>
                                                 <div className="col-auto">
 
-                                                    <p style={{ color: "#000" }}>{calificadores ? 
+                                                    <p style={{ color: "#000" }}>{calificadores ?
 
-                                                    
-                                                    calificadores[props.identificador].fechaCorte[2]+"/"+calificadores[props.identificador].fechaCorte[1]+"/"+calificadores[props.identificador].fechaCorte[0]:""}</p>
+                                                        calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
                                             </div>
 
@@ -254,6 +324,7 @@ const Evaluaciones = (props) => {
                     </div>
                 </Sobreponer>
             </div>
+
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
@@ -271,9 +342,9 @@ const Evaluaciones = (props) => {
                         </Input>
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l,i) => {
+                            {profesores.map((l, i) => {
                                 if (l.area === Area) {
-                                    return (<option key={l.docente+i} value={l.docente}>{l.docente}</option>);
+                                    return (<option key={l.docente + i} value={l.docente}>{l.docente}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -291,15 +362,28 @@ const Evaluaciones = (props) => {
             <Modal centered isOpen={viewEliminar}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor {idEliminar}?</Label>
+                        <Label id="texto">¿Quieres eliminar a este docente calificador {idEliminar}?</Label>
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                     <Button color="danger" onClick={()=>{ElimnarCalificadores(idEliminar,datos1.id)}}>Eliminar</Button> 
                     <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
+
+            <Modal centered isOpen={Advertencia}>
+                <ModalBody>
+                    <FormGroup className="d-flex justify-content-center text-center">
+                        <Label id="texto">No puedes eliminar al Docente con codigo {idEliminar} porque su fecha de vencimiento no se ha cumplido</Label>
+                    </FormGroup>
+                </ModalBody>
+
+                <ModalFooter className="d-flex justify-content-center">
+                    <Button color="primary" onClick={setAdverten}>Aceptar</Button>
+                </ModalFooter>
+            </Modal>
+            
         </main>
     )
 };

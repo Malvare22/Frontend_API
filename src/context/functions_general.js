@@ -39,7 +39,6 @@ const setDateAndYearsOld=(user)=>{
     const ans = new Date(today-birth)
     user.edad = ans.getUTCFullYear()-1970
     user.fecha_nacimiento = new Date(date).toISOString().split('T')[0];
-
 }
 
 export function toLiderFormatStudentsToExport(students){
@@ -66,8 +65,17 @@ export function toLiderFormatStudentsToExport(students){
 
 }
 
-function confirmPassword(password){
-    //...
+export function contraseniaNoCumple(password){
+   return !/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)
+}
+
+export function importAdmins(admins){
+
+    return admins.map((elemento)=>{
+        elemento.sexo = setGenreToExport(elemento)
+        setDateAndYearsOld(elemento)
+        return elemento
+    })
 }
 
 export function importDocents(docentes){

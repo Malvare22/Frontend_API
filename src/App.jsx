@@ -85,48 +85,41 @@ import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
-import { importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
-
-const verifyStudent = () => {
-  const data = localStorage.getItem("ESTUDIANTE_EMAIL");
-  if (data === null) throw new Response("Not Found", { status: 404 })
-  return true;
-}
-
-const getAllInfoStudent = async () => {
-  // try {
-  let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
-  const value = await axios.get(zelda, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    }
-  })
-
-  let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
 
 
-  zelda = 'http://localhost:8080/coordinador/foto/'
-  const foto = await axios.get(zelda + value.data.codigo, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    },
-    responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-  }).then(response => {
-    const base64Image = btoa(
-      new Uint8Array(response.data)
-        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+// const getAllInfoStudent = async () => {
+//   // try {
+//   let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+//   const value = await axios.get(zelda, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     }
+//   })
 
-    return imageUrl;
-  });
-  localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
-  return true;
-  // }
-  // catch (error) {
-  //     throw new Response("Not Found", { status: 404 })
-  // }
-}
+//   let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+//   zelda = 'http://localhost:8080/coordinador/foto/'
+//   const foto = await axios.get(zelda + value.data.codigo, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     },
+//     responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+//   }).then(response => {
+//     const base64Image = btoa(
+//       new Uint8Array(response.data)
+//         .reduce((data, byte) => data + String.fromCharCode(byte), '')
+//     );
+//     const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+
+//     return imageUrl;
+//   });
+//   localStorage.setItem("ESTUDIANTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "nombre": temp_user.nombre + " " + temp_user.apellido, "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+//   return true;
+//   // }
+//   // catch (error) {
+//   //     throw new Response("Not Found", { status: 404 })
+//   // }
+// }
 
 const getAllDocents = async () => {
   let zelda = "http://localhost:8080/docente/listar";
@@ -135,11 +128,9 @@ const getAllDocents = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
-
   let temp_user = importDocents(value.data)
   console.log(temp_user)
-
-  localStorage.setItem("DOCENTES_LISTA", JSON.stringify(temp_user))
+  localStorage.setItem("LISTA_DOCENTES", JSON.stringify(temp_user))
   return true;
 }
 
@@ -150,8 +141,84 @@ const getAllInfoDocent = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
-
   let temp_user = importDocents([value.data])[0]
+
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto;
+  try {
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+      return imageUrl;
+    });
+    await fetch(foto).then(response => response.blob())
+    
+  }
+  catch{
+    foto='';
+  }
+  
+  localStorage.setItem("INFO_DOCENTES", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
+  return true;
+}
+
+// /**Obtener información propia del perfil de Administrativo**/
+// const getAdminPerfilInfo=async()=>{
+//   let zelda = "http://localhost:8080/coordinador/" + JSON.parse(localStorage.getItem('session')).email;
+//   const value = await axios.get(zelda, {
+//     headers: {
+//       "X-Softue-JWT": localStorage.getItem('token_access')
+//     }
+//   })
+
+//   let temp_user = importAdmins([value.data])[0]
+//   console.log(temp_user)
+
+//   zelda = 'http://localhost:8080/coordinador/foto/'
+//   let foto;
+//   try{
+//     foto = await axios.get(zelda + value.data.codigo, {
+//       headers: {
+//         "X-Softue-JWT": localStorage.getItem('token_access')
+//       },
+//       responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+//     }).then(response => {
+//       const base64Image = btoa(
+//         new Uint8Array(response.data)
+//           .reduce((data, byte) => data + String.fromCharCode(byte), '')
+//       );
+//       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+//       return imageUrl;
+//     });
+    
+//   }
+//   catch{
+//     foto='';
+//   }
+  
+//   localStorage.setItem("My_Info", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
+//   return true;
+// }
+
+/**Obtener información propia del perfil de Administrativo**/
+const getAdminPerfilInfo=async()=>{
+  let zelda = "http://localhost:8080/coordinador/" + JSON.parse(localStorage.getItem('session')).email;
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
+
+  let temp_user = importAdmins([value.data])[0]
+  console.log(temp_user)
 
   zelda = 'http://localhost:8080/coordinador/foto/'
   let foto;
@@ -169,19 +236,24 @@ const getAllInfoDocent = async () => {
       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
       return imageUrl;
     });
-
-    await fetch(foto).then(response => response.blob())
     
   }
   catch{
     foto='';
   }
   
-  localStorage.setItem("DOCENTE_ALL", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
+  localStorage.setItem("My_Info", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": await fetch(foto).then(response => response.blob()), "direccion": foto } }))
   return true;
 }
 
+const verifySession = async ()=>{
+  try {
+   
+}
+catch {
 
+}
+}
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -190,14 +262,16 @@ const router = createBrowserRouter(
         <Route path='/' element={<Home></Home>} />
         <Route path='/login' element={<Login></Login>} />
         <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-        <Route path='/resetPassword' element={<ResetPassword></ResetPassword>} />
+        <Route exact path="/resetPassword" component={ResetPassword} element={<ResetPassword></ResetPassword>} />
+        <Route path="/resetPassword/:token" component={ResetPassword} element={<ResetPassword></ResetPassword>} />
+        <Route>
         <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
           <Route path='Perfil' element={<PerfilEstudiante></PerfilEstudiante>} />
           <Route path='Test' element={<Tabla></Tabla>} />
           <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
           <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
           <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
-          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>}/>
+          <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
           <Route path='Planes/Vista' element={<EstudianteVistaPlan></EstudianteVistaPlan>} />
           <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
           <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
@@ -209,9 +283,6 @@ const router = createBrowserRouter(
         <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
           <Route path='Perfil' element={<PerfilLider></PerfilLider>} />
           <Route path='Perfil/Editar' element={<EditarPerfilLider></EditarPerfilLider>} />
-          <Route path='Perfil/Docente/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={verifyStudent} />
-          <Route path='Perfil/Administrativo' element={<LiderAdministrativoVer></LiderAdministrativoVer>} loader={verifyStudent} />
-          <Route path='Perfil/Docente' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={verifyStudent} />
           <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
           <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
           <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
@@ -222,14 +293,14 @@ const router = createBrowserRouter(
           <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>}/>
           {/**Rutas de gestión de Estudiantes**/}
           <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={getAllInfoStudent} />
-          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={getAllInfoStudent} />
+          <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>}/>
+          <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>}/>
           <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
           {/**--------------------**/}
           {/**Rutas de gestión de Docentes**/}
-          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>} loader={getAllDocents}></Route>
-          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={getAllInfoDocent} />
-          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={getAllInfoDocent}/>
+          <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
+          <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} />
+          <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} />
           <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
 
           <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>}/>
@@ -244,46 +315,51 @@ const router = createBrowserRouter(
           {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-          <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>}></Route>
+          <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>} loader={getAdminPerfilInfo}></Route>
           <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
           <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
-
-          <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>}/>
-          <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>}/>
+          <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
+          <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />
           <Route path='Planes/Vista' element={<AdministrativoPlanIdea></AdministrativoPlanIdea>} />
-          <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>}/>
-          <Route path='VistaEntidades' element={<AdministrativoVistaEntidadFinanciadora></AdministrativoVistaEntidadFinanciadora>}/>
-          <Route path='Docentes' element={<AdministrativoListarDocentes></AdministrativoListarDocentes>}/>
-          <Route path='Estudiantes' element={<AdministrativoListarEstudiantes></AdministrativoListarEstudiantes>}/>
-          <Route path='Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>}/>
-          <Route path='Lider' element={<AdministrativoVerPerfilLider></AdministrativoVerPerfilLider>}/>          
-          <Route path='Lider/Registrar' element={<AdministrativoRegistrarLiderPerfil></AdministrativoRegistrarLiderPerfil>}/>          
-          <Route path='Lider/Editar' element={<AdministrativoEditarPerfilLider></AdministrativoEditarPerfilLider>}/>          
+          <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>} />
+          <Route path='VistaEntidades' element={<AdministrativoVistaEntidadFinanciadora></AdministrativoVistaEntidadFinanciadora>} />
+          <Route path='Docentes' element={<AdministrativoListarDocentes></AdministrativoListarDocentes>} />
+          <Route path='Estudiantes' element={<AdministrativoListarEstudiantes></AdministrativoListarEstudiantes>} />
+          <Route path='Administrativos' element={<AdministrativoListarAdministrativos></AdministrativoListarAdministrativos>} />
+          <Route path='Lider' element={<AdministrativoVerPerfilLider></AdministrativoVerPerfilLider>} />
+          <Route path='Lider/Registrar' element={<AdministrativoRegistrarLiderPerfil></AdministrativoRegistrarLiderPerfil>} />
+          <Route path='Lider/Editar' element={<AdministrativoEditarPerfilLider></AdministrativoEditarPerfilLider>} />
         </Route>
         <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
 
           <Route path='Perfil' element={<PerfilDocente></PerfilDocente>}/>
           <Route path='Perfil'></Route>
-          <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>}/>
-          <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>}/>
-          <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>}/>
-          <Route path='Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>}/>
-          <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>}/>
-          <Route path='Evaluador/Ideas/Vista' element={<DocenteEvaluadorVerIdea></DocenteEvaluadorVerIdea>}/>
-          <Route path='Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>}/>
-          <Route path='Tutor/Planes/Vista' element={<DocenteTutorVerPlan></DocenteTutorVerPlan>}/>
-          <Route path='Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>}/>
-          <Route path='Apoyo/Planes/Vista' element={<DocenteApoyoVerPlan></DocenteApoyoVerPlan>}/>
-          <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>}/>
-          <Route path='Evaluador/Planes/Vista' element={<DocenteEvaluadorVerPlan></DocenteEvaluadorVerPlan>}/>
-          <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>}/>
-          <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>}/>
-          <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>}/>
+          <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>} />
+          <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>} />
+          <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>} />
+          <Route path='Apoyo/Ideas' element={<DocenteApoyoListarIdeas></DocenteApoyoListarIdeas>} />
+          <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>} />
+          <Route path='Evaluador/Ideas/Vista' element={<DocenteEvaluadorVerIdea></DocenteEvaluadorVerIdea>} />
+          <Route path='Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>} />
+          <Route path='Tutor/Planes/Vista' element={<DocenteTutorVerPlan></DocenteTutorVerPlan>} />
+          <Route path='Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>} />
+          <Route path='Apoyo/Planes/Vista' element={<DocenteApoyoVerPlan></DocenteApoyoVerPlan>} />
+          <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>} />
+          <Route path='Evaluador/Planes/Vista' element={<DocenteEvaluadorVerPlan></DocenteEvaluadorVerPlan>} />
+          <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>} />
+          <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
+          <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
 
-          <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>}/>
-          
-          
+          <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+
+
         </Route>
+      </Route>
+        <Route path='/' element={<Home></Home>} />
+        <Route path='/login' element={<Login></Login>} />
+        <Route path='/forgetPassword' element={<Recovery></Recovery>} />
+        <Route path='/resetPassword' element={<ResetPassword></ResetPassword>} />
+        
       </Route>
     </>
   )

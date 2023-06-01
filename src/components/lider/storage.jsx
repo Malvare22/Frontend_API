@@ -4,7 +4,7 @@ const generarToken=()=>{
     axios.post('http://localhost:8080/login',{
         
         email: 'Ericka.Eckblad@gmail.com',
-        password: 'A12345678!'
+        password: 'Ericka2022-07-13'
         
     }).then((response)=>{
 

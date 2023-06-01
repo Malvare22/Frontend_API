@@ -13,18 +13,7 @@ export default function AdministrativoPerfil() {
 
 const VistaGeneral = () => {
 
-    const usuario =
-    {
-        "correo": "ratamandril@student.com",
-        "apellidos": "Sanjapones",
-        "nombres": "Pipe",
-        "documento": "3",
-        "sexo": "1",
-        "fecha_nacimiento":"2000-10-23",
-        "telefono": "4234234",
-        "foto": "/images/03.png",
-        "contrasenia": "23453453"
-    }
+    const usuario = JSON.parse(localStorage.getItem('My_Info'))
 
     return (
         <div className='flex-grow-1'>
@@ -48,11 +37,11 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto}></img>
+                <img className='rounded-circle' style={{height:"100px",width:"100px"}} src={props.usuario.foto.direccion}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{props.usuario.nombres}</p>
-                        <p className='text-white'>{props.usuario.apellidos}</p>
+                        <p className='text-white'>{props.usuario.nombre}</p>
+                        <p className='text-white'>{props.usuario.apellido}</p>
                     </div>
                 </div>
             </div>
@@ -81,15 +70,7 @@ const Information = (props) => {
                         Nombre Completo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellidos+" "+props.usuario.nombres}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Documento de identificación:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.documento}
+                        {props.usuario.apellido+" "+props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -97,7 +78,7 @@ const Information = (props) => {
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {edad()}
+                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>

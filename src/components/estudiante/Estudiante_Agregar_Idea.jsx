@@ -5,6 +5,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 const Formulario = () => {
+
   const [titulo, setTitulo] = useState('');
   const [integrantesIdea, setIntegrantesIdea] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
@@ -176,6 +177,7 @@ const Formulario = () => {
 export default Formulario;
 
 const Sobreponer = styled.div`
+
   #titulo1,
   #cuerpo {
     position: relative;
