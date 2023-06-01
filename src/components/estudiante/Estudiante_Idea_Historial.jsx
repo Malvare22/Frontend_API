@@ -8,8 +8,13 @@ export default function Historial(props) {
 
     const definir_Estado = async () => {
         let value = null;
-        let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
-        value = await axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
+        let URLs='http://144.22.37.238:8080/ideaNegocio/evaluacion/'+props.nombre;
+        value = await axios.get(URLs,{headers: { "X-Softue-JWT":localStorage.getItem("token_access")}}
+
+       // let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
+       // value = await axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+
             ).then(
             response => {
                 const data = response.data;
@@ -27,7 +32,9 @@ export default function Historial(props) {
     return (
         <div className="container">
             <div className="row">
-                {datos && datos.map((v, i) => {
+
+                {datos &&   datos.map((v, i) => {
+
                     let aprov = 0;
                     let recha = 0;
                     let gris = 0;
