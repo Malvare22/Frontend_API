@@ -31,6 +31,7 @@ const Evaluaciones = (props) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
 
+
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -47,8 +48,8 @@ const Evaluaciones = (props) => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-        let URLs = 'http://localhost:8080/docente/listar';
-        value = await axios.get(URLs, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+        let URLs = 'http://144.22.37.238:8080/docente/listar';
+        value = await axios.get(URLs, {headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
         ).then(
             response => {
                 const data = response.data;
@@ -67,8 +68,8 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
-        value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+        let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT":localStorage.getItem("token_access")} }
         ).then(
             response => {
                 const data = response.data;
@@ -89,9 +90,9 @@ const Evaluaciones = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
+        let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
 
-        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+        value = await  axios.get(URL,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
 
         ).then(
             response => {
@@ -109,8 +110,8 @@ const Evaluaciones = (props) => {
     const ElimnarCalificadores = async (a,b) => {
         bottomEliminar()
         let value = null;
-        let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
-        value = await axios.delete(URLd, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ }, body : {    "codigoDocente" : a,
+        let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
+        value = await axios.delete(URLd, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, body : {    "codigoDocente" : a,
         "evaluacionIdeaId" : b} }
         ).then(
             console.log("hecho")
@@ -338,7 +339,7 @@ const Evaluaciones = (props) => {
             <Modal centered isOpen={viewEliminar}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor {idEliminar}?</Label>
+                        <Label id="texto">¿Quieres eliminar a este docente calificador {idEliminar}?</Label>
                     </FormGroup>
                 </ModalBody>
 
