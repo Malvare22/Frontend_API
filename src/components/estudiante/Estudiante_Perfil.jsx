@@ -7,8 +7,8 @@ export default function PerfilEstudiante() {
     return (<VistaGeneral></VistaGeneral>);
 }
 
-const usuario = toLiderFormatStudentsFromImport([JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))])[0]
-
+//const usuario = toLiderFormatStudentsFromImport([JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))])[0]
+const usuario = {}
 const Profile = () => {
     return (
         <Sdiv01>

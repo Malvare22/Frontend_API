@@ -1,6 +1,6 @@
 
 import styled from 'styled-components';
-import image from './../../assets/images/Users/01.png'
+import default_profile from './../../assets/images/Users/default_profile.png'
 import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
@@ -13,18 +13,8 @@ export default function LiderVerPerfilDocente() {
 
 const VistaGeneral = () => {
 
-    const usuario = {
-        "nombres":"Luis",
-        "apellidos":"Salazar",
-        "documento":"10213123",
-        "titulo":"Técnico en Inglés",
-        "area":"Salud",
-        "correo":"sdfsdf@hotmail.com",
-        "telefono":"4235345433",
-        "foto": "/images/02.png",
-        "fecha_nacimiento":"1991-12-20",
-        "sexo": "0"
-    }    
+    const usuario = JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))
+    console.log(usuario)
 
     return (
         <div className='flex-grow-1'>
@@ -48,11 +38,11 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto}></img>
+                <img className='rounded-circle' style={{height:'11vh', width:'11vh'}} src={`${props.usuario.foto.direccion==''?default_profile: props.usuario.foto.direccion }`}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{props.usuario.nombres}</p>
-                        <p className='text-white'>{props.usuario.apellidos}</p>
+                        <p className='text-white'>{props.usuario.nombre}</p>
+                        <p className='text-white'>{props.usuario.apellido}</p>
                     </div>
                 </div>
             </div>
@@ -74,7 +64,7 @@ const Information = (props) => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.nombres}
+                        {props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -82,7 +72,7 @@ const Information = (props) => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellidos}
+                        {props.usuario.apellido}
                     </div>
                 </div>
                 <div className='row'>
@@ -90,7 +80,7 @@ const Information = (props) => {
                         Documento de identificación:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.documento}
+                        {props.usuario.cedula}
                     </div>
                 </div>
                 <div className='row'>
@@ -106,7 +96,7 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo=='0'? "Masculino":"Femenino"}
+                        {props.usuario.sexo}
                     </div>
                 </div>
                 <div className='row'>

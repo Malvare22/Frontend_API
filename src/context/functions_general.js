@@ -1,27 +1,27 @@
 export function toLiderFormatStudentsFromImport(students){
-    const grades = {
-        "primero":"Primero",
-        "segundo":"Segundo",
-        "tercero":"Tercero",
-        "cuarto":"Cuarto",
-        "quinto":"Quinto",
-        "sexto":"Sexto",
-        "septimo":"Séptimo",
-        "octavo":"Octavo",
-        "noveno":"Noveno",
-        "decimo":"Décimo",
-        "once": "Once",
-    }
+    // const grades = {
+    //     "primero":"Primero",
+    //     "segundo":"Segundo",
+    //     "tercero":"Tercero",
+    //     "cuarto":"Cuarto",
+    //     "quinto":"Quinto",
+    //     "sexto":"Sexto",
+    //     "septimo":"Séptimo",
+    //     "octavo":"Octavo",
+    //     "noveno":"Noveno",
+    //     "decimo":"Décimo",
+    //     "once": "Once",
+    // }
 
-    return students.map((student,i)=>{
-        student.curso = grades[student.curso]
-        setDateAndYearsOld(student)
-        student.sexo = setGenreToImport(student)
-        student.nombre_acudiente = student.nombreAcudiente
-        console.log(i,student)
-        return student;
+    // return students.map((student,i)=>{
+    //     student.curso = grades[student.curso]
+    //     setDateAndYearsOld(student)
+    //     student.sexo = setGenreToImport(student)
+    //     student.nombre_acudiente = student.nombreAcudiente
+    //     console.log(i,student)
+    //     return student;
 
-    });
+    // });
 }
 
 const setGenreToImport = (user)=>{
@@ -79,17 +79,11 @@ export function importAdmins(admins){
 }
 
 export function importDocents(docentes){
-    const areas = {
-        "minera":"Minera",
-        "agropecuaria":"Agropecuaria", 
-        "comercial": "Comercial",
-        "servicios":"Servicios", 
-        "industrial":"Industrial"
-    }
+    
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
         setDateAndYearsOld(elemento)
-        elemento.area= areas[elemento.area]
+        elemento.area= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
         return elemento
     })
 }

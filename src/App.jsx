@@ -89,40 +89,39 @@ import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './
 
 
 const obtenerInformacionCompletaAlumno = async () => {
-  // try {
-  let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
-  const value = await axios.get(zelda, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    }
-  })
+  // // try {
+  // let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
+  // const value = await axios.get(zelda, {
+  //   headers: {
+  //     "X-Softue-JWT": localStorage.getItem('token_access')
+  //   }
+  // })
 
-  let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
-  zelda = 'http://localhost:8080/coordinador/foto/'
-  const foto = await axios.get(zelda + value.data.codigo, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    },
-    responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-  }).then(response => {
-    const base64Image = btoa(
-      new Uint8Array(response.data)
-        .reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+  // let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
+  // zelda = 'http://localhost:8080/coordinador/foto/'
+  // const foto = await axios.get(zelda + value.data.codigo, {
+  //   headers: {
+  //     "X-Softue-JWT": localStorage.getItem('token_access')
+  //   },
+  //   responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+  // }).then(response => {
+  //   const base64Image = btoa(
+  //     new Uint8Array(response.data)
+  //       .reduce((data, byte) => data + String.fromCharCode(byte), '')
+  //   );
+  //   const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
 
-    return imageUrl;
-  });
-  const blob = await fetch(foto).then(response => response.blob());
-  const archivo = new File([blob], "IMG.png", { type: "image/png" });
-  localStorage.setItem("ESTUDIANTE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
-  console.log('ESTUDIANTE_INFO:', JSON.parse(localStorage.getItem("ESTUDIANTE_INFO")));
+  //   return imageUrl;
+  // });
+  // const blob = await fetch(foto).then(response => response.blob());
+  // const archivo = new File([blob], "IMG.png", { type: "image/png" });
+  // localStorage.setItem("ESTUDIANTE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
 
-  return true;
-  // }
-  // catch (error) {
-  //     throw new Response("Not Found", { status: 404 })
-  // }
+  // return true;
+  // // }
+  // // catch (error) {
+  // //     throw new Response("Not Found", { status: 404 })
+  // // }
 }
 
 const MiPerfilLider = async () => {
@@ -259,18 +258,17 @@ const MiPerfilEstudiante = async ()=>{
 
 
 const MiPerfilDocente=async()=>{
-  let zelda = "localhost:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
+  let zelda = "http://localhost:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
-
-  let temp_user = value.data
-
+  let temp_user = importDocents([value.data])[0]
+  console.log(temp_user)
   zelda = 'http://localhost:8080/coordinador/foto/'
-  let foto;
-  let archivo;
+  let foto='';
+  let archivo='';
   try{
     foto = await axios.get(zelda + value.data.codigo, {
       headers: {
@@ -407,9 +405,7 @@ const router = createBrowserRouter(
             <Route path='Lider/Editar' element={<AdministrativoEditarPerfilLider></AdministrativoEditarPerfilLider>} />
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
-
             <Route path='Perfil' element={<PerfilDocente></PerfilDocente>} loader={MiPerfilDocente}/>
-            <Route path='Perfil'></Route>
             <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>} />
             <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>} />
             <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>} />
@@ -426,21 +422,9 @@ const router = createBrowserRouter(
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
             <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
-
-
           </Route>
         </Route>
-        <Route path='/' element={<Home></Home>} />
-        <Route path='/login' element={<Login></Login>} />
-        <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-        <Route path='/resetPassword' element={<ResetPassword></ResetPassword>} />
-
-      </Route>
-        <Route path='/' element={<Home></Home>} />
-        <Route path='/login' element={<Login></Login>} />
-        <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-        <Route path='/resetPassword' element={<ResetPassword></ResetPassword>} />
-        
+      </Route>     
     </>
   )
 );
