@@ -45,14 +45,9 @@ const InfoGeneral = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-
-
         // value = await  axios.get('../../../ideasdeveritas.json' 
-
-
         //  headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
 
@@ -80,11 +75,9 @@ const InfoGeneral = (props) => {
     const getProfesores = async () => {
         let value = null;
 
-
         //let ruta = 'http://144.22.37.238:8080/docente/listar';
         let ruta = 'http://localhost:8080/docente/listar';
         
-
         value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
 
         //let URL = 'http://localhost:8080/docente/listar';
@@ -117,11 +110,9 @@ const InfoGeneral = (props) => {
         if (TutorNuevo) {
             let value = null;
             let idea = datos1 && datos1.titulo;
-
             //let ruta = 'http://144.22.37.238:8080/coordinador/asignar/' + idea + '/' + docente;
             let ruta = 'http://localhost:8080/coordinador/asignar/' + idea + '/' + docente;
             
-
             console.log(ruta);
             value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
              ).then(
@@ -152,11 +143,9 @@ const InfoGeneral = (props) => {
         if (datos1.tutorInfo!=null) {
             let value = null;
             let idea = datos1 && datos1.titulo;
-
             //let ruta = 'http://144.22.37.238:8080/administrativo/eliminarTutor/'+idea;
             let ruta = 'http://localhost:8080/administrativo/eliminarTutor/'+idea;
             
-
             console.log(ruta);
             value = await axios.post(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
              ).then(
@@ -185,11 +174,9 @@ const InfoGeneral = (props) => {
 
     const getArchi = async () => {
         let value = null;
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         
-
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
@@ -572,13 +559,9 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
         let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
-        
-
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-
        // let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
        // value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
 

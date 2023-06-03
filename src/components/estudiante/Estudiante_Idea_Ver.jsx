@@ -3,6 +3,7 @@ import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFo
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Estudiante_Idea_Historial";
+import { useNavigate } from "react-router-dom";
 
 
 export default function VistaIdea() {
@@ -77,7 +78,15 @@ const InfoGeneral = (props) => {
         setAreaNueva(e);
     };
 
+    const navigate = useNavigate();
 
+    const setInfo = async (titulo) => {
+        console.log(titulo)
+        localStorage.setItem('titulo', titulo);
+        window.location.reload();
+        
+      };
+    
     const editarIdea = async (areaN, TNuevo) => {
         toggleAlert()
         var formData = new FormData();
@@ -98,22 +107,20 @@ const InfoGeneral = (props) => {
 
         //let ruta = "http://144.22.37.238:8080/ideaNegocio/Actualizar";
         let ruta = "http://localhost:8080/ideaNegocio/Actualizar";
-
-
         axios.patch(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
 
        // let ruta = "http://localhost:8080/ideaNegocio/Actualizar";
        // axios.patch(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
 
-            .then(function (response) {
-                console.log("Hecho");
+            .then( response => {
+                const data = response.data;
+                setInfo(titleNuevo);
+                return data;
             })
             .catch(function (error) {
                 console.error(error);
 
             });
-
-        window.location.reload();
 
     }
 
@@ -198,10 +205,7 @@ const InfoGeneral = (props) => {
                                                 <h6 className="font-weight-bold"><b>Tutor:</b></h6>
                                             </div>
                                             <div className="col-auto">
-
-
-                                                <p>{datos1.tutorInfo[1]}</p>
-
+                                                <p>{datos1.tutorInfo != null ? datos1.tutorInfo[1]: "No asignado"}</p>
                                             </div>
                                         </div>
 
@@ -211,7 +215,7 @@ const InfoGeneral = (props) => {
                                                 <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{datos1.areaEnfoque}</p>
+                                                <p>{datos1.areaEnfoque && datos1.areaEnfoque}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2 mb-2">
@@ -220,9 +224,11 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
+                                                {datos1.docentesApoyoInfo[1][0] != null ? datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
-                                                    })}
+                                                    })
+                                                        : <p>No hay docentes de apoyo asignados</p>
+                                                    }
                                                 </ul>
                                             </div>
                                             <div className="row">
@@ -448,6 +454,7 @@ const Observaciones = (props) => {
 
                  .then((response) => {
                      console.log("hecho")
+                     window.location.reload();
                  })
                  .catch((error) => {
                     if (error.response) {
@@ -458,10 +465,9 @@ const Observaciones = (props) => {
                       } else {
                         console.log('Error al realizar la solicitud:', error.message);
                       }
+                      setError('Tu archivo debe ser PDF o es muy pesado');
                  });
             setSelectedFile(null);
-            window.location.reload();
-
         }else {
             setError('Por favor, selecciona un archivo');
           }

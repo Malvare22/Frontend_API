@@ -31,7 +31,7 @@ const Table = ({ data }) => {
             } else if (column === 'Tutor') {
                 comparison = a.docente_codigo.localeCompare(b.docente_codigo);
             } else if (column === 'Area') {
-                comparison = a.area_enfoque.localeCompare(b.area_enfoque);
+                comparison = a.areaEnfoque.localeCompare(b.areaEnfoque);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -42,7 +42,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Tutor/VistaIdea');
+        navigate('/Docente/Tutor/Ideas/Vista');
     };
     return (
         <Sdiv>
@@ -52,7 +52,7 @@ const Table = ({ data }) => {
                         <tr>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>                            
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -60,8 +60,8 @@ const Table = ({ data }) => {
                         {sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>                                
+                                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaEnfoque}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -82,7 +82,7 @@ const Table = ({ data }) => {
                         ))}
                     </tbody>
                 </table>
-            </div>        
+            </div>
         </Sdiv>
     );
 };
@@ -187,33 +187,45 @@ export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../ideas.json').then(
+        value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
                 console.error(error);
             });
-        setFilteredData(value)
+        setFilteredData(value);
     };
     useEffect(() => {
         getIdeas();
     }, []);
     const handleFilter = async (filters) => {
-        console.log(filters)
-        console.log(filters.estudiante)
-        console.log(filters.area)
-        console.log(filters.estado)
-        console.log(filters.fechaInicio)
-        console.log(filters.fechaFin)
+        var formData = new FormData();
+        console.log(filters.tutor);
+        formData.append('estudianteEmail', filters.estudiante);
+        formData.append('area', filters.area);
+        formData.append('estado', filters.estado);
+        formData.append('fechaInicio', filters.fechaInicio);
+        formData.append('fechaFin', filters.fechaFin);
         try {
-            let value = null;
-            value = await axios.get('../../../ideasFiltradas.json').then(
+            let value;
+            value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
+            ).then(
                 response => {
                     const data = response.data;
+                    console.log(data)
                     return data;
                 }).catch(error => {
-                    console.error(error);
+                    console.log("a");
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
                 });
             setFilteredData(value);
         } catch (error) {
@@ -246,7 +258,7 @@ export default function Listar_Ideas() {
                                         </div>
                                     </div>
                                 </button>
-                            </div>                            
+                            </div>
                         </div>
 
                     </div>
@@ -259,12 +271,13 @@ function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../../../estudiantes.json').then(
+        value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.log(error);
             });
         setDatos(value)
     };
@@ -274,7 +287,7 @@ function Getestudiantes() {
     return (
         datos2.map((d) => {
             return (
-                <option value={d.id} key={d.id}>{d.estudiante}</option>
+                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )

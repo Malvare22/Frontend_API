@@ -45,9 +45,9 @@ const Table = ({ data }) => {
             if (column === 'Título') {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
+                comparison = a.estudiante_codigo && a.estudiante_codigo.localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[1][0]);
             } else if (column === 'Tutor') {
-                comparison = a.docente_codigo.localeCompare(b.docente_codigo);
+                comparison = a.docente_codigo && a.docente_codigo.localeCompare(b.tutorInfo && b.tutorInfo[1][0]);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -58,8 +58,9 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('/Lider/VistaIdea');
+    const toggleA = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('/Administrativo/Ideas/Vista');
     };
     return (
         <Sdiv>
@@ -69,7 +70,7 @@ const Table = ({ data }) => {
                         <tr>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
-                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>                            
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -77,11 +78,11 @@ const Table = ({ data }) => {
                         {sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>                                
+                                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1][0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1][0]}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -228,7 +229,8 @@ export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../ideas.json').then(
+        value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -241,21 +243,32 @@ export default function Listar_Ideas() {
         getIdeas();
     }, []);
     const handleFilter = async (filters) => {
-        console.log(filters)
-        console.log(filters.tutor)
-        console.log(filters.estudiante)
-        console.log(filters.area)
-        console.log(filters.estado)
-        console.log(filters.fechaInicio)
-        console.log(filters.fechaFin)
+        var formData = new FormData();
+        console.log(filters.tutor);
+        formData.append('estudianteEmail', filters.estudiante);
+        formData.append('area', filters.area);
+        formData.append('docenteEmail', filters.tutor);
+        formData.append('estado', filters.estado);
+        formData.append('fechaInicio', filters.fechaInicio);
+        formData.append('fechaFin', filters.fechaFin);
         try {
-            let value = null;
-            value = await axios.get('../ideasFiltradas.json').then(
+            let value;
+            value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
+            ).then(
                 response => {
                     const data = response.data;
+                    console.log(data)
                     return data;
                 }).catch(error => {
-                    console.error(error);
+                    console.log("a");
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
                 });
             setFilteredData(value);
         } catch (error) {
@@ -316,7 +329,8 @@ function Getdocentes() {
     const [datos, setDatos] = useState([]);
     const getDocentes = async () => {
         let value = null;
-        value = await axios.get('../docentes.json').then(
+        value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -340,12 +354,13 @@ function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../estudiantes.json').then(
+        value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.log(error);
             });
         setDatos(value)
     };

@@ -47,7 +47,7 @@ const Table = ({ data }) => {
       } else if (column === 'Estudiante') {
         comparison = a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo[0][0]);
       } else if (column === 'Tutor') {
-        comparison = a.tutorInfo[0][0].localeCompare(b.tutorInfo[0][0]);
+        comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
       } else if (column === 'Fecha de corte') {
         // comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
       }
@@ -82,7 +82,7 @@ const Table = ({ data }) => {
               <tr key={d.id}>
                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                 <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1][0]}</td>
-                <td className='text-center align-middle col-auto'>{d.tutorInfo[1][0]}</td>
+                <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1][0]}</td>
                 <td className='text-center align-middle'>TBP</td>
                 <td className='text-center align-middle'>
                   <div>

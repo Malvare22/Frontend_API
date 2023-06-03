@@ -48,11 +48,8 @@ const Evaluaciones = (props) => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-
         //let URLs = 'http://144.22.37.238:8080/docente/listar';
         let URLs = 'http://localhost:8080/docente/listar';
-        
-
         value = await axios.get(URLs, {headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
         ).then(
             response => {

@@ -3,40 +3,31 @@ import axios from 'axios';
 import { Container } from 'reactstrap';
 import CardEs from './Estudiante_Card_Idea';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function Estudiante_ListarIdeas() {
-
-    const navigate = useNavigate()
-
+    const navigate = useNavigate();
     const [datos, setDatos] = useState([]);
+  const getIdeas = async () => {
+    let value = null;
+    value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+      setDatos(value);
+  };
+  useEffect(() => {
+    getIdeas();
+  }, []);
 
-    const definir_Color = async () => {
-        let value = null;
-        value = await axios.get('../ideas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-        console.log(value)
-    };
-    useEffect(() => {
-        definir_Color();
-
-    }, []);
-
-    const setInfo=(plan_id)=>{
-        let plan=null;
-        datos.map((v)=>{
-            if(v.id==plan_id)
-                plan=JSON.stringify(v)
-        })
-        localStorage.setItem('idea_info', plan)
-        navigate('/Estudiante/Ideas/Vista')
-    }
+    const setInfo = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('/Estudiante/Ideas/Vista');
+      };
 
     return (
         <>
@@ -81,7 +72,7 @@ export default function Estudiante_ListarIdeas() {
                                             }
 
                                             return (<div key={i} className="col-12 col-lg-4 col-sm-6">
-                                                <CardEs key={v.titulo} setInfo={setInfo} id={v.id} titulo={v.titulo} color={color}></CardEs>
+                                                <CardEs key={v.titulo} setInfo={()=>{setInfo(v.titulo)}} id={v.id} titulo={v.titulo} color={color}></CardEs>
                                             </div>
                                             );
                                         })}
