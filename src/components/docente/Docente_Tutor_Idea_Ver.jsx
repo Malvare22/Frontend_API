@@ -3,13 +3,14 @@ import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, U
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Docente_Tutor_Idea_Historial.jsx";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones ></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
 
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -20,12 +21,12 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
@@ -74,16 +75,16 @@ const InfoGeneral = () => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos1(value)
-
+        const URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        try {
+            const response = await axios.get(URLs, {
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
+          });
+          const data = response.data;
+          setDatos1(data);
+        } catch (error) {
+          console.error(error);
+        }
     };
     useEffect(() => {
         getDatos1();
@@ -92,15 +93,15 @@ const InfoGeneral = () => {
 
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentesdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        try {
+            const response = await axios.get('http://localhost:8080/docente/listar', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-        setProfesores(value)
+            const data = response.data;
+            setProfesores(data);
+        } catch (error) {
+            console.error("Historial", error);
+        }
     };
     useEffect(() => {
         getProfesores();
@@ -108,15 +109,15 @@ const InfoGeneral = () => {
 
     const [estudiantes, setEstudiantes] = useState([]);
     const getEstudiantes = async () => {
-        let value = null;
-        value = await axios.get('../../../estudiantesdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        try {
+            const response = await axios.get('http://localhost:8080/estudiante/listar', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-        setEstudiantes(value)
+            const data = response.data;
+            setEstudiantes(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getEstudiantes();
@@ -125,6 +126,67 @@ const InfoGeneral = () => {
     let set = new Set();
     let set1 = new Set();
     let set2 = new Set();
+
+    const [titleNuevo, settNuevo] = useState(null);
+    const tituloNuevo = (e) => {
+        settNuevo(e);
+    };
+
+    const [Advertencia, setAdvertencia] = useState(false);
+    const setAdverten = () => {
+        setAdvertencia(!Advertencia);
+    }
+
+    const eliminarIntegrante = async (estudiante) => {
+        toggleAlertEliminar();
+
+        try {
+          //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/'+props.nombre+'/'+estudiante;
+          let URLd = 'http://localhost:8080/ideaNegocio/integrantes/'+props.nombre+'/'+estudiante;
+          await axios.delete(URLd, {
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+        });
+        window.location.reload();
+        } catch (error) {
+          console.error(error);
+        }  
+    };
+
+    const agregarIntegrante = async (estudiante) => {
+        toggleAlertEstudiante();
+        try {
+          //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/sie/'+estudiante;
+          let URLd = 'http://localhost:8080/ideaNegocio/integrantes/'+props.nombre+'/'+estudiante;
+          console.log(URLd);
+          await axios.post(URLd, null, {
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+        });
+        window.location.reload();
+        } catch (error) {
+          console.error(error);
+        }  
+    };
+
+
+    const eliminarDocenteApoyo = async (docente) => {
+        toggleAlertEliminarApoyo();
+
+         var formData = new FormData();
+        formData.append('correoDocente', datos1 && datos1.titulo);
+        formData.append('tituloIdea', docente);
+        
+        try {
+          //let URLd = 'http://144.22.37.238:8080/docenteApoyo';
+          let URLd = 'http://localhost:8080/docenteApoyo';
+          await axios.delete(URLd, { data : formData,
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+        });
+        window.location.reload();
+        } catch (error) {
+          console.error(error);
+        }  
+    };
+
 
     return (
 
@@ -152,6 +214,14 @@ const InfoGeneral = () => {
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
                                             </div>
                                             <div className="col-auto">
@@ -159,7 +229,7 @@ const InfoGeneral = () => {
 
                                                     {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
 
-                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{cursor: "pointer"}} className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(datos1.estudiantesIntegrantesInfo[0][i]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
 
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
@@ -167,8 +237,7 @@ const InfoGeneral = () => {
                                                         </li>);
                                                     })}
 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="20" height="20" fill="currentColor" style={{cursor: "pointer"}} className="bi bi-person-fill-add" viewBox="0 0 16 16">
-
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                                     </svg>
@@ -205,22 +274,22 @@ const InfoGeneral = () => {
                                             <div className="col-auto ">
                                                 <ul>
                                                     {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{cursor: "pointer"}} className="bi bi-x-circle" viewBox="0 0 16 16">
-
+                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                         </svg></li>);
                                                     })}
 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{cursor: "pointer"}} className="bi bi-person-fill-add" viewBox="0 0 16 16">
-
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                                     </svg>
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
-                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
+                                            <div className="row">
+                                                <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3"> Descargar formato completo</button></div>
+                                            </div>
+
 
 
                                         </div>
@@ -248,43 +317,15 @@ const InfoGeneral = () => {
 
             }
 
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
-                        <Input type="text" name="name" id="exampleSelect"></Input>
-                        <Label id="texto">Escoge el area de tu proyecto</Label>
-                        <Label for="exampleSelect"></Label>
-
-                        <Input type="select" name="select" id="exampleSelect">
-                            {profesores && profesores.map((l, i) => {
-
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
             <Modal centered isOpen={viewAlertEliminar}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">¿Quieres eliminar a este estudiante {Agregar}?</Label>
-
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" onClick={()=>{eliminarIntegrante(Agregar)}}>Eliminar</Button>
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -293,12 +334,11 @@ const InfoGeneral = () => {
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">¿Quieres eliminar a este docente de apoyo {Agregar}? </Label>
-
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" onClick={()=>{eliminarDocenteApoyo(Agregar)}}>Eliminar</Button>
                     <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -327,7 +367,6 @@ const InfoGeneral = () => {
                                     return ("");
                                 }
                             })}
-
                         </Input>
                     </FormGroup>
                     <ModalFooter>
@@ -337,6 +376,7 @@ const InfoGeneral = () => {
                 </ModalBody>
             </Modal>
 
+{/* Agregar Estudiante */}
 
             <Modal centered isOpen={viewAlertEstudiante}>
                 <ModalBody>
@@ -354,7 +394,7 @@ const InfoGeneral = () => {
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                        <Input type="select" name="selectMulti" onChange={(e) => { setAgregar(e.target.value) }} id="exampleSelectMulti" multiple>
                             {estudiantes && estudiantes.map((l) => {
                                 if (l.curso === Area) {
                                     return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
@@ -365,9 +405,8 @@ const InfoGeneral = () => {
 
                         </Input>
                     </FormGroup>
-
                     <ModalFooter>
-                        <Button color="danger">Asignar</Button>
+                        <Button color="danger" onClick={()=>{agregarIntegrante(Agregar)}}>Asignar</Button>
                         <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
                     </ModalFooter>
                 </ModalBody>
@@ -484,7 +523,7 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
 
     const [datos, setDatos] = useState([]);
     const getDatos = async () => {
@@ -512,7 +551,7 @@ const Observaciones = () => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id="arrowObservaciones" style={{cursor: "pointer"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>

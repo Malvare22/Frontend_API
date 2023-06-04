@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react'
 import Evaluaciones from "./Docente_Tutor_Idea_Evaluacion.jsx";
 
-export default function Historial() {
+export default function Historial(props) {
 
     const [datos, setDatos] = useState([]);
 

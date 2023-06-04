@@ -40,17 +40,9 @@ const InfoGeneral = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-        
-
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
-
-       // let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-       // value = await axios.get(URL, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;
@@ -103,15 +95,9 @@ const InfoGeneral = (props) => {
         } else {
             formData.append('tituloNuevo', datos1 && datos1.titulo);
         }
-
-
         //let ruta = "http://144.22.37.238:8080/ideaNegocio/Actualizar";
         let ruta = "http://localhost:8080/ideaNegocio/Actualizar";
         axios.patch(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
-
-       // let ruta = "http://localhost:8080/ideaNegocio/Actualizar";
-       // axios.patch(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
-
             .then( response => {
                 const data = response.data;
                 setInfo(titleNuevo);
@@ -121,17 +107,13 @@ const InfoGeneral = (props) => {
                 console.error(error);
 
             });
-
     }
 
     
     const getArchi = async () => {
         let value = null;
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        
-
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
