@@ -42,6 +42,8 @@ const Formulario = () => {
 
       console.log(formatoIdea)
 
+      //Prueba
+
       let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
       let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
