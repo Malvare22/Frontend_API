@@ -93,7 +93,7 @@ const Formulario = () => {
           <div className="row">
             <Sobreponer>
               <div className="col-12">
-                <div id="titulo1" className="rounded-3 mt-4" style={{ background: 'blue' }}>
+                <div id="titulo1" className="rounded-3 mt-4" style={{ background: '#ECB904' }}>
                   <div className="row">
                     <div className="d-flex col ms-3">
                       <h5 className="m-0 p-2" style={{ color: 'black' }}>
