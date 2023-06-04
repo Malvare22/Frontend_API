@@ -89,17 +89,11 @@ export function importDocents(docentes){
 }
 
 export function exportDocents(docentes){
-    const areas = {
-        "Minera":"minera",
-        "Agropecuaria":"agropecuaria", 
-        "Comercial": "comercial",
-        "Servicios":"servicios", 
-        "Industrial":"industrial"
-    }
-    let nuevo;
+
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToExport(elemento)
-        elemento.area= areas[elemento.area]
+        elemento.area= elemento.area.toLowerCase()
+        elemento.tipoUsuario = 'docente'
         return elemento
     })
 

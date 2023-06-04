@@ -32,7 +32,7 @@ import DocenteApoyoVerIdea from './components/docente/Docente_Apoyo_Idea_Ver.jsx
 
 import DocenteApoyoVerPlan from './components/docente/Docente_Apoyo_Plan_Ver.jsx';
 
-import LiderListarDocentes from './components/lider/Lider_docentesListar';
+import LiderListarDocentes from './components/lider/Lider_Docentes_Listar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
@@ -86,7 +86,7 @@ import AdministrativoPerfil from './components/administrativo/Administrativo_Per
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
-import { MiPerfilDocente } from './context/functions_app';
+import { ListarDocentes, MiPerfilDocente, GestionarDocente } from './context/functions_app';
 import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 
 const obtenerInformacionCompletaAlumno = async () => {
@@ -208,56 +208,6 @@ const MiPerfilEstudiante = async ()=>{
   return true
 }
 
-// const getAllDocents = async () => {
-//   let zelda = "http://localhost:8080/docente/listar";
-//   const value = await axios.get(zelda, {
-//     headers: {
-//       "X-Softue-JWT": localStorage.getItem('token_access')
-//     }
-//   })
-//   let temp_user = importDocents(value.data)
-//   console.log(temp_user)
-//   localStorage.setItem("LISTA_DOCENTES", JSON.stringify(temp_user))
-//   return true;
-// }
-
-// const getAllInfoDocent = async () => {
-//   let zelda = "http://localhost:8080/docente/" + localStorage.getItem('DOCENTE_EMAIL');
-//   const value = await axios.get(zelda, {
-//     headers: {
-//       "X-Softue-JWT": localStorage.getItem('token_access')
-//     }
-//   })
-//   let temp_user = importDocents([value.data])[0]
-
-//   zelda = 'http://localhost:8080/coordinador/foto/'
-//   let foto;
-//   try {
-//     foto = await axios.get(zelda + value.data.codigo, {
-//       headers: {
-//         "X-Softue-JWT": localStorage.getItem('token_access')
-//       },
-//       responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-//     }).then(response => {
-//       const base64Image = btoa(
-//         new Uint8Array(response.data)
-//           .reduce((data, byte) => data + String.fromCharCode(byte), '')
-//       );
-//       const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
-//       return imageUrl;
-//     });
-//     await fetch(foto).then(response => response.blob())
-
-//   }
-//   catch{
-//     foto='';
-//   }
-
-//   localStorage.setItem("INFO_DOCENTES", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": foto, "direccion": foto } }))
-//   return true;
-// }
-
-
 /**Obtener información propia del perfil de Administrativo**/
 const MiPerfilAdmin=async()=>{
   let zelda = "http://localhost:8080/coordinador/" + (JSON.parse(localStorage.getItem('session'))).email;
@@ -338,17 +288,17 @@ const router = createBrowserRouter(
             {/**--------------------**/}
             {/**Rutas de gestión de Docentes**/}
             <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
-            <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} />
-            <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} />
+            <Route path='Docentes/Perfil' element={<LiderVerPerfilDocente></LiderVerPerfilDocente>} loader={GestionarDocente}/>
+            <Route path='Docentes/Perfil/Editar' element={<LiderDocenteEditar></LiderDocenteEditar>} loader={GestionarDocente}/>
             <Route path='Docentes/Registrar' element={<LiderDocenteRegistrar></LiderDocenteRegistrar>} />
-
+            {/**--------------------**/}
             <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>} />
             <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>} />
             <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>} />
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />
-            {/**--------------------**/}
+            
             {/**Rutas de gestión de Administradores**/}
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
             {/**--------------------**/}
@@ -371,7 +321,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<PerfilDocente></PerfilDocente>} loader={MiPerfilDocente}/>
-            {/* <Route path='Perfil/Editar' element={<DocentePerfilEditar></DocentePerfilEditar>}/> */}
+            <Route path='Perfil/Editar' element={<DocentePerfilEditar></DocentePerfilEditar>} loader={MiPerfilDocente}/>
             <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>} />
             <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>} />
             <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>} />
