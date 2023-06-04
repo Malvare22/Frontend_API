@@ -1,27 +1,27 @@
 export function toLiderFormatStudentsFromImport(students){
-    // const grades = {
-    //     "primero":"Primero",
-    //     "segundo":"Segundo",
-    //     "tercero":"Tercero",
-    //     "cuarto":"Cuarto",
-    //     "quinto":"Quinto",
-    //     "sexto":"Sexto",
-    //     "septimo":"Séptimo",
-    //     "octavo":"Octavo",
-    //     "noveno":"Noveno",
-    //     "decimo":"Décimo",
-    //     "once": "Once",
-    // }
+    
 
-    // return students.map((student,i)=>{
-    //     student.curso = grades[student.curso]
-    //     setDateAndYearsOld(student)
-    //     student.sexo = setGenreToImport(student)
-    //     student.nombre_acudiente = student.nombreAcudiente
-    //     console.log(i,student)
-    //     return student;
+    return students.map((student,i)=>{
+        student.curso= student.area.charAt(0).toUpperCase() + student.curso.slice(1)
+        setDateAndYearsOld(student)
+        student.sexo = setGenreToImport(student)
+        student.nombre_acudiente = student.nombreAcudiente
+        console.log(i,student)
+        return student;
 
-    // });
+    });
+}
+
+export function importStudents(students){
+    
+    return students.map((student)=>{
+        student.curso= student.curso.charAt(0).toUpperCase() + student.curso.slice(1)
+        setDateAndYearsOld(student)
+        student.sexo = setGenreToImport(student)
+        student.nombre_acudiente = student.nombreAcudiente
+        return student;
+
+    });
 }
 
 const setGenreToImport = (user)=>{
@@ -60,6 +60,18 @@ export function toLiderFormatStudentsToExport(students){
         student.sexo = setGenreToExport(student)
         student.nombreAcudiente = student.nombre_acudiente
 
+        return student
+    })
+
+}
+
+export function exportStudents(students){
+    
+    return students.map((student)=>{
+        student.curso= (student.curso.toLowerCase()).normalize('NFD').replace(/[\u0300-\u036f]/g,"")
+        student.sexo = setGenreToExport(student)
+        student.nombreAcudiente = student.nombre_acudiente
+        student.tipoUsuario = 'estudiante'
         return student
     })
 
