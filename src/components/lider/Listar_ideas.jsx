@@ -24,7 +24,6 @@ const modalStyles = {
 // Componente de tabla
 const Table = ({ data }) => {
   const [orderBy, setOrderBy] = useState({ column: 'Título', ascending: true });
-
   const handleSort = (column) => {
     if (orderBy.column === column) {
       setOrderBy((prevState) => ({
@@ -45,11 +44,13 @@ const Table = ({ data }) => {
       if (column === 'Título') {
         comparison = a.titulo && a.titulo.localeCompare(b.titulo);
       } else if (column === 'Estudiante') {
-        comparison =  a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
+        comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
       } else if (column === 'Tutor') {
         comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
       } else if (column === 'Fecha de corte') {
-        // comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
+        const dateA = new Date(a.fechaCreacion && a.fechaCreacion[0], a.fechaCreacion && a.fechaCreacion[1] - 1, a.fechaCreacion && a.fechaCreacion[2]);
+        const dateB = new Date(b.fechaCreacion & b.fechaCreacion[0], b.fechaCreacion && b.fechaCreacion[1] - 1, b.fechaCreacion && b.fechaCreacion[2]);
+        comparison = dateA - dateB;
       }
       if (!ascending) {
         comparison *= -1;
@@ -81,9 +82,9 @@ const Table = ({ data }) => {
             {sortedData && sortedData.map((d) => (
               <tr key={d.id}>
                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
-                <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1][0]}</td>
-                <td className='text-center align-middle'>TBP</td>
+                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1]}</td>
+                <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1]}</td>
+                <td className='text-center align-middle'>{`${d.fechaCreacion[2].toString().padStart(2, '0')}/${d.fechaCreacion[1].toString().padStart(2, '0')}/${d.fechaCreacion[0]}`}</td>
                 <td className='text-center align-middle'>
                   <div>
                     <button type="button" className="btn" onClick={() => toggleA(d.titulo)} value={d.titulo} style={{ width: "auto", border: "none" }}>
@@ -227,8 +228,7 @@ const Filters = ({ onFilter }) => {
 export default function Listar_Ideas() {
   const [filteredData, setFilteredData] = useState([]);
   const getIdeas = async () => {
-    let value = null;
-    value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -250,9 +250,9 @@ export default function Listar_Ideas() {
     formData.append('estado', filters.estado);
     formData.append('fechaInicio', filters.fechaInicio);
     formData.append('fechaFin', filters.fechaFin);
-    try {      
+    try {
       let value;
-      value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", {headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData}      
+      value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
       ).then(
         response => {
           const data = response.data;
@@ -267,7 +267,7 @@ export default function Listar_Ideas() {
             console.log('No se recibió respuesta del backend');
           } else {
             console.log('Error al realizar la solicitud:', error.message);
-          }          
+          }
         });
       setFilteredData(value);
     } catch (error) {

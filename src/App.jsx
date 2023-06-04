@@ -307,6 +307,7 @@ const router = createBrowserRouter(
           {/**--------------------**/}
           {/**Rutas de gestión de Administradores**/}
           <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
+          <Route path='Administrativos/Perfil' element={<LiderAdministrativoVer></LiderAdministrativoVer>} />
           {/**--------------------**/}
         </Route>
         <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
