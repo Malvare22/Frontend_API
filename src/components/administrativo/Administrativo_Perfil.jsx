@@ -13,7 +13,7 @@ export default function AdministrativoPerfil() {
 
 const VistaGeneral = () => {
 
-    const usuario = JSON.parse(localStorage.getItem('My_Info'))
+    const usuario = JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))
 
     return (
         <div className='flex-grow-1'>
@@ -86,7 +86,7 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo == '0' ? "Masculino" : "Femenino"}
+                        {props.usuario.sexo == 'M' ? "Masculino" : "Femenino"}
                     </div>
                 </div>
                 <div className='row'>

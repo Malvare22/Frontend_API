@@ -2,26 +2,13 @@
 import styled from 'styled-components';
 import image from './../../assets/images/Users/01.png'
 import { Link } from 'react-router-dom';
+import { toLiderFormatStudentsFromImport } from '../../context/functions_general';
 export default function PerfilEstudiante() {
     return (<VistaGeneral></VistaGeneral>);
 }
 
-const usuario = {
-    id: "1",
-    correo: "example@student.com",
-    contrasenia: "123",
-    apellidos: "Ramirez",
-    nombres: "Jorge",
-    curso: "Séptimo",
-    sexo: "0",
-    fecha_nacimiento: '2001-04-20',
-    nombre_acudiente: "Luis Sanchez",
-    telefono_acudiente: "305484564",
-    foto: "./images/01.png",
-    tipo_usuario: "estudiante",
-    estado: "1"
-};
-
+//const usuario = toLiderFormatStudentsFromImport([JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))])[0]
+const usuario = {}
 const Profile = () => {
     return (
         <Sdiv01>
@@ -29,8 +16,8 @@ const Profile = () => {
                 <img className='rounded-circle' src={image}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
-                        <p className='text-white'>{usuario.nombres}</p>
-                        <p className='text-white'>{usuario.apellidos}</p>
+                        <p className='text-white'>{usuario.nombre}</p>
+                        <p className='text-white'>{usuario.apellido}</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +44,7 @@ const Information = () => {
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                       {usuario.nombres}
+                       {usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -65,7 +52,7 @@ const Information = () => {
                         Apellido:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.apellidos}
+                        {usuario.apellido}
                     </div>
                 </div>
                 <div className='row'>
@@ -89,7 +76,7 @@ const Information = () => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {usuario.sexo=='0'? "Masculino":"Femenino"}
+                        {usuario.sexo}
                     </div>
                 </div>
                 <div className='row'>
@@ -113,7 +100,7 @@ const Information = () => {
                         Teléfono del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {usuario.telefono_acudiente}
+                        {usuario.telefono}
                     </div>
                 </div>
             </div>
