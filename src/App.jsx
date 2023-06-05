@@ -89,6 +89,9 @@ import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './
 import { ListarDocentes, MiPerfilDocente, GestionarDocente } from './context/functions_app';
 import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 
+//Mi primer componente uwu
+import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
+
 const obtenerInformacionCompletaAlumno = async () => {
   // // try {
   // let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
@@ -301,6 +304,10 @@ const router = createBrowserRouter(
             
             {/**Rutas de gestión de Administradores**/}
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
+            {/**--------------------**/}
+
+            {/**Rutas de gestión evaluacion de competencias emprendedoras**/}
+            <Route path='Prueba/Preguntas' element={<LiderPreguntasListar></LiderPreguntasListar>}/>
             {/**--------------------**/}
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
