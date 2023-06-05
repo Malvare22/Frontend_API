@@ -36,15 +36,13 @@ const Formulario = () => {
       setError(null);
       var formData = new FormData();
       formData.append('titulo', titulo);
-      formData.append('integrantesIdea', JSON.stringify(integrantesIdea));
-      formData.append('areaEnfoque', areaEnfoque);
-      formData.append('formatoIdea', formatoIdea);
+      formData.append('integrantes', integrantesIdea);
+      formData.append('area', areaEnfoque);
+      formData.append('documento', formatoIdea);
 
       console.log(formatoIdea)
 
-      //Prueba
-
-      let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
+      let ruta = "http://localhost:8080/ideaNegocio";
       let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           console.log("hecho")
@@ -146,7 +144,7 @@ const Formulario = () => {
                           required
                         >
                           <option value="">Área de enfoque</option>
-                          <option value="minera">Minera</option>
+                          <option value="agricola">Agricola</option>
                           <option value="agropecuaria">Agropecuaria</option>
                           <option value="comercial">Comercial</option>
                           <option value="servicios">Servicios</option>
