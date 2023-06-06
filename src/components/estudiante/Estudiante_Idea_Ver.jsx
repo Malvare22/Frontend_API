@@ -383,17 +383,9 @@ const Observaciones = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-        
-
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-
-        //let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-        //value = await axios.get(URL, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;
@@ -420,20 +412,11 @@ const Observaciones = (props) => {
             var formData = new FormData();
             formData.append('titulo', datos1 && datos1.titulo);
             formData.append('documento', selectedFile);
-
             console.log(datos1 && datos1.titulo)
             console.log(selectedFile)
-
-
             //let ruta = "http://144.22.37.238:8080/ideaNegocio/agregarDocumento";
             let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
-            
-
              let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
-
-           // let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
-            // let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
-
                  .then((response) => {
                      console.log("hecho")
                      window.location.reload();
@@ -552,17 +535,9 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-
-
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
         let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
-        
-
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-
-       // let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
-      //  value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;

@@ -8,7 +8,9 @@ export default function Historial(props) {
 
     const definir_Estado = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+        let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
+        value = await axios.get(URLs,{headers: { "X-Softue-JWT":localStorage.getItem("token_access")}}
+            ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -19,13 +21,13 @@ export default function Historial(props) {
     };
     useEffect(() => {
         definir_Estado();
-
     }, []);
+
 
     return (
         <div className="container">
             <div className="row">
-                {datos.map((v, i) => {
+                {datos && datos.map((v, i) => {
                     let aprov = 0;
                     let recha = 0;
                     let gris = 0;
@@ -50,9 +52,8 @@ export default function Historial(props) {
                         color = "#B4B4B4";
                         estado = "NA";
                     }
-
                     return (<div key={i}>
-                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones key={i} nombre={props.nombre} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}
