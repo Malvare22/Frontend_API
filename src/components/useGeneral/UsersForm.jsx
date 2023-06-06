@@ -677,8 +677,6 @@ export const FormAdministrativo = ({ user, type })=>{
 
     const navigate = useNavigate()
 
-    const location = useLocation()
-
     if(type=='registrar'){
         user = {
             "correo": "",
@@ -799,7 +797,7 @@ export const FormAdministrativo = ({ user, type })=>{
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate('../Perfil')
+            navigate(-1)
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {

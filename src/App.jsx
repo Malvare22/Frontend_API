@@ -91,7 +91,6 @@ import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 import EstudianteEditarPerfil from './components/estudiante/Estudiante_Perfil_Editar';
 import LiderEstudianteRegistrar from './components/lider/Lider_Estudiante_Registrar';
 import { PerfilAdministrativo } from './components/useGeneral/Profiles';
-import AdminForm from './components/useGeneral/AdminForm';
 
 const obtenerInformacionCompletaAlumno = async () => {
   // // try {
@@ -229,8 +228,8 @@ const router = createBrowserRouter(
             {/**--------------------**/}
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-            <Route path='Perfil' element={<PerfilAdministrativo usuario={JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))} editable={true}></PerfilAdministrativo>} loader={MiPerfilAdministrativo}></Route>
-            <Route path='Perfil/Editar' element={<AdminForm site={'MY_PROFILE_INFO'} type={"editar"} loader={MiPerfilAdministrativo}></AdminForm>}></Route>
+            <Route path='Perfil' element={<PerfilAdministrativo></PerfilAdministrativo>} loader={MiPerfilAdministrativo}></Route>
+            <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar loader={MiPerfilAdministrativo}></AdministrativoPerfilEditar>}></Route>
             <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
             <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
             <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />
