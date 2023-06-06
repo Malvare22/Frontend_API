@@ -86,10 +86,12 @@ import AdministrativoPerfil from './components/administrativo/Administrativo_Per
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
 import { importAdmins, importDocents, importStudents } from './context/functions_general';
-import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante } from './context/functions_app';
+import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo } from './context/functions_app';
 import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 import EstudianteEditarPerfil from './components/estudiante/Estudiante_Perfil_Editar';
 import LiderEstudianteRegistrar from './components/lider/Lider_Estudiante_Registrar';
+import { PerfilAdministrativo } from './components/useGeneral/Profiles';
+import AdminForm from './components/useGeneral/AdminForm';
 
 const obtenerInformacionCompletaAlumno = async () => {
   // // try {
@@ -170,46 +172,6 @@ const MiPerfilLider = async () => {
   return true;
 }
 
-/**Obtener información propia del perfil de Administrativo**/
-const MiPerfilAdmin=async()=>{
-  let zelda = "http://localhost:8080/coordinador/" + (JSON.parse(localStorage.getItem('session'))).email;
-  const value = await axios.get(zelda, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    }
-  })
-
-  let temp_user = value.data
-
-  zelda = 'http://localhost:8080/coordinador/foto/'
-  let foto;
-  let archivo;
-  try{
-    foto = await axios.get(zelda + value.data.codigo, {
-      headers: {
-        "X-Softue-JWT": localStorage.getItem('token_access')
-      },
-      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-    }).then(response => {
-      const base64Image = btoa(
-        new Uint8Array(response.data)
-          .reduce((data, byte) => data + String.fromCharCode(byte), '')
-      );
-      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
-      return imageUrl;
-    });
-    
-    archivo = await fetch(foto).then(response => response.blob())
-  }
-  catch{
-    foto='';
-    archivo='';
-  }
-  localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { "archivo": archivo, "direccion": foto } }))
-  return true;
-}
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -267,8 +229,8 @@ const router = createBrowserRouter(
             {/**--------------------**/}
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-            <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>} loader={MiPerfilAdmin}></Route>
-            <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>}></Route>
+            <Route path='Perfil' element={<PerfilAdministrativo usuario={JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))} editable={true}></PerfilAdministrativo>} loader={MiPerfilAdministrativo}></Route>
+            <Route path='Perfil/Editar' element={<AdminForm site={'MY_PROFILE_INFO'} type={"editar"} loader={MiPerfilAdministrativo}></AdminForm>}></Route>
             <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
             <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
             <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />

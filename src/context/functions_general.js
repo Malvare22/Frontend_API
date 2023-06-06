@@ -84,8 +84,17 @@ export function contraseniaNoCumple(password){
 export function importAdmins(admins){
 
     return admins.map((elemento)=>{
-        elemento.sexo = setGenreToExport(elemento)
+        elemento.sexo = setGenreToImport(elemento)
         setDateAndYearsOld(elemento)
+        return elemento
+    })
+}
+
+export function exportAdmins(admins){
+
+    return admins.map((elemento)=>{
+        elemento.sexo = setGenreToExport(elemento)
+        elemento.tipoUsuario = 'administrativo'
         return elemento
     })
 }
