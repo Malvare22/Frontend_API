@@ -119,3 +119,21 @@ export function exportDocents(docentes){
     })
 
 }
+
+export function importLider(admins){
+
+    return admins.map((elemento)=>{
+        elemento.sexo = setGenreToImport(elemento)
+        setDateAndYearsOld(elemento)
+        return elemento
+    })
+}
+
+export function exportLider(admins){
+
+    return admins.map((elemento)=>{
+        elemento.sexo = setGenreToExport(elemento)
+        elemento.tipoUsuario = 'coordinador'
+        return elemento
+    })
+}

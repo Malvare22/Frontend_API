@@ -11,13 +11,13 @@ import axios from 'axios';
 import ImageContainer from '../useGeneral/ImagePreview';
 import WindowForPassword from '../useGeneral/ProfilesValidations';
 import ModalPassword from '../useGeneral/ModalConfirmation';
-import useForm, { FormDocente, FormLider, HeadEdit, HeadRegister } from '../useGeneral/UsersForm';
+import useForm, { FormAdministrativo, FormDocente, HeadEdit, HeadRegister } from '../useGeneral/UsersForm';
 
 
 
 
 //Componente general
-export default function AdministrativoLiderRegistrar() {
+export default function AdministrativoAdministrativoRegistrar() {
 
     return (
 
@@ -26,7 +26,7 @@ export default function AdministrativoLiderRegistrar() {
             <div className='' id='head'>
                 <HeadRegister></HeadRegister>
             </div>
-            <div className='' id="info"> <FormLider type={"registrar"}></FormLider></div>
+            <div className='' id="info"> <FormAdministrativo type={"registrar"}></FormAdministrativo></div>
         </div>
     </SContent>
 

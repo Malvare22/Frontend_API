@@ -1,5 +1,5 @@
 import axios from "axios";
-import { importAdmins, importDocents, importStudents } from "./functions_general";
+import { importAdmins, importDocents, importLider, importStudents } from "./functions_general";
 
 export const MiPerfilDocente=async()=>{
     let zelda = "http://localhost:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
@@ -196,4 +196,121 @@ export const MiPerfilAdministrativo=async()=>{
   }
   localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, foto: { "archivo": archivo, "direccion": foto } }))
   return true
+}
+
+export const GestionarAdministrativo=async()=>{
+  let zelda = "http://localhost:8080/administrativo/" + (localStorage.getItem('ADMINISTRATIVO_EMAIL'));
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
+
+  let temp_user = importAdmins([value.data])[0]
+  temp_user.contrasenia = '-'
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto='';
+  let archivo='';
+  try{
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+      return imageUrl;
+    });
+    archivo = await fetch(foto).then(response => response.blob())
+  }
+  catch{
+    foto='';
+    archivo='';
+  }
+  localStorage.setItem("ADMINISTRATIVO_INFORMATION", JSON.stringify({ ...temp_user, foto: { "archivo": archivo, "direccion": foto } }))
+  return true
+}
+
+export const MiPerfilLider = async () => {
+  const email=(JSON.parse(localStorage.getItem('session'))).email
+  let zelda = "http://localhost:8080/coordinador/" + email;
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
+
+  let temp_user = importLider([value.data])[0]
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto;
+  let archivo;
+  try{
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+  
+      return imageUrl;
+    });
+    const blob = await fetch(foto).then(response => response.blob());
+    archivo = new File([blob], "IMG.png", { type: "image/png" });
+  }
+  catch{
+      foto=''
+      archivo = ''
+  }
+  localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
+
+  return true;
+}
+
+export const GestionarLider = async () => {
+  const email=(localStorage.getItem('LIDER_EMAIL'))
+  let zelda = "http://localhost:8080/coordinador/" + email;
+  const value = await axios.get(zelda, {
+    headers: {
+      "X-Softue-JWT": localStorage.getItem('token_access')
+    }
+  })
+
+  let temp_user = importLider([value.data])[0]
+  zelda = 'http://localhost:8080/coordinador/foto/'
+  let foto;
+  let archivo;
+  try{
+    foto = await axios.get(zelda + value.data.codigo, {
+      headers: {
+        "X-Softue-JWT": localStorage.getItem('token_access')
+      },
+      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+    }).then(response => {
+      const base64Image = btoa(
+        new Uint8Array(response.data)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+  
+      return imageUrl;
+    });
+    const blob = await fetch(foto).then(response => response.blob());
+    archivo = new File([blob], "IMG.png", { type: "image/png" });
+  }
+  catch{
+      foto=''
+      archivo = ''
+  }
+  localStorage.setItem("LIDER_INFORMATION", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
+
+  return true;
 }

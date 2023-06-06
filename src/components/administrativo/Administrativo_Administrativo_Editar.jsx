@@ -9,10 +9,10 @@ import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { FormDocente, FormLider, HeadEdit } from '../useGeneral/UsersForm';
+import { FormAdministrativo, FormDocente, HeadEdit } from '../useGeneral/UsersForm';
 
 //Componente general
-export default function LiderPerfilEditar() {
+export default function AdministrativoAdministrativoEditar() {
 
     return (
 
@@ -21,7 +21,7 @@ export default function LiderPerfilEditar() {
                 <div className='' id='head'>
                     <HeadEdit></HeadEdit>
                 </div>
-                <div className='' id="info"> <FormLider user={JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))}></FormLider></div>
+                <div className='' id="info"> <FormAdministrativo user={JSON.parse(localStorage.getItem('ADMINISTRATIVO_INFORMATION'))}></FormAdministrativo></div>
             </div>
         </SContent>
 
