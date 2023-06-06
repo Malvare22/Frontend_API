@@ -42,7 +42,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Evaluador/VistaPlan');
+        navigate('/Docente/Evaluador/Planes/Vista');
     };
     return (
         <Sdiv>

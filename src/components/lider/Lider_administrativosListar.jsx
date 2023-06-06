@@ -5,8 +5,7 @@ import axios from "axios";
 
 // Componente de tabla
 const Table = ({ data }) => {
-    const [orderBy, setOrderBy] = useState({ column: 'Administrativo', ascending: true });
-
+    const [orderBy, setOrderBy] = useState({ column: 'NombreCompleto', ascending: true });
     const handleSort = (column) => {
         if (orderBy.column === column) {
             setOrderBy((prevState) => ({
@@ -14,26 +13,29 @@ const Table = ({ data }) => {
                 ascending: !prevState.ascending,
             }));
         } else {
-            setOrderBy({ column, ascending: true, });
+            setOrderBy({ column, ascending: true });
         }
-    };
+    };    
     const sortData = () => {
         const { column, ascending } = orderBy;
         return data.slice().sort((a, b) => {
             let comparison = 0;
-            if (column === 'Administrativo') {
-                comparison = a.administrativo.localeCompare(b.administrativo);
+            if (column === 'NombreCompleto') {
+                const nombreCompletoA = `${a && a.nombre} ${a && a.apellido}`;
+                const nombreCompletoB = `${b && b.nombre} ${b && b.apellido}`;
+                comparison = nombreCompletoA.localeCompare(nombreCompletoB);
             }
             if (!ascending) {
                 comparison *= -1;
             }
             return comparison;
         });
-    };
+    };    
     const sortedData = sortData();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('');
+    const toggleA = (correo) => {
+        localStorage.setItem('id_administrativo', correo);
+        navigate('/Lider/Administrativos/Perfil');
     };
     return (
         <Sdiv>
@@ -41,29 +43,29 @@ const Table = ({ data }) => {
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th className='text-center' style={{ cursor: "pointer" }} onClick={() => handleSort('Administrativo')} scope="col-auto">Nombre completo</th>
+                            <th className='text-center' style={{ cursor: "pointer" }} onClick={() => handleSort('NombreCompleto')} scope="col-auto">Nombre completo</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {sortedData.map((d) => (
-                            <tr key={d.id}>
-                                <td className='text-center align-middle col-auto'>{d.administrativo}</td>
+                            <tr key={d && d.codigo}>
+                                <td className='text-center align-middle col-auto'>{d && d.nombre} {d && d.apellido}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>toggleA(d && d.correo)} value={d && d.correo} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
-                                        </button>                                    
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-            </div>            
+            </div>
         </Sdiv>
     );
 };
@@ -95,8 +97,8 @@ max-height: 66.4vh;
 export default function Listar_Administrativos() {
     const [filteredData, setFilteredData] = useState([]);
     const getAdministrativos = async () => {
-        let value = null;
-        value = await axios.get('../administrativos.json').then(
+        const value = await axios.get("http://localhost:8080/coordinador/listar/administrativo", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -115,7 +117,7 @@ export default function Listar_Administrativos() {
                     <h1 className="fst-italic fw-bold fs-1 text-black">Administrativos</h1>
                     <div className="container">
                         <br></br>
-                        <Table data={filteredData}></Table>                                            
+                        <Table data={filteredData}></Table>
                     </div>
                 </div>
             </div>
