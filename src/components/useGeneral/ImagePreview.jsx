@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import styled from "styled-components"
+import default_profile from './../../assets/images/Users/default_profile.png'
 
 //Componente de carga de imagen
 export default function ImageContainer(props){
@@ -56,6 +57,18 @@ export default function ImageContainer(props){
                 </button>
 
 
+            </div>
+        </SImageContainer>
+    );
+}
+
+export function ImagePreviewNoEditable(props){
+    return (
+        <SImageContainer>
+            <div className='col-12 col-sm-5 d-flex align-content-center align-items-center justify-content-center'>
+                <div>
+                    <img className='border border-2 border-dark rounded-circle img-fluid' src={`${(props.form).foto.direccion == '' ? default_profile : (props.form).foto.direccion}`}></img>
+                </div>
             </div>
         </SImageContainer>
     );

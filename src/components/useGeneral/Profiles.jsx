@@ -28,6 +28,28 @@ export function PerfilDocente({ usuario, editable }) {
     );
 }
 
+export function PerfilEstudiante({ usuario, editable }) {
+
+    return (
+        <div className='flex-grow-1'>
+            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
+            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+                <div className='d-flex justify-content-center'>
+                    <div className='w-75 position-relative'>
+                        <EstudianteInformacion usuario={usuario}></EstudianteInformacion>
+                        <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
+                    </div>
+                </div>
+            </div>
+            {
+                editable == true && <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                    <Button></Button>
+                </div>
+            }
+        </div>
+    );
+}
+
 const Profile = (props) => {
     return (
         <Sdiv01>
@@ -129,6 +151,82 @@ const DocenteInformacion = (props) => {
     );
 }
 
+const EstudianteInformacion = (props) => {
+    return (
+        <Sdiv02>
+            <div>
+                <h3 className='fw-bold'>Información</h3>
+                <hr className='border-3 border-black m-0'></hr>
+            </div>
+            <div id='principal'>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Nombre:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                       {props.usuario.nombre}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Apellido:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.apellido}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Curso:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.curso}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Edad:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.edad}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Sexo:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.sexo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Correo eléctronico:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                    {props.usuario.correo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Nombre del acudiente:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                    {props.usuario.nombre_acudiente}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Teléfono del acudiente:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.telefono}
+                    </div>
+                </div>
+            </div>
+        </Sdiv02>
+    );
+}
 
 const Button = () => {
     return (
