@@ -41,7 +41,7 @@ const Table = ({ data }) => {
     const navigate = useNavigate();
     const toggleA = (titulo) => {
         localStorage.setItem('titulo', titulo);
-        navigate('../Evaluador/Ideas/Vista');
+        navigate('../Tutor/Ideas/Vista');
     };
     const descargarArchivo = (nombre) => {
         let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + nombre;
@@ -187,11 +187,11 @@ const Filters = ({ onFilter }) => {
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Estado</option>
-                <option defaultValue="aprobada">Aprobada</option>
-                <option defaultValue="desaprobada">Desaprobada</option>
-                <option defaultValue="vencida">Vencida</option>
-                <option defaultValue="formulacion">Formulación</option>
-                <option defaultValue="pendiente">Pendiente</option>
+                <option value="aprobada">Aprobada</option>
+                <option value="rechazada">Desaprobada</option>
+                <option value="vencida">Vencida</option>
+                <option value="formulado">Formulación</option>
+                <option value="pendiente">Pendiente</option>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
@@ -288,7 +288,7 @@ export default function Listar_Ideas() {
                         <br></br>
                         <div className='row'>
                             <div className="col">
-                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
                                             Formato actual
@@ -300,7 +300,7 @@ export default function Listar_Ideas() {
                                             </svg>
                                         </div>
                                     </div>
-                                </button>
+                                </button> */}
                             </div>
                         </div>
 

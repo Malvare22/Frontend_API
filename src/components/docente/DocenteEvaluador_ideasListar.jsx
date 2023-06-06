@@ -22,7 +22,7 @@ const Table = ({ data }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return data && data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Título') {
                 comparison = a.titulo.localeCompare(b.titulo);
@@ -59,7 +59,7 @@ const Table = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
+                        {sortedData && sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
@@ -188,9 +188,12 @@ const Filters = ({ onFilter }) => {
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
-    const getIdeas = async () => {
-        let value = null;
-        value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const getIdeas = async () => {        
+        let formData = new FormData();
+        var localData = localStorage.getItem("session");
+        var parsedData = JSON.parse(localData);
+        formData.append('correoDocente', parsedData.email);
+        let value = await axios.get("http://localhost:8080/ideaNegocio/DocentesEvaluadores", formData,{ headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -287,7 +290,7 @@ function Getestudiantes() {
         getEstudiantes();
     }, []);
     return (
-        datos2.map((d) => {
+        datos2 && datos2.map((d) => {
             return (
                 <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )

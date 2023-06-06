@@ -65,7 +65,7 @@ const Table = ({ data }) => {
     localStorage.setItem('titulo', titulo);
     navigate('/Lider/Ideas/Vista');
   };
-  const descargarArchivo = (nombre) => {    
+  const descargarArchivo = (nombre) => {
     let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + nombre;
     axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
@@ -231,11 +231,11 @@ const Filters = ({ onFilter }) => {
     <div className="col-auto d-flex align-items-center mb-1">
       <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
         <option value="">Estado</option>
-        <option defaultValue="aprobada">Aprobada</option>
-        <option defaultValue="desaprobada">Desaprobada</option>
-        <option defaultValue="vencida">Vencida</option>
-        <option defaultValue="formulacion">Formulación</option>
-        <option defaultValue="pendiente">Pendiente</option>
+        <option value="aprobada">Aprobada</option>
+        <option value="rechazada">Desaprobada</option>
+        <option value="vencida">Vencida</option>
+        <option value="formulado">Formulación</option>
+        <option value="pendiente">Pendiente</option>
       </select>
     </div>
     <div className="col-auto d-flex align-items-center mb-1">
@@ -281,9 +281,12 @@ export default function Listar_Ideas() {
       formData.append('docenteEmail', filters.tutor);
     }
     if (filters.estado !== '') {
+      console.log(filters.estado)
       formData.append('estado', filters.estado);
     }
     if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
+      console.log(filters.fechaInicio);
+      console.log(filters.fechaFin);
       formData.append('fechaInicio', filters.fechaInicio);
       formData.append('fechaFin', filters.fechaFin);
     }
@@ -326,7 +329,7 @@ export default function Listar_Ideas() {
             <Table data={filteredData}></Table>
             <br></br>
             <div className="d-flex justify-content-end">
-              <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+              {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                 <div className="row">
                   <div className="col-auto">
                     Generar informe
@@ -338,7 +341,7 @@ export default function Listar_Ideas() {
                     </svg>
                   </div>
                 </div>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
