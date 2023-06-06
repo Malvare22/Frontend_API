@@ -117,7 +117,7 @@ const Information = () => {
         "fecha_nacimiento": "",
         "nombre_acudiente": "",
         "telefono": "",
-        "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" },
+        "foto": { "archivo": "", "direccion": "" },
         "tipo_usuario": "",
     };
 
@@ -422,7 +422,7 @@ const ImageContainer = (props) => {
         if (fileInput.current.files[0]) {
             const reader = new FileReader()
             reader.onload = () => {
-                props.setForm({ ...props.form, ["foto"]: { "nombre": fileInput.current.files[0].name, "archivo": fileInput.current.files[0], "direccion": reader.result } })
+                props.setForm({ ...props.form, ["foto"]: { "archivo": fileInput.current.files[0], "direccion": reader.result } })
             }
             reader.readAsDataURL(fileInput.current.files[0])
 
@@ -451,7 +451,7 @@ const ImageContainer = (props) => {
                 <input type='file' accept=".png, .jpg" className='d-none' onChange={handleInput} ref={fileInput}></input>
                 <button className='btn text-white rounded-3' onClick={handleButton} style={{ backgroundColor: "#1C3B57" }}>
                     <div className='d-flex justify-content-between text-center align-content-center align-items-center'>
-                        <h6>{props.form.foto.nombre}</h6>
+                        <h6>Seleccionar archivo</h6>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
                         </svg>

@@ -35,8 +35,8 @@ const InfoGeneral = (props) => {
         // value = await  axios.get('../../../ideasdeveritas.json' 
         //  headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-            //   headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
-            //value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+      //   headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        //value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
         ).then(
             response => {
                 const data = response.data;
@@ -56,33 +56,33 @@ const InfoGeneral = (props) => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-
-        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        
+        axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
-
+            
                 // Obtener la extensión del nombre de archivo del encabezado Content-Type
                 const contentType = response.headers['content-type'];
                 const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
-
+            
                 link.href = url;
                 link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
                 document.body.appendChild(link);
                 link.click();
-
+            
                 // Limpiar el enlace temporal después de la descarga
                 link.parentNode.removeChild(link);
             }).catch(error => {
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
-                } else if (error.request) {
+                  } else if (error.request) {
                     console.log('No se recibió respuesta del backend');
-                } else {
+                  } else {
                     console.log('Error al realizar la solicitud:', error.message);
-                }
+                  }
             });
     };
 
@@ -117,7 +117,7 @@ const InfoGeneral = (props) => {
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos1 && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
+                                                    {datos1 && datos1.estudiantesIntegrantesInfo[1].map((l,i) => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })}
@@ -160,7 +160,7 @@ const InfoGeneral = (props) => {
                                                 </ul>
                                             </div>
                                             <div className="row">
-                                                <div className="col-auto"><button onClick={() => { getArchi() }} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                            <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -379,8 +379,8 @@ function Tabla(props) {
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
         let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-            // let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
-            // value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+       // let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
+       // value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
 
         ).then(
             response => {
@@ -408,7 +408,7 @@ function Tabla(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {datos && datos.map((d) => (
+                    {datos && datos.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.docenteInfo[1]}</td>
                                 <td className='text-center align-middle'>{d.fecha[2]}/{d.fecha[1]}/{d.fecha[0]}</td>

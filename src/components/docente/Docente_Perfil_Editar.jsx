@@ -11,30 +11,28 @@ import axios from 'axios';
 import ImageContainer from '../useGeneral/ImagePreview';
 import WindowForPassword from '../useGeneral/ProfilesValidations';
 import ModalPassword from '../useGeneral/ModalConfirmation';
-import useForm, { FormDocente, HeadEdit, HeadRegister } from '../useGeneral/UsersForm';
-
-
+import useForm, { FormDocente, HeadEdit } from '../useGeneral/UsersForm';
 
 
 //Componente general
-export default function LiderDocenteRegistrar() {
+export default function DocentePerfilEditar() {
 
     return (
 
         <SContent>
-        <div className='d-flex justify-content-center' id='d_head'>
-            <div className='' id='head'>
-                <HeadRegister></HeadRegister>
+            <div className='d-flex justify-content-center' id='d_head'>
+                <div className='' id='head'>
+                    <HeadEdit></HeadEdit>
+                </div>
+                <div className='' id="info"> <FormDocente user={JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))}></FormDocente></div>
             </div>
-            <div className='' id="info"> <FormDocente type={"registrar"}></FormDocente></div>
-        </div>
-    </SContent>
+        </SContent>
 
     );
 };
 
-
-
+//Listado de Cursos para combobox (útil para carga y validación de dato curso)
+const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
 const SContent = styled.div`
     #d_head{
@@ -95,17 +93,3 @@ const SContent = styled.div`
     }
 `;
 
-const SInfo = styled.div`
-
-.row{
-    margin: 3%;
-    display: flex;
-    align-items: center;
-};
-@media screen and (max-width: 576px) {
-    font-size: small;
-    .row{
-        margin: 5%;
-    }
-}
-`;

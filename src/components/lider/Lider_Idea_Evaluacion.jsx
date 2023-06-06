@@ -30,8 +30,6 @@ const Evaluaciones = (props) => {
     const eliminar = (a) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
-
-
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -69,17 +67,9 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-
-
         //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
         let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
-        
-
         value = await axios.get(URLs, { headers: { "X-Softue-JWT":localStorage.getItem("token_access")} }
-
-       // let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
-        //value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;
@@ -100,16 +90,9 @@ const Evaluaciones = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
         value = await  axios.get(URL,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
-        //let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-       // value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-
-
-
         ).then(
             response => {
                 const data = response.data;
@@ -129,16 +112,74 @@ const Evaluaciones = (props) => {
 
         //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
         let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
-        
-
-        value = await axios.delete(URLd, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, body : {    "codigoDocente" : a,
-        "evaluacionIdeaId" : b} }
+        const response = await axios.delete(URLd, {
+            data: { codigoDocente: a, evaluacionIdeaId: b },
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
+          }
         ).then(
             console.log("hecho")
             ).catch(error => {
-                console.error(error);
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
                 setAdverten()
             });
+    };
+
+       {/* llistar areas de conocimiento*/ }
+
+
+       const [areas, setAreas] = useState([]);
+       const getAreas = async () => {
+           try {
+               const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+                   headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+               });
+               const data = response.data;
+               setAreas(data);
+               console.log(data)
+           } catch (error) {
+               console.error("Historial", error);
+           }
+       };
+       useEffect(() => {
+           getAreas();
+       }, []);
+
+       const [correoDocente, setCorreo] = useState(String);
+       const setCorreoDocente = (a) => {
+           setCorreo(a);
+       }
+
+       const agregarTutor = async () => {
+
+        if (correoDocente) {
+            try {
+                const response = await axios.post('http://localhost:8080/ideaNegocio/calificacion/'+props.nombre+'/'+correoDocente, {}, {
+                    headers: {
+                        "X-Softue-JWT": localStorage.getItem("token_access")
+                    }
+                });
+                window.location.reload();
+                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            } catch (error) {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            }
+
+        }
+
     };
     
 
@@ -216,7 +257,7 @@ const Evaluaciones = (props) => {
 
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
-                                                        if (v.estado === 'aprobado') {
+                                                        if (v.estado === 'aprobada') {
                                                             colorin = "#2B9877"
                                                         } else if (v.estado === 'rechazada') {
                                                             colorin = "#DC4B4B"
@@ -267,7 +308,7 @@ const Evaluaciones = (props) => {
                                                 })}
 
                                                 {
-                                                    props.estado == "NA" ? docentes ? "" : <div className="row d-flex justify-content-end">
+                                                    props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
                                                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
@@ -325,35 +366,25 @@ const Evaluaciones = (props) => {
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l, i) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.docente + i} value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
+                            {profesores && profesores.map((l) => {
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
                             })}
-
                         </Input>
                     </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
+                        <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                    </ModalFooter>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
             </Modal>
 
             <Modal centered isOpen={viewEliminar}>

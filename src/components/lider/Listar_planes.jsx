@@ -61,7 +61,7 @@ const Table = ({ data }) => {
     const { state, toggleAlert, valor } = useAlert();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Lider/VistaPlan');
+        navigate('/Lider/Planes/Vista');
     };
     return (
         <Sdiv>

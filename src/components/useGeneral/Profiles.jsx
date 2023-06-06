@@ -1,20 +1,12 @@
 
 import styled from 'styled-components';
-import image from './../../assets/images/Users/01.png'
-import { Link, json, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import default_profile from './../../assets/images/Users/default_profile.png'
+import { Link, useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 
-export default function LiderVerPerfil() {
-
-    return (<VistaGeneral></VistaGeneral>);
-}
-
-const VistaGeneral = () => {
-
-    const usuario = JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))
-    console.log(usuario)
+export function PerfilDocente({ usuario, editable }) {
 
     return (
         <div className='flex-grow-1'>
@@ -22,14 +14,16 @@ const VistaGeneral = () => {
             <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
                 <div className='d-flex justify-content-center'>
                     <div className='w-75 position-relative'>
-                        <Information usuario={usuario}></Information>
+                        <DocenteInformacion usuario={usuario}></DocenteInformacion>
                         <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
                     </div>
                 </div>
             </div>
-            <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
-                <Button></Button>
-            </div>
+            {
+                editable == true && <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                    <Button></Button>
+                </div>
+            }
         </div>
     );
 }
@@ -38,7 +32,7 @@ const Profile = (props) => {
     return (
         <Sdiv01>
             <div id='principal' className=''>
-                <img className='rounded-circle' src={props.usuario.foto.direccion}></img>
+                <img className='rounded-circle' style={{ height: '11vh', width: '11vh' }} src={`${props.usuario.foto.direccion == '' ? default_profile : props.usuario.foto.direccion}`}></img>
                 <div className='d-flex align-content-center align-items-center'>
                     <div>
                         <p className='text-white'>{props.usuario.nombre}</p>
@@ -50,14 +44,7 @@ const Profile = (props) => {
     );
 }
 
-const Information = (props) => {
-    const edad=()=>{
-        const date = props.usuario.fecha_nacimiento[0]+"-"+props.usuario.fecha_nacimiento[1]+"-"+props.usuario.fecha_nacimiento[2];
-        const today = new Date()
-        const birth = Date.parse(date);
-        const ans = new Date(today-birth)
-        return ans.getUTCFullYear()-1970
-    }
+const DocenteInformacion = (props) => {
     return (
         <Sdiv02>
             <div>
@@ -81,13 +68,20 @@ const Information = (props) => {
                         {props.usuario.apellido}
                     </div>
                 </div>
-
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Documento de identificación:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.cedula}
+                    </div>
+                </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Edad:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {edad()}
+                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>
@@ -95,10 +89,25 @@ const Information = (props) => {
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo=='M'? "Masculino":"Femenino"}
+                        {props.usuario.sexo}
                     </div>
                 </div>
-            
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Título acádemico:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.titulo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Área:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.area}
+                    </div>
+                </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Correo eléctronico:
@@ -123,9 +132,9 @@ const Information = (props) => {
 
 const Button = () => {
     return (
-        <Sdiv04><Link to={"/Lider/Perfil/Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
+        <Sdiv04><Link to={"Editar"}><button className='border rounded-4' style={{ backgroundColor: "#1C3B57" }}>
             <h5 className='fw-bold text-white text-center'>
-                Editar Información del Líder
+                Editar Información de Usuario
             </h5>
         </button></Link></Sdiv04>
     );

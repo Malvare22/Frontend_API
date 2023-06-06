@@ -12,7 +12,7 @@ export default function TemplateLider({ children }) {
     const Token = localStorage.getItem('token_access')
     const Usuario = JSON.parse(localStorage.getItem('session'))
 
-    if(JSON.parse(localStorage.getItem('session')).rol == 'coordinador')
+    //if(JSON.parse(localStorage.getItem('session')).rol == 'coordinador')
     return (
         <>
             <div className="container-fluid row m-0 p-0">
@@ -29,7 +29,7 @@ export default function TemplateLider({ children }) {
         </>
     );
 
-    else return(<Error404></Error404>)
+    //else return(<Error404></Error404>)
 
 }
 

@@ -28,14 +28,10 @@ export default function Estudiante_ListarPlanes() {
 
     }, []);
 
-    const setInfo=(plan_id)=>{
-        let plan=null;
-        datos.map((v)=>{
-            if(v.id==plan_id)
-                plan=JSON.stringify(v)
-        })
-        localStorage.setItem('plan_info', plan)
-    }
+    const setInfo = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('/Estudiante/Planes/Vista');
+      };
 
     return (
         <>
@@ -68,7 +64,7 @@ export default function Estudiante_ListarPlanes() {
                                         </div>
                                     </div>
                                     <div className="row d-flex align-items-center">
-                                        {datos.map((v, i) => {
+                                        {datos && datos.map((v, i) => {
 
                                             let color = "";
                                             if (v.estado === "a") {
@@ -80,7 +76,7 @@ export default function Estudiante_ListarPlanes() {
                                             }
 
                                             return (<div key={i} className="col-12 col-lg-4 col-sm-6">
-                                                <CardEs key={v.titulo} setInfo={setInfo} id={v.id} titulo={v.titulo} color={color}></CardEs>
+                                                <CardEs key={v.titulo} setInfo={()=>{setInfo(v.titulo)}} id={v.id} titulo={v.titulo} color={color}></CardEs>
                                             </div>
                                             );
                                         })}
