@@ -28,6 +28,12 @@ const Formulario = () => {
   };
 
   const [error, setError] = useState(null);
+  
+  const getEmailsFromIntegrantes = () => {
+    const emails = integrantesIdea.map(estudiante => estudiante.email);
+    return emails;
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,13 +42,14 @@ const Formulario = () => {
       setError(null);
       var formData = new FormData();
       formData.append('titulo', titulo);
-      formData.append('integrantes', integrantesIdea);
+      formData.append('integrantes',getEmailsFromIntegrantes());
+      console.log(getEmailsFromIntegrantes)
       formData.append('area', areaEnfoque);
       formData.append('documento', formatoIdea);
+      console.log("timbers")
+      console.log(formData)
 
-      console.log(formatoIdea)
-
-      let ruta = "http://localhost:8080/ideaNegocio";
+      let ruta = "http://localhost:8080/ideaNegocio/";
       let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           console.log("hecho")
