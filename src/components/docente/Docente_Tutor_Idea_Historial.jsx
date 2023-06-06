@@ -32,7 +32,7 @@ export default function Historial(props) {
                     let recha = 0;
                     let gris = 0;
                     datos[i].calificacionesInfo.map((l) => {
-                        if (l.estado === "aprobado") {
+                        if (l.estado === "aprobada") {
                             aprov = aprov + 1;
                         } else if (l.estado === "rechazada") {
                             recha = recha + 1;
@@ -44,7 +44,7 @@ export default function Historial(props) {
                     let estado = "";
                     if (aprov >= 2) {
                         color = "#75C47D";
-                        estado = "Aprobado";
+                        estado = "Aprobada";
                     } else if (recha >= 2) {
                         color = "#DC4B4B";
                         estado = "Reprobado";

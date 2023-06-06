@@ -298,6 +298,8 @@ const InfoGeneral = (props) => {
     };
 
 
+
+
     return (
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
             {datos1 &&
@@ -644,7 +646,6 @@ const Observaciones = (props) => {
     };
 
     const eliminarDocenteApoyo = async () => {
-        console.log("sasd", comentario);
         if (comentario) {
             try {
                 const formData1 = new FormData();
@@ -676,13 +677,22 @@ const Observaciones = (props) => {
 
     const enviarEvaluacion = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre, {
-                // Aquí puedes incluir los datos que deseas enviar en la solicitud POST
+            const response = await axios.post('http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre,{}, { 
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem("token_access")
+                }
             });
-
             console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            window.location.reload();
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+              } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+              } else {
+                console.log('Error al realizar la solicitud:', error.message);
+              }
         }
     };
 

@@ -134,7 +134,7 @@ const Evaluaciones = (props) => {
 
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
-                                                        if (v.estado === 'aprobado') {
+                                                        if (v.estado === 'aprobada') {
                                                             colorin = "#2B9877"
                                                         } else if (v.estado === 'rechazada') {
                                                             colorin = "#DC4B4B"

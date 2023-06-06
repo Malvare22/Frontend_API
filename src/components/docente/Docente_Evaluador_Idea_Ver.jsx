@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
@@ -8,23 +8,13 @@ import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones ></Observaciones>
-        <div className="container-fluid" style={{ width: "95%" }}>
-            <div className="row">
-                <div className="col-12">
-                    <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
-                        <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <Historial></Historial>
-    </div>
+    <InfoGeneral nombre={localStorage.getItem("titulo")} codigo={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).codigo}></InfoGeneral>
+    <Observaciones nombre={localStorage.getItem("titulo")} codigo={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).codigo}></Observaciones>
+</div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
@@ -72,57 +62,56 @@ const InfoGeneral = () => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        const URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        try {
+            const response = await axios.get(URLs, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
             });
-        setDatos1(value)
-
+            const data = response.data;
+            setDatos1(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getDatos1();
     }, []);
 
-
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
+    const getArchi = async () => {
         let value = null;
-        value = await axios.get('../../../docentesdeveritas.json').then(
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
+        ).then(
             response => {
-                const data = response.data;
-                return data;
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+            
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+            
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+            
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
             }).catch(error => {
-                console.error(error);
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
             });
-        setProfesores(value)
     };
-    useEffect(() => {
-        getProfesores();
-    }, []);
 
-    const [estudiantes, setEstudiantes] = useState([]);
-    const getEstudiantes = async () => {
-        let value = null;
-        value = await axios.get('../../../estudiantesdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setEstudiantes(value)
-    };
-    useEffect(() => {
-        getEstudiantes();
-    }, []);
 
-    let set = new Set();
-    let set1 = new Set();
-    let set2 = new Set();
+
     return (
 
 
@@ -192,7 +181,10 @@ const InfoGeneral = () => {
                                                     })}
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 m-2 p-2 px-3">Descargar formato completo</button></div> 
+                                            <div className="row">
+                                            <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5 mt-4 m-2 p-2 px-3">Descargar formato completo</button></div> 
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -217,133 +209,6 @@ const InfoGeneral = () => {
                 </div>
 
             }
-
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
-                        <Input type="text" name="name" id="exampleSelect"></Input>
-                        <Label id="texto">Escoge el area de tu proyecto</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" id="exampleSelect">
-                            {profesores && profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-
-
-            <Modal centered isOpen={viewAlertEliminar}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este estudiante {Agregar}?</Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal centered isOpen={viewAlertEliminarApoyo}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente de apoyo {Agregar}? </Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-
-            <Modal centered isOpen={viewAlertDocente}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores && profesores.map((l, i) => {
-                                if (set1.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set1.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores && profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                    <ModalFooter>
-                        <Button color="danger">Asignar</Button>
-                        <Button color="primary" onClick={toggleAlertDocente}>Cancelar</Button>
-                    </ModalFooter>
-                </ModalBody>
-            </Modal>
-
-
-            <Modal centered isOpen={viewAlertEstudiante}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge el curso del estudiante</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {estudiantes && estudiantes.map((l, i) => {
-                                if (set2.has(l.curso)) {
-                                    return ("");
-                                } else {
-                                    set2.add(l.curso);
-                                    return (<option key={i} value={l.curso}>{l.curso}</option>);
-                                }
-                            })}
-                        </Input>
-                        <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {estudiantes && estudiantes.map((l) => {
-                                if (l.curso === Area) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-
-                    <ModalFooter>
-                        <Button color="danger">Asignar</Button>
-                        <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
-                    </ModalFooter>
-                </ModalBody>
-            </Modal>
-
-
-
         </div>
     )
 };
@@ -456,10 +321,11 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
+
 
     return (
-        <main className="container-fluid" style={{ width: "95%" }}>
+        <main className="container-fluid mb-5" style={{ width: "95%" }}>
             <div className="row">
                 <Sobreponer>
                     <div className="col-12">
@@ -480,7 +346,7 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla nombre={props.nombre}></Tabla>
                                 </div>
                             </div>
                             <div className="col-12">
@@ -537,7 +403,59 @@ const Sdiv = styled.div`
                 }}
           `;
 
-function Tabla() {
+function Tabla(props) {
+
+        {/*Subir evaluacion*/}
+
+        const [error, setError] = useState(null);
+
+        const [Observacion, setObservacion] = useState(" ");
+        const setObservacion_A = (a) => {
+            setObservacion(a);
+        }
+    
+        const [Nota, setNota] = useState("aprobada");
+        const setNota_A = (a) => {
+            setNota(a);
+        }
+    
+        async function enviarDatos() {
+            try {
+                setError(null);
+              const url = 'http://localhost:8080/ideaNegocio/calificacion';
+              const formData = new FormData();
+              
+              formData.append('titulo', props.nombre);
+              formData.append('observacion', Observacion );
+              formData.append('nota', Nota); // Aquí debes proporcionar el archivo de imagen
+              
+            console.log(props.nombre)
+            console.log(Observacion)
+            console.log(Nota)
+
+              console.log(formData)
+              const response = await axios.patch(url, formData, {
+                headers : { "X-Softue-JWT": localStorage.getItem("token_access") }
+                
+              });
+              
+              console.log(response.data);
+            } catch (error) {
+                setError("Ya evaluaste esta idea de negocio")
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
+            }
+          }
+
+
+
+
 
     return (
         <Sdiv>
@@ -547,9 +465,9 @@ function Tabla() {
                     <div className="col-12 col-sm-6 align-content-center justify-content-center ">
                         <FormGroup>
                             <Label for="estado">Asigna una calificacion al proyecto</Label>
-                            <Input type="select" name="estado" id="estado">
-                                <option value="Aprobado">Aprobado</option>
-                                <option value="Rechazado">Rechazado</option>
+                            <Input onChange={(e)=>{setNota_A(e.target.value)}} type="select" name="estado" id="estado">
+                                <option value="aprobada">Aprobado</option>
+                                <option value="rechazada">Rechazado</option>
                             </Input>
                         </FormGroup>
                     </div>
@@ -557,11 +475,12 @@ function Tabla() {
                     <div className="col-12 col-sm-6 align-content-center justify-content-center ">
                         <FormGroup>
                             <Label for="Observacion">Observaciones</Label>
-                            <Input type="textarea" name="Observacion" id="Observacion" />
+                            <Input onChange={(e)=>{setObservacion_A(e.target.value)}} type="textarea" name="Observacion" id="Observacion" />
                         </FormGroup>
                     </div>
+                    <div>     {error &&    <Alert color="danger" className="text-center">{error}</Alert>} </div>   
                     <div className="d-flex justify-content-center  ">
-                        <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                        <Button className="m-2" style={{ backgroundColor: "#1C3B57" }} onClick={()=>{enviarDatos()}}>Enviar</Button>
                     </div>
 
                 </div>

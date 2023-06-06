@@ -143,6 +143,30 @@ const InfoGeneral = (props) => {
             });
     };
 
+    {/* llistar areas de conocimiento*/ }
+
+    const [Area, setArea] = useState(String);
+    const setArea_A = (a) => {
+        setArea(a);
+    }
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setAreas(data);
+            console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+
 
     return (
 
@@ -250,11 +274,10 @@ const InfoGeneral = (props) => {
                         <Input type="text" name="name" id="exampleSelect" onChange={(e) => { tituloNuevo(e.target.value) }} defaultValue={datos1 && datos1.titulo}></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" id="exampleSelect" onChange={(e) => { areaNueva(e.target.value) }} defaultValue={datos1 && datos1.areaEnfoque}>
-                            <option value="minera">minera</option>
-                            <option value="agropecuaria">agropecuaria</option>
-                            <option value="comercial">comercial</option>
-                            <option value="industrial">industrial</option>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
+                            })}
                         </Input>
                     </FormGroup>
                 </ModalBody>
