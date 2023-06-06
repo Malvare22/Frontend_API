@@ -228,8 +228,8 @@ const router = createBrowserRouter(
             {/**--------------------**/}
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
-            <Route path='Perfil' element={<PerfilAdministrativo></PerfilAdministrativo>} loader={MiPerfilAdministrativo}></Route>
-            <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar loader={MiPerfilAdministrativo}></AdministrativoPerfilEditar>}></Route>
+            <Route path='Perfil' element={<AdministrativoPerfil></AdministrativoPerfil>} loader={MiPerfilAdministrativo}></Route>
+            <Route path='Perfil/Editar' element={<AdministrativoPerfilEditar></AdministrativoPerfilEditar>} loader={MiPerfilAdministrativo}></Route>
             <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
             <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
             <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />
