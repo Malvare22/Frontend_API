@@ -41,7 +41,7 @@ const Table = ({ data }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        navigate('/Docente/Apoyo/VistaPlan');
+        navigate('/Docente/Apoyo/Planes/Vista');
     };
     return (
         <Sdiv>

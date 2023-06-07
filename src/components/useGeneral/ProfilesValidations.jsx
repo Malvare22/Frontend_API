@@ -34,7 +34,7 @@ export default function WindowForPassword(props){
 
     const verifyPassword = (e) => {
         e.preventDefault()
-        if (inputs.first == inputs.second && !validarContrasenia(inputs.first)) {
+        if (inputs.first == inputs.second && validarContrasenia(inputs.first)) {
             setSuccess(true)
             setValid(true)
             props.setForm({ ...props.form, ["contrasenia"]: inputs.first })

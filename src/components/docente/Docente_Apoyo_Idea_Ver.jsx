@@ -8,8 +8,8 @@ import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones ></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -19,12 +19,12 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
@@ -72,16 +72,16 @@ const InfoGeneral = () => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        const URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        try {
+            const response = await axios.get(URLs, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
             });
-        setDatos1(value)
-
+            const data = response.data;
+            setDatos1(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getDatos1();
@@ -123,6 +123,40 @@ const InfoGeneral = () => {
     let set = new Set();
     let set1 = new Set();
     let set2 = new Set();
+
+    const getArchi = async () => {
+        let value = null;
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    };
+
     return (
 
 
@@ -144,7 +178,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Título:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{datos1.titulo}</p>
+                                                <p>{datos1.titulo && datos1.titulo}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2">
@@ -154,7 +188,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
+                                                    {datos1.estudiantesIntegrantesInfo && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
                                                     })}
                                                 </ul>
@@ -167,7 +201,7 @@ const InfoGeneral = () => {
                                             <div className="col-auto">
 
 
-                                                <p>{datos1.tutorInfo[1]}</p>
+                                                <p>{datos1.tutorInfo && datos1.tutorInfo[1]}</p>
 
                                             </div>
                                         </div>
@@ -178,7 +212,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Área de conocimiento:</b></h6>
                                             </div>
                                             <div className="col-auto">
-                                                <p>{datos1.areaEnfoque}</p>
+                                                <p>{datos1.areaEnfoque && datos1.areaEnfoque}</p>
                                             </div>
                                         </div>
                                         <div className="row mt-2">
@@ -187,12 +221,15 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
+                                                    {datos1.docentesApoyoInfo && datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j}>{l}</li>);
                                                     })}
                                                 </ul>
                                             </div>
-                                             <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                            <div className="row">
+                                            <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>   
+                                            </div>
+                                             
                                         </div>
                                     </div>
                                 </div>
@@ -456,8 +493,37 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
 
+
+        {/* Enviar a evaluacion */ }
+
+        const [Observacion, setObservaciones] = useState(String);
+        const setObservaciones_A = (a) => {
+            setObservaciones(a);
+        }
+    
+        
+        const enviarEvaluacion = async () => {
+            try {
+                const formData = new FormData();
+                formData.append('ideaTitulo', props.nombre);
+                formData.append('observacion', Observacion );
+                const response = await axios.post('http://localhost:8080/observacionIdea', formData, {
+                  headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+            
+                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                window.location.reload();
+              } catch (error) {
+                console.error(error);
+              }
+        };
+        //localhost:8080/observacionIdea
+
+            {/*Descarga del documento */ }
+
+    
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -478,12 +544,12 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla nombre={props.nombre}></Tabla>
 
                                     <div className=" mt-4 ">
                                         <div className="row m-4">
                                             <div className="d-flex justify-content-end">
-                                                <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
+                                                <Button id="AgregarComentario"  style={{ backgroundColor: "#1C3B57" }}>
                                                     Agregar
                                                 </Button>
                                             </div>
@@ -499,14 +565,14 @@ const Observaciones = () => {
                                                         <Label for="exampleEmail"><h3>Observaciones</h3></Label>
                                                     </div>
                                                     <div className="col-6 flex-column d-flex justify-content-center">
-                                                        <Input type="textarea" name="email" id="exampleEmail" placeholder="" />
+                                                        <Input type="textarea" name="email" onChange={(e)=>{setObservaciones_A(e.target.value)}} id="exampleEmail" placeholder="" />
                                                     </div>
 
                                                 </div>
                                             </FormGroup>
                                             <div className=" d-flex m-4 justify-content-end">
                                                 <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
-                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                                                <Button className="m-2" onClick={()=>{enviarEvaluacion()}} style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
                                             </div>
                                         </Form>
                                     </UncontrolledCollapse>
@@ -566,11 +632,14 @@ const Sdiv = styled.div`
                 }}
           `;
 
-function Tabla() {
+function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
+        //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
-import { toLiderFormatStudentsFromImport } from '../../context/functions_general'
+import { importStudents, toLiderFormatStudentsFromImport } from '../../context/functions_general'
 
 import axios from "axios";
 
@@ -188,7 +188,7 @@ export default function Listar_Estudiantes() {
             }
         }
         value = await axios.get('http://localhost:8080/estudiante/listar', config)
-        setFilteredData(toLiderFormatStudentsFromImport(value.data))
+        setFilteredData(importStudents(value.data))
 
 
     };
