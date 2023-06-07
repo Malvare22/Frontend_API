@@ -4,22 +4,23 @@ import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { FormEstudiante, HeadEdit } from '../useGeneral/UsersForm';
+import { FormEstudiante, HeadEdit, HeadRegister } from './UsersForm';
 import { useEffect } from 'react';
 
 //Componente general
-export default function EstudianteEditarPerfil() {
-    
-    let user = JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))
+export default function EstudianteEditarPerfil(props) {
+    let user = null;
+    if(props.type!='registrar')
+        user = JSON.parse(localStorage.getItem(props.location))
     
     return (
 
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    <HeadEdit></HeadEdit>
+                    {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
                 </div>
-                <div className='' id="info"> <FormEstudiante user={user} type={"estudiante"}></FormEstudiante></div>
+                <div className='' id="info"> <FormEstudiante user={user} type={props.type}></FormEstudiante></div>
             </div>
         </SContent>
 
