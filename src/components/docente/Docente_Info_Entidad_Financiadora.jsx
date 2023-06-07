@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
-import image from './../../assets/images/Users/01.png'
+import imageDefault from './../../assets/images/Users/default_profile.png'
 
 const Information = (props) => {
     let email = "mailto:" + props.correo;
@@ -13,7 +13,9 @@ const Information = (props) => {
                         <div id="titulo" className="rounded-4 mt-2" style={{ background: "#1C3B57", width: "80%" }}>
                             <div className="row">
                                 <div className="col-1 ms-4 p-4 d-flex justify-content-center align-items-center">
-                                    <img className='rounded-circle' src={image}></img>
+                                    <div>
+                                        {props.imagen ? <img className='rounded-circle' src={props.imagen} alt="Imagen Entidad Financiadora" /> : <img className='rounded-circle' src={imageDefault} alt="Imagen Predeterminada" />}
+                                    </div>
                                 </div>
                                 <div className="col d-flex align-items-center">
                                     <h5 className="m-2" style={{ color: "white" }}>{props.nombre}</h5>

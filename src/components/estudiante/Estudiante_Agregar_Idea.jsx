@@ -28,12 +28,12 @@ const Formulario = () => {
   };
 
   const [error, setError] = useState(null);
-  
+
   const getEmailsFromIntegrantes = () => {
     const emails = integrantesIdea.map(estudiante => estudiante.email);
     return emails;
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,17 +42,15 @@ const Formulario = () => {
       setError(null);
       var formData = new FormData();
       formData.append('titulo', titulo);
-      formData.append('integrantes',getEmailsFromIntegrantes());
-      console.log(getEmailsFromIntegrantes)
+      formData.append('integrantes', getEmailsFromIntegrantes());
       formData.append('area', areaEnfoque);
       formData.append('documento', formatoIdea);
-      console.log("timbers")
-      console.log(formData)
 
-      let ruta = "http://localhost:8080/ideaNegocio/";
+      let ruta = "http://localhost:8080/ideaNegocio";
       let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           console.log("hecho")
+          console.log([...formData.entries()]);
         })
         .catch((error) => {
           if (error.response) {
@@ -88,6 +86,23 @@ const Formulario = () => {
 
   useEffect(() => {
     estudiantes();
+  }, []);
+
+  const [areas, setAreas] = useState([]);
+  const getAreas = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/areaConocimiento', {
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+      });
+      console.log(response.data);
+      setAreas(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAreas();
   }, []);
 
   return (
@@ -150,12 +165,12 @@ const Formulario = () => {
                           onChange={handleareaEnfoqueChange}
                           required
                         >
-                          <option value="">Área de enfoque</option>
-                          <option value="agricola">Agricola</option>
-                          <option value="agropecuaria">Agropecuaria</option>
-                          <option value="comercial">Comercial</option>
-                          <option value="servicios">Servicios</option>
-                          <option value="industrial">Industrial</option>
+                        <option value="">Seleccione ...</option>
+                          {areas.map((v,i) => {
+                            return (
+                              <option key={i} value={v.nombre}>{v.nombre}</option>
+                            )
+                          })}
                         </select>
                       </div>
                       <div className="mt-3">

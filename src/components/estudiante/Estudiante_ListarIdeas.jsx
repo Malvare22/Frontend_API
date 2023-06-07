@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container } from 'reactstrap';
 import CardEs from './Estudiante_Card_Idea';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Estudiante_ListarIdeas() {
 
@@ -13,7 +13,8 @@ export default function Estudiante_ListarIdeas() {
 
     const definir_Color = async () => {
         let value = null;
-        value = await axios.get('../ideas.json').then(
+        value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -28,11 +29,11 @@ export default function Estudiante_ListarIdeas() {
 
     }, []);
 
-    const setInfo=(plan_id)=>{
-        let plan=null;
-        datos.map((v)=>{
-            if(v.id==plan_id)
-                plan=JSON.stringify(v)
+    const setInfo = (plan_id) => {
+        let plan = null;
+        datos.map((v) => {
+            if (v.id == plan_id)
+                plan = JSON.stringify(v)
         })
         localStorage.setItem('idea_info', plan)
         navigate('/Estudiante/Ideas/Vista')
@@ -41,7 +42,7 @@ export default function Estudiante_ListarIdeas() {
     return (
         <>
             <div className="container">
-                <img src="https://live.staticflickr.com/65535/52923256419_f1155354b4_o.png" className='img-fluid mt-2'/>
+                <img src="https://live.staticflickr.com/65535/52923256419_f1155354b4_o.png" className='img-fluid mt-2' />
                 <div className="container-fluid" style={{ width: "100%" }}>
                     <div className="row">
                         <Sobreponer>
@@ -86,12 +87,14 @@ export default function Estudiante_ListarIdeas() {
                                             );
                                         })}
                                         <div className='col-12 col-lg-4 col-sm-6 d-flex justify-content-center align-items-center '>
-                                            <button className="btn btn-sm" style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-plus-circle mb-3" viewBox="0 0 16 16">
-                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                                </svg>
-                                            </button>
+                                            <Link to={'../AgregarIdea'}>
+                                                <button className="btn btn-sm" style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-plus-circle mb-3" viewBox="0 0 16 16">
+                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                    </svg>
+                                                </button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

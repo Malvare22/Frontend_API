@@ -27,7 +27,7 @@ export default function EntidadesFinanciadoras() {
             <div className="row">
                 {datos.map((v, i) => {
                     return (<div key={i}>
-                        <Information key={i} nombre={v.nombre} telefono={v.telefono} sitioweb={v.sitioWeb} correo={v.correo} descripcion={v.descripcion}></Information>
+                        <Information key={i} nombre={v.nombre} telefono={v.telefono} sitioweb={v.sitioWeb} correo={v.correo} descripcion={v.descripcion} imagen={v.fotoEntidadFinanciadoraId}></Information>
                     </div>
                     );
                 })}
