@@ -9,7 +9,7 @@ import pencil from './../../assets/images/Pencil.png'
 import ModalConfirmation from "./ModalConfirmation";
 import default_profile from './../../assets/images/Users/default_profile.png'
 import axios from "axios";
-import { contraseniaNoCumple, exportAdmins, exportDocents, exportStudents } from "../../context/functions_general";
+import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents } from "../../context/functions_general";
 import { useEffect } from "react";
 
 const EditPasswordInput = ({ toggleAlertPassword }) => {
@@ -923,8 +923,7 @@ export const FormLider = ({user, type}) => {
             "sexo": "",
             "fecha_nacimiento": "",
             "telefono": "",
-            "foto": { "nombre": "Seleccionar archivo", "archivo": "", "direccion": "" },
-            "tipo_usuario": "",
+            "foto": { "archivo": "", "direccion": "" },
         };
     }
     const initialErrors = {
@@ -936,7 +935,6 @@ export const FormLider = ({user, type}) => {
         "fecha_nacimiento": false,
         "telefono": false,
         "foto": false,
-        "tipo_usuario": false,
     };
     const validar = (user) => {
         let errors = {
@@ -948,7 +946,6 @@ export const FormLider = ({user, type}) => {
             "fecha_nacimiento": false,
             "telefono": false,
             "foto": false,
-            "tipo_usuario": false
         };
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -997,52 +994,46 @@ export const FormLider = ({user, type}) => {
     //Método para cargar la información
     const updateProfile = async () => {
 
-        const formData = new FormData();
-        formData.append('foto', form.foto.archivo);
-        formData.append('correo', form.correo)
-
-
-        const prototype = {
-            "nombre": form.nombre,
-            "apellido": form.apellido,
-            "fecha_nacimiento": form.fecha_nacimiento,
-            "sexo": form.sexo,
-            "correo": form.correo,
-            "telefono": form.telefono,
-            "contrasenia": form.contrasenia,
-            "tipoUsuario": "coordinador"
-        }
-        const toSend = ([prototype])[0]
-        /*Registro*/
-        await axios.post('http://localhost:8080/register', toSend).then(
-
-        ).catch((error) => { alert(error) })
-
-
-        /*Set Foto*/
-        const zelda = "http://localhost:8080/coordinador/guardarFoto";
-
-        await axios({
-            method: "post",
-            url: zelda,
-            data: formData,
-            headers: { "X-Softue-JWT": localStorage.getItem('token_access') },
-        }).then(
-            (response) => {
-                console.log("ENTER->", response)
-                navigate('../Lider')
+        try {
+            const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
+            const file = await fetch(imageRef).then(response => response.blob());
+            const formData = new FormData();
+            formData.append('foto', file, 'nombre_archivo.png');
+            formData.append('correo', form.correo)
+            const dataToSend = exportLider([{ ...form }])[0]
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
             }
-        ).catch(async (error) => {
-            const value = await (error)
+            if (type == 'registrar') {
+                await axios.post('http://localhost:8080/register', dataToSend)
+            }
+            else {
+
+                await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
+                if(form.contrasenia!='-'){
+                    await changePassword(form.contrasenia)
+                }
+            }
+
+            await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
+
+            navigate(-1)
+
+        } catch (error) {
+            let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
-                console.log('Respuesta del backend:', error.response.data);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
             } else if (error.request) {
-                console.log('No se recibió respuesta del backend');
+                msg = 'Error: No se recibió respuesta de la base de datos';
             } else {
-                console.log('Error al realizar la solicitud:', error.message);
+                msg = "Error al realizar la solicitud: " + error.message;
             }
-        })
+            alert(msg)
+
+        }
 
     }
     return (

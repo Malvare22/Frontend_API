@@ -270,7 +270,7 @@ export const MiPerfilLider = async () => {
       foto=''
       archivo = ''
   }
-  localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
+  localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, contrasenia: "-", foto: { archivo: archivo, direccion: foto } }))
 
   return true;
 }
@@ -310,7 +310,7 @@ export const GestionarLider = async () => {
       foto=''
       archivo = ''
   }
-  localStorage.setItem("LIDER_INFORMATION", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
+  localStorage.setItem("LIDER_INFORMATION", JSON.stringify({ ...temp_user, contrasenia: "-", foto: { archivo: archivo, direccion: foto } }))
 
   return true;
 }
