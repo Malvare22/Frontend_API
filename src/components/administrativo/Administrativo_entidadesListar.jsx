@@ -56,7 +56,7 @@ const Table = ({ data }) => {
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
-                                        </button>                                        
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -96,7 +96,9 @@ export default function Listar_Entidades() {
     const [filteredData, setFilteredData] = useState([]);
     const getEntidades = async () => {
         let value = null;
-        value = await axios.get('../entidadesFinanciadoras.json').then(
+        value = await axios.get('http://localhost:8080/entidadFinanciadora', {
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+        }).then(
             response => {
                 const data = response.data;
                 return data;
@@ -115,7 +117,7 @@ export default function Listar_Entidades() {
                     <h1 className="fst-italic fw-bold fs-1 text-black">Entidades Financiadoras</h1>
                     <div className="container">
                         <br></br>
-                        <Table data={filteredData}></Table>                        
+                        <Table data={filteredData}></Table>
                     </div>
                 </div>
             </div>
