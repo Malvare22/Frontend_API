@@ -39,7 +39,7 @@ const Table = ({ data }) => {
   };
   const sortData = () => {
     const { column, ascending } = orderBy;
-    return data.slice().sort((a, b) => {
+    return data && data.slice().sort((a, b) => {
       let comparison = 0;
       if (column === 'Título') {
         comparison = a.titulo && a.titulo.localeCompare(b.titulo);
@@ -329,7 +329,7 @@ export default function Listar_Ideas() {
             <Table data={filteredData}></Table>
             <br></br>
             <div className="d-flex justify-content-end">
-              {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+              <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                 <div className="row">
                   <div className="col-auto">
                     Generar informe
@@ -341,7 +341,7 @@ export default function Listar_Ideas() {
                     </svg>
                   </div>
                 </div>
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
