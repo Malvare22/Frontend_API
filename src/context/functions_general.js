@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export function toLiderFormatStudentsFromImport(students){
     
 
@@ -113,7 +115,6 @@ export function exportDocents(docentes){
 
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToExport(elemento)
-        elemento.area= elemento.area.toLowerCase()
         elemento.tipoUsuario = 'docente'
         return elemento
     })
@@ -136,4 +137,28 @@ export function exportLider(admins){
         elemento.tipoUsuario = 'coordinador'
         return elemento
     })
+}
+
+export async function loadAreas(setAreas){
+    try {
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        const value = await axios.get('http://localhost:8080/areaConocimiento', config).then(response => response.data)
+        setAreas(value.map((area)=> area.nombre))
+    }
+    catch (error) {
+        let msg = '';
+        if (error.response) {
+            console.log('Código de estado:', error.response.status);
+            msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+        } else if (error.request) {
+            msg = 'Error: No se recibió respuesta de la base de datos';
+        } else {
+            msg = "Error al realizar la solicitud: " + error.message;
+        }
+        alert(msg)
+    }
 }

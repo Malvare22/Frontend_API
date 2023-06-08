@@ -9,7 +9,7 @@ import pencil from './../../assets/images/Pencil.png'
 import ModalConfirmation from "./ModalConfirmation";
 import default_profile from './../../assets/images/Users/default_profile.png'
 import axios from "axios";
-import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents } from "../../context/functions_general";
+import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents, loadAreas } from "../../context/functions_general";
 import { useEffect } from "react";
 
 const EditPasswordInput = ({ toggleAlertPassword }) => {
@@ -33,9 +33,6 @@ const RegisterPasswordInput = ({ errors, form, handleChange }) => {
         </div>
     )
 }
-
-//Areas
-const areas = ["Minera", "Agropecuaria", "Comercial", "Servicios", "Industrial"]
 
 //Cursos
 const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
@@ -95,10 +92,10 @@ const changePassword = async (contrasenia) => {
         }
     }
     const dataToSend = {
-        "password" : contrasenia
+        "password": contrasenia
     }
     await axios.patch('http://localhost:8080/coordinador/reestablecer', dataToSend, config)
-}  
+}
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
 const useForm = (initialData, validar, initialErrors) => {
@@ -143,6 +140,14 @@ const useForm = (initialData, validar, initialErrors) => {
 //Contenido del formulario
 export function FormDocente({ user, type }) {
     const navigate = useNavigate()
+
+    const [areas, setAreas] = useState([])
+
+    useEffect(() => {
+        (loadAreas(setAreas))
+    }, [])
+
+
     if (type == 'registrar') {
         user = {
             "nombre": "",
@@ -210,10 +215,12 @@ export function FormDocente({ user, type }) {
             errors.titulo = true;
             fail = true;
         }
-        if (!areas.includes(user.area)) {
+        
+        if(!areas.includes(form.area)){
             errors.area = true;
             fail = true;
         }
+        
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
@@ -267,7 +274,7 @@ export function FormDocente({ user, type }) {
             else {
 
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
-                if(form.contrasenia!=''){
+                if (form.contrasenia != '') {
                     await changePassword(form.contrasenia)
                 }
             }
@@ -340,9 +347,11 @@ export function FormDocente({ user, type }) {
                             <div className='col-sm-8 col-6'>
                                 <Input className={`form-control ${errors.area ? "is-invalid" : ""}`} name='area' value={form.area} onChange={handleChange} type="select">
                                     <option value={0}>Seleccione un área</option>
-                                    {areas.map((a) => {
-                                        return <option value={a}>{a}</option>;
-                                    })}
+                                    {areas.map(
+                                        (area) => {
+                                            return <option value={area}>{(area).charAt(0).toUpperCase() + (area).slice(1)}</option>;
+                                        }
+                                    )}
                                 </Input>
                                 <div className="invalid-feedback">Este campo solo admite las áreas de conocimientos registradas.</div>
                             </div>
@@ -530,6 +539,7 @@ export const FormEstudiante = ({ user, type }) => {
             //     "capacitacionAprobada" : "aprobada"
             // }
             console.log(dataToSend)
+            console.log('HALT')
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -550,9 +560,9 @@ export const FormEstudiante = ({ user, type }) => {
 
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
                 if (type == 'sudo') {
-                    if(form.contrasenia!=''){
-                    await changePassword(form.contrasenia)
-                }
+                    if (form.contrasenia != '') {
+                        await changePassword(form.contrasenia)
+                    }
                 }
             }
 
@@ -911,10 +921,10 @@ export const FormAdministrativo = ({ user, type }) => {
     );
 }
 
-export const FormLider = ({user, type}) => {
+export const FormLider = ({ user, type }) => {
     const navigate = useNavigate();
     const jesucristo = useRef(null)
-    if(type=='registrar'){
+    if (type == 'registrar') {
         user = {
             "correo": "",
             "contrasenia": "",
@@ -1012,7 +1022,7 @@ export const FormLider = ({user, type}) => {
             else {
 
                 await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
-                if(form.contrasenia!='-'){
+                if (form.contrasenia != '-') {
                     await changePassword(form.contrasenia)
                 }
             }
@@ -1058,7 +1068,7 @@ export const FormLider = ({user, type}) => {
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
-                        </div>                        
+                        </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Fecha de Nacimiento:

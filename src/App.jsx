@@ -31,7 +31,6 @@ import DocenteApoyoVerIdea from './components/docente/Docente_Apoyo_Idea_Ver.jsx
 
 import DocenteApoyoVerPlan from './components/docente/Docente_Apoyo_Plan_Ver.jsx';
 
-import LiderListarDocentes from './components/lider/Lider_Docentes_Listar';
 import LiderListarEntidades from './components/lider/Lider_entidadesListar';
 import LiderListarAdministrativos from './components/lider/Lider_administrativosListar';
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
@@ -71,7 +70,7 @@ import Tabla from './components/estudiante/Tabla';
 import StorageTest from './components/lider/storage';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import AdministrativoPerfil from './components/useGeneral/Perfil_Admin';
-import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider } from './context/functions_app';
+import { MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider } from './context/functions_app';
 import EstudianteEditarPerfil from './components/useGeneral/Editar_Perfil_Estudiante';
 import AdministrativoEditarPerfil from './components/useGeneral/Editar_Perfil_Admin';
 import DocentePerfil from './components/useGeneral/Perfil_Docente';
@@ -79,6 +78,7 @@ import DocenteEditarPerfil from './components/useGeneral/Editar_Perfil_Docente';
 import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
+import ListarDocentes from './components/useGeneral/Listar_Docentes';
 
 
 const router = createBrowserRouter(
@@ -119,7 +119,7 @@ const router = createBrowserRouter(
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Registrar' element={<EstudianteEditarPerfil type={'registrar'} />} />
 
-            <Route path='Docentes' element={''}></Route>
+            <Route path='Docentes' element={<ListarDocentes/>}></Route>
             <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={true} />} loader={GestionarDocente} />
             <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'edit'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>

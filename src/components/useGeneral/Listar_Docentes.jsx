@@ -163,7 +163,7 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Docentes() {    
+export default function ListarDocentes() {    
     const [filteredData, setFilteredData] = useState([]);
     const getDocentes = async () => {
         let value = null;
