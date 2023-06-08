@@ -64,3 +64,23 @@ body {
     font-size: 50px;
   }
 }
+
+.tablaPrueba{
+  table-layout: fixed;
+}
+
+.thPrueba, .tdPrueba {
+  border: 1px solid;
+  width: 100px;
+  word-wrap: break-word;
+}
+
+.btnPrueba {
+  width: "auto"; 
+  border: "none";
+}
+  
+@media screen and (max-width: 576px){
+  .thPrueba, .tdPrueba {
+      width: 60px;
+  }}
