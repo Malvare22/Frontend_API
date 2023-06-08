@@ -70,13 +70,14 @@ const Evaluaciones = (props) => {
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
-        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
-        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-        ).then(
+        //let URLs='http://144.22.37.238:8080/planNegocio/evaluacion/'+props.nombre;
+        let URLs='http://localhost:8080/planNegocio/evaluacion/'+props.nombre;
+        value = await axios.get(URLs,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
+            ).then(
             response => {
                 const data = response.data;
                 return data;
+
             }).catch(error => {
                 console.error(error);
             });
@@ -90,12 +91,12 @@ const Evaluaciones = (props) => {
     let docentes = true;
 
 
-    const [datos1, setDatos1] = useState();
-    const getDatos1 = async () => {
+    const [datos1, setDatos] = useState([]);
+    const getIdeas = async () => {
         let value = null;
-        //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
-        let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-        value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://localhost:8080/observacionPlan/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -103,10 +104,10 @@ const Evaluaciones = (props) => {
             }).catch(error => {
                 console.error(error);
             });
-        setDatos1(value)
+        setDatos(value)
     };
     useEffect(() => {
-        getDatos1();
+        getIdeas();
     }, []);
 
     const ElimnarCalificadores = async (a, b) => {
@@ -114,7 +115,7 @@ const Evaluaciones = (props) => {
         let value = null;
 
         //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
-        let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
+        let URLd = 'http://localhost:8080/planNegocio/calificacion';
         const response = await axios.delete(URLd, {
             data: { codigoDocente: a, evaluacionIdeaId: b },
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
@@ -163,7 +164,7 @@ const Evaluaciones = (props) => {
 
         if (correoDocente) {
             try {
-                const response = await axios.post('http://localhost:8080/ideaNegocio/calificacion/' + props.nombre + '/' + correoDocente, {}, {
+                const response = await axios.post('http://localhost:8080/planNegocio/calificacion/' + props.nombre + '/' + correoDocente, {}, {
                     headers: {
                         "X-Softue-JWT": localStorage.getItem("token_access")
                     }
@@ -184,6 +185,8 @@ const Evaluaciones = (props) => {
         }
 
     };
+
+    //Enviar a Entidades financiadoras
 
     const enviarA_Plan = async () => {
 
@@ -367,7 +370,7 @@ const Evaluaciones = (props) => {
 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
-                                                props.estado != "NA" ? props.identificador == 0 ? <div>
+                                                props.estado == "Aprobado" ? props.identificador == 0 ? <div>
                                                     <Form className="justify-content-center align-content-center">
                                                         <FormGroup className="row">
                                                             <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} onClick={() => { enviarA_Plan() }}>Enviar a Plan <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">

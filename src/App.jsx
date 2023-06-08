@@ -90,6 +90,7 @@ import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, 
 import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 import EstudianteEditarPerfil from './components/estudiante/Estudiante_Perfil_Editar';
 import LiderEstudianteRegistrar from './components/lider/Lider_Estudiante_Registrar';
+import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
 const obtenerInformacionCompletaAlumno = async () => {
   // // try {
@@ -243,6 +244,8 @@ const router = createBrowserRouter(
             <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
+            <Route path='Planes/Vista' element={<PlanVer></PlanVer>}></Route>
+            
             {/**Rutas de gestión de Estudiantes**/}
             <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
             <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={GestionarEstudiante} />
