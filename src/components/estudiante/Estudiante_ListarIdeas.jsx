@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container } from 'reactstrap';
 import CardEs from './Estudiante_Card_Idea';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 export default function Estudiante_ListarIdeas() {
     const navigate = useNavigate();
@@ -24,15 +24,10 @@ export default function Estudiante_ListarIdeas() {
         getIdeas();
     }, []);
 
-    const setInfo = (plan_id) => {
-        let plan = null;
-        datos.map((v) => {
-            if (v.id == plan_id)
-                plan = JSON.stringify(v)
-        })
-        localStorage.setItem('idea_info', plan)
-        navigate('/Estudiante/Ideas/Vista')
-    }
+    const setInfo = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('/Estudiante/Ideas/Vista');
+    };
 
     return (
         <>

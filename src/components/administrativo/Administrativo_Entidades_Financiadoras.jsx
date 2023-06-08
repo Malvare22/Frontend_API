@@ -23,7 +23,7 @@ export default function EntidadesFinanciadoras() {
 
     return (
         <div className="container">
-            <h3 className="ms-5 mt-5">Información de la entidad financiadora</h3>
+            <h3 className="ms-5 mt-5"><b>Información de la entidad financiadora</b></h3>
             <Information
                 nombre={datos.nombre}
                 telefono={datos.telefono}

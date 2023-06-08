@@ -34,7 +34,7 @@ const Table = ({ data }) => {
     const navigate = useNavigate();
     const toggleA = (correo) => {
         localStorage.setItem('correo', correo);
-        navigate('/Lider/VistaEntidades');
+        navigate('/Docente/VistaEntidades');
     };
     
     return (
