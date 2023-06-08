@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
-export const obtenerTabla = ({datos, columnas, handleEliminarClick, handleEditarClick}) => {
+export const Tabla = ({datos, columnas, handleEliminarClick, handleEditarClick}) => {
     return (
         <div>
             <Sdiv>

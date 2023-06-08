@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { obtenerTabla } from '../useGeneral/Tabla';
+import React from 'react';
+import { Tabla } from '../useGeneral/Tabla';
 
 export default function listarPreguntas() {
     let datos = [
@@ -49,7 +47,7 @@ export default function listarPreguntas() {
     return (
         <div className='m-5'>
             <h1 className="fst-italic fw-bold fs-1 text-black mb-4">Preguntas Evaluacion de emprendimiento</h1>
-            {obtenerTabla({ datos, columnas, handleEliminarClick, handleEditarClick})}
+            {Tabla({ datos, columnas, handleEliminarClick, handleEditarClick})}
         </div>
     );
 }

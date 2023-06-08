@@ -91,6 +91,7 @@ import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 
 //Mi primer componente uwu
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
+import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
 
 const obtenerInformacionCompletaAlumno = async () => {
   // // try {
@@ -308,6 +309,7 @@ const router = createBrowserRouter(
 
             {/**Rutas de gestión evaluacion de competencias emprendedoras**/}
             <Route path='Prueba/Preguntas' element={<LiderPreguntasListar></LiderPreguntasListar>}/>
+            <Route path='Prueba/Preguntas/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>}/>
             {/**--------------------**/}
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
