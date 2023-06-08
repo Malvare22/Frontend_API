@@ -4,9 +4,11 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Label } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Formulario = () => {
 
+  const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
   const [integrantesIdea, setIntegrantesIdea] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
@@ -64,7 +66,7 @@ const Formulario = () => {
           }
         });
       setFormatoIdea(null);
-      //window.location.reload();
+      navigate('../ListarIdeas')
 
     } else {
       setError('Por favor, selecciona un archivo');
