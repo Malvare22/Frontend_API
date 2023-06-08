@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter, createRoutesFromElements, json } from 'react-router-dom'
 import Home from './routes/Home.jsx'
 import Login from './routes/login/Login.jsx'
-import Footer from './components/Footer';
 import Recovery from './routes/login/Recovery';
 import ResetPassword from './routes/login/ResetPassword';
 import Error404 from './routes/404_error'
@@ -70,11 +69,9 @@ import EstudianteEvaluacion from './components/estudiante/Estudiante_Evaluacion'
 import EntidadesFinanciadoras from './components/estudiante/Estudiante_Entidades_Financiadoras';
 import Tabla from './components/estudiante/Tabla';
 import StorageTest from './components/lider/storage';
-import axios from 'axios';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import AdministrativoPerfil from './components/useGeneral/Perfil_Admin';
 import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider } from './context/functions_app';
-import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
 import EstudianteEditarPerfil from './components/useGeneral/Editar_Perfil_Estudiante';
 import AdministrativoEditarPerfil from './components/useGeneral/Editar_Perfil_Admin';
 import DocentePerfil from './components/useGeneral/Perfil_Docente';
@@ -82,44 +79,6 @@ import DocenteEditarPerfil from './components/useGeneral/Editar_Perfil_Docente';
 import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
-
-const obtenerInformacionCompletaAlumno = async () => {
-  // // try {
-  // let zelda = "http://localhost:8080/estudiante/" + localStorage.getItem('ESTUDIANTE_EMAIL');
-  // const value = await axios.get(zelda, {
-  //   headers: {
-  //     "X-Softue-JWT": localStorage.getItem('token_access')
-  //   }
-  // })
-
-  // let temp_user = toLiderFormatStudentsFromImport([value.data])[0]
-  // zelda = 'http://localhost:8080/coordinador/foto/'
-  // const foto = await axios.get(zelda + value.data.codigo, {
-  //   headers: {
-  //     "X-Softue-JWT": localStorage.getItem('token_access')
-  //   },
-  //   responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-  // }).then(response => {
-  //   const base64Image = btoa(
-  //     new Uint8Array(response.data)
-  //       .reduce((data, byte) => data + String.fromCharCode(byte), '')
-  //   );
-  //   const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
-
-  //   return imageUrl;
-  // });
-  // const blob = await fetch(foto).then(response => response.blob());
-  // const archivo = new File([blob], "IMG.png", { type: "image/png" });
-  // localStorage.setItem("ESTUDIANTE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
-
-  // return true;
-  // // }
-  // // catch (error) {
-  // //     throw new Response("Not Found", { status: 404 })
-  // // }
-}
-
-
 
 
 const router = createBrowserRouter(
