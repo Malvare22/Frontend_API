@@ -3,6 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import styled from 'styled-components';
+import { Label } from 'reactstrap';
 
 const Formulario = () => {
 
@@ -153,6 +154,7 @@ const Formulario = () => {
                           multiple
                           renderInput={(params) => <TextField {...params} variant="standard" />}
                         />
+
                       </div>
                       <div className="mt-3">
                         <p>
@@ -165,8 +167,8 @@ const Formulario = () => {
                           onChange={handleareaEnfoqueChange}
                           required
                         >
-                        <option value="">Seleccione ...</option>
-                          {areas.map((v,i) => {
+                          <option value="">Seleccione ...</option>
+                          {areas.map((v, i) => {
                             return (
                               <option key={i} value={v.nombre}>{v.nombre}</option>
                             )

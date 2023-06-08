@@ -32,8 +32,9 @@ const Table = ({ data }) => {
     };
     const sortedData = sortData();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('');
+    const toggleA = (correo) => {
+        localStorage.setItem('correo', correo);
+        navigate('/Administrativo/VistaEntidades');
     };
     return (
         <Sdiv>
@@ -51,7 +52,7 @@ const Table = ({ data }) => {
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={() => toggleA(d.correo)} value={d.correo} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
