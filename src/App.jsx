@@ -130,7 +130,8 @@ const router = createBrowserRouter(
             <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>} />
             <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>} />
             <Route path='Entidades/Editar' element={<EntidadEditar location={'ENTIDAD_INFORMATION'} type={'editar'}/>} loader={GestionarEntidad}/>
-            <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>} />
+            <Route path='Entidades/Registrar' element={<EntidadEditar type={'registrar'}/>}/>
+            <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>} loader={GestionarEntidad}/>
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />

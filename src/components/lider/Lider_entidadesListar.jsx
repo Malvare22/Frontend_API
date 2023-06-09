@@ -50,14 +50,13 @@ const Table = (props) => {
     };
     const sortedData = sortData();
     const { state, toggleAlert, valor } = useAlert();
-    const navigate = useNavigate();
     const toggleA = (correo) => {
-        localStorage.setItem('correo', correo);
-        navigate('/Lider/VistaEntidades');
+        localStorage.setItem('ENTIDAD_EMAIL', correo);
+        props.navigate('/Lider/VistaEntidades');
     };
     const toggleB = (correo) => {
         localStorage.setItem('ENTIDAD_EMAIL', correo);
-        navigate('editar');
+        props.navigate('editar');
     };
     const eliminar = async (correo) => {
         try {
@@ -156,6 +155,7 @@ max-height: 66.4vh;
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Entidades() {
     const [filteredData, setFilteredData] = useState([]);
+    const navigate = useNavigate();
     const getEntidades = async () => {
         let value = null;
         value = await axios.get('http://localhost:8080/entidadFinanciadora', {
@@ -180,10 +180,10 @@ export default function Listar_Entidades() {
                     <h1 className="fst-italic fw-bold fs-1 text-black">Entidades Financiadoras</h1>
                     <div className="container">
                         <br></br>
-                        <Table data={filteredData} updater={getEntidades}></Table>
+                        <Table data={filteredData} updater={getEntidades} navigate={navigate}></Table>
                         <br></br>
                         <div className="d-flex justify-content-start">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }} onClick={()=> navigate('Registrar')}>
                                 <div className="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Z" />
