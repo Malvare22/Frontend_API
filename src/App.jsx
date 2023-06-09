@@ -67,7 +67,7 @@ import Tabla from './components/estudiante/Tabla';
 import StorageTest from './components/lider/storage';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import AdministrativoPerfil from './components/useGeneral/Perfil_Admin';
-import { MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider, GestionarLider } from './context/functions_app';
+import { MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider, GestionarLider, GestionarEntidad } from './context/functions_app';
 import EstudianteEditarPerfil from './components/useGeneral/Editar_Perfil_Estudiante';
 import AdministrativoEditarPerfil from './components/useGeneral/Editar_Perfil_Admin';
 import DocentePerfil from './components/useGeneral/Perfil_Docente';
@@ -78,6 +78,7 @@ import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
 import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
+import EntidadEditar from './components/useGeneral/Editar_Entidad';
 
 
 const router = createBrowserRouter(
@@ -128,6 +129,7 @@ const router = createBrowserRouter(
 
             <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>} />
             <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>} />
+            <Route path='Entidades/Editar' element={<EntidadEditar location={'ENTIDAD_EMAIL'} type={'editar'}/>} loader={GestionarEntidad}/>
             <Route path='VistaEntidades' element={<LiderVistaEntidadFinanciadora></LiderVistaEntidadFinanciadora>} />
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
