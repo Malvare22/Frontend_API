@@ -6,21 +6,20 @@ export default function EntidadesFinanciadoras() {
     const [datos, setDatos] = useState([]);
 
     const entidad_Financiadora = async () => {
-        let value = null;
-        value = await axios.get('../entidadesFinanciadoras.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setDatos(value)
-        console.log(value)
-    };
-    useEffect(() => {
+        try {
+          const response = await axios.get('http://localhost:8080/entidadFinanciadora', {
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+          });
+          console.log(response.data);
+          setDatos(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      useEffect(() => {
         entidad_Financiadora();
-
-    }, []);
+      }, []);
 
     return (
         <div className="container">
@@ -28,7 +27,7 @@ export default function EntidadesFinanciadoras() {
             <div className="row">
                 {datos.map((v, i) => {
                     return (<div key={i}>
-                        <Information key={i} nombre={v.nombre} telefono={v.telefono} sitioweb={v.sitioWeb} correo={v.correo} descripcion={v.descripcion}></Information>
+                        <Information key={i} nombre={v.nombre} telefono={v.telefono} sitioweb={v.sitioWeb} correo={v.correo} descripcion={v.descripcion} imagen={v.fotoEntidadFinanciadoraId}></Information>
                     </div>
                     );
                 })}

@@ -8,7 +8,9 @@ export default function Historial(props) {
 
     const definir_Estado = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+        let URLs='http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre;
+        value = await axios.get(URLs,{headers: { "X-Softue-JWT":localStorage.getItem("token_access")}}
+            ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -19,18 +21,18 @@ export default function Historial(props) {
     };
     useEffect(() => {
         definir_Estado();
-
     }, []);
+
 
     return (
         <div className="container">
             <div className="row">
-                {datos.map((v, i) => {
+                {datos && datos.map((v, i) => {
                     let aprov = 0;
                     let recha = 0;
                     let gris = 0;
                     datos[i].calificacionesInfo.map((l) => {
-                        if (l.estado === "aprobado") {
+                        if (l.estado === "aprobada") {
                             aprov = aprov + 1;
                         } else if (l.estado === "rechazada") {
                             recha = recha + 1;
@@ -42,7 +44,7 @@ export default function Historial(props) {
                     let estado = "";
                     if (aprov >= 2) {
                         color = "#75C47D";
-                        estado = "Aprobado";
+                        estado = "Aprobada";
                     } else if (recha >= 2) {
                         color = "#DC4B4B";
                         estado = "Reprobado";
@@ -50,9 +52,8 @@ export default function Historial(props) {
                         color = "#B4B4B4";
                         estado = "NA";
                     }
-
                     return (<div key={i}>
-                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones key={i} nombre={props.nombre} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}

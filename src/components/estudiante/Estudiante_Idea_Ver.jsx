@@ -109,7 +109,7 @@ const InfoGeneral = (props) => {
             });
     }
 
-    
+
     const getArchi = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
@@ -119,29 +119,53 @@ const InfoGeneral = (props) => {
             response => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
-            
+
                 // Obtener la extensión del nombre de archivo del encabezado Content-Type
                 const contentType = response.headers['content-type'];
                 const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
-            
+
                 link.href = url;
                 link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
                 document.body.appendChild(link);
                 link.click();
-            
+
                 // Limpiar el enlace temporal después de la descarga
                 link.parentNode.removeChild(link);
             }).catch(error => {
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
-                  } else if (error.request) {
+                } else if (error.request) {
                     console.log('No se recibió respuesta del backend');
-                  } else {
+                } else {
                     console.log('Error al realizar la solicitud:', error.message);
-                  }
+                }
             });
     };
+
+    {/* llistar areas de conocimiento*/ }
+
+    const [Area, setArea] = useState(String);
+    const setArea_A = (a) => {
+        setArea(a);
+    }
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setAreas(data);
+            console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
 
 
     return (
@@ -215,7 +239,7 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="row">
 
-                                                <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                                <div className="col-auto"><button onClick={() => { getArchi() }} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
 
                                                 <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
                                             </div>
@@ -250,11 +274,10 @@ const InfoGeneral = (props) => {
                         <Input type="text" name="name" id="exampleSelect" onChange={(e) => { tituloNuevo(e.target.value) }} defaultValue={datos1 && datos1.titulo}></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" id="exampleSelect" onChange={(e) => { areaNueva(e.target.value) }} defaultValue={datos1 && datos1.areaEnfoque}>
-                            <option value="minera">minera</option>
-                            <option value="agropecuaria">agropecuaria</option>
-                            <option value="comercial">comercial</option>
-                            <option value="industrial">industrial</option>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
+                            })}
                         </Input>
                     </FormGroup>
                 </ModalBody>
@@ -383,17 +406,9 @@ const Observaciones = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-
-
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
         let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-        
-
         value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-
-        //let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
-        //value = await axios.get(URL, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;
@@ -420,20 +435,11 @@ const Observaciones = (props) => {
             var formData = new FormData();
             formData.append('titulo', datos1 && datos1.titulo);
             formData.append('documento', selectedFile);
-
             console.log(datos1 && datos1.titulo)
             console.log(selectedFile)
-
-
             //let ruta = "http://144.22.37.238:8080/ideaNegocio/agregarDocumento";
             let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
-            
-
              let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
-
-           // let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
-            // let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } })
-
                  .then((response) => {
                      console.log("hecho")
                      window.location.reload();
@@ -442,9 +448,9 @@ const Observaciones = (props) => {
                     if (error.response) {
                         console.log('Código de estado:', error.response.status);
                         console.log('Respuesta del backend:', error.response.data);
-                      } else if (error.request) {
+                    } else if (error.request) {
                         console.log('No se recibió respuesta del backend');
-                      } else {
+                    } else {
                         console.log('Error al realizar la solicitud:', error.message);
                       }
                       setError('Tu archivo debe ser PDF o es muy pesado');
@@ -452,7 +458,7 @@ const Observaciones = (props) => {
             setSelectedFile(null);
         }else {
             setError('Por favor, selecciona un archivo');
-          }
+        }
     }
 
 
@@ -485,7 +491,7 @@ const Observaciones = (props) => {
 
                                                 </div>
                                                 <Input type="file" name="file" onChange={handleFileChange} id="exampleFile" />
-                                                {error &&    <Alert color="danger">{error}</Alert>}
+                                                {error && <Alert color="danger">{error}</Alert>}
                                             </FormGroup>
                                             <div className="d-flex justify-content-center">
                                                 <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
@@ -552,17 +558,9 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-
-
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
         let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
-        
-
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-
-       // let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
-      //  value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
-
         ).then(
             response => {
                 const data = response.data;
@@ -600,4 +598,3 @@ function Tabla(props) {
         </Sdiv>
     );
 }
-

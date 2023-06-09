@@ -6,24 +6,7 @@ import logo from '../../assets/images/Login/Emprender_Aprender.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-
-const useEmail = (form, navigate, validar, setType) => {
-    const [email, setEmail] = useState(form);
-
-    const handleChange = (e) => {
-        const { value } = e.target;
-        setEmail(value);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const err = validar(email);
-        console.log(err);
-        setType(err);
-    };
-
-    return { email, handleChange, handleSubmit };
-}
+import axios from 'axios';
 
 export default function Screen() {
 
@@ -31,7 +14,7 @@ export default function Screen() {
     const backToggler = () => {
         navigate('/login');
     };
-    const[type, setType] = useState(0);
+    const [type, setType] = useState(0);
 
     return (
         <div className='container-fluid' style={{ background: "#1C3B57" }}>
@@ -43,10 +26,10 @@ export default function Screen() {
                             <div className='text-center m-3'>
                                 <img src={logo} className='' style={{ width: "30%" }}></img>
                             </div>
-                            {(type==0 || type==1) && <PanelPrincipal type={type} setType={setType} navigate={navigate} backToggler={backToggler}></PanelPrincipal>}
-                            {type==2 && <PanelSuccess navigate={navigate} backToggler={backToggler}></PanelSuccess>}
-                            {type==3 && <PanelStudent navigate={navigate} backToggler={backToggler}></PanelStudent>}
-                            </div>
+                            {(type == 0 || type == 1) && <PanelPrincipal type={type} setType={setType} navigate={navigate} backToggler={backToggler}></PanelPrincipal>}
+                            {type == 2 && <PanelSuccess navigate={navigate} backToggler={backToggler}></PanelSuccess>}
+                            {type == 3 && <PanelStudent navigate={navigate} backToggler={backToggler}></PanelStudent>}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,31 +70,37 @@ const PanelStudent = (props) => {
 }
 
 const PanelPrincipal = (props) => {
-    /** 
-     * Método de validación de usuario, a su vez afecta el componente superior, indicando el contenido de este en 4 estados:
-     * 0. Estado inicial (input)
-     * 1. Estado de cuenta errada
-     * 2. Situación de envio de correo (Válido)
-     * 3. Caso estudiante
-     * **/
+    const [email, setEmail] = useState('');
+    const navigate = useNavigate();
     const validar = (user) => {
         let temp = 0;
-        if(user=="No") temp=1;
-        if(user=="Otro") temp=2;
-        if(user=="Estudiante") temp=3;
+        if (user == "No") temp = 1;
+        if (user == "Otro") temp = 2;
+        if (user == "Estudiante") temp = 3;
         return temp;
     };
-    const user = '';
-    const { email, handleChange, handleSubmit } = useEmail(user, props.navigate, validar, props.setType);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const isValidEmail = emailRegex.test(email);
+        if (isValidEmail) {
+            axios.get(`http://localhost:8080/coordinador/forgotPassword/${email}`).then((response) => {
+                alert("Se ha enviado un correo para reestablecer su contraseña, verifique su bandeja de entrada.")
+                navigate('/Login');
+            }).catch((error) => {
+                alert("No se ha podido reestablecer su contraseña, contacte con el lider de la unidad de emprendimiento.")
+                navigate('/Login');
+            });
+        }
+    }
     return (
         <StyledDiv>
             <form onSubmit={handleSubmit}>
                 <div>
-                {props.type == 1 && <ErrorMessage></ErrorMessage>}
+                    {props.type == 1 && <ErrorMessage></ErrorMessage>}
                     <p className='text-center mt-4 fw-bold'>Introduza su e-mail para recuperar la contraseña:</p>
-                    
                     <div className='d-flex justify-content-center'>
-                        <input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75' onChange={handleChange} value={ email} style={{ backgroundColor: "#D9D9D9" }}></input>
+                        <input onChange={(e) => setEmail(e.target.value)} className='form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75' value={email} style={{ backgroundColor: "#D9D9D9" }}></input>
                     </div>
                 </div>
                 <div className='d-flex justify-content-center align-content-center'>
@@ -144,9 +133,3 @@ const StyledDiv = styled.div`
         p{font-size: 1rem;}
     }
 `;
-
-
-
-
-
-

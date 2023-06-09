@@ -85,9 +85,11 @@ import LiderDocenteEditar from './components/lider/Lider_Docente_Editar';
 import AdministrativoPerfil from './components/administrativo/Administrativo_Perfil';
 import AdministrativoPerfilEditar from './components/administrativo/Administrativo_Perfil_Editar';
 import LiderDocenteRegistrar from './components/lider/Lider_Docente_Registrar';
-import { importAdmins, importDocents, toLiderFormatStudentsFromImport } from './context/functions_general';
-import { ListarDocentes, MiPerfilDocente, GestionarDocente } from './context/functions_app';
+import { importAdmins, importDocents, importStudents } from './context/functions_general';
+import { ListarDocentes, MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante } from './context/functions_app';
 import DocentePerfilEditar from './components/docente/Docente_Perfil_Editar';
+import EstudianteEditarPerfil from './components/estudiante/Estudiante_Perfil_Editar';
+import LiderEstudianteRegistrar from './components/lider/Lider_Estudiante_Registrar';
 
 //Mi primer componente uwu
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
@@ -172,46 +174,6 @@ const MiPerfilLider = async () => {
   return true;
 }
 
-const MiPerfilEstudiante = async ()=>{
-  //localStorage.setItem('session', JSON.stringify({"email": "Jany.Viddah@gmail.com", "rol": "estudiante"}))
-  const email=(JSON.parse(localStorage.getItem('session'))).email
-  let zelda = "http://localhost:8080/estudiante/" + email;
-  const value = await axios.get(zelda, {
-    headers: {
-      "X-Softue-JWT": localStorage.getItem('token_access')
-    }
-  })
-
-  let temp_user = value.data
-  zelda = 'http://localhost:8080/coordinador/foto/'
-  let foto;
-  let archivo;
-  try{
-    foto = await axios.get(zelda + value.data.codigo, {
-      headers: {
-        "X-Softue-JWT": localStorage.getItem('token_access')
-      },
-      responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-    }).then(response => {
-      const base64Image = btoa(
-        new Uint8Array(response.data)
-          .reduce((data, byte) => data + String.fromCharCode(byte), '')
-      );
-      const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
-  
-      return imageUrl;
-    });
-    const blob = await fetch(foto).then(response => response.blob());
-    archivo = new File([blob], "IMG.png", { type: "image/png" });
-  }
-  catch{
-      foto=''
-      archivo = ''
-  }
-  localStorage.setItem("MY_PROFILE_INFO", JSON.stringify({ ...temp_user, contrasenia: "", foto: { archivo: archivo, direccion: foto } }))
-  return true
-}
-
 /**Obtener información propia del perfil de Administrativo**/
 const MiPerfilAdmin=async()=>{
   let zelda = "http://localhost:8080/coordinador/" + (JSON.parse(localStorage.getItem('session'))).email;
@@ -265,6 +227,7 @@ const router = createBrowserRouter(
         <Route>
           <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='Perfil' element={<PerfilEstudiante></PerfilEstudiante>} loader={MiPerfilEstudiante}/>
+            <Route path='Perfil/Editar' element={<EstudianteEditarPerfil></EstudianteEditarPerfil>} loader={MiPerfilEstudiante}/>
             <Route path='Test' element={<Tabla></Tabla>} />
             <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
             <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
@@ -286,9 +249,9 @@ const router = createBrowserRouter(
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
             {/**Rutas de gestión de Estudiantes**/}
             <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>}></Route>
-            <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={obtenerInformacionCompletaAlumno} />
-            <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={obtenerInformacionCompletaAlumno} />
-            <Route path='Estudiantes/Registrar' element={<RegistrarEstudiantePerfil></RegistrarEstudiantePerfil>} />
+            <Route path='Estudiantes/Perfil' element={<LiderVerPerfilEstudiante></LiderVerPerfilEstudiante>} loader={GestionarEstudiante} />
+            <Route path='Estudiantes/Perfil/Editar' element={<LiderEditarPerfilEstudiante></LiderEditarPerfilEstudiante>} loader={GestionarEstudiante} />
+            <Route path='Estudiantes/Registrar' element={<LiderEstudianteRegistrar></LiderEstudianteRegistrar>} />
             {/**--------------------**/}
             {/**Rutas de gestión de Docentes**/}
             <Route path='Docentes' element={<LiderListarDocentes></LiderListarDocentes>}></Route>
@@ -346,7 +309,8 @@ const router = createBrowserRouter(
             <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>} />
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
-            <Route path='Tutor/Aceptar' element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/Aceptar/:idea' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
         </Route>
       </Route>     

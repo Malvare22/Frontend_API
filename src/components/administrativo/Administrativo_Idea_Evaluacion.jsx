@@ -24,7 +24,7 @@ const Evaluaciones = (props) => {
     const eliminar = (a) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
-        
+
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -94,7 +94,7 @@ const Evaluaciones = (props) => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Evaluación de idea de negocio - {props.estado} </h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id={identificador2} style={{ cursor: "pointer" }}  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg id={identificador2} style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -110,14 +110,14 @@ const Evaluaciones = (props) => {
                                                 <p className="d-flex justify-content-end" style={{ color: "#000", fontSize: "30px" }}><b>{props.estado}</b></p>
                                                 <p className="py-2" style={{ color: "#000" }}><b>Observaciones:</b></p>
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {            
-                                                    
-                                                    if (v.observacion != null ) {
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+                                                    if (v.observacion != null) {
 
                                                         return <div key={i} className="row">
-                                                        <div className="row">
+                                                            <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}>{v.observacion}</p>
@@ -130,7 +130,7 @@ const Evaluaciones = (props) => {
                                                         return <div key={i} className="row">
                                                             <div className="row">
                                                                 <div className="col-auto">
-                                                                    <p style={{ color: "#000" }}>Evaluador {i+1}: </p>
+                                                                    <p style={{ color: "#000" }}>Evaluador {i + 1}: </p>
                                                                 </div>
                                                                 <div className="col-auto">
                                                                     <p style={{ color: "#000" }}></p>
@@ -149,11 +149,11 @@ const Evaluaciones = (props) => {
                                         <div className="col-6">
                                             <div className="container rounded-1 p-4" style={{ background: "#B4B4B4" }}>
                                                 <p className="py-2 d-flex justify-content-center" style={{ color: "#000" }}><b>Comité de evaluación</b></p>
-                                                
 
-                                                 { calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
 
-                                                    
+                                                {calificadores && calificadores[props.identificador].calificacionesInfo.map((v, i) => {
+
+
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
                                                         if (v.estado === 'aprobado') {
@@ -199,10 +199,10 @@ const Evaluaciones = (props) => {
                                                 </div>
                                                 <div className="col-auto">
 
-                                                    <p style={{ color: "#000" }}>{calificadores ? 
+                                                    <p style={{ color: "#000" }}>{calificadores ?
 
-                                                    
-                                                    calificadores[props.identificador].fechaCorte[2]+"/"+calificadores[props.identificador].fechaCorte[1]+"/"+calificadores[props.identificador].fechaCorte[0]:""}</p>
+
+                                                        calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -231,9 +231,9 @@ const Evaluaciones = (props) => {
                         </Input>
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l,i) => {
+                            {profesores.map((l, i) => {
                                 if (l.area === Area) {
-                                    return (<option key={l.docente+i} value={l.docente}>{l.docente}</option>);
+                                    return (<option key={l.docente + i} value={l.docente}>{l.docente}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -259,7 +259,7 @@ const Evaluaciones = (props) => {
                     <Button color="danger">Eliminar</Button>
                     <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
                 </ModalFooter>
-            </Modal>    
+            </Modal>
         </main>
     )
 };

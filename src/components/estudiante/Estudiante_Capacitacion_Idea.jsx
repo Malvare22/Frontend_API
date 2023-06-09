@@ -15,6 +15,42 @@ export default function CapacitacionIdea() {
 }
 
 const InfoGeneralIdea = () => {
+
+    const obtenerFormato = async () => {
+
+        let value = null;
+        let URL = 'http://localhost:8080/formato/recuperar/2';
+        
+
+        axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+            
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+            
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+            
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
+            });
+    };
+
     return (
         <main>
             <div className="row">
@@ -37,7 +73,7 @@ const InfoGeneralIdea = () => {
             </div>
             <div className='row mt-3'>
                 <div className='container d-flex justify content center'>
-                    <button type="button" style={{ background: "#ECB904", color: "black" }} className="btn mx-auto">
+                    <button type="button" onClick={()=>{obtenerFormato()}} style={{ background: "#ECB904", color: "black" }} className="btn mx-auto">
                         Descargar formato
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download mx-2" viewBox="0 0 16 16">
                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />

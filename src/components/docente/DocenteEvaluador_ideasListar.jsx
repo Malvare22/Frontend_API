@@ -22,14 +22,14 @@ const Table = ({ data }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return data && data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Título') {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
+                comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[1][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[1][0]);
             } else if (column === 'Area') {
-                comparison = a.area_enfoque.localeCompare(b.area_enfoque);
+                comparison = a.areaEnfoque.localeCompare(b.areaEnfoque);
             } else if (column === 'Fecha de corte') {
                 comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
             }
@@ -41,8 +41,9 @@ const Table = ({ data }) => {
     };
     const sortedData = sortData();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('/Docente/Evaluador/Ideas/Vista');
+    const toggleA = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('../Evaluador/Ideas/Vista');
     };
     return (
         <Sdiv>
@@ -58,15 +59,15 @@ const Table = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
+                        {sortedData && sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>
-                                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaEnfoque}</td>
+                                <td className='text-center align-middle'>TBP</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -84,7 +85,7 @@ const Table = ({ data }) => {
                         ))}
                     </tbody>
                 </table>
-            </div>        
+            </div>
         </Sdiv>
     );
 };
@@ -187,35 +188,49 @@ const Filters = ({ onFilter }) => {
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
-    const getIdeas = async () => {
-        let value = null;
-        value = await axios.get('../../../ideas.json').then(
+    const getIdeas = async () => {        
+        let formData = new FormData();
+        var localData = localStorage.getItem("session");
+        var parsedData = JSON.parse(localData);
+        formData.append('correoDocente', parsedData.email);
+        let value = await axios.get("http://localhost:8080/ideaNegocio/DocentesEvaluadores", formData,{ headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
                 console.error(error);
             });
-        setFilteredData(value)
+        setFilteredData(value);
     };
     useEffect(() => {
         getIdeas();
     }, []);
     const handleFilter = async (filters) => {
-        console.log(filters)
-        console.log(filters.estudiante)
-        console.log(filters.area)
-        console.log(filters.estado)
-        console.log(filters.fechaInicio)
-        console.log(filters.fechaFin)
+        var formData = new FormData();
+        formData.append('estudianteEmail', filters.estudiante);
+        formData.append('area', filters.area);
+        formData.append('estado', filters.estado);
+        formData.append('fechaInicio', filters.fechaInicio);
+        formData.append('fechaFin', filters.fechaFin);
         try {
-            let value = null;
-            value = await axios.get('../../../ideasFiltradas.json').then(
+            let value;
+            value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
+            ).then(
                 response => {
                     const data = response.data;
+                    console.log(data)
                     return data;
                 }).catch(error => {
-                    console.error(error);
+                    console.log("a");
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
                 });
             setFilteredData(value);
         } catch (error) {
@@ -248,7 +263,7 @@ export default function Listar_Ideas() {
                                         </div>
                                     </div>
                                 </button>
-                            </div>                            
+                            </div>
                         </div>
 
                     </div>
@@ -261,12 +276,13 @@ function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../../../estudiantes.json').then(
+        value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.log(error);
             });
         setDatos(value)
     };
@@ -274,9 +290,9 @@ function Getestudiantes() {
         getEstudiantes();
     }, []);
     return (
-        datos2.map((d) => {
+        datos2 && datos2.map((d) => {
             return (
-                <option value={d.id} key={d.id}>{d.estudiante}</option>
+                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )

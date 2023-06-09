@@ -21,16 +21,14 @@ const Table = ({ data }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return data && data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Título') {
                 comparison = a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
-            } else if (column === 'Tutor') {
-                comparison = a.docente_codigo.localeCompare(b.docente_codigo);
+                comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[1][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[1][0]);
             } else if (column === 'Area') {
-                comparison = a.area_enfoque.localeCompare(b.area_enfoque);
+                comparison = a.areaEnfoque.localeCompare(b.areaEnfoque);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -40,8 +38,9 @@ const Table = ({ data }) => {
     };
     const sortedData = sortData();
     const navigate = useNavigate();
-    const toggleA = () => {
-        navigate('/Docente/Apoyo/Ideas/Vista');
+    const toggleA = (titulo) => {
+        localStorage.setItem('titulo', titulo);
+        navigate('../Apoyo/Ideas/Vista');
     };
     return (
         <Sdiv>
@@ -56,14 +55,14 @@ const Table = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
+                        {sortedData && sortedData.map((d) => (
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                                <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>
+                                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaEnfoque}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -185,8 +184,11 @@ const Filters = ({ onFilter }) => {
 export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
     const getIdeas = async () => {
-        let value = null;
-        value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let formData = new FormData();
+        var localData = localStorage.getItem("session");
+        var parsedData = JSON.parse(localData);
+        formData.append('correoDocente', parsedData.email);
+        let value = await axios.get("http://localhost:8080/ideaNegocio/DocentesEvaluadores", formData,{ headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -283,7 +285,7 @@ function Getestudiantes() {
         getEstudiantes();
     }, []);
     return (
-        datos2.map((d) => {
+        datos2 && datos2.map((d) => {
             return (
                 <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
