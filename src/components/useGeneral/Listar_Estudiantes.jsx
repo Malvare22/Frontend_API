@@ -178,7 +178,7 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Estudiantes() {
+export default function ListarEstudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;

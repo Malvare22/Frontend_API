@@ -36,7 +36,6 @@ import LiderListarAdministrativos from './components/lider/Lider_administrativos
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
-import LiderListarEstudiantes from './components/lider/Lider_Estudiante_Listar';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
@@ -46,11 +45,9 @@ import AdministrativoListarPlanes from './components/administrativo/Administrati
 import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
 
 import AdministrativoListarAdministrativos from './components/administrativo/Administrativo_administrativosListar';
-import AdministrativoVerPerfilLider from './components/administrativo/Administrativo_Lider_Ver';
-import AdministrativoRegistrarLiderPerfil from './components/administrativo/Administrativo_Lider_Registrar';
-import AdministrativoEditarPerfilLider from './components/administrativo/Administrativo_Lider_Editar';
+
+
 import AdministrativoVistaEntidadFinanciadora from './components/administrativo/Administrativo_Entidades_Financiadoras';
-import PerfilDocente from './components/docente/Docente_Perfil';
 import DocenteTutorListarIdeas from './components/docente/DocenteTutor_ideasListar';
 import DocenteApoyoListarIdeas from './components/docente/DocenteApoyo_ideasListar';
 import DocenteEvaluadorListarIdeas from './components/docente/DocenteEvaluador_ideasListar';
@@ -70,7 +67,7 @@ import Tabla from './components/estudiante/Tabla';
 import StorageTest from './components/lider/storage';
 import Listar_Ideas from './components/lider/Listar_ideas';
 import AdministrativoPerfil from './components/useGeneral/Perfil_Admin';
-import { MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider } from './context/functions_app';
+import { MiPerfilDocente, GestionarDocente, MiPerfilEstudiante, GestionarEstudiante, MiPerfilAdministrativo, GestionarAdministrativo, MiPerfilLider, GestionarLider } from './context/functions_app';
 import EstudianteEditarPerfil from './components/useGeneral/Editar_Perfil_Estudiante';
 import AdministrativoEditarPerfil from './components/useGeneral/Editar_Perfil_Admin';
 import DocentePerfil from './components/useGeneral/Perfil_Docente';
@@ -79,6 +76,8 @@ import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
 import ListarDocentes from './components/useGeneral/Listar_Docentes';
+import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
+import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 
 
 const router = createBrowserRouter(
@@ -114,7 +113,7 @@ const router = createBrowserRouter(
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
 
-            <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>} />
+            <Route path='Estudiantes' element={<ListarEstudiantes/>} />
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Registrar' element={<EstudianteEditarPerfil type={'registrar'} />} />
@@ -140,12 +139,12 @@ const router = createBrowserRouter(
             <Route path='Perfil' element={<AdministrativoPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilAdministrativo}></Route>
             <Route path='Perfil/Editar' element={<AdministrativoEditarPerfil location={"MY_PROFILE_INFO"}/>} loader={MiPerfilAdministrativo}></Route>
             
-            <Route path='Estudiantes' element={<LiderListarEstudiantes></LiderListarEstudiantes>} />
+            <Route path='Estudiantes' element={<ListarEstudiantes/>} />
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Registrar' element={<EstudianteEditarPerfil type={'registrar'} />} />
 
-            <Route path='Docentes' element={''}></Route>
+            <Route path='Docentes' element={<ListarDocentes/>}></Route>
             <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={true} />} loader={GestionarDocente} />
             <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'edit'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
@@ -163,9 +162,9 @@ const router = createBrowserRouter(
             <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>} />
             <Route path='VistaEntidades' element={<AdministrativoVistaEntidadFinanciadora></AdministrativoVistaEntidadFinanciadora>} />
 
-            <Route path='Lider' element={<AdministrativoVerPerfilLider></AdministrativoVerPerfilLider>} />
-            <Route path='Lider/Registrar' element={<AdministrativoRegistrarLiderPerfil></AdministrativoRegistrarLiderPerfil>} />
-            <Route path='Lider/Editar' element={<AdministrativoEditarPerfilLider></AdministrativoEditarPerfilLider>} />
+            <Route path='Lider' element={<AdministrativoVerPerfilLider/>} />
+            <Route path='Lider/Registrar' element={<LiderEditarPerfil type={'registrar'}/>} />
+            <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'editar'}/>} loader={GestionarLider}/>
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />

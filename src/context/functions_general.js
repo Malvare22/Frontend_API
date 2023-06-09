@@ -125,6 +125,7 @@ export function importLider(admins){
 
     return admins.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
+        elemento.contrasenia = '-'
         setDateAndYearsOld(elemento)
         return elemento
     })

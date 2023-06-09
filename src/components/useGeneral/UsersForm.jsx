@@ -220,7 +220,6 @@ export function FormDocente({ user, type }) {
             errors.area = true;
             fail = true;
         }
-        
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
