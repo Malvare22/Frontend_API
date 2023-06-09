@@ -59,10 +59,10 @@ const Table = ({ data }) => {
                             <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
-                                <td className='text-center align-middle col-auto'>{d.areaEnfoque}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaEnfoque.charAt(0).toUpperCase() + d.areaEnfoque.slice(1)}</td>
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={()=>toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={() => toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
@@ -143,28 +143,24 @@ const Filters = ({ onFilter }) => {
     return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estudiante" onChange={(e) => setEstudiante(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Estudiante</option>
+                <option value="">Estudiante</option>
                 <Getestudiantes></Getestudiantes>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Area</option>
-                <option defaultValue="minera">Minera</option>
-                <option defaultValue="agrupecuaria">Agropecuaria</option>
-                <option defaultValue="comercial">Comercial</option>
-                <option defaultValue="servicios">Servicios</option>
-                <option defaultValue="industrial">Industrial</option>
+                <option value="">Area</option>
+                <Getareas></Getareas>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Estado</option>
-                <option defaultValue="aprobada">Aprobada</option>
-                <option defaultValue="desaprobada">Desaprobada</option>
-                <option defaultValue="vencida">Vencida</option>
-                <option defaultValue="formulacion">Formulación</option>
-                <option defaultValue="formulacion">Pendiente</option>
+                <option value="">Estado</option>
+                <option value="aprobada">Aprobada</option>
+                <option value="rechazada">Desaprobada</option>
+                <option value="vencida">Vencida</option>
+                <option value="formulado">Formulación</option>
+                <option value="pendiente">Pendiente</option>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
@@ -185,10 +181,11 @@ export default function Listar_Ideas() {
     const [filteredData, setFilteredData] = useState([]);
     const getIdeas = async () => {
         let formData = new FormData();
-        var localData = localStorage.getItem("session");
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
-        formData.append('correoDocente', parsedData.email);
-        let value = await axios.get("http://localhost:8080/ideaNegocio/DocentesEvaluadores", formData,{ headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        formData.append('docenteCodigo', parsedData.codigo);
+        console.log([...formData.entries()]);
+        let value = await axios.post("http://localhost:8080/ideaNegocio/IdeasDocentesApoyo", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -288,6 +285,31 @@ function Getestudiantes() {
         datos2 && datos2.map((d) => {
             return (
                 <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+            )
+        })
+    )
+}
+function Getareas() {
+    const [datos3, setDatos] = useState([]);
+    const getAreas = async () => {
+        let value = null;
+        value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.log(error);
+            });
+        setDatos(value)
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+    return (
+        datos3 && datos3.map((d) => {
+            return (
+                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
             )
         })
     )
