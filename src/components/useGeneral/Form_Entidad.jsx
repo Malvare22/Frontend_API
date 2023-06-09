@@ -1,8 +1,11 @@
 import { useState } from "react";
 import ImageContainer from "./ImagePreview";
 import ModalConfirmation from "./ModalConfirmation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import default_profile from './../../assets/images/Users/default_profile.png'
+
 
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
@@ -64,10 +67,6 @@ const validar = (entidad) => {
         errors.nombre = true;
         fail = true;
     }
-    if (entidad.apellido.trim() == '' || caracteresEspeciales.exec(entidad.apellido) == null || entidad.apellido.length > 50) {
-        errors.apellido = true;
-        fail = true;
-    }
 
     if (isNaN(entidad.telefono) || entidad.telefono.length != 10) {
         errors.telefono = true;
@@ -84,6 +83,8 @@ const validar = (entidad) => {
 
 const FormEntidad = (props) => {
 
+    const navigate = useNavigate()
+
     let entidad = props.type == 'registrar' ? plantilla : props.entidad;
 
     let initialErrors = {
@@ -94,7 +95,41 @@ const FormEntidad = (props) => {
         "descripcion": false
     }
 
-    const updateProfile=()=>{
+    const updateProfile= async ()=>{
+        try {
+            const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
+            const file = await fetch(imageRef).then(response => response.blob());
+            const formData = new FormData();
+            formData.append('foto', file, 'nombre_archivo.png');
+            const dataToSend = form
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            if (props.type == 'registrar') {
+                await axios.post('http://localhost:8080/entidadFinanciadora', dataToSend, config)
+            }
+            else {
+                await axios.patch('http://localhost:8080/entidadFinanciadora', dataToSend, config)
+            }
+            await axios.post('http://localhost:8080/entidadFinanciadora/guardarFoto/' + form.correo, formData, config)
+
+            navigate(-1)
+
+        } catch (error) {
+            let msg = '';
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+            } else if (error.request) {
+                msg = 'Error: No se recibió respuesta de la base de datos';
+            } else {
+                msg = "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+
+        }
 
     }
 
@@ -146,7 +181,7 @@ const FormEntidad = (props) => {
                                 Descripción:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.descripcion ? "is-invalid" : ""}`} name='descripcion' value={form.descripcion} onChange={handleChange} />
+                                <textarea type="text" className={`form-control ${errors.descripcion ? "is-invalid" : ""}`} name='descripcion' value={form.descripcion} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>

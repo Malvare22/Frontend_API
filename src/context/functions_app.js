@@ -322,13 +322,12 @@ export const GestionarEntidad = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   }
-  
-  const entidad = (await axios.get('http://localhost:8080/entidadFinanciadora/'+email, config)).data
-
+  const entidad = (await axios.get('http://localhost:8080/entidadFinanciadora/' + email, config)).data
+  console.log(entidad)
   let foto;
   let archivo;
   try {
-    foto = await axios.get('http://localhost:8080/entidadFinanciadora/foto/'+email, {
+    foto = await axios.get('http://localhost:8080/entidadFinanciadora/foto/' + email, {
       ...config,
       responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
     }).then(response => {
@@ -346,8 +345,9 @@ export const GestionarEntidad = async () => {
   catch {
     foto = ''
     archivo = ''
+
   }
-  localStorage.setItem("ENTIDAD_INFORMATION", JSON.stringify(... entidad, { foto: { archivo: archivo, direccion: foto } }))
+  localStorage.setItem("ENTIDAD_INFORMATION", JSON.stringify({ ...entidad, "foto": { archivo: archivo, direccion: foto } }))
 
   return true;
 }
