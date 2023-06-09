@@ -3,20 +3,37 @@ import { Enunciado } from './Lider_Preguntas_Template';
 
 export default function agregarPregunta() {
     const pregunta = {
-        "enunciado" : "Ingrese el enunciado",
+        "id" : 1,
+        "enunciado" : "Esto es un enunciado",
         "numeroRespuestas" : "2",
-        "componente" : "liderazgo"
+        "componente" : "liderazgo",
+        "respuestas" : [
+            {
+                "id" : 1,
+                "contenido" : "esto es un contenido de una respuesta",
+                "valor" : 2
+            },
+            {
+                "id" : 2,
+                "contenido" : "esto es un contenido de una respuesta",
+                "valor" : 2
+            },
+            {
+                "id" : 3,
+                "contenido" : "esto es un contenido de una respuesta",
+                "valor" : 2
+            } 
+        ]
     }
 
     const cargarComponentes = () => {
         return (
-            ["liderazgo", "creatividad", "solidaridad"]
+            ["liderazgo", "creatividad", "solidaridad", "trabajo en equipo"]
         );
     }
 
     const recibirDatos = (datos) => {
         console.log("Datos recibidos:", datos);
-        // Realiza la lógica necesaria con los datos recibidos
       };
 
     return (

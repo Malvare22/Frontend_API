@@ -7,7 +7,6 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log("Valor seleccionado:", value);
         setPreguntaState((prevState) => ({ ...prevState, [name]: value }));
     };
     
@@ -24,7 +23,7 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
                         <p className='h5' >Enunciado:</p>
                     </div>
                     <div className="col-12 col-md-8">
-                        <textarea className='rounded-5 p-3 form-control' name="enunciado" placeholder={preguntaState.enunciado} defaultValue={preguntaState.enunciado}></textarea>
+                        <textarea className='rounded-5 p-3 form-control' name="enunciado" placeholder={preguntaState.enunciado} defaultValue={preguntaState.enunciado} onChange={handleChange}></textarea>
                     </div>
                 </div>
                 <div className="row p-2">
@@ -32,7 +31,7 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
                         <p className='h5' >Número de respuestas:</p>
                     </div>
                     <div className="col-12 col-md-8">
-                        <input className='rounded-5 p-1 text-center form-control' name="numeroRespuestas" type="number" min="2" placeholder={preguntaState.numeroRespuestas} defaultValue={preguntaState.numeroRespuestas}></input>
+                        <input className='rounded-5 p-1 text-center form-control' name="numeroRespuestas" type="number" min="2" placeholder={preguntaState.numeroRespuestas} defaultValue={preguntaState.numeroRespuestas} onChange={handleChange}></input>
                     </div>
                 </div>
                 <div className="row p-2">
@@ -55,14 +54,24 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
                     </div>
                 </div>
             </div>
-
+            
             <button className='btn btn-primary' onClick={handleClickEnviar}>Enviar Datos</button>
         </div>
 
     );
 }
 
-export const Respuesta = (respuesta) => {
+const Respuestas = ({respuestas}) => {
+    return (
+        <div>
+          {respuestas.map((respuesta) => (
+            <Respuesta respuesta={respuesta} />
+          ))}
+        </div>
+      );
+}
+
+const Respuesta = ({respuesta}) => {
 
     const [respuestaState, setRespuesaState] = useState(respuesta);
 
@@ -70,18 +79,18 @@ export const Respuesta = (respuesta) => {
         <div className='rounded-3 bg-grey p-4'>
             <div className="row p-2">
                 <div className="col-12 col-md-4">
-                    <p className='h5' >Enunciado:</p>
+                    <p className='h5' >Contenido:</p>
                 </div>
                 <div className="col-12 col-md-8">
-                    <textarea className='rounded-5 p-3 form-control' name="mensaje" placeholder={respuestaState.contenido} defaultValue={respuestaState.numeroRespuestas}></textarea>
+                    <textarea className='rounded-5 p-3 form-control' name="contenido" placeholder={respuestaState.contenido} defaultValue={respuestaState.numeroRespuestas}></textarea>
                 </div>
             </div>
             <div className="row p-2">
                 <div className="col-12 col-md-4">
-                    <p className='h5' >Número de respuestas:</p>
+                    <p className='h5' >Valor:</p>
                 </div>
                 <div className="col-12 col-md-8">
-                    <input className='rounded-5 p-1 text-center form-control' type="number" min="2" placeholder={respuestaState.numeroRespuestas}></input>
+                    <input className='rounded-5 p-1 text-center form-control' name="valor" type="number" min="1" max="100" placeholder={respuestaState.numeroRespuestas}></input>
                 </div>
             </div>
         </div>
