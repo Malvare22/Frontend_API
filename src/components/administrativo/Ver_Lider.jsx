@@ -27,36 +27,38 @@ const VistaGeneral = () => {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            let data = (importLider(await axios.get('http://localhost:8080/coordinador/listar/coordinador', config).then(response => response.data)))[0]
-            let foto;
-            let archivo;
-            try {
-                foto = await axios.get('http://localhost:8080/coordinador/foto/' + data.codigo, {
-                    headers: {
-                        "X-Softue-JWT": localStorage.getItem('token_access')
-                    },
-                    responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
-                }).then(response => {
-                    const base64Image = btoa(
-                        new Uint8Array(response.data)
-                            .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                    );
-                    const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+            let data = (await axios.get('http://localhost:8080/coordinador/listar/coordinador', config).then(response => response.data))
 
-                    return imageUrl;
-                });
-                const blob = await fetch(foto).then(response => response.blob());
-                archivo = new File([blob], "IMG.png", { type: "image/png" });
-            }
-            catch {
-                foto = ''
-                archivo = ''
-            }
-            data = { ...data, contrasenia: "-", foto: { archivo: archivo, direccion: foto } }
             if (data.length == 0) {
                 setModalAdd(true)
             }
             else {
+                let foto;
+                let archivo;
+                try {
+                    data = (importLider(data))[0]
+                    foto = await axios.get('http://localhost:8080/coordinador/foto/' + data.codigo, {
+                        headers: {
+                            "X-Softue-JWT": localStorage.getItem('token_access')
+                        },
+                        responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
+                    }).then(response => {
+                        const base64Image = btoa(
+                            new Uint8Array(response.data)
+                                .reduce((data, byte) => data + String.fromCharCode(byte), '')
+                        );
+                        const imageUrl = `data:${response.headers['content-type']};base64,${base64Image}`;
+
+                        return imageUrl;
+                    });
+                    const blob = await fetch(foto).then(response => response.blob());
+                    archivo = new File([blob], "IMG.png", { type: "image/png" });
+                }
+                catch {
+                    foto = ''
+                    archivo = ''
+                }
+                data = { ...data, contrasenia: "-", foto: { archivo: archivo, direccion: foto } }
 
                 setUsuario(data)
             }
@@ -82,6 +84,15 @@ const VistaGeneral = () => {
         selectLider()
 
     }, []);
+
+    async function disableLider() {
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        await axios.get('http://localhost:8080/coordinador/deshabilitarUsuario/' + usuario.correo, config)
+    }
 
     const toggleAddAlert = () => {
         setModalAdd(true);
@@ -117,7 +128,7 @@ const VistaGeneral = () => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger">Confirmar</Button>
+                    <Button color="danger" onClick={() => { disableLider(); navigate(0); }}>Confirmar</Button>
                     <Button color="primary" onClick={toggleDisableAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>

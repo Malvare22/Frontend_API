@@ -974,7 +974,7 @@ export const FormLider = ({ user, type }) => {
             fail = true;
         }
 
-        if (!(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
+        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
             errors.fecha_nacimiento = true;
             fail = true;
         }
