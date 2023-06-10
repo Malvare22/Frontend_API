@@ -1,18 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 
-export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
-
+export const Enunciado = ({ pregunta, enviarDatos }) => {
     const [preguntaState, setPreguntaState] = useState(pregunta);
+    const [errorState, setErrorState] = useState({
+        "enunciadoInvalido" : false,
+        "componenteInvalido" : false,
+        "msgErrorEnunciado" : "Ingrese un enunciado válido",
+        "msgErrorComponente" : "Seleccione una componente válida"
+    });
+    const [errorRespuestasState, setErrorRespuestasState] = useState([]);
+    const respuestasEliminar = [];
+
+    const [componentes, setComponentes] = useState([]);
+
+    const getComponentes = async () => {
+    try {
+        const config = {
+        headers: {
+            "X-Softue-JWT": localStorage.getItem('token_access')
+        }
+        }
+        const response = await axios.get('http://localhost:8080/componenteCompetencias', config);
+        setComponentes(response.data);
+    } catch (error) {
+        console.error("Error al obtener las componentes:", error);
+    }
+    };
+    useEffect(() => {
+        getComponentes();
+    }, []);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setPreguntaState((prevState) => ({ ...prevState, [name]: value }));
+        setPreguntaState((prevState) => ({
+            ...prevState,
+            [name]: value,
+            ...(name === "componente" && {
+                componenteCompetenciasId: {
+                    ...prevState.componenteCompetenciasId,
+                    nombre: value
+                }
+            })
+        }));
     };
-    
 
     const handleClickEnviar = () => {
-        enviarDatos(preguntaState);
+        let valid = true;
+
+        const errorRespuestas = preguntaState.listaRespuestas.map((respuesta) => {
+            const errores = {};
+            if (respuesta.contenido === "") {
+              errores.contenidoInvalido = true;
+              valid = false;
+            }
+            if (respuesta.valor === "" || respuesta.valor < 0 || respuesta.valor > 100) {
+              errores.valorInvalido = true;
+              valid = false;
+            }
+            return errores;
+          });
+          
+          setErrorRespuestasState(errorRespuestas);
+
+
+        if (preguntaState.enunciado === "") {
+            setErrorState((prevState) => ({
+              ...prevState,
+              enunciadoInvalido: true
+            }));
+            valid = false;
+        }
+        else {
+            setErrorState((prevState) => ({
+                ...prevState,
+                enunciadoInvalido: false
+              }));
+        }
+
+        if (preguntaState.componente === "Seleccione una opción") {
+            setErrorState((prevState) => ({
+              ...prevState,
+              componenteInvalido: true
+            }));
+            valid = false;
+        }
+        else {
+            setErrorState((prevState) => ({
+                ...prevState,
+                componenteInvalido: false
+              }));
+        }
+
+        if(preguntaState.listaRespuestas.length < 1) {
+            valid = false;
+            alert("No se puede crear una pregunta sin respuestas.")
+        }
+        
+        if(valid) {
+            enviarDatos(preguntaState, respuestasEliminar);
+        }
+    };
+
+    const handleClickAgregar = () => {
+        setPreguntaState((prevState) => ({
+            ...prevState,
+            listaRespuestas: [
+              ...prevState.listaRespuestas,
+              {
+                "id": 0,
+                "contenido": '',
+                "valor": ''
+              }
+            ]
+        }));
+    };
+
+    const handleRespuestaChange = (index, updatedRespuesta) => {
+        setPreguntaState((prevState) => {
+            const listaRespuestas = [...prevState.listaRespuestas];
+            listaRespuestas[index] = updatedRespuesta;
+            return { ...prevState, listaRespuestas };
+        });
     };
 
     return (
@@ -23,15 +133,13 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
                         <p className='h5' >Enunciado:</p>
                     </div>
                     <div className="col-12 col-md-8">
-                        <textarea className='rounded-5 p-3 form-control' name="enunciado" placeholder={preguntaState.enunciado} defaultValue={preguntaState.enunciado} onChange={handleChange}></textarea>
-                    </div>
-                </div>
-                <div className="row p-2">
-                    <div className="col-12 col-md-4">
-                        <p className='h5' >Número de respuestas:</p>
-                    </div>
-                    <div className="col-12 col-md-8">
-                        <input className='rounded-5 p-1 text-center form-control' name="numeroRespuestas" type="number" min="2" placeholder={preguntaState.numeroRespuestas} defaultValue={preguntaState.numeroRespuestas} onChange={handleChange}></input>
+                        <textarea   className= {`rounded-5 p-3 form-control ${errorState.enunciadoInvalido ? 'is-invalid' : ''}`} 
+                                    name="enunciado" 
+                                    placeholder= {preguntaState.enunciado === "" ? "Ingrese un enunciado" : preguntaState.enunciado}
+                                    defaultValue= {preguntaState.enunciado}
+                                    onChange={handleChange}>
+                        </textarea>
+                        {errorState.enunciadoInvalido && <div className="invalid-feedback"> {errorState.msgErrorEnunciado} </div>}
                     </div>
                 </div>
                 <div className="row p-2">
@@ -39,50 +147,74 @@ export const Enunciado = ({ pregunta, cargarComponentes, enviarDatos }) => {
                         <p className='h5' >Componente:</p>
                     </div>
                     <div className="col-12 col-md-8">
-                        <select className='rounded-5 p-1 text-center form-select' name="componente" value={preguntaState.componente} onChange={handleChange}>
+                        <select className= {`rounded-5 p-1 text-center form-select ${errorState.componenteInvalido ? 'is-invalid' : ''}`} 
+                                name="componente" 
+                                defaultValue={preguntaState.componente} 
+                                onChange={handleChange}>
                             <option value={preguntaState.componente}>
                                 {preguntaState.componente.charAt(0).toUpperCase() + preguntaState.componente.slice(1).toLowerCase()}
                             </option>
-                            {cargarComponentes().map((componente) => (
-                                componente === preguntaState.componente ? "" : (
-                                    <option key={componente} value={componente}>
-                                        {componente.charAt(0).toUpperCase() + componente.slice(1).toLowerCase()}
+                            {componentes.map((componente) => (
+                                componente.nombre === preguntaState.componente ? "" : (
+                                    <option key={componente.id} value={componente.nombre}>
+                                        {componente.nombre.charAt(0).toUpperCase() + componente.nombre.slice(1).toLowerCase()}
                                     </option>
                                 )
                             ))}
                         </select>
+                        {errorState.componenteInvalido && <div className="invalid-feedback">{errorState.msgErrorComponente}</div>}
                     </div>
                 </div>
             </div>
+            <div className="row text-center">
+                <div className="col-12 col-md-6">
+                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickEnviar}>Enviar Datos</button>
+                </div>
+                <div className="col-12 col-md-6">
+                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickAgregar}>Agregar pregunta</button>
+                </div>
+            </div>
+
+            {preguntaState.listaRespuestas.map((respuesta, index) => (
+            <Respuesta  key={index} 
+                        respuesta={respuesta} 
+                        onChangeRespuesta={(updatedRespuesta) => handleRespuestaChange(index, updatedRespuesta)}
+                        errorRespuesta={errorRespuestasState[index] || {}}/>
+            ))}
             
-            <button className='btn btn-primary' onClick={handleClickEnviar}>Enviar Datos</button>
         </div>
 
     );
 }
 
-const Respuestas = ({respuestas}) => {
+const Respuesta = ({respuesta, onChangeRespuesta, errorRespuesta}) => {
+
+    const [respuestaState, setRespuestaState] = useState(respuesta);
+    const errorState = {
+        "msgErrorContenido" : "Ingrese un contenido válido a la respuesta",
+        "msgErrorValor" : "Ingrese un contenido válido a la respuesta"
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setRespuestaState((prevState) => ({ ...prevState, [name]: value }));
+        onChangeRespuesta({ ...respuestaState, [name]: value });
+    };
+
     return (
-        <div>
-          {respuestas.map((respuesta) => (
-            <Respuesta respuesta={respuesta} />
-          ))}
-        </div>
-      );
-}
-
-const Respuesta = ({respuesta}) => {
-
-    const [respuestaState, setRespuesaState] = useState(respuesta);
-
-    return (
-        <div className='rounded-3 bg-grey p-4'>
+        <div className='rounded-3 bg-grey p-4 mt-4'>
             <div className="row p-2">
                 <div className="col-12 col-md-4">
-                    <p className='h5' >Contenido:</p>
+                    <p className='h5' >Respuesta:</p>
                 </div>
                 <div className="col-12 col-md-8">
-                    <textarea className='rounded-5 p-3 form-control' name="contenido" placeholder={respuestaState.contenido} defaultValue={respuestaState.numeroRespuestas}></textarea>
+                    <textarea   className={`rounded-5 p-3 form-control ${errorRespuesta.contenidoInvalido ? 'is-invalid' : ''}` }
+                                name="contenido" 
+                                placeholder= {respuestaState.contenido === "" ? "Ingrese una respuesta" : respuestaState.contenido}
+                                defaultValue= {respuestaState.contenido} 
+                                onChange={handleChange}>            
+                    </textarea>
+                    {errorRespuesta.contenidoInvalido && <div className="invalid-feedback">{errorState.msgErrorContenido}</div>}
                 </div>
             </div>
             <div className="row p-2">
@@ -90,7 +222,14 @@ const Respuesta = ({respuesta}) => {
                     <p className='h5' >Valor:</p>
                 </div>
                 <div className="col-12 col-md-8">
-                    <input className='rounded-5 p-1 text-center form-control' name="valor" type="number" min="1" max="100" placeholder={respuestaState.numeroRespuestas}></input>
+                    <input  className={`rounded-5 p-1 text-center form-control ${errorRespuesta.valorInvalido ? 'is-invalid' : ''}`}
+                            name="valor" 
+                            type="number" min="0" max="100" 
+                            placeholder= {respuestaState.valor === "" ? "Ingrese un valor" : respuestaState.valor}
+                            defaultValue= {respuestaState.valor} 
+                            onChange={handleChange}>        
+                    </input>
+                    {errorRespuesta.valorInvalido && <div className="invalid-feedback">{errorState.msgErrorValor}</div>}
                 </div>
             </div>
         </div>
