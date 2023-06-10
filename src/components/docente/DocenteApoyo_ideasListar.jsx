@@ -207,6 +207,7 @@ export default function Listar_Ideas() {
         getIdeas();
     }, []);
     const handleFilter = async (filters) => {
+        console.log(filters.area)
         var formData = new FormData();
         var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
@@ -328,7 +329,7 @@ function Getareas() {
     return (
         datos3 && datos3.map((d) => {
             return (
-                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+                <option value={d.id} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
             )
         })
     )

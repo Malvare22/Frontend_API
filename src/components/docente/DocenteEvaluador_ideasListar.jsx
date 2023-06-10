@@ -180,24 +180,24 @@ const Filters = ({ onFilter }) => {
     return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estudiante" onChange={(e) => setEstudiante(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option value="0">Estudiante</option>
+                <option value="">Estudiante</option>
                 <Getestudiantes></Getestudiantes>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option value="0">Area</option>
+                <option value="">Area</option>
                 <Getareas></Getareas>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option value="0">Estado</option>
+                <option value="">Estado</option>
                 <option value="aprobada">Aprobada</option>
-                <option value="desaprobada">Desaprobada</option>
+                <option value="rechazada">Desaprobada</option>
                 <option value="vencida">Vencida</option>
-                <option value="formulacion">Formulación</option>
-                <option value="formulacion">Pendiente</option>
+                <option value="formulado">Formulación</option>
+                <option value="pendiente">Pendiente</option>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
@@ -237,14 +237,30 @@ export default function Listar_Ideas() {
     }, []);
     const handleFilter = async (filters) => {
         var formData = new FormData();
-        formData.append('estudianteEmail', filters.estudiante);
-        formData.append('area', filters.area);
-        formData.append('estado', filters.estado);
-        formData.append('fechaInicio', filters.fechaInicio);
-        formData.append('fechaFin', filters.fechaFin);
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
+        var parsedData = JSON.parse(localData);
+        formData.append('docenteCodigo', parsedData.codigo);
+        console.log(filters.estudiante)
+        if (filters.estudiante !== '') {
+            formData.append('estudianteCodigo', filters.estudiante);
+        }
+        if (filters.area !== '') {
+            formData.append('area', filters.area);
+        }
+        if (filters.estado !== '') {
+            formData.append('estado', filters.estado);
+        }
+        if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
+            formData.append('fechaInicio', filters.fechaInicio);
+            formData.append('fechaFin', filters.fechaFin);
+        }
         try {
-            let value;
-            value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            const value = await axios.post("http://localhost:8080/ideaNegocio/IdeasDocentesEvaluadores",  formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -321,7 +337,7 @@ function Getestudiantes() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+                <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
@@ -346,7 +362,7 @@ function Getareas() {
     return (
         datos3 && datos3.map((d) => {
             return (
-                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+                <option value={d.id} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
             )
         })
     )
