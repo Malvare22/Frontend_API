@@ -35,7 +35,7 @@ export const Table = ({ data, user }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return data && data.slice().sort((a, b) => {
             let comparison = 0;
             //GENERAL
             if (column === 'Título') {
@@ -43,7 +43,7 @@ export const Table = ({ data, user }) => {
             } else if (column === 'Estudiante') {
                 comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
             }
-            else if (user === 'lider' || user === 'admin') {
+            else if (user === 'coordinador' || user === 'administrativo') {
                 // PARA LIDER Y ADMIN
                 if (column === 'Tutor') {
                     comparison = a.docente_codigo.localeCompare(b.docente_codigo);
@@ -55,7 +55,7 @@ export const Table = ({ data, user }) => {
                     comparison = a.area_enfoque.localeCompare(b.area_enfoque);
                 }
             }
-            else if (user === 'lider' || user === 'tutor' || user === 'evaluador') {
+            else if (user === 'coordinador' || user === 'tutor' || user === 'evaluador') {
                 //PARA LIDER, TUTOR Y EVALUADOR
                 if (column === 'Fecha de corte') {
                     comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
@@ -70,10 +70,10 @@ export const Table = ({ data, user }) => {
     const sortedData = sortData();
     const navigate = useNavigate();
     const toggleA = () => {
-        if (user === 'lider') {
+        if (user === 'coordinador') {
             navigate('/Lider/Planes/Vista');
         }
-        else if (user === 'admin') {
+        else if (user === 'administrativo') {
             navigate('/Administrativo/Planes/Vista');
         }
         else if (user === 'tutor') {
@@ -96,11 +96,11 @@ export const Table = ({ data, user }) => {
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
                             {/* PARA LIDER Y ADMIN */}
-                            {(user === 'lider' || user === 'admin') && <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>}
+                            {(user === 'coordinador' || user === 'administrativo') && <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Tutor')} scope="col-auto">Tutor</th>}
                             {/* PARA TUTOR, APOYO Y EVALUADOR */}
                             {(user === 'apoyo' || user === 'tutor' || user === 'evaluador') && <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>}
                             {/* PARA LIDER, TUTOR Y EVALUADOR*/}
-                            {(user === 'lider' || user === 'tutor' || user === 'evaluador') && <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>}
+                            {(user === 'coordinador' || user === 'tutor' || user === 'evaluador') && <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>}
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -111,11 +111,11 @@ export const Table = ({ data, user }) => {
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
                                 {/* LIDER Y ADMIN */}
-                                {(user === 'lider' || user === 'admin') && <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>}
+                                {(user === 'coordinador' || user === 'administrativo') && <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>}
                                 {/* TUTOR, APOYO Y EVALUADOR */}
                                 {(user === 'apoyo' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>}
                                 {/* PARA LIDER, TUTOR Y EVALUADOR*/}
-                                {(user === 'lider' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle'>{d.fecha_creacion}</td>}
+                                {(user === 'coordinador' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle'>{d.fecha_creacion}</td>}
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -180,17 +180,17 @@ export const Filters = ({ onFilter, user }) => {
         e.preventDefault();
         const filters = {
             //LIDER y ADMIN
-            tutor: (user === 'lider' || user === 'admin') ? tutor : null,
+            tutor: (user === 'coordinador' || user === 'administrativo') ? tutor : null,
             //General
             estudiante,
             area,
             estado,
             //Docente tutor, evaluador, lider y admin
-            fechaInicio: (user === 'tutor' || user === 'evaluador' || user === 'lider' || user === 'admin') ? fechaInicio : null,
-            fechaFin: (user === 'tutor' || user === 'evaluador' || user === 'lider' || user === 'admin') ? fechaFin : null
+            fechaInicio: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaInicio : null,
+            fechaFin: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaFin : null
         };
         //Docente tutor, evaluador, lider y admin
-        if (user === 'tutor' || user === 'evaluador' || user === 'lider' || user === 'admin') {
+        if (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') {
             if ((fechaInicio && !fechaFin) || (!fechaInicio && fechaFin)) {
                 alert("Se requiere tanto la fecha de inicio como la fecha de fin para filtrar.");
                 return;
@@ -209,45 +209,41 @@ export const Filters = ({ onFilter, user }) => {
 
     return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
         {/* LIDER y ADMIN */}
-        {(user === 'lider' || user === 'admin') && <div className="col-auto d-flex align-items-center mb-1">
+        {(user === 'coordinador' || user === 'administrativo') && <div className="col-auto d-flex align-items-center mb-1">
             <select name="tutor" onChange={(e) => setTutor(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Tutor</option>
+                <option value="">Tutor</option>
                 <Getdocentes></Getdocentes>
             </select>
         </div>}
         {/* GENERAL */}
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estudiante" onChange={(e) => setEstudiante(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Estudiante</option>
+                <option value="">Estudiante</option>
                 <Getestudiantes></Getestudiantes>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Area</option>
-                <option defaultValue="minera">Minera</option>
-                <option defaultValue="agrupecuaria">Agropecuaria</option>
-                <option defaultValue="comercial">Comercial</option>
-                <option defaultValue="servicios">Servicios</option>
-                <option defaultValue="industrial">Industrial</option>
+                <option value="">Area</option>
+                <Getareas></Getareas>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option defaultValue="0">Estado</option>
-                <option defaultValue="aprobada">Aprobada</option>
-                <option defaultValue="desaprobada">Desaprobada</option>
-                <option defaultValue="vencida">Vencida</option>
-                <option defaultValue="formulacion">Formulación</option>
-                <option defaultValue="formulacion">Pendiente</option>
+                <option value="">Estado</option>
+                <option value="aprobada">Aprobada</option>
+                <option value="rechazada">Desaprobada</option>
+                <option value="vencida">Vencida</option>
+                <option value="formulado">Formulación</option>
+                <option value="pendiente">Pendiente</option>
             </select>
         </div>
         {/* Docente tutor, evaluador, lider y admin */}
-        {(user === 'tutor' || user === 'admin' || user === 'evaluador' || user === 'lider') &&
+        {(user === 'tutor' || user === 'administrativo' || user === 'evaluador' || user === 'coordinador') &&
             <div className="col-auto d-flex align-items-center mb-1">
                 <input name="fecha_inicio" onChange={(e) => setFechaInicio(e.target.value)} type="date" className="fw-bold text-black form-control-sm" id="start" min="2020-01-01" max="3000-12-31"></input>
             </div>}
-        {(user === 'tutor' || user === 'admin' || user === 'evaluador' || user === 'lider') &&
+        {(user === 'tutor' || user === 'administrativo' || user === 'evaluador' || user === 'coordinador') &&
             <div className="col-auto d-flex align-items-center mb-1">
                 <input name="fecha_fin" onChange={(e) => setFechaFin(e.target.value)} type="date" className="fw-bold text-black form-control-sm" id="finish" min="2020-01-01" max="3000-12-31"></input>
             </div>}
@@ -261,8 +257,8 @@ export const Filters = ({ onFilter, user }) => {
 function Getdocentes() {
     const [datos, setDatos] = useState([]);
     const getDocentes = async () => {
-        let value = null;
-        value = await axios.get('../docentes.json').then(
+        const value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -277,7 +273,7 @@ function Getdocentes() {
     return (
         datos && datos.map((d) => {
             return (
-                <option value={d.id} key={d.id}>{d.docente}</option>
+                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
@@ -285,13 +281,13 @@ function Getdocentes() {
 function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
-        let value = null;
-        value = await axios.get('../estudiantes.json').then(
+        const value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
             }).catch(error => {
-                console.error(error);
+                console.log(error);
             });
         setDatos(value)
     };
@@ -301,8 +297,32 @@ function Getestudiantes() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.id} key={d.id}>{d.estudiante}</option>
+                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
 }
+function Getareas() {
+    const [datos2, setDatos] = useState([]);
+    const getAreas = async () => {
+      const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+      ).then(
+        response => {
+          const data = response.data;
+          return data;
+        }).catch(error => {
+          console.log(error);
+        });
+      setDatos(value)
+    };
+    useEffect(() => {
+      getAreas();
+    }, []);
+    return (
+      datos2 && datos2.map((d) => {
+        return (
+          <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+        )
+      })
+    )
+  }

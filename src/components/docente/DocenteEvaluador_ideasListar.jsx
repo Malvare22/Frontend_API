@@ -251,6 +251,8 @@ export default function Listar_Ideas() {
             formData.append('estado', filters.estado);
         }
         if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
+            console.log(filters.fechaInicio);
+            console.log(filters.fechaFin);
             formData.append('fechaInicio', filters.fechaInicio);
             formData.append('fechaFin', filters.fechaFin);
         }

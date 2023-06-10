@@ -352,8 +352,7 @@ export default function Listar_Ideas() {
 function Getdocentes() {
   const [datos, setDatos] = useState([]);
   const getDocentes = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -377,8 +376,7 @@ function Getdocentes() {
 function Getestudiantes() {
   const [datos2, setDatos] = useState([]);
   const getEstudiantes = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -403,8 +401,7 @@ function Getestudiantes() {
 function Getareas() {
   const [datos2, setDatos] = useState([]);
   const getAreas = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;

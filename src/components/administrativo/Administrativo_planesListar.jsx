@@ -9,8 +9,8 @@ import { Filters, Table } from '../useGeneral/UserTablesPlanes';
 export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
-        let value = null;
-        value = await axios.get('../planes.json').then(
+        const value = await axios.get("http://localhost:8080/planNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -51,9 +51,9 @@ export default function Listar_Planes() {
                 <div className="col-12 m-1 p-1">
                     <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio</h1>
                     <div className="container">
-                        <Filters onFilter={handleFilter}  user={'admin'}></Filters>
+                        <Filters onFilter={handleFilter}  user={'administrativo'}></Filters>
                         <br></br>
-                        <Table data={filteredData}  user={'admin'}></Table>
+                        <Table data={filteredData}  user={'administrativo'}></Table>
                         <br></br>
                         <div className='row'>
                             <div className="col">

@@ -8,8 +8,12 @@ import { Filters, Table } from '../useGeneral/UserTablesPlanes';
 export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
-        let value = null;
-        value = await axios.get('../../../planes.json').then(
+        let formData = new FormData()
+        var localData = localStorage.getItem("session");
+        var parsedData = JSON.parse(localData);
+        formData.append('docenteEmail', parsedData.email);
+        let value = await axios.post("http://localhost:8080/planNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
