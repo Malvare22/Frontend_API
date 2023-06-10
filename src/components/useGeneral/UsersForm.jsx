@@ -271,7 +271,7 @@ export function FormDocente({ user, type }) {
                 await axios.post('http://localhost:8080/register/docente', dataToSend)
             }
             else {
-
+                console.log('Export', dataToSend)
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
                     await changePassword(form.contrasenia)
