@@ -63,9 +63,9 @@ export default function Estudiante_ListarIdeas() {
                                         {datos.map((v, i) => {
 
                                             let color = "";
-                                            if (v.estado === "a") {
+                                            if (v.estado === "aprobada") {
                                                 color = "#75C47D";
-                                            } else if (v.estado === "r") {
+                                            } else if (v.estado === "reprobada") {
                                                 color = "#DC4B4B";
                                             } else {
                                                 color = "#ECB904";

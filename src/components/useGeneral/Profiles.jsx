@@ -340,7 +340,7 @@ const EstudianteInformacion = (props) => {
                         Curso:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.curso}
+                        {props.usuario.cursoToString}
                     </div>
                 </div>
                 <div className='row'>

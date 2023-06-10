@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import Historial from "./Docente_Apoyo_Idea_Historial.jsx";
 
 
 
@@ -428,10 +427,6 @@ function Tabla(props) {
               formData.append('titulo', props.nombre);
               formData.append('observacion', Observacion );
               formData.append('nota', Nota); // Aquí debes proporcionar el archivo de imagen
-              
-            console.log(props.nombre)
-            console.log(Observacion)
-            console.log(Nota)
 
               console.log(formData)
               const response = await axios.patch(url, formData, {
@@ -452,11 +447,6 @@ function Tabla(props) {
                   }
             }
           }
-
-
-
-
-
     return (
         <Sdiv>
             <Form>

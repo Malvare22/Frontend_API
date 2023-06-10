@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Input } from "reactstrap";
+import { Input, Label } from "reactstrap";
 import ImageContainer, { ImagePreviewNoEditable } from "./ImagePreview";
 import ModalPassword from "./ModalConfirmation";
 import WindowForPassword, { validarContrasenia } from "./ProfilesValidations";
@@ -33,9 +33,6 @@ const RegisterPasswordInput = ({ errors, form, handleChange }) => {
         </div>
     )
 }
-
-//Cursos
-const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
 
 //Componenete Head de Editar
@@ -215,8 +212,8 @@ export function FormDocente({ user, type }) {
             errors.titulo = true;
             fail = true;
         }
-        
-        if(!areas.includes(form.area)){
+
+        if (!areas.includes(form.area)) {
             errors.area = true;
             fail = true;
         }
@@ -441,6 +438,7 @@ export const FormEstudiante = ({ user, type }) => {
             "apellido": "",
             "nombre": "",
             "curso": "",
+            "subcurso": "",
             "sexo": "",
             "fecha_nacimiento": "",
             "nombre_acudiente": "",
@@ -484,7 +482,7 @@ export const FormEstudiante = ({ user, type }) => {
             errors.apellido = true;
             fail = true;
         }
-        if (!courses.includes(user.curso)) {
+        if (isNaN(form.curso) || form.curso > 11 || form.curso < 1 || isNaN(form.subcurso) || form.subcurso > 11 || form.subcurso < 1) {
             errors.curso = true;
             fail = true;
         }
@@ -524,21 +522,6 @@ export const FormEstudiante = ({ user, type }) => {
         //Aquí se hace la actualización de la info
         try {
             let dataToSend = exportStudents([{ ...form }])[0];
-            // {
-            //     "nombre" : "Dorothy",
-            //     "apellido" : "Pulsifer Osuna",
-            //     "fecha_nacimiento" : "2000-05-31",
-            //     "sexo" : "F",
-            //     "correo" : "ADA@ASDSAS.ESES",
-            //     "telefono" : "1-348-367-3111",
-            //     "contrasenia" : "AUasd234",
-            //     "tipoUsuario" : "estudiante",
-            //     "curso" : "noveno",
-            //     "nombreAcudiente" : "Jean Zaslow",
-            //     "capacitacionAprobada" : "aprobada"
-            // }
-            console.log(dataToSend)
-            console.log('HALT')
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -570,7 +553,17 @@ export const FormEstudiante = ({ user, type }) => {
             navigate(-1)
         }
         catch (error) {
-            alert(error)
+            let msg = '';
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+            } else if (error.request) {
+                msg = 'Error: No se recibió respuesta de la base de datos';
+            } else {
+                msg = "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+
         }
         console.log("Info enviada")
     }
@@ -602,17 +595,18 @@ export const FormEstudiante = ({ user, type }) => {
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Curso:
                             </div>
-                            {type == 'estudiante' ? <div className='col-sm-8 col-6'>
-                                {form.curso}
-                            </div> : <div className='col-sm-8 col-6'>
-                                <Input className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange} type="select">
-                                    <option value={0}>Seleccione un curso</option>
-                                    {courses.map((a) => {
-                                        return <option value={a}>{a}</option>;
-                                    })}
-                                </Input>
-                                <div className="invalid-feedback">Este campo solo admite los cursos establecidos.</div>
-                            </div>}
+                            {type == 'estudiante' ?
+                                <div className='col-sm-8 col-6'>
+                                    {form.cursoToString}
+                                </div> :
+                                <div className='col-sm-8 col-6'>
+                                    <div className="d-flex align-content-center align-items-center">
+                                        <input type="text" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='curso' value={form.curso} onChange={handleChange} />
+                                        <Label className="ms-2 me-2 fw-bold">{" - "}</Label>
+                                        <input type="text" className={`form-control ${errors.curso ? "is-invalid" : ""}`} name='subcurso' value={form.subcurso} onChange={handleChange} />
+                                    </div>
+                                    {errors.curso && <div className="text-danger">Este campo solo admite los cursos establecidos.</div>}
+                                </div>}
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
@@ -822,7 +816,17 @@ export const FormAdministrativo = ({ user, type }) => {
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
-            console.error('Error al enviar el archivo:', error);
+            let msg = '';
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+            } else if (error.request) {
+                msg = 'Error: No se recibió respuesta de la base de datos';
+            } else {
+                msg = "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+
         }
 
     }
