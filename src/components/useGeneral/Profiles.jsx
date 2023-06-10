@@ -28,6 +28,28 @@ export function PerfilDocente({ usuario, editable }) {
     );
 }
 
+export function PerfilLider({ usuario, editable }) {
+
+    return (
+        <div className='flex-grow-1'>
+            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
+            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+                <div className='d-flex justify-content-center'>
+                    <div className='w-75 position-relative'>
+                        <LiderInformacion usuario={usuario}></LiderInformacion>
+                        <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
+                    </div>
+                </div>
+            </div>
+            {
+                editable == true && <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                    <Button></Button>
+                </div>
+            }
+        </div>
+    );
+}
+
 export function PerfilEstudiante({ usuario, editable }) {
 
     return (
@@ -37,6 +59,28 @@ export function PerfilEstudiante({ usuario, editable }) {
                 <div className='d-flex justify-content-center'>
                     <div className='w-75 position-relative'>
                         <EstudianteInformacion usuario={usuario}></EstudianteInformacion>
+                        <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
+                    </div>
+                </div>
+            </div>
+            {
+                editable == true && <div className='d-flex justify-content-center' style={{ marginBottom: "2rem" }}>
+                    <Button></Button>
+                </div>
+            }
+        </div>
+    );
+}
+
+export function PerfilAdministrativo({ usuario, editable }) {
+
+    return (
+        <div className='flex-grow-1'>
+            <h2 className='m-4 fw-bold'>Información de Usuario</h2>
+            <div className='justify-content-center' style={{ marginTop: "5rem", marginBottom: "2rem" }}>
+                <div className='d-flex justify-content-center'>
+                    <div className='w-75 position-relative'>
+                        <AdministradorInformacion usuario={usuario}></AdministradorInformacion>
                         <Sdiv03><Profile usuario={usuario}></Profile></Sdiv03>
                     </div>
                 </div>
@@ -63,6 +107,122 @@ const Profile = (props) => {
                 </div>
             </div>
         </Sdiv01>
+    );
+}
+
+const LiderInformacion = (props) =>{
+    return (
+        <Sdiv02>
+            <div>
+                <h3 className='fw-bold'>Información</h3>
+                <hr className='border-3 border-black m-0'></hr>
+            </div>
+            <div id='principal'>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Nombre:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.nombre}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Apellido:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.apellido}
+                    </div>
+                </div>
+
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Edad:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.edad}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Sexo:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.sexo=='M'? "Masculino":"Femenino"}
+                    </div>
+                </div>
+            
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Correo eléctronico:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.correo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Teléfono:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.telefono}
+                    </div>
+                </div>
+            </div>
+        </Sdiv02>
+    );
+}
+
+const AdministradorInformacion = (props) =>{
+    return (
+        <Sdiv02>
+            <div>
+                <h3 className='fw-bold'>Información</h3>
+                <hr className='border-3 border-black m-0'></hr>
+            </div>
+            <div id='principal'>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Nombre Completo:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.apellido+" "+props.usuario.nombre}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Edad:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.edad}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Sexo:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.sexo == 'M' ? "Masculino" : "Femenino"}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Correo eléctronico:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.correo}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
+                        Teléfono:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.telefono}
+                    </div>
+                </div>
+            </div>
+        </Sdiv02>
     );
 }
 

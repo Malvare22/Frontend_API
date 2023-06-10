@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral nombre={localStorage.getItem("titulo")} rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario}></InfoGeneral>
-        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
-
+        <InfoGeneral nombre={localStorage.getItem("titulo")} rol="tutor"></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")} rol="tutor"></Observaciones>
+        {/* rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario} */}
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -21,7 +21,10 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial nombre={localStorage.getItem("titulo")} rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario}></Historial>
+        {true ?
+            <Historial nombre={localStorage.getItem("titulo")} rol="tutor"></Historial>
+            : ""}
+
     </div>
     )
 };
@@ -74,8 +77,6 @@ const InfoGeneral = (props) => {
         toggleAlertEliminarApoyo();
     }
 
-
-
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         const URLs = 'http://localhost:8080/planNegocio/' + props.nombre;
@@ -96,7 +97,6 @@ const InfoGeneral = (props) => {
 
     {/* llistar areas de conocimiento*/ }
 
-
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
@@ -113,8 +113,6 @@ const InfoGeneral = (props) => {
     useEffect(() => {
         getAreas();
     }, []);
-
-
 
     {/*Listar docentes por area*/ }
 
@@ -181,7 +179,7 @@ const InfoGeneral = (props) => {
     const getArchi = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/planNegocio/recuperarDocumento/' + props.nombre;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -370,9 +368,9 @@ const InfoGeneral = (props) => {
                                                 <p>{datos1.tutorInfo && datos1.tutorInfo[1]}</p>
                                             </div>
                                         </div>
+                                        {props.rol == "coordinador" ? <div> <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false} >Asignar</button>
+                                            <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button> </div> : ""}
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button>
 
 
                                         <div className="row mt-2">
@@ -390,16 +388,16 @@ const InfoGeneral = (props) => {
                                             <div className="col-auto ">
                                                 <ul>
                                                     {datos1 && datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        return (<li key={j}>{l} {props.rol == "tutor" ? <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                        </svg></li>);
+                                                        </svg> : ""} </li>);
                                                     })}
-
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
+                                                    {props.rol == "tutor" ? <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
-                                                    </svg>
+                                                    </svg> : ""}
+
                                                 </ul>
                                             </div>
 
@@ -414,7 +412,8 @@ const InfoGeneral = (props) => {
 
                                             <div className="row">
                                                 <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3" onClick={() => { getArchi() }}> Descargar formato completo</button></div>
-                                                <div className="col-auto"><button onClick={toggleAlert_Editar} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
+                                                {props.rol == "estudiante" ? <div className="col-auto"><button onClick={toggleAlert_Editar} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div> : ""}
+
                                             </div>
                                         </div>
                                     </div>
@@ -633,6 +632,43 @@ const Observaciones = (props) => {
     }, []);
 
     //
+    const [error, setError] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const subirIdea = async () => {
+
+        if (selectedFile) {
+            setError(null);
+            var formData = new FormData();
+            formData.append('titulo', datos && datos.titulo);
+            formData.append('documento', selectedFile);
+            //let ruta = "http://144.22.37.238:8080/ideaNegocio/agregarDocumento";
+            let ruta = "http://localhost:8080/planNegocio/agregarDocumento";
+            let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
+                .then((response) => {
+                    console.log("hecho")
+                    window.location.reload();
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
+                    setError('Tu archivo debe ser PDF o es muy pesado');
+                });
+            setSelectedFile(null);
+        } else {
+            setError('Por favor, selecciona un archivo');
+        }
+    }
 
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
@@ -655,7 +691,24 @@ const Observaciones = (props) => {
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
                                     <Tabla nombre={props.nombre}></Tabla>
+                                    {props.rol == "estudiante" ?
+                                        <div className="d-flex m-3 align-content-center justify-content-center col-12">
+                                            <Form >
+                                                <FormGroup>
+                                                    <div className="d-flex justify-content-center">
+                                                        <Label for="exampleFile"><b> Subir archivo: </b></Label>
 
+                                                    </div>
+                                                    <Input type="file" name="file" onChange={handleFileChange} id="exampleFile" />
+                                                    {error && <Alert color="danger">{error}</Alert>}
+                                                </FormGroup>
+                                                <div className="d-flex justify-content-center">
+                                                    <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
+                                                </div>
+
+                                            </Form>
+                                        </div>
+                                        : ""}
 
                                 </div>
                             </div>
@@ -864,7 +917,7 @@ function Tabla(props) {
 
     return (
 
-        true ? <Sdiv>
+        props.rol == "evaluador" ? <Sdiv>
             <Form>
                 <div className='w-auto  row m-2'>
 
@@ -918,20 +971,24 @@ function Tabla(props) {
                 </Sdiv>
 
                 <div className=" mt-4 ">
-                    <div className="row m-4">
-                        <div className="d-flex justify-content-end">
-                            <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
-                                Agregar
-                            </Button>
+                    {props.rol == "tutor" || props.rol == "apoyo" ?
+                        <div className="row m-4">
+                            <div className="d-flex justify-content-end">
+                                <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
+                                    Agregar
+                                </Button>
+                            </div>
+                        </div> : ""}
+                    {props.rol == "tutor" ?
+                        <div className="row m-4">
+                            <div className="d-flex justify-content-end">
+                                <Button color="success" onClick={() => { enviarEvaluacion() }} disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada") ? false : true} >
+                                    Enviar a Evaluacion
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row m-4">
-                        <div className="d-flex justify-content-end">
-                            <Button color="success" onClick={() => { enviarEvaluacion() }} disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada")  ? false : true} > 
-                                Enviar a Evaluacion
-                            </Button>
-                        </div>
-                    </div>
+                        : ""}
+
                 </div>
 
                 <UncontrolledCollapse id="observaciones" toggler="#AgregarComentario">

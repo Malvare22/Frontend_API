@@ -71,9 +71,9 @@ const Evaluaciones = (props) => {
     const getCalificadores = async () => {
         let value = null;
         //let URLs='http://144.22.37.238:8080/planNegocio/evaluacion/'+props.nombre;
-        let URLs='http://localhost:8080/planNegocio/evaluacion/'+props.nombre;
-        value = await axios.get(URLs,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
-            ).then(
+        let URLs = 'http://localhost:8080/planNegocio/evaluacion/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -211,9 +211,6 @@ const Evaluaciones = (props) => {
 
     };
 
-
-
-
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -301,7 +298,7 @@ const Evaluaciones = (props) => {
                                                                 <p style={{ color: "#000" }}><b>Evaluador {i + 1}: </b></p>
                                                             </div>
                                                             <div className="col-8">
-                                                                <p style={{ color: "#000" }}>{v.nombreDocente}</p>
+                                                                <p style={{ color: "#000" }}>{props.rol == "coordinador" ? v.nombreDocente : ""}</p>
                                                             </div>
                                                             <div className="col-2">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={colorin} className="bi bi-square-fill border rounded-2 border-2 border-dark" viewBox="0 0 16 16">
@@ -309,7 +306,7 @@ const Evaluaciones = (props) => {
                                                                 </svg>
                                                             </div>
 
-                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
+                                                            {props.rol=="coordinador" ? props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
 
                                                                 <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
@@ -318,7 +315,7 @@ const Evaluaciones = (props) => {
                                                                 <p style={{ color: "#000" }}> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#555555" className="bi bi-x-square-fill disabled" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
                                                                 </svg></p>
-                                                            </div> : ""
+                                                            </div> : "" : ""
 
                                                             }
                                                         </div>
@@ -339,14 +336,14 @@ const Evaluaciones = (props) => {
                                                 })}
 
                                                 {
-                                                    props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
+                                                    props.rol=="coordinador" ? props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
                                                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
                                                                 <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
                                                             </svg>
                                                         </button>
-                                                    </div> : ""
+                                                    </div> : "" : ""
                                                 }
 
 
@@ -370,16 +367,15 @@ const Evaluaciones = (props) => {
 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
-                                                props.estado == "Aprobado" ? props.identificador == 0 ? <div>
+                                                props.rol=="coordinador" ? props.estado == "Aprobado" ? props.identificador == 0 ? <div>
                                                     <Form className="justify-content-center align-content-center">
                                                         <FormGroup className="row">
-                                                            <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} onClick={() => { enviarA_Plan() }}>Enviar a Plan <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                            <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} >Aceptar Calificacion <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
                                                             </svg></Button>
-
                                                         </FormGroup>
-                                                        <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : "" }</div>
-                                                    </Form></div> : "" : ""
+                                                        <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : ""}</div>
+                                                    </Form></div> : "" : "" :""
                                             }
                                         </div>
 

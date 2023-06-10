@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "reactstrap";
 import ImageContainer, { ImagePreviewNoEditable } from "./ImagePreview";
 import ModalPassword from "./ModalConfirmation";
 import WindowForPassword, { validarContrasenia } from "./ProfilesValidations";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import pencil from './../../assets/images/Pencil.png'
 import ModalConfirmation from "./ModalConfirmation";
 import default_profile from './../../assets/images/Users/default_profile.png'
 import axios from "axios";
-import { contraseniaNoCumple, exportDocents, exportStudents } from "../../context/functions_general";
+import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents, loadAreas } from "../../context/functions_general";
 import { useEffect } from "react";
 
 const EditPasswordInput = ({ toggleAlertPassword }) => {
@@ -33,11 +33,6 @@ const RegisterPasswordInput = ({ errors, form, handleChange }) => {
         </div>
     )
 }
-
-
-
-//Areas
-const areas = ["Minera", "Agropecuaria", "Comercial", "Servicios", "Industrial"]
 
 //Cursos
 const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
@@ -70,7 +65,7 @@ export function HeadRegister() {
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
             {icon}
-            <h5 className='text-white fw-bold'>Registrar Docente</h5>
+            <h5 className='text-white fw-bold'>Registrar</h5>
         </div>
     );
 }
@@ -90,6 +85,17 @@ const getPresentDate = () => {
     return `${year}-${month}-${day}`;
 }
 
+const changePassword = async (contrasenia) => {
+    const config = {
+        headers: {
+            "X-Softue-Reset": localStorage.getItem('token_access')
+        }
+    }
+    const dataToSend = {
+        "password": contrasenia
+    }
+    await axios.patch('http://localhost:8080/coordinador/reestablecer', dataToSend, config)
+}
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
 const useForm = (initialData, validar, initialErrors) => {
@@ -134,6 +140,14 @@ const useForm = (initialData, validar, initialErrors) => {
 //Contenido del formulario
 export function FormDocente({ user, type }) {
     const navigate = useNavigate()
+
+    const [areas, setAreas] = useState([])
+
+    useEffect(() => {
+        (loadAreas(setAreas))
+    }, [])
+
+
     if (type == 'registrar') {
         user = {
             "nombre": "",
@@ -201,7 +215,8 @@ export function FormDocente({ user, type }) {
             errors.titulo = true;
             fail = true;
         }
-        if (!areas.includes(user.area)) {
+        
+        if(!areas.includes(form.area)){
             errors.area = true;
             fail = true;
         }
@@ -258,6 +273,9 @@ export function FormDocente({ user, type }) {
             else {
 
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
+                if (form.contrasenia != '') {
+                    await changePassword(form.contrasenia)
+                }
             }
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
@@ -287,7 +305,7 @@ export function FormDocente({ user, type }) {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombres:
+                                nombre:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
@@ -296,7 +314,7 @@ export function FormDocente({ user, type }) {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Apellidos:
+                                apellido:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
@@ -328,9 +346,11 @@ export function FormDocente({ user, type }) {
                             <div className='col-sm-8 col-6'>
                                 <Input className={`form-control ${errors.area ? "is-invalid" : ""}`} name='area' value={form.area} onChange={handleChange} type="select">
                                     <option value={0}>Seleccione un área</option>
-                                    {areas.map((a) => {
-                                        return <option value={a}>{a}</option>;
-                                    })}
+                                    {areas.map(
+                                        (area) => {
+                                            return <option value={area}>{(area).charAt(0).toUpperCase() + (area).slice(1)}</option>;
+                                        }
+                                    )}
                                 </Input>
                                 <div className="invalid-feedback">Este campo solo admite las áreas de conocimientos registradas.</div>
                             </div>
@@ -413,7 +433,7 @@ export function FormDocente({ user, type }) {
  *  **/
 export const FormEstudiante = ({ user, type }) => {
     const navigate = useNavigate()
-    
+
     if (type == 'registrar') {
         user = {
             "correo": "",
@@ -518,6 +538,7 @@ export const FormEstudiante = ({ user, type }) => {
             //     "capacitacionAprobada" : "aprobada"
             // }
             console.log(dataToSend)
+            console.log('HALT')
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -539,7 +560,7 @@ export const FormEstudiante = ({ user, type }) => {
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
                 if (type == 'sudo') {
                     if (form.contrasenia != '') {
-
+                        await changePassword(form.contrasenia)
                     }
                 }
             }
@@ -561,7 +582,7 @@ export const FormEstudiante = ({ user, type }) => {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Nombres:
+                                nombre:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} />
@@ -570,7 +591,7 @@ export const FormEstudiante = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Apellidos:
+                                apellido:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} />
@@ -673,6 +694,451 @@ export const FormEstudiante = ({ user, type }) => {
     );
 }
 
+export const FormAdministrativo = ({ user, type }) => {
+
+    const navigate = useNavigate()
+
+    if (type == 'registrar') {
+        user = {
+            "correo": "",
+            "apellido": "",
+            "nombre": "",
+            "documento": "",
+            "sexo": "",
+            "fecha_nacimiento": "",
+            "telefono": "",
+            "foto": { "archivo": "", "direccion": "" },
+            "contrasenia": ""
+        }
+    }
+
+    const initialErrors = {
+        "correo": false,
+        "nombre": false,
+        "apellido": false,
+        "documento": false,
+        "sexo": false,
+        "fecha_nacimiento": false,
+        "telefono": false,
+        "foto": false,
+        "contrasenia": false,
+    };
+
+
+    const validar = (user) => {
+        let errors = {
+            "correo": false,
+            "nombre": false,
+            "apellido": false,
+            "documento": false,
+            "sexo": false,
+            "fecha_nacimiento": false,
+            "telefono": false,
+            "foto": false,
+            "contrasenia": false,
+        };
+
+        let fail = false;
+        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const number_regex = /[0-9]/;
+        const espacios = /\s/;
+        if (user.nombre.trim() == '' || number_regex.exec(user.nombre) != null || user.nombre.length > 50) {
+            errors.nombre = true;
+            fail = true;
+        }
+        if (user.apellido.trim() == '' || number_regex.exec(user.apellido) != null || user.apellido.length > 50) {
+            errors.apellido = true;
+            fail = true;
+        }
+
+        if (type == 'registrar') {
+            if (!validarContrasenia(user.contrasenia)) {
+                errors.contrasenia = true
+                fail = true
+            }
+        }
+
+        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
+            errors.fecha_nacimiento = true;
+            fail = true;
+        }
+
+        if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
+            errors.sexo = true;
+            fail = true;
+        }
+
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
+            fail = true;
+        }
+
+        if (!email_regex.test(user.correo) || user.correo.length > 50) {
+            errors.correo = true;
+            fail = true;
+        }
+
+        if (fail == false) return null;
+        return errors;
+    };
+
+
+    const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
+
+    //Método para cargar la información
+    const updateProfile = async () => {
+
+        try {
+            const dataToSend = exportAdmins([{ ...form }])[0]
+            console.log(type)
+            const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
+            const file = await fetch(imageRef).then(response => response.blob());
+            const formData = new FormData();
+            formData.append('foto', file, 'nombre_archivo.png');
+            formData.append('correo', form.correo)
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+
+            if (type == 'registrar') {
+                await axios.post('http://localhost:8080/register', dataToSend)
+            }
+
+            else {
+                console.log('HALT')
+                await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
+                if (type == 'editar') {
+                    if (form.contrasenia != '-') {
+                        await changePassword(form.contrasenia)
+                    }
+                }
+            }
+
+            await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
+
+            navigate(-1)
+
+            console.log('Archivo enviado correctamente.');
+        } catch (error) {
+            console.error('Error al enviar el archivo:', error);
+        }
+
+    }
+    return (
+        <div >
+            <form onSubmit={handleSubmit}>
+                <div className='' style={{ backgroundColor: "#ECECEC" }}>
+                    <SInfo>
+                        <div className='row' style={{ paddingTop: "60px" }}>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                nombre:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                apellido:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Sexo:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange} defaultValue={"0"}>
+                                    <option value={""} selected={"select"}>
+                                        Selecciona un género
+                                    </option>
+                                    <option value={"Masculino"}>
+                                        Masculino
+                                    </option>
+                                    <option value={"Femenino"}>
+                                        Femenino
+                                    </option>
+                                </select>
+                                <div className="invalid-feedback">Este campo solo admite valores Femenino y Masculino.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Fecha de Nacimiento:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Teléfono:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Correo eléctronico:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                            </div>
+                        </div>
+                        {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
+
+                        <div className='row' style={{ paddingBottom: "3%" }}>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Foto:
+                            </div>
+                            <div className='col-sm-8 col-6' id='div_img'>
+                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                            </div>
+                        </div>
+                    </SInfo>
+                </div>
+                <div className='btns'>
+                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
+                    <Link to={-1} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                </div>
+            </form>
+
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
+
+        </div>
+    );
+}
+
+export const FormLider = ({ user, type }) => {
+    const navigate = useNavigate();
+    const jesucristo = useRef(null)
+    if (type == 'registrar') {
+        user = {
+            "correo": "",
+            "contrasenia": "",
+            "apellido": "",
+            "nombre": "",
+            "sexo": "",
+            "fecha_nacimiento": "",
+            "telefono": "",
+            "foto": { "archivo": "", "direccion": "" },
+        };
+    }
+    const initialErrors = {
+        "correo": false,
+        "contrasenia": false,
+        "apellido": false,
+        "nombre": false,
+        "sexo": false,
+        "fecha_nacimiento": false,
+        "telefono": false,
+        "foto": false,
+    };
+    const validar = (user) => {
+        let errors = {
+            "correo": false,
+            "contrasenia": false,
+            "apellido": false,
+            "nombre": false,
+            "sexo": false,
+            "fecha_nacimiento": false,
+            "telefono": false,
+            "foto": false,
+        };
+        let fail = false;
+        const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        const number_regex = /[0-9]/;
+        const espacios = /\s/;
+        if (user.nombre.trim() == '' || number_regex.exec(user.nombre) != null || user.nombre.length > 50) {
+            errors.nombre = true;
+            fail = true;
+        }
+        if (user.apellido.trim() == '' || number_regex.exec(user.apellido) != null || user.apellido.length > 50) {
+            errors.apellido = true;
+            fail = true;
+        }
+
+        if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
+            errors.contrasenia = true;
+            fail = true;
+        }
+
+        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
+            errors.fecha_nacimiento = true;
+            fail = true;
+        }
+
+        if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
+            errors.sexo = true;
+            fail = true;
+        }
+
+        if (isNaN(user.telefono) || user.telefono.length != 10) {
+            errors.telefono = true;
+            fail = true;
+        }
+
+        if (!email_regex.test(user.correo) || user.correo.length > 50) {
+            errors.correo = true;
+            fail = true;
+        }
+
+        if (fail == false) return null;
+        return errors;
+    };
+
+    const { form, setForm, errors, viewAlert, viewAlertPassword, handleChange, toggleAlert, toggleAlertPassword, handleSubmit } = useForm(user, validar, initialErrors);
+
+    //Método para cargar la información
+    const updateProfile = async () => {
+
+        try {
+            const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
+            const file = await fetch(imageRef).then(response => response.blob());
+            const formData = new FormData();
+            formData.append('foto', file, 'nombre_archivo.png');
+            formData.append('correo', form.correo)
+            const dataToSend = exportLider([{ ...form }])[0]
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            if (type == 'registrar') {
+                await axios.post('http://localhost:8080/register', dataToSend)
+            }
+            else {
+
+                await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
+                if (form.contrasenia != '-') {
+                    await changePassword(form.contrasenia)
+                }
+            }
+
+            await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
+
+            navigate(-1)
+
+        } catch (error) {
+            let msg = '';
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+            } else if (error.request) {
+                msg = 'Error: No se recibió respuesta de la base de datos';
+            } else {
+                msg = "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+
+        }
+
+    }
+    return (
+        <div >
+            <form onSubmit={handleSubmit}>
+                <div className='' style={{ backgroundColor: "#ECECEC" }}>
+                    <SInfo>
+                        <div className='row' style={{ paddingTop: "60px" }}>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Nombres:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Apellidos:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
+                                <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Fecha de Nacimiento:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
+                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Sexo:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <select className={`form-control ${errors.sexo ? "is-invalid" : ""}`} name='sexo' value={form.sexo} onChange={handleChange}>
+                                    <option value={""} selected={"select"}>
+                                        Selecciona un género
+                                    </option>
+                                    <option value={"Masculino"}>
+                                        Masculino
+                                    </option>
+                                    <option value={"Femenino"}>
+                                        Femenino
+                                    </option>
+                                </select>
+                                <div className="invalid-feedback">Este campo solo admite valores Femenino y Masculino.</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Teléfono:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Correo eléctronico:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                            </div>
+                        </div>
+                        {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
+
+                        <div className='row' style={{ paddingBottom: "3%" }}>
+                            <div className='col-sm-4 col-6 fw-bold'>
+                                Foto:
+                            </div>
+                            <div className='col-sm-8 col-6' id='div_img'>
+                                <ImageContainer form={form} setForm={setForm}></ImageContainer>
+                            </div>
+                        </div>
+                    </SInfo>
+                </div>
+                <div className='btns'>
+                    <button type='submit' className='btn rounded-3'><h6 className='text-white'>Guardar Cambios</h6></button>
+                    <Link to={-1} style={{ textDecoration: 'none' }}><button className='btn rounded-3'><h6 className='text-white'>Cancelar</h6></button></Link>
+                </div>
+            </form>
+
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
+
+
+        </div>
+    );
+}
 
 const SInfo = styled.div`
 
