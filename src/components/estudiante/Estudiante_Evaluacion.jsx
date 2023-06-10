@@ -39,9 +39,9 @@ const EstudianteEvaluacion = () => {
             </div>
             <div className="row mx-3 rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
                 <form>
-                    {datos.map((v, i) => {
+                    {datos && datos.map((v, i) => {
                         return (
-                            <Pregunta enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
+                            <Pregunta key={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
                         );
                     })}
                     <div className="d-flex justify-content-center mb-3">
