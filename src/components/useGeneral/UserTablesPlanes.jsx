@@ -69,7 +69,7 @@ export const Table = ({ data, user }) => {
     };
     const sortedData = sortData();
     const navigate = useNavigate();
-    const toggleA = () => {
+    const vistaPlan = () => {
         if (user === 'coordinador') {
             navigate('/Lider/Planes/Vista');
         }
@@ -86,6 +86,36 @@ export const Table = ({ data, user }) => {
             navigate('/Docente/Apoyo/Planes/Vista');
         }
     };
+    const descargarPlan = (nombre) => {
+        let URL = 'http://localhost:8080/planNegocio/recuperarDocumento/' + nombre;
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    }
     return (
         <Sdiv>
             <div className='w-auto'>
@@ -109,22 +139,22 @@ export const Table = ({ data, user }) => {
                             <tr key={d.id}>
                                 {/* GENERAL */}
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
+                                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1]}</td>
                                 {/* LIDER Y ADMIN */}
-                                {(user === 'coordinador' || user === 'administrativo') && <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>}
+                                {(user === 'coordinador' || user === 'administrativo') && <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1]}</td>}
                                 {/* TUTOR, APOYO Y EVALUADOR */}
-                                {(user === 'apoyo' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle col-auto'>{d.area_enfoque}</td>}
+                                {(user === 'apoyo' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle col-auto'>{d.areaEnfoque && d.areaEnfoque.charAt(0).toUpperCase() + d.areaEnfoque.slice(1)}</td>}
                                 {/* PARA LIDER, TUTOR Y EVALUADOR*/}
-                                {(user === 'coordinador' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle'>{d.fecha_creacion}</td>}
+                                {(user === 'coordinador' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle'>{d.fechaCorte && d.fechaCorte[0] && d.fechaCorte[1] && d.fechaCorte[2] && `${d.fechaCorte[2].toString().padStart(2, '0')}/${d.fechaCorte[1].toString().padStart(2, '0')}/${d.fechaCorte[0]}`}</td>}
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>vistaPlan()} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
-                                        <button type="button" className="btn" value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>descargarPlan(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
