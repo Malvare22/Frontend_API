@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral nombre={localStorage.getItem("titulo")} rol="tutor"></InfoGeneral>
-        <Observaciones nombre={localStorage.getItem("titulo")} rol="tutor"></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")} rol="coordinador"></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")} rol="coordinador"></Observaciones>
         {/* rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario} */}
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -22,7 +22,7 @@ export default function VistaIdea() {
             </div>
         </div>
         {true ?
-            <Historial nombre={localStorage.getItem("titulo")} rol="tutor"></Historial>
+            <Historial nombre={localStorage.getItem("titulo")} rol="coordinador"></Historial>
             : ""}
 
     </div>
