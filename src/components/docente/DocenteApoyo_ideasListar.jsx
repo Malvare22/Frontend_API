@@ -42,6 +42,36 @@ const Table = ({ data }) => {
         localStorage.setItem('titulo', titulo);
         navigate('../Apoyo/Ideas/Vista');
     };
+    const descargarArchivo = (nombre) => {
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + nombre;
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    }
     return (
         <Sdiv>
             <div className='w-auto'>
@@ -68,7 +98,7 @@ const Table = ({ data }) => {
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
-                                        <button type="button" className="btn" value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={() => descargarArchivo(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
@@ -113,8 +143,6 @@ const Filters = ({ onFilter }) => {
     const [estudiante, setEstudiante] = useState('');
     const [area, setArea] = useState('');
     const [estado, setEstado] = useState('');
-    const [fechaInicio, setFechaInicio] = useState('');
-    const [fechaFin, setFechaFin] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -122,21 +150,7 @@ const Filters = ({ onFilter }) => {
             estudiante,
             area,
             estado,
-            fechaInicio,
-            fechaFin
         };
-        if ((fechaInicio && !fechaFin) || (!fechaInicio && fechaFin)) {
-            alert("Se requiere tanto la fecha de inicio como la fecha de fin para filtrar.");
-            return;
-        }
-        if (fechaInicio && fechaFin) {
-            const dateInicio = new Date(fechaInicio);
-            const dateFin = new Date(fechaFin);
-            if (dateInicio > dateFin) {
-                alert("La fecha de inicio no puede ser mayor que la fecha de fin.");
-                return;
-            }
-        }
         onFilter(filters);
     };
 
@@ -162,12 +176,6 @@ const Filters = ({ onFilter }) => {
                 <option value="formulado">Formulación</option>
                 <option value="pendiente">Pendiente</option>
             </select>
-        </div>
-        <div className="col-auto d-flex align-items-center mb-1">
-            <input name="fecha_inicio" onChange={(e) => setFechaInicio(e.target.value)} type="date" className="fw-bold text-black form-control-sm" id="start" min="2020-01-01" max="3000-12-31"></input>
-        </div>
-        <div className="col-auto d-flex align-items-center mb-1">
-            <input name="fecha_fin" onChange={(e) => setFechaFin(e.target.value)} type="date" className="fw-bold text-black form-control-sm" id="finish" min="2020-01-01" max="3000-12-31"></input>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
             <button type="submit" className="btn btn-warning fw-bold text-black">Aplicar</button>
@@ -200,14 +208,25 @@ export default function Listar_Ideas() {
     }, []);
     const handleFilter = async (filters) => {
         var formData = new FormData();
-        formData.append('estudianteEmail', filters.estudiante);
-        formData.append('area', filters.area);
-        formData.append('estado', filters.estado);
-        formData.append('fechaInicio', filters.fechaInicio);
-        formData.append('fechaFin', filters.fechaFin);
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
+        var parsedData = JSON.parse(localData);
+        formData.append('docenteCodigo', parsedData.codigo);
+        if (filters.estudiante !== '') {
+            formData.append('estudianteCodigo', filters.estudiante);
+        }
+        if (filters.area !== '') {
+            formData.append('area', filters.area);
+        }
+        if (filters.estado !== '') {
+            formData.append('estado', filters.estado);
+        }
         try {
-            let value;
-            value = await axios.get("http://localhost:8080/ideaNegocio/filtrar", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") }, data: formData }
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            const value = await axios.post("http://localhost:8080/ideaNegocio/IdeasDocentesApoyo",  formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -284,7 +303,7 @@ function Getestudiantes() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+                <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
