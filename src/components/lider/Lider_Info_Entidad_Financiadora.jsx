@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import imageDefault from './../../assets/images/Users/default_profile.png'
+import default_profile from './../../assets/images/Users/default_profile.png'
+
 
 const Information = (props) => {
     let email = "mailto:" + props.correo;
@@ -14,7 +16,7 @@ const Information = (props) => {
                             <div className="row">
                                 <div className="col-1 ms-4 p-4 d-flex justify-content-center align-items-center">
                                     <div>
-                                        {props.imagen ? <img className='rounded-circle' src={props.imagen} alt="Imagen Entidad Financiadora" /> : <img className='rounded-circle' src={imageDefault} alt="Imagen Predeterminada" />}
+                                        <img className='rounded-circle' src={`${props.foto.direccion == '' ? default_profile : props.foto.direccion}`} alt="Imagen Entidad Financiadora" />
                                     </div>
                                 </div>
                                 <div className="col d-flex align-items-center">

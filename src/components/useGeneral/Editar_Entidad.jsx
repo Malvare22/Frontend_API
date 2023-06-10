@@ -1,34 +1,30 @@
 import styled from 'styled-components';
-import defaultImage from './../../assets/images/Users/02.png'
-import pencil from './../../assets/images/Pencil.png'
 import { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
-import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
-import { createRef } from 'react';
-import { useRef } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import axios from 'axios';
-import { contraseniaNoCumple, toLiderFormatStudentsFromImport, toLiderFormatStudentsToExport } from '../../context/functions_general';
-import { FormEstudiante, HeadEdit } from '../useGeneral/UsersForm';
+import FormEntidad from './Form_Entidad';
+import { HeadEdit, HeadRegister } from './UsersForm';
 
 //Componente general
-export default function LiderEditarPerfilEstudiante() {
+export default function EntidadEditar(props) {
+    let entidad = null;
+    if(props.type!='registrar')
+    entidad = JSON.parse(localStorage.getItem(props.location))
+    
+    return (
 
-    const usuario = JSON.parse(localStorage.getItem('ESTUDIANTE_INFORMATION'))
-
-    return (<SContent>
+        <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    <HeadEdit></HeadEdit>
+                    {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
                 </div>
-                <div className='' id="info"> <FormEstudiante user={usuario} type={"sudo"}></FormEstudiante></div>
+                <div className='' id="info"> <FormEntidad entidad={entidad} type={props.type}/></div>
             </div>
-        </SContent>);
-};
+        </SContent>
 
-//Listado de Cursos para combobox (útil para carga y validación de dato curso)
-const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
+    );
+};
 
 const SContent = styled.div`
     #d_head{

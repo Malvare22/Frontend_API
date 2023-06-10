@@ -9,19 +9,22 @@ import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { FormDocente, HeadEdit } from '../useGeneral/UsersForm';
+import { FormAdministrativo, FormDocente, HeadEdit, HeadRegister } from './UsersForm'
 
 //Componente general
-export default function LiderDocenteEditar() {
-
+export default function AdministrativoEditarPerfil(props) {
+    let user = null;
+    if(props.type!='registrar')
+        user = JSON.parse(localStorage.getItem(props.location))
+    
     return (
 
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    <HeadEdit></HeadEdit>
+                {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
                 </div>
-                <div className='' id="info"> <FormDocente user={JSON.parse(localStorage.getItem('DOCENTE_INFORMATION'))}></FormDocente></div>
+                <div className='' id="info"> <FormAdministrativo user={user} type={props.type}></FormAdministrativo></div>
             </div>
         </SContent>
 

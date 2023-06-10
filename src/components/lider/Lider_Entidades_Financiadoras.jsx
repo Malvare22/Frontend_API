@@ -3,24 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Information from './Lider_Info_Entidad_Financiadora'
 
 export default function EntidadesFinanciadoras() {
-  const [datos, setDatos] = useState([]);
-
-  const entidad_Financiadora = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/entidadFinanciadora/' + localStorage.getItem("correo"), {
-        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-      });
-      console.log(response.data);
-      setDatos(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    entidad_Financiadora();
-  }, []);
-
+  const datos = JSON.parse(localStorage.getItem("ENTIDAD_INFORMATION"))
 
   return (
     <div className="container">
@@ -31,7 +14,7 @@ export default function EntidadesFinanciadoras() {
         sitioweb={datos.sitioWeb}
         correo={datos.correo}
         descripcion={datos.descripcion}
-        imagen={datos.fotoEntidadFinanciadoraId}
+        foto={datos.foto}
       />
     </div>
   )
