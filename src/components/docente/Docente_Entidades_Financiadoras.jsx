@@ -6,41 +6,31 @@ export default function EntidadesFinanciadoras() {
     const [datos, setDatos] = useState([]);
 
     const entidad_Financiadora = async () => {
-        let value = null;
-        value = await axios.get('../entidadesFinanciadoras.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        try {
+            const response = await axios.get('http://localhost:8080/entidadFinanciadora/' + localStorage.getItem("correo"), {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-        setDatos(value)
-        console.log(value)
+            console.log(response.data);
+            setDatos(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
+
     useEffect(() => {
         entidad_Financiadora();
-
     }, []);
-
-    let datosPosicion1 = [];
-    if (datos.length > 1) {
-        datosPosicion1 = [datos[1]];
-    }
 
     return (
         <div className="container">
-            <h3 className="ms-5 mt-5">Información de la entidad financiadora</h3>
-           {datosPosicion1.map((v, i) => (
-                <div key={i}>
-                    <Information
-                        nombre={v.nombre}
-                        telefono={v.telefono}
-                        sitioweb={v.sitioWeb}
-                        correo={v.correo}
-                        descripcion={v.descripcion}
-                    />
-                </div>
-            ))}
+            <h3 className="ms-5 mt-5"><b>Información de la entidad financiadora</b></h3>
+            <Information
+                nombre={datos.nombre}
+                telefono={datos.telefono}
+                sitioweb={datos.sitioWeb}
+                correo={datos.correo}
+                descripcion={datos.descripcion}
+            />
         </div>
     )
 }

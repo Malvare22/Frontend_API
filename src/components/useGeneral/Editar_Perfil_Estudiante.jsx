@@ -1,30 +1,26 @@
 import styled from 'styled-components';
-import defaultImage from './../../assets/images/Users/02.png'
+import image from './../../assets/images/Pencil.png'
+import image2 from './../../assets/images/Users/01.png'
 import { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input } from 'reactstrap';
-import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { createRef } from 'react';
-import { useRef } from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input, Label } from 'reactstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { FormEstudiante, HeadEdit, HeadRegister } from './UsersForm';
 import { useEffect } from 'react';
-import axios from 'axios';
-import ImageContainer from '../useGeneral/ImagePreview';
-import WindowForPassword from '../useGeneral/ProfilesValidations';
-import ModalPassword from '../useGeneral/ModalConfirmation';
-import useForm, { FormDocente, HeadEdit } from '../useGeneral/UsersForm';
-
 
 //Componente general
-export default function DocentePerfilEditar() {
-
+export default function EstudianteEditarPerfil(props) {
+    let user = null;
+    if(props.type!='registrar')
+        user = JSON.parse(localStorage.getItem(props.location))
+    
     return (
 
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    <HeadEdit></HeadEdit>
+                    {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
                 </div>
-                <div className='' id="info"> <FormDocente user={JSON.parse(localStorage.getItem('MY_PROFILE_INFO'))}></FormDocente></div>
+                <div className='' id="info"> <FormEstudiante user={user} type={props.type}></FormEstudiante></div>
             </div>
         </SContent>
 
