@@ -393,6 +393,7 @@ const Evaluaciones = (props) => {
                         <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}

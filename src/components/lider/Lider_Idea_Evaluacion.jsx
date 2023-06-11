@@ -120,7 +120,7 @@ const Evaluaciones = (props) => {
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
         }
         ).then(
-            console.log("hecho")
+            window.location.reload()
         ).catch(error => {
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -193,9 +193,10 @@ const Evaluaciones = (props) => {
                     "X-Softue-JWT": localStorage.getItem("token_access")
                 }
             });
-            setAdvice_A("El Plan Hasido creado exitosamente")
+            setAdvice_A("El Plan ha sido creado exitosamente")
             console.log(response.data); // Puedes hacer algo con la respuesta recibida
         } catch (error) {
+            setAdvice_A("El Plan ya ha sido creado")
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 console.log('Respuesta del backend:', error.response.data);
@@ -375,7 +376,7 @@ const Evaluaciones = (props) => {
                                                             </svg></Button>
 
                                                         </FormGroup>
-                                                        <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : "" }</div>
+                                                        <div>{Advice !== null ? <Alert color="success">{Advice}</Alert> : "" }</div>
                                                     </Form></div> : "" : ""
                                             }
                                         </div>
@@ -394,6 +395,7 @@ const Evaluaciones = (props) => {
                         <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
@@ -436,7 +438,6 @@ const Evaluaciones = (props) => {
                     <Button color="primary" onClick={setAdverten}>Aceptar</Button>
                 </ModalFooter>
             </Modal>
-
         </main>
     )
 };

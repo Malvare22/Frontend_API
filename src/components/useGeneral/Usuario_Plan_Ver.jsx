@@ -292,7 +292,6 @@ const InfoGeneral = (props) => {
         var formData2 = new FormData();
 
         console.log(Resumen)
-        
 
         formData2.append('titulo', datos1 && datos1.titulo);
 
@@ -479,6 +478,7 @@ const InfoGeneral = (props) => {
                         <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
@@ -819,7 +819,7 @@ function Tabla(props) {
         setObservacion(a);
     }
 
-    const [Nota, setNota] = useState("aprobada");
+    const [Nota, setNota] = useState(null);
     const setNota_A = (a) => {
         setNota(a);
     }
@@ -929,6 +929,7 @@ function Tabla(props) {
                         <FormGroup>
                             <Label for="estado">Asigna una calificacion al proyecto</Label>
                             <Input onChange={(e) => { setNota_A(e.target.value) }} type="select" name="estado" id="estado">
+                                <option disabled selected>Seleccionar opción</option>
                                 <option value="aprobada">Aprobado</option>
                                 <option value="rechazada">Rechazado</option>
                             </Input>

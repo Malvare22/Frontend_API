@@ -755,7 +755,7 @@ const Observaciones = (props) => {
                                         </div>
                                         <div className="row m-4">
                                             <div className="d-flex justify-content-end">
-                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={datos && datos.estado === "formulado" ? false : true} >
+                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={datos && datos.estado === "formulado" || datos && datos.estado === "rechazada" ? false : true} >
                                                     Enviar a Evaluacion
                                                 </Button>
                                             </div>
