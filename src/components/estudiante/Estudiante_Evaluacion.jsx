@@ -26,32 +26,35 @@ const EstudianteEvaluacion = () => {
 
     return (
         
-        <div className='container' style={{width : "80%"}}>
-        <Sobreponer>
-            <div id="titulo1" className="rounded-4 mt-4" style={{ background: '#DC4B4B' }}>
-                <div className="row">
-                    <div className="d-flex col ms-3">
-                        <h5 className="m-0 p-3" style={{ color: 'black'}}>
-                            <b>Evaluación</b>
-                        </h5>
+        <div className="container">
+            <img src="https://live.staticflickr.com/65535/52965391213_c807af25a6_o.png" className='img-fluid mt-2' />
+            <div className='container' style={{ width: "80%" }}>
+                <Sobreponer>
+                    <div id="titulo1" className="rounded-4 mt-4" style={{ background: '#DC4B4B' }}>
+                        <div className="row">
+                            <div className="d-flex col ms-3">
+                                <h5 className="m-0 p-3" style={{ color: 'black' }}>
+                                    <b>Evaluación</b>
+                                </h5>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div className="row mx-3 rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
+                        <form>
+                            {datos && datos.map((v, i) => {
+                                return (
+                                    <Pregunta key={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
+                                );
+                            })}
+                            <div className="d-flex justify-content-center mb-3">
+                                <button type="submit" className="btn mt-2 rounded-4" style={{ background: '#DC4B4B', color: 'black' }}>
+                                    <b>Enviar</b>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </Sobreponer>
             </div>
-            <div className="row mx-3 rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
-                <form>
-                    {datos && datos.map((v, i) => {
-                        return (
-                            <Pregunta key={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
-                        );
-                    })}
-                    <div className="d-flex justify-content-center mb-3">
-                        <button type="submit" className="btn mt-2 rounded-4" style={{ background: '#DC4B4B', color: 'black' }}>
-                          <b>Enviar</b>
-                        </button>
-                      </div>
-                </form> 
-            </div>
-        </Sobreponer>
         </div>
         
     );
