@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral nombre={localStorage.getItem("titulo")} rol="tutor"></InfoGeneral>
-        <Observaciones nombre={localStorage.getItem("titulo")} rol="tutor"></Observaciones>
+        <InfoGeneral nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></InfoGeneral>
+        <Observaciones nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Observaciones>
         {/* rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario} */}
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -22,7 +22,7 @@ export default function VistaIdea() {
             </div>
         </div>
         {true ?
-            <Historial nombre={localStorage.getItem("titulo")} rol="tutor"></Historial>
+            <Historial nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Historial>
             : ""}
 
     </div>
@@ -690,7 +690,7 @@ const Observaciones = (props) => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla nombre={props.nombre}></Tabla>
+                                    <Tabla nombre={props.nombre} rol={props.rol}></Tabla>
                                     {props.rol == "estudiante" ?
                                         <div className="d-flex m-3 align-content-center justify-content-center col-12">
                                             <Form >
@@ -971,7 +971,7 @@ function Tabla(props) {
                 </Sdiv>
 
                 <div className=" mt-4 ">
-                    {props.rol == "tutor" || props.rol == "apoyo" ?
+                    {props.rol==="tutor" || props.rol === "apoyo" ?
                         <div className="row m-4">
                             <div className="d-flex justify-content-end">
                                 <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>

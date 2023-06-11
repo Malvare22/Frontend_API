@@ -1,41 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Tabla } from '../useGeneral/Tabla';
+import axios from 'axios';
 
-export default function listarPreguntas() {
-    let datos = [
-        {
-            "id" : 1,
-            "Enunciado" : "Triste estoy",
-            "Componente" : "Liderazgo",
-        },
-        {
-            "id" : 1,
-            "Enunciado" : "feliz estoy",
-            "Componente" : "Liderazgo",
-        },
-        {
-            "id" : 1,
-            "Enunciado" : "enojada estoy",
-            "Componente" : "Liderazgo",
-        },
-        {
-            "id" : 1,
-            "Enunciado" : "Fastidiada estoy",
-            "Componente" : "Liderazgo",
-        },
-        {
-            "id" : 1,
-            "Enunciado" : "Fastidiada estoy",
-            "Componente" : "Liderazgo",
-        },
-        {
-            "id" : 1,
-            "Enunciado" : "Fastidiada estoy",
-            "Componente" : "Liderazgo",
+export default function useListarPreguntas() {
+    const [preguntaInfo, setPreguntaInfo] = useState([]);
+
+    const getPreguntas = async () => {
+    try {
+        const config = {
+        headers: {
+            "X-Softue-JWT": localStorage.getItem('token_access')
         }
-    ];
-    let columnas = ["id", "Enunciado", "Componente"];
-        
+        }
+        const response = await axios.get('http://localhost:8080/pregunta', config);
+        setPreguntaInfo(response.data);
+    } catch (error) {
+        console.error("Error al obtener las preguntas:", error);
+    }
+    };
+    useEffect(() => {
+    getPreguntas();
+    }, []);
+
+    let columnas = ["id", "enunciado", "componente"];
+
+    const preguntasConComponente = preguntaInfo.map((pregunta) => {
+        return {
+          ...pregunta,
+          componente: pregunta.componenteCompetenciasId.nombre
+        };
+      });
+
     const handleEliminarClick = (dato) => {
         console.log(dato);
     }
@@ -47,7 +42,7 @@ export default function listarPreguntas() {
     return (
         <div className='m-5'>
             <h1 className="fst-italic fw-bold fs-1 text-black mb-4">Preguntas Evaluacion de emprendimiento</h1>
-            {Tabla({ datos, columnas, handleEliminarClick, handleEditarClick})}
+            <Tabla datos={preguntasConComponente} columnas={columnas} handleEliminarClick={handleEliminarClick} handleEditarClick={handleEditarClick} />
         </div>
     );
 }

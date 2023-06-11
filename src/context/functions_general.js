@@ -17,7 +17,10 @@ export function toLiderFormatStudentsFromImport(students){
 export function importStudents(students){
     
     return students.map((student)=>{
-        student.curso= student.curso.charAt(0).toUpperCase() + student.curso.slice(1)
+        const split = (student.curso).split('-')
+        student.cursoToString = student.curso
+        student.curso= split[0]
+        student.subcurso = split[1]
         setDateAndYearsOld(student)
         student.sexo = setGenreToImport(student)
         student.nombre_acudiente = student.nombreAcudiente
@@ -70,7 +73,7 @@ export function toLiderFormatStudentsToExport(students){
 export function exportStudents(students){
     
     return students.map((student)=>{
-        student.curso= (student.curso.toLowerCase()).normalize('NFD').replace(/[\u0300-\u036f]/g,"")
+        student.curso= student.curso + "-" + student.subcurso
         student.sexo = setGenreToExport(student)
         student.nombreAcudiente = student.nombre_acudiente
         student.tipoUsuario = 'estudiante'
@@ -106,7 +109,7 @@ export function importDocents(docentes){
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
         setDateAndYearsOld(elemento)
-        elemento.area= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
+        elemento.areaToString= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
         return elemento
     })
 }
