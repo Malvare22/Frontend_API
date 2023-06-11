@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import styled from 'styled-components';
 import axios from "axios";
@@ -162,7 +162,9 @@ export default function Listar_Formatos() {
     const [filteredData, setFilteredData] = useState([]);
     const getFormatos = async () => {
         try {
-            const response = await axios.get("../formatos.json");
+            const response = await axios.get('http://localhost:8080/formato/listar', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
             setFilteredData(response.data);
         } catch (error) {
             console.error(error);
@@ -193,19 +195,21 @@ export default function Listar_Formatos() {
                         <Table data={filteredData}></Table>
                         <br></br>
                         <div className="d-flex justify-content-end">
-                            <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
-                                <div className="row">
-                                    <div className="col-auto">
-                                        Subir formato
+                            <Link to={'../AgregarFormato'} style={{ textDecoration: "none"}}>
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                    <div className="row">
+                                        <div className="col-auto">
+                                            Subir formato
+                                        </div>
+                                        <div className="col-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-upload" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
+                                            </svg>
+                                        </div>
                                     </div>
-                                    <div className="col-auto">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </button>
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>
