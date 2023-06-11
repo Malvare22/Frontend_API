@@ -272,13 +272,13 @@ export default function Listar_Ideas() {
     let formData = new FormData()
     console.log(filters);
     if (filters.estudiante !== '') {
-      formData.append('estudianteEmail', filters.estudiante);
+      formData.append('codigoEstudiante', filters.estudiante);
     }
     if (filters.area !== '') {
       formData.append('area', filters.area);
     }
     if (filters.tutor !== '') {
-      formData.append('docenteEmail', filters.tutor);
+      formData.append('tutorCodigo', filters.tutor);
     }
     if (filters.estado !== '') {
       console.log(filters.estado)
@@ -368,7 +368,7 @@ function Getdocentes() {
   return (
     datos && datos.map((d) => {
       return (
-        <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
     })
   )
@@ -392,7 +392,7 @@ function Getestudiantes() {
   return (
     datos2 && datos2.map((d) => {
       return (
-        <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
     })
   )

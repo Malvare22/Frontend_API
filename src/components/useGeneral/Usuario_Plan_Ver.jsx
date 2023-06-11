@@ -12,17 +12,20 @@ export default function VistaIdea() {
         <InfoGeneral nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></InfoGeneral>
         <Observaciones nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Observaciones>
         {/* rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario} */}
-        <div className="container-fluid" style={{ width: "95%" }}>
-            <div className="row">
-                <div className="col-12">
-                    <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
-                        <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
+        {(JSON.parse(localStorage.getItem("info_plan"))).rol !== "evaluador" ?
+            <div>
+                <div className="container-fluid" style={{ width: "95%" }}>
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
+                                <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <Historial nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Historial>
             </div>
-        </div>
-        {true ?
-            <Historial nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Historial>
             : ""}
 
     </div>
@@ -289,6 +292,7 @@ const InfoGeneral = (props) => {
         var formData2 = new FormData();
 
         console.log(Resumen)
+        
 
         formData2.append('titulo', datos1 && datos1.titulo);
 
@@ -368,8 +372,8 @@ const InfoGeneral = (props) => {
                                                 <p>{datos1.tutorInfo && datos1.tutorInfo[1]}</p>
                                             </div>
                                         </div>
-                                        {props.rol == "coordinador" ? <div> <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false} >Asignar</button>
-                                            <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button> </div> : ""}
+                                        {props.rol === "coordinador" ? <div> <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} >Asignar</button>
+                                            {/* {<button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" >Eliminar</button>*/} </div> : ""} 
 
 
 
