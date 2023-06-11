@@ -183,10 +183,10 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
             </div>
             <div className="row text-center">
                 <div className="col-12 col-md-6">
-                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickEnviar}>Enviar Datos</button>
+                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickEnviar}>Guardar cambios</button>
                 </div>
                 <div className="col-12 col-md-6">
-                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickAgregar}>Agregar pregunta</button>
+                    <button className='btn mt-4' id='btn-Azul' onClick={handleClickAgregar}>Agregar Respuesta</button>
                 </div>
             </div>
 

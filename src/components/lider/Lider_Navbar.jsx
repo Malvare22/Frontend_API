@@ -111,7 +111,7 @@ const SideBarStatic = () => {
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Preguntas
+              <Link to={'Preguntas/Listar'} style={{ textDecoration: "none", color: "white" }}>Preguntas</Link>
             </NavLink>
           </NavItem>
           <NavItem>
