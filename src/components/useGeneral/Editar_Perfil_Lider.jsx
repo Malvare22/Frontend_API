@@ -2,27 +2,29 @@ import styled from 'styled-components';
 import defaultImage from './../../assets/images/Users/02.png'
 import pencil from './../../assets/images/Pencil.png'
 import { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
-import { Link, useLoaderData, useNavigate, useNavigation } from 'react-router-dom';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Input } from 'reactstrap';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { createRef } from 'react';
 import { useRef } from 'react';
 import { Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { confirmPassword, contraseniaNoCumple, toLiderFormatStudentsToExport } from '../../context/functions_general';
-import { FormEstudiante, HeadRegister } from '../useGeneral/UsersForm';
+import { FormAdministrativo, FormDocente, FormLider, HeadEdit, HeadRegister } from './UsersForm'
 
 //Componente general
-export default function LiderEstudianteRegistrar() {
-
+export default function LiderEditarPerfil(props) {
+    let user = null;
+    if(props.type!='registrar')
+        user = JSON.parse(localStorage.getItem(props.location))
+    
     return (
 
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    <HeadRegister></HeadRegister>
+                {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
                 </div>
-                <div className='' id="info"> <FormEstudiante user={JSON.parse(localStorage.getItem('ESTUDIANTE_INFORMATION'))} type={'registrar'}></FormEstudiante></div>
+                <div className='' id="info"> <FormLider user={user} type={props.type}></FormLider></div>
             </div>
         </SContent>
 
@@ -90,3 +92,4 @@ const SContent = styled.div`
             margin: 0px;
         }
     `;
+

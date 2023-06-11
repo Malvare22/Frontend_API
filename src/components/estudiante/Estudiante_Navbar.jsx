@@ -71,12 +71,12 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Capacitacion
+              Capacitación
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Evaluacion
+              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
             </NavLink>
           </NavItem>
 
@@ -99,7 +99,7 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+              <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -131,7 +131,7 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+              <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -260,12 +260,12 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Capacitacion
+                Capacitación
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Evaluacion
+                <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
               </NavLink>
             </NavItem>
 
@@ -288,7 +288,7 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+                <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -320,7 +320,7 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+                <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
