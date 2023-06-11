@@ -1,5 +1,19 @@
 import axios from 'axios';
 
+export const getPreguntas = async ({preguntaInfo, setPreguntaInfo}) => {
+    try {
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        const response = await axios.get('http://localhost:8080/pregunta', config);
+        setPreguntaInfo(response.data);
+    } catch (error) {
+        console.error("Error al obtener las preguntas:", error);
+    }
+};
+
 export const getPregunta = async ({preguntaInfo, setPreguntaInfo}) => {
     try {
         const config = {
@@ -73,19 +87,14 @@ export const actualizarPregunta = async (datos) => {
     }
 };
 
-export const eliminarPregunta = async ({preguntaInfo, setPreguntaInfo}) => {
+export const eliminarPregunta = async ({idPregunta}) => {
     try {
         const config = {
             headers: {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.get(`http://localhost:8080/pregunta/${localStorage.getItem('idPregunta')}`, config);
-        const preguntaData = {
-            ...response.data,
-            componente: response.data.componenteCompetenciasId.nombre
-          };
-        setPreguntaInfo(preguntaData);
+        await axios.delete(`http://localhost:8080/pregunta/${idPregunta}`, config);
         
     } catch (error) {
         console.error("Error al obtener las preguntas:", error);

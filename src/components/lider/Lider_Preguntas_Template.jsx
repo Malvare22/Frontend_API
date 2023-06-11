@@ -116,7 +116,6 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                 }
             ]
         }));
-        console.log(nextRespuestaId);
     };
 
     const handleRespuestaChange = (id, updatedRespuesta, eliminar = false) => {
