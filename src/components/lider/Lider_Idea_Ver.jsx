@@ -62,26 +62,43 @@ const InfoGeneral = (props) => {
     }, []);
 
 
+    {/* llistar areas de conocimiento*/ }
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setAreas(data);
+            console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+
+    {/*Listar docentes por area*/ }//asdasdasdasdad
+
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        let value = null;
-        //let ruta = 'http://144.22.37.238:8080/docente/listar';
-        let ruta = 'http://localhost:8080/docente/listar';
-        value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-        ).then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error("Historial",error);
+        try {
+            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-        setProfesores(value)
-        console.log("Docentes", value)
-
+            const data = response.data;
+            setProfesores(data);
+            console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
     };
     useEffect(() => {
         getProfesores();
-    }, []);
+    }, [Area]);
 
     const [TutorNuevo, setTutorN] = useState(null);
     const getTutorN = (a) => {
@@ -146,7 +163,6 @@ const InfoGeneral = (props) => {
                  });
                  console.log(value);
                  toggleAlertEliminar();
-                 window.location.reload();
         }else{
             console.log("Ando vacio vago")
         }
@@ -187,7 +203,7 @@ const InfoGeneral = (props) => {
             });
     };
 
-
+    
 
     let set = new Set();
 
@@ -244,8 +260,8 @@ const InfoGeneral = (props) => {
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false} >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button>
+                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert}  >Asignar</button>
+                                        {/* <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button> */}
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -294,12 +310,13 @@ const InfoGeneral = (props) => {
                 </div>
 
             }
-            <Modal centered isOpen={viewAlert}>
+            {/* <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">Escoge al docente que necesitas</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {profesores && profesores.map((l, i) => {
                                 if (set.has(l.area)) {
                                     return ("");
@@ -327,6 +344,31 @@ const InfoGeneral = (props) => {
                     <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
+            </Modal> */}
+
+             <Modal centered isOpen={viewAlert}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge el area del docente: </Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Seleccciona al docente: </Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { getTutorN(e.target.value) }} multiple>
+                            {profesores && profesores.map((l) => {
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                            })}
+                        </Input>
+                    </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
+                        <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
             </Modal>
 
             <Modal centered isOpen={viewAlertEliminar}>
