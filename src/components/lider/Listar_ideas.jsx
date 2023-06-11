@@ -39,7 +39,7 @@ const Table = ({ data }) => {
   };
   const sortData = () => {
     const { column, ascending } = orderBy;
-    return data.slice().sort((a, b) => {
+    return data && data.slice().sort((a, b) => {
       let comparison = 0;
       if (column === 'Título') {
         comparison = a.titulo && a.titulo.localeCompare(b.titulo);
@@ -272,13 +272,13 @@ export default function Listar_Ideas() {
     let formData = new FormData()
     console.log(filters);
     if (filters.estudiante !== '') {
-      formData.append('estudianteEmail', filters.estudiante);
+      formData.append('codigoEstudiante', filters.estudiante);
     }
     if (filters.area !== '') {
       formData.append('area', filters.area);
     }
     if (filters.tutor !== '') {
-      formData.append('docenteEmail', filters.tutor);
+      formData.append('tutorCodigo', filters.tutor);
     }
     if (filters.estado !== '') {
       console.log(filters.estado)
@@ -329,7 +329,7 @@ export default function Listar_Ideas() {
             <Table data={filteredData}></Table>
             <br></br>
             <div className="d-flex justify-content-end">
-              {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+              <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                 <div className="row">
                   <div className="col-auto">
                     Generar informe
@@ -341,7 +341,7 @@ export default function Listar_Ideas() {
                     </svg>
                   </div>
                 </div>
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
@@ -352,8 +352,7 @@ export default function Listar_Ideas() {
 function Getdocentes() {
   const [datos, setDatos] = useState([]);
   const getDocentes = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -369,7 +368,7 @@ function Getdocentes() {
   return (
     datos && datos.map((d) => {
       return (
-        <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
     })
   )
@@ -377,8 +376,7 @@ function Getdocentes() {
 function Getestudiantes() {
   const [datos2, setDatos] = useState([]);
   const getEstudiantes = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -394,7 +392,7 @@ function Getestudiantes() {
   return (
     datos2 && datos2.map((d) => {
       return (
-        <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
     })
   )
@@ -403,8 +401,7 @@ function Getestudiantes() {
 function Getareas() {
   const [datos2, setDatos] = useState([]);
   const getAreas = async () => {
-    let value = null;
-    value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;

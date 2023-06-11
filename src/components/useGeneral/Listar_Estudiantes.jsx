@@ -49,8 +49,8 @@ const Table = (props) => {
             } else if (column === 'Estudiante') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Curso') {
-                const cursoA = parseInt(a.curso.split(' ')[0], 10);
-                const cursoB = parseInt(b.curso.split(' ')[0], 10);
+                const cursoA = parseInt(a.cursoToString.split(' ')[0], 10);
+                const cursoB = parseInt(b.cursoToString.split(' ')[0], 10);
                 comparison = cursoA - cursoB;
             }
             if (!ascending) {
@@ -110,7 +110,7 @@ const Table = (props) => {
                             <tr key={d.correo}>
                                 <td className='text-center align-middle col-auto'>{d.codigo}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
-                                <td className='text-center align-middle col-auto'>{d.curso}</td>
+                                <td className='text-center align-middle col-auto'>{d.cursoToString}</td>
                                 <td className='text-center align-middle'>
                                     <div>
 

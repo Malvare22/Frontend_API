@@ -27,7 +27,7 @@ export default function EditarPregunta() {
     useEffect(() => {
         getPregunta();
     }, []);
-
+    
     const useRecibirDatos = async (datos, respuestasEliminar) => {
         console.log(datos);
     }

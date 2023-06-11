@@ -45,7 +45,7 @@ const Table = ({ data, updater }) => {
             } else if (column === 'Docente') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Area') {
-                comparison = a.area.localeCompare(b.area);
+                comparison = a.areaToString.localeCompare(b.areaToString);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -97,7 +97,7 @@ const Table = ({ data, updater }) => {
                             <tr key={d.cedula}>
                                 <td className='text-center align-middle col-auto'>{d.cedula}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
-                                <td className='text-center align-middle col-auto'>{d.area}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaToString}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={() => { toggleA(d.correo) }} value={d.cedula} style={{ width: "auto", border: "none" }}>
