@@ -82,6 +82,7 @@ const Table = ({ data }) => {
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Título')} scope="col-auto">Título</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Estudiante')} scope="col-auto">Estudiante</th>
                             <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Area')} scope="col-auto">Area</th>
+                            <th className='text-center' style={{ cursor: 'pointer' }} onClick={() => handleSort('Fecha de corte')} scope="col-auto">Fecha de corte</th>
                             <th className='text-center' scope="col-auto">Acciones</th>
                         </tr>
                     </thead>
@@ -91,6 +92,7 @@ const Table = ({ data }) => {
                                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
                                 <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo && d.estudianteLiderInfo[1][0]}</td>
                                 <td className='text-center align-middle col-auto'>{d.areaEnfoque && d.areaEnfoque.charAt(0).toUpperCase() + d.areaEnfoque.slice(1)}</td>
+                                <td className='text-center align-middle'>{d.fechaCorte && d.fechaCorte[0] && d.fechaCorte[1] && d.fechaCorte[2] && `${d.fechaCorte[2].toString().padStart(2, '0')}/${d.fechaCorte[1].toString().padStart(2, '0')}/${d.fechaCorte[0]}`}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={() => toggleA(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
@@ -260,7 +262,6 @@ export default function Listar_Ideas() {
                     console.log(data)
                     return data;
                 }).catch(error => {
-                    console.log("a");
                     if (error.response) {
                         console.log('Código de estado:', error.response.status);
                         console.log('Respuesta del backend:', error.response.data);
@@ -288,7 +289,7 @@ export default function Listar_Ideas() {
                         <br></br>
                         <div className='row'>
                             <div className="col">
-                                {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
                                             Formato actual
@@ -300,7 +301,7 @@ export default function Listar_Ideas() {
                                             </svg>
                                         </div>
                                     </div>
-                                </button> */}
+                                </button>
                             </div>
                         </div>
 

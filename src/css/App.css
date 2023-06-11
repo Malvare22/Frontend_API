@@ -88,3 +88,8 @@ body {
   .thPrueba, .tdPrueba {
       width: 60px;
   }}
+
+#btn-Azul {
+  background: rgb(48, 48, 90);
+  color: white;
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { importAdmins, importDocents, importLider, importStudents } from "./functions_general";
+import { Navigate } from "react-router-dom";
 
 export const MiPerfilDocente = async () => {
   let zelda = "http://localhost:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
@@ -350,4 +351,9 @@ export const GestionarEntidad = async () => {
   localStorage.setItem("ENTIDAD_INFORMATION", JSON.stringify({ ...entidad, "foto": { archivo: archivo, direccion: foto } }))
 
   return true;
+}
+
+export function CerrarSesion(navigate){
+  navigate('/login')
+  localStorage.clear();
 }

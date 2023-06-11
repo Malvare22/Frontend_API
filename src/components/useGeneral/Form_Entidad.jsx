@@ -6,6 +6,8 @@ import styled from "styled-components";
 import axios from "axios";
 import default_profile from './../../assets/images/Users/default_profile.png'
 
+const REGEX_NUMERO = /^[0-9][0-9\-]*[0-9]$/;
+const REGEX_URL = /^((http|https):\/\/)?([a-zA-Z0-9-]+\.)*[a-zA-Z0-9]+\.[a-zA-Z]{2,}(:\d{1,5})?(\/[^\s]*)?$/;
 
 const useForm = (initialData, validar, initialErrors) => {
     const [viewAlert, setViewAlert] = useState(false);
@@ -68,7 +70,7 @@ const validar = (entidad) => {
         fail = true;
     }
 
-    if (isNaN(entidad.telefono) || entidad.telefono.length != 10) {
+    if (entidad.telefono.trim() == '' || REGEX_NUMERO.exec(entidad.telefono) == null) {
         errors.telefono = true;
         fail = true;
     }
@@ -77,6 +79,17 @@ const validar = (entidad) => {
         errors.correo = true;
         fail = true;
     }
+
+    if (entidad.descripcion.trim() == '') {
+        errors.descripcion = true;
+        fail = true;
+    }
+
+    if (entidad.sitioWeb.trim() == '' || REGEX_URL.exec(entidad.sitioWeb) == null) {
+        errors.sitioWeb = true;
+        fail = true;
+    }
+
     if (fail == false) return null;
     return errors;
 };
@@ -154,7 +167,7 @@ const FormEntidad = (props) => {
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -164,7 +177,7 @@ const FormEntidad = (props) => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.sitioWeb ? "is-invalid" : ""}`} name='sitioWeb' value={form.sitioWeb} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite sitios web con sintaxis válidas.</div>
+                                <div className="invalid-feedback">Este campo solo admite sitios web con sintaxis válidas. <br></br> Por ejemplo: https://www.ejemplo.com</div>
                             </div>
                         </div>
                         <div className='row'>
@@ -182,7 +195,7 @@ const FormEntidad = (props) => {
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <textarea type="text" className={`form-control ${errors.descripcion ? "is-invalid" : ""}`} name='descripcion' value={form.descripcion} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                <div className="invalid-feedback">Este campo es obligatorio.</div>
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "3%" }}>
