@@ -115,7 +115,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
             <Route path='Perfil' element={<LiderPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilLider} />
-            <Route path='Perfil/Editar' element={<LiderEditarPerfil location={"MY_PROFILE_INFO"}/>} loader={MiPerfilLider}/>
+            <Route path='Perfil/Editar' element={<LiderEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'}/>} loader={MiPerfilLider}/>
             <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
@@ -127,7 +127,7 @@ const router = createBrowserRouter(
 
             <Route path='Docentes' element={<ListarDocentes/>}></Route>
             <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={true} />} loader={GestionarDocente} />
-            <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'edit'} />} loader={GestionarDocente} />
+            <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'sudo'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
             
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
@@ -149,7 +149,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='Perfil' element={<AdministrativoPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilAdministrativo}></Route>
-            <Route path='Perfil/Editar' element={<AdministrativoEditarPerfil location={"MY_PROFILE_INFO"}/>} loader={MiPerfilAdministrativo}></Route>
+            <Route path='Perfil/Editar' element={<AdministrativoEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'}/>} loader={MiPerfilAdministrativo}></Route>
             
             <Route path='Estudiantes' element={<ListarEstudiantes/>} />
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
@@ -158,12 +158,12 @@ const router = createBrowserRouter(
 
             <Route path='Docentes' element={<ListarDocentes/>}></Route>
             <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={true} />} loader={GestionarDocente} />
-            <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'edit'} />} loader={GestionarDocente} />
+            <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'sudo'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
             
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
             <Route path='Administrativos/Perfil' element={<AdministrativoPerfil location={'ADMINISTRATIVO_INFORMATION'} editable={true} />} loader={GestionarAdministrativo}></Route>
-            <Route path='Administrativos/Perfil/Editar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'editar'} />} loader={GestionarAdministrativo}></Route>
+            <Route path='Administrativos/Perfil/Editar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'sudo'} />} loader={GestionarAdministrativo}></Route>
             <Route path='Administrativos/Registrar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'registrar'} />} loader={GestionarAdministrativo}></Route>
 
             
@@ -176,7 +176,7 @@ const router = createBrowserRouter(
 
             <Route path='Lider' element={<AdministrativoVerPerfilLider/>} />
             <Route path='Lider/Registrar' element={<LiderEditarPerfil type={'registrar'}/>} />
-            <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'editar'}/>} loader={GestionarLider}/>
+            <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />

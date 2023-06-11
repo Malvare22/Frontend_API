@@ -15,6 +15,7 @@ import { FormAdministrativo, FormDocente, HeadEdit, HeadRegister } from './Users
 export default function DocenteEditarPerfil(props) {
     let user = null;
     const labelText = 'Docente';
+    console.log(props.type)
 
     if(props.type!='registrar')
         user = JSON.parse(localStorage.getItem(props.location))

@@ -84,16 +84,35 @@ const getPresentDate = () => {
     return `${year}-${month}-${day}`;
 }
 
-const changePassword = async (contrasenia) => {
-    const config = {
-        headers: {
-            "X-Softue-Reset": localStorage.getItem('token_access')
+const changePassword = async (correo, contrasenia, type) => {
+
+    if(type=='sudo'){
+        console.log('Vamos bien?')
+        let formData = new FormData()
+        formData.append("correo", correo)
+        formData.append("contrasenia", contrasenia)
+
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
         }
+
+        await axios.patch('http://localhost:8080/coordinador/restablecerOtroUsuario', formData, config)
     }
-    const dataToSend = {
-        "password": contrasenia
+    else{
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        const data = {
+            "password" : contrasenia
+        }
+        await axios.patch('http://localhost:8080/coordinador/reestablecer', data, config)
+
     }
-    await axios.patch('http://localhost:8080/coordinador/reestablecer', dataToSend, config)
+    
 }
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -272,7 +291,7 @@ export function FormDocente({ user, type }) {
                 console.log('Export', dataToSend)
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
-                    await changePassword(form.contrasenia)
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
@@ -542,9 +561,9 @@ export const FormEstudiante = ({ user, type }) => {
             else {
 
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
-                if (type == 'sudo') {
+                if (type != 'estudiante') {
                     if (form.contrasenia != '') {
-                        await changePassword(form.contrasenia)
+                        await changePassword(form.correo, form.contrasenia, type)
                     }
                 }
             }
@@ -802,13 +821,11 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             else {
-                console.log('HALT')
                 await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
-                if (type == 'editar') {
-                    if (form.contrasenia != '-') {
-                        await changePassword(form.contrasenia)
-                    }
+                if (form.contrasenia != '-') {
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
+                
             }
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
@@ -1027,7 +1044,7 @@ export const FormLider = ({ user, type }) => {
 
                 await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
-                    await changePassword(form.contrasenia)
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
