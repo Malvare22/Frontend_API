@@ -109,7 +109,7 @@ export function importDocents(docentes){
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
         setDateAndYearsOld(elemento)
-        elemento.area= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
+        elemento.areaToString= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
         return elemento
     })
 }

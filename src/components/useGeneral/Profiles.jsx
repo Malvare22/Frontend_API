@@ -287,7 +287,7 @@ const DocenteInformacion = (props) => {
                         Área:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.area}
+                        {props.usuario.areaToString}
                     </div>
                 </div>
                 <div className='row'>
