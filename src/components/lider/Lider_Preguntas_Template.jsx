@@ -200,7 +200,6 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                     errorRespuesta={errorRespuestasState.find(error => error.id === respuesta.id) || {}}
                 />
             ))}
-
         </div>
 
     );
