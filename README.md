@@ -7,8 +7,6 @@
 - bootstrap: npm i bootstrap
 - react-bootstrap: npm i react-bootstrap
 - axios: npm install axios
-- mui material: npm install @mui/material --force
-- mui react/styled: npm install @mui/material @emotion/react @emotion/styled
 
 
 # Getting Started with Create React App
