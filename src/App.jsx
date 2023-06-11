@@ -85,6 +85,8 @@ import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
+import Listar_Areas from './components/lider/Lider_areasListar';
+import RegistrarArea from './components/lider/Lider_Areas_Registrar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -143,8 +145,9 @@ const router = createBrowserRouter(
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />
-            <Route path='componentes' element={<Listar_Componentes></Listar_Componentes>}/>
-            <Route  path='TiemposEvaluacion' element={<TiemposEvaluacionAgregar></TiemposEvaluacionAgregar>}/>
+            <Route path='TiemposEvaluacion' element={<TiemposEvaluacionAgregar></TiemposEvaluacionAgregar>}/>
+            <Route path='Areas/Listar' element={<Listar_Areas></Listar_Areas>}></Route>
+            <Route path='Areas/Registrar' element={<RegistrarArea></RegistrarArea>}></Route>
 
             {/** Rutas del manejo de preguntas */}
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
