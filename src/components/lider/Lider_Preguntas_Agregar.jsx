@@ -20,17 +20,17 @@ export default function AgregarPregunta() {
 
     const useRecibirDatos = async (datos, respuestasEliminar) => {
         console.log("Datos recibidos:", datos);
-        const resultadoPregunta = await crearPregunta(datos)
+        const resultadoPregunta = await crearPregunta(datos);
         for(let i = 0; i < datos["listaRespuestas"].length; i++) {
             const respuesta = {
                 "contenido" : datos["listaRespuestas"][i]["contenido"],
                 "valor" : datos["listaRespuestas"][i]["valor"],
                 "preguntaId" : resultadoPregunta["id"]
-            }
+            };
             console.log(respuesta["preguntaId"]);
             crearRespuesta(respuesta);
         }
-        navigate(-1)
+        navigate(-1);
     };
 
     const crearPregunta = async (datos) => {
