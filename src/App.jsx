@@ -40,6 +40,8 @@ import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
 import LiderVistaEntidadFinanciadora from './components/lider/Lider_Entidades_Financiadoras';
+import LiderComponentesListar from './components/lider/Lider_componentes_listar';
+import LiderComponenteRegistrar from './components/lider/Lider_Componente_Registrar';
 import AdministrativoListarIdeas from './components/administrativo/Administrativo_ideasListar';
 import AdministrativoListarPlanes from './components/administrativo/Administrativo_planesListar';
 import AdministrativoListarEntidades from './components/administrativo/Administrativo_entidadesListar';
@@ -79,7 +81,11 @@ import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 import EntidadEditar from './components/useGeneral/Editar_Entidad';
+import Listar_Componentes from './components/lider/Lider_componentes_listar';
+import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
+import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
+import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -135,7 +141,10 @@ const router = createBrowserRouter(
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />
-          
+
+            {/** Rutas del manejo de preguntas */}
+            <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
+            <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>

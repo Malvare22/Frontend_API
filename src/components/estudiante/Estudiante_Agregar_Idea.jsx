@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Label } from 'reactstrap';
+import { Input, Label } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Formulario = () => {
 
+  const navigate = useNavigate();
   const [titulo, setTitulo] = useState('');
-  const [integrantesIdea, setIntegrantesIdea] = useState([]);
+  const [cursoSeleccionado, setCursoSeleccionado] = useState('');
+  const [integrantesSeleccionados, setIntegrantesSeleccionados] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
   const [formatoIdea, setFormatoIdea] = useState(null);
+  const [error, setError] = useState(null);
+
 
   const handleTituloChange = (e) => {
     setTitulo(e.target.value);
   };
 
-  const handleintegrantesIdeaChange = (event, values) => {
-    setIntegrantesIdea(values);
+  const handleCursoChange = e => {
+    setCursoSeleccionado(e.target.value);
+  };
+
+  const handleIntegrantesClick = (value) => {
+    if (integrantesSeleccionados.includes(value)) {
+      setIntegrantesSeleccionados(prevOptions => prevOptions.filter(option => option !== value));
+    } else {
+      setIntegrantesSeleccionados(prevOptions => [...prevOptions, value]);
+    }
   };
 
   const handleareaEnfoqueChange = (e) => {
@@ -28,13 +39,6 @@ const Formulario = () => {
     setFormatoIdea(e.target.files[0]);
   };
 
-  const [error, setError] = useState(null);
-
-  const getEmailsFromIntegrantes = () => {
-    const emails = integrantesIdea.map(estudiante => estudiante.email);
-    return emails;
-  };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,7 +47,7 @@ const Formulario = () => {
       setError(null);
       var formData = new FormData();
       formData.append('titulo', titulo);
-      formData.append('integrantes', getEmailsFromIntegrantes());
+      formData.append('integrantes', integrantesSeleccionados);
       formData.append('area', areaEnfoque);
       formData.append('documento', formatoIdea);
 
@@ -64,29 +68,28 @@ const Formulario = () => {
           }
         });
       setFormatoIdea(null);
-      //window.location.reload();
+      navigate('../ListarIdeas')
 
     } else {
       setError('Por favor, selecciona un archivo');
     }
   };
 
-  const [datos, setDatos] = useState([]);
-
-  const estudiantes = async () => {
+  const [estudiantes, setEstudiantes] = useState([]);
+  const getEstudiantes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/estudiante/listar', {
         headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
       console.log(response.data);
-      setDatos(response.data);
+      setEstudiantes(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    estudiantes();
+    getEstudiantes();
   }, []);
 
   const [areas, setAreas] = useState([]);
@@ -104,6 +107,23 @@ const Formulario = () => {
 
   useEffect(() => {
     getAreas();
+  }, []);
+
+  const [cursos, setCursos] = useState([]);
+  const getCursos = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/estudiante/listarCursos', {
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+      });
+      console.log(response.data);
+      setCursos(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCursos();
   }, []);
 
   return (
@@ -140,22 +160,45 @@ const Formulario = () => {
                           required
                         />
                       </div>
-                      <div className="mt-3">
-                        <p>
-                          <b>2. Estudiantes que hacen parte del proyecto</b>
-                        </p>
-                        <Autocomplete
-                          style={{ background: 'white' }}
-                          id="integrantes"
-                          options={datos}
-                          getOptionLabel={(option) => option.correo}
-                          value={integrantesIdea}
-                          onChange={handleintegrantesIdeaChange}
-                          multiple
-                          renderInput={(params) => <TextField {...params} variant="standard" />}
-                        />
+
+                      <div className='mt-3'>
+
+                        <Label id="texto">Escoge el curso</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={handleCursoChange} id="exampleSelect" required>
+                          <option value="">Seleccione...</option>
+                          {cursos && cursos.map((v, i) => {
+                            return (<option key={i} value={v}>{v}</option>);
+                          })}
+                        </Input>
+
+                        <div className='mt-3'>
+                          <Label for="exampleSelectMulti">Escoge los estudiantes</Label>
+                          <div>
+                            <select
+                              name="selectMulti"
+                              style={{ width: "100%" }}
+                              multiple
+                              required
+                            >
+                              {estudiantes && estudiantes.map((v, i) => {
+                                if (v.curso === cursoSeleccionado) {
+                                  return (<option key={i} onClick={() => handleIntegrantesClick(v.correo)}>{v.nombre + " " + v.apellido}</option>);
+                                } else {
+                                  return null;
+                                }
+                              })}
+                            </select>
+
+                            <div className='mt-2'>
+                              <p><b>Los integrantes que ha seleccionado son: </b><i>{integrantesSeleccionados.join(', ')}</i></p> 
+                            </div>
+
+                          </div>
+                        </div>
 
                       </div>
+
                       <div className="mt-3">
                         <p>
                           <b>3. Área de enfoque</b>
