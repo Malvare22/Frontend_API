@@ -111,7 +111,7 @@ const SideBarStatic = () => {
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Preguntas
+              <Link to={'Preguntas/Listar'} style={{ textDecoration: "none", color: "white" }}>Preguntas</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -427,13 +427,11 @@ const SideBarResponsive = () => {
           </NavItem>
 
           <UncontrolledCollapse id="despliegue" toggler="#Documentos">
-
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start align-content-center' href="#">
                 <Link to={'Formatos'} style={{ textDecoration: "none", color: "white" }}>Historial de formatos</Link>
               </NavLink>
             </NavItem>
-
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start align-items-center' href="#">
                 Material de apoyo
