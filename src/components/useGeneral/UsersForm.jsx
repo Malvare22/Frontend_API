@@ -12,6 +12,8 @@ import axios from "axios";
 import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents, loadAreas } from "../../context/functions_general";
 import { useEffect } from "react";
 
+const REGEX_NUMERO = /^[0-9][0-9\-]*[0-9]$/;
+
 const EditPasswordInput = ({ toggleAlertPassword }) => {
     return (
         <div className='row btns d-flex justify-content-end m-0 p-0'>
@@ -194,7 +196,6 @@ export function FormDocente({ user, type }) {
 
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        const number_regex = /[0-9]/;
         const caracteresEspeciales = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/
         if (user.nombre.trim() == '' || caracteresEspeciales.exec(user.nombre) == null || user.nombre.length > 50) {
             errors.nombre = true;
@@ -233,7 +234,7 @@ export function FormDocente({ user, type }) {
             fail = true;
         }
 
-        if (isNaN(user.telefono) || user.telefono.length != 10) {
+        if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
             fail = true;
         }
@@ -385,7 +386,7 @@ export function FormDocente({ user, type }) {
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -499,7 +500,7 @@ export const FormEstudiante = ({ user, type }) => {
             fail = true;
         }
 
-        if (isNaN(user.telefono) || user.telefono.length != 10) {
+        if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
             fail = true;
         }
@@ -650,7 +651,7 @@ export const FormEstudiante = ({ user, type }) => {
                                 Teléfono del acudiente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite teléfonos válidos</div>
                             </div>
                         </div>
@@ -762,7 +763,7 @@ export const FormAdministrativo = ({ user, type }) => {
             fail = true;
         }
 
-        if (isNaN(user.telefono) || user.telefono.length != 10) {
+        if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
             fail = true;
         }
@@ -886,7 +887,7 @@ export const FormAdministrativo = ({ user, type }) => {
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
@@ -988,7 +989,7 @@ export const FormLider = ({ user, type }) => {
             fail = true;
         }
 
-        if (isNaN(user.telefono) || user.telefono.length != 10) {
+        if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
             fail = true;
         }
@@ -1105,7 +1106,7 @@ export const FormLider = ({ user, type }) => {
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="number" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
+                                <input type="text" className={`form-control ${errors.telefono ? "is-invalid" : ""}`} name='telefono' value={form.telefono} onChange={handleChange} />
                                 <div className="invalid-feedback">Este campo solo admite números teléfonicos válidos</div>
                             </div>
                         </div>
