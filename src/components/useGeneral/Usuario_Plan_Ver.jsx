@@ -292,6 +292,7 @@ const InfoGeneral = (props) => {
         var formData2 = new FormData();
 
         console.log(Resumen)
+        
 
         formData2.append('titulo', datos1 && datos1.titulo);
 
@@ -974,7 +975,7 @@ function Tabla(props) {
                 </Sdiv>
 
                 <div className=" mt-4 ">
-                    {props.rol === "tutor" || props.rol === "apoyo" ?
+                    {props.rol==="tutor" || props.rol === "apoyo" ?
                         <div className="row m-4">
                             <div className="d-flex justify-content-end">
                                 <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
