@@ -27,7 +27,6 @@ export default function AgregarPregunta() {
                 "valor" : datos["listaRespuestas"][i]["valor"],
                 "preguntaId" : resultadoPregunta["id"]
             };
-            console.log(respuesta["preguntaId"]);
             crearRespuesta(respuesta);
         }
         navigate(-1);

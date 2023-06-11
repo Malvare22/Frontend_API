@@ -82,6 +82,7 @@ import EntidadEditar from './components/useGeneral/Editar_Entidad';
 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
+import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -141,6 +142,7 @@ const router = createBrowserRouter(
             {/** Rutas del manejo de preguntas */}
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
+            <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>

@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { Tabla } from '../useGeneral/Tabla';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function useListarPreguntas() {
+    const navigate = useNavigate();
     const [preguntaInfo, setPreguntaInfo] = useState([]);
 
     const getPreguntas = async () => {
@@ -36,7 +38,8 @@ export default function useListarPreguntas() {
     }
     
     const handleEditarClick = (dato) => {
-        console.log(dato);
+        localStorage.setItem('idPregunta', dato.id);
+        navigate('/Lider/Preguntas/Listar/Editar');
     }
 
     return (
