@@ -27,11 +27,11 @@ export default function Listar_Planes() {
     }, []);
     const handleFilter = async (filters) => {
         var formData = new FormData();
-        var localData = localStorage.getItem("session");
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
-        formData.append('docenteEmail', parsedData.email);
+        formData.append('tutorCodigo', parsedData.codigo);
         if (filters.estudiante !== '') {
-            formData.append('estudianteEmail', filters.estudiante);
+            formData.append('codigoEstudiante', filters.estudiante);
         }
         if (filters.area !== '') {
             formData.append('area', filters.area);
