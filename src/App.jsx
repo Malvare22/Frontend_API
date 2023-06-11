@@ -84,8 +84,8 @@ import EntidadEditar from './components/useGeneral/Editar_Entidad';
 import Listar_Componentes from './components/lider/Lider_componentes_listar';
 import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
-
-
+import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
+import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -120,7 +120,6 @@ const router = createBrowserRouter(
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
 
-
             <Route path='Estudiantes' element={<ListarEstudiantes/>} />
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
@@ -134,11 +133,6 @@ const router = createBrowserRouter(
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
             <Route path='Administrativos/Perfil' element={<AdministrativoPerfil location={'ADMINISTRATIVO_INFORMATION'} editable={false} />} loader={GestionarAdministrativo}></Route>
 
-
-            <Route path='Evaluacion/Componentes' element={<LiderComponentesListar></LiderComponentesListar>}></Route>
-            <Route path='Evaluacion/Componentes/Registrar' element={<LiderComponenteRegistrar></LiderComponenteRegistrar>}></Route>
-            <Route path='Planes/Vista' element={<PlanVer></PlanVer>}></Route>
-
             <Route path='Planes/Vista' element={<LiderVistaPlan></LiderVistaPlan>} />
             <Route path='Entidades' element={<LiderListarEntidades></LiderListarEntidades>} />
             <Route path='Entidades/Editar' element={<EntidadEditar location={'ENTIDAD_INFORMATION'} type={'editar'}/>} loader={GestionarEntidad}/>
@@ -147,7 +141,10 @@ const router = createBrowserRouter(
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />
-          
+
+            {/** Rutas del manejo de preguntas */}
+            <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
+            <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
