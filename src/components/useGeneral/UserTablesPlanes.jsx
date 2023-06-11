@@ -39,26 +39,28 @@ export const Table = ({ data, user }) => {
             let comparison = 0;
             //GENERAL
             if (column === 'Título') {
-                comparison = a.titulo.localeCompare(b.titulo);
+                comparison = a.titulo && a.titulo.localeCompare(b.titulo);
             } else if (column === 'Estudiante') {
-                comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
+                comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
             }
             else if (user === 'coordinador' || user === 'administrativo') {
                 // PARA LIDER Y ADMIN
                 if (column === 'Tutor') {
-                    comparison = a.docente_codigo.localeCompare(b.docente_codigo);
+                    comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
                 }
             }
             else if (user === 'tutor' || user === 'apoyo' || user === 'evaluador') {
                 //PARA TUTOR, APOYO Y EVALUADOR
                 if (column === 'Area') {
-                    comparison = a.area_enfoque.localeCompare(b.area_enfoque);
+                    comparison = a.areaEnfoque && a.areaEnfoque.localeCompare(b.areaEnfoque);
                 }
             }
             else if (user === 'coordinador' || user === 'tutor' || user === 'evaluador') {
                 //PARA LIDER, TUTOR Y EVALUADOR
                 if (column === 'Fecha de corte') {
-                    comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
+                    const dateA = new Date(a.fechaCorte && a.fechaCorte[0], (a.fechaCorte && a.fechaCorte[1]) - 1, a.fechaCorte && a.fechaCorte[2]);
+                    const dateB = new Date(b.fechaCorte && b.fechaCorte[0], (b.fechaCorte && b.fechaCorte[1]) - 1, b.fechaCorte && b.fechaCorte[2]);
+                    comparison = dateA - dateB;
                 }
             }
             if (!ascending) {
@@ -69,7 +71,13 @@ export const Table = ({ data, user }) => {
     };
     const sortedData = sortData();
     const navigate = useNavigate();
-    const vistaPlan = () => {
+    const vistaPlan = (titulo) => {
+        const objetoDatos = {
+            "titulo": titulo,
+            "rol": user
+        };
+        const cadenaJSON = JSON.stringify(objetoDatos);
+        localStorage.setItem("info_plan", cadenaJSON);
         if (user === 'coordinador') {
             navigate('/Lider/Planes/Vista');
         }
@@ -148,13 +156,13 @@ export const Table = ({ data, user }) => {
                                 {(user === 'coordinador' || user === 'tutor' || user === 'evaluador') && <td className='text-center align-middle'>{d.fechaCorte && d.fechaCorte[0] && d.fechaCorte[1] && d.fechaCorte[2] && `${d.fechaCorte[2].toString().padStart(2, '0')}/${d.fechaCorte[1].toString().padStart(2, '0')}/${d.fechaCorte[0]}`}</td>}
                                 <td className='text-center align-middle'>
                                     <div>
-                                        <button type="button" className="btn" onClick={()=>vistaPlan()} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={() => vistaPlan(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                                                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
-                                        <button type="button" className="btn" onClick={()=>descargarPlan(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={() => descargarPlan(d.titulo)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
                                                 <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                                                 <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
@@ -335,24 +343,24 @@ function Getestudiantes() {
 function Getareas() {
     const [datos2, setDatos] = useState([]);
     const getAreas = async () => {
-      const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
-      ).then(
-        response => {
-          const data = response.data;
-          return data;
-        }).catch(error => {
-          console.log(error);
-        });
-      setDatos(value)
+        const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const data = response.data;
+                return data;
+            }).catch(error => {
+                console.log(error);
+            });
+        setDatos(value)
     };
     useEffect(() => {
-      getAreas();
+        getAreas();
     }, []);
     return (
-      datos2 && datos2.map((d) => {
-        return (
-          <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
-        )
-      })
+        datos2 && datos2.map((d) => {
+            return (
+                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+            )
+        })
     )
-  }
+}
