@@ -262,7 +262,6 @@ export default function Listar_Ideas() {
                     console.log(data)
                     return data;
                 }).catch(error => {
-                    console.log("a");
                     if (error.response) {
                         console.log('Código de estado:', error.response.status);
                         console.log('Respuesta del backend:', error.response.data);
