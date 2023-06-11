@@ -93,9 +93,9 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
               }));
         }
 
-        if(preguntaState.listaRespuestas.length < 1) {
+        if(preguntaState.listaRespuestas.length < 2) {
             valid = false;
-            alert("No se puede crear una pregunta sin respuestas.")
+            alert("No se puede crear una pregunta con menos de 2 respuestas.")
         }
         
         if(valid) {
