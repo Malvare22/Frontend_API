@@ -25,13 +25,13 @@ export default function Listar_Planes() {
         let formData = new FormData()
         console.log(filters);
         if (filters.estudiante !== '') {
-            formData.append('estudianteEmail', filters.estudiante);
+            formData.append('codigoEstudiante', filters.estudiante);
         }
         if (filters.area !== '') {
             formData.append('area', filters.area);
         }
         if (filters.tutor !== '') {
-            formData.append('docenteEmail', filters.tutor);
+            formData.append('tutorCodigo', filters.tutor);
         }
         if (filters.estado !== '') {
             console.log(filters.estado)
