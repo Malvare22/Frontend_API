@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Enunciado } from './Lider_Preguntas_Template';
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import {actualizarPregunta, actualizarRespuesta, crearRespuesta, eliminarRespuesta, getPregunta} from "./Lider_Preguntas_Endpoints"
 
 export default function EditarPregunta() {
     const [preguntaInfo, setPreguntaInfo] = useState([]);
+    const navigate = useNavigate();
     
-    const getPregunta = async () => {
-        try {
-            const config = {
-                headers: {
-                    "X-Softue-JWT": localStorage.getItem('token_access')
-                }
-            }
-            const response = await axios.get(`http://localhost:8080/pregunta/${localStorage.getItem('idPregunta')}`, config);
-            const preguntaData = {
-                ...response.data,
-                componente: response.data.componenteCompetenciasId.nombre
-              };
-            setPreguntaInfo(preguntaData);
-            
-        } catch (error) {
-            console.error("Error al obtener las preguntas:", error);
-        }
-    };
     useEffect(() => {
-        getPregunta();
-    }, []);
+        getPregunta({preguntaInfo, setPreguntaInfo});
+    }, [preguntaInfo, setPreguntaInfo]);
     
     const useRecibirDatos = async (datos, respuestasEliminar) => {
-        console.log(datos);
+        actualizarPregunta(datos);
+        for(let i = 0; i < datos["listaRespuestas"].length; i++) {
+            const respuesta = {
+                "id" : datos["listaRespuestas"][i]["id"],
+                "contenido" : datos["listaRespuestas"][i]["contenido"],
+                "valor" : datos["listaRespuestas"][i]["valor"],
+                "preguntaId" : datos["id"]
+            };
+            if("agregada" in datos["listaRespuestas"][i])
+                crearRespuesta(respuesta);
+            else
+                actualizarRespuesta(respuesta);
+        }
+        for(let eliminada of respuestasEliminar) {
+            eliminarRespuesta(eliminada);
+        }
+        navigate(-1);
     }
 
     return (

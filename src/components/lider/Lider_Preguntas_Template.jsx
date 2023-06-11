@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-
 
 export const Enunciado = ({ pregunta, enviarDatos }) => {
     const [preguntaState, setPreguntaState] = useState(pregunta);
@@ -12,7 +10,8 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
         "msgErrorComponente": "Seleccione una componente válida"
     });
     const [errorRespuestasState, setErrorRespuestasState] = useState([]);
-    const respuestasEliminar = [];
+    const [respuestasEliminar, setRespuestasEliminar] = useState([]);
+    let nextRespuestaId = preguntaState.listaRespuestas.length > 0 ? Math.max(...preguntaState.listaRespuestas.map(respuesta => respuesta.id)) + 1 : 1;
 
     const [componentes, setComponentes] = useState([]);
 
@@ -110,25 +109,36 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
             listaRespuestas: [
                 ...prevState.listaRespuestas,
                 {
-                    "id": 0,
+                    "id": nextRespuestaId,
                     "contenido": '',
-                    "valor": ''
+                    "valor": '',
+                    "agregada": true
                 }
             ]
         }));
+        console.log(nextRespuestaId);
     };
 
-    const handleRespuestaChange = (index, updatedRespuesta, eliminar = false) => {
+    const handleRespuestaChange = (id, updatedRespuesta, eliminar = false) => {
         setPreguntaState((prevState) => {
             const listaRespuestas = [...prevState.listaRespuestas];
-            if (eliminar) {
-                listaRespuestas.splice(index, 1);
-            } else {
-                listaRespuestas[index] = updatedRespuesta;
+            const index = listaRespuestas.findIndex(respuesta => respuesta.id === id);
+
+            if (index !== -1) {
+                if (eliminar) {
+                    const respuestaEliminada = listaRespuestas[index];
+                    if(!('agregada' in respuestaEliminada))
+                        setRespuestasEliminar((prevRespuestasEliminar) => [...prevRespuestasEliminar, respuestaEliminada]);
+                    listaRespuestas.splice(index, 1);
+                } else {
+                    listaRespuestas[index] = updatedRespuesta;
+                }
             }
+
             return { ...prevState, listaRespuestas };
         });
     };
+
 
     return (
         <div>
@@ -180,14 +190,14 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                 </div>
             </div>
 
-            {preguntaState.listaRespuestas.map((respuesta, index) => (
+            {preguntaState.listaRespuestas.map((respuesta) => (
                 <Respuesta
-                    key={index}
+                    key={respuesta.id}
                     respuesta={respuesta}
                     onChangeRespuesta={(updatedRespuesta, eliminar) =>
-                        handleRespuestaChange(index, updatedRespuesta, eliminar)
+                        handleRespuestaChange(respuesta.id, updatedRespuesta, eliminar)
                     }
-                    errorRespuesta={errorRespuestasState[index] || {}}
+                    errorRespuesta={errorRespuestasState.find(error => error.id === respuesta.id) || {}}
                 />
             ))}
 
@@ -211,7 +221,6 @@ const Respuesta = ({ respuesta, onChangeRespuesta, errorRespuesta }) => {
     };
 
     const handleEliminar = () => {
-        console.log("hola")
         onChangeRespuesta(null, true);
     }
 
