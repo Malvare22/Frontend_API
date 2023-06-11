@@ -492,7 +492,7 @@ const InfoGeneral = (props) => {
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
                     </FormGroup>
@@ -520,7 +520,7 @@ const InfoGeneral = (props) => {
                         <Input type="select" name="selectMulti" onChange={(e) => { setAgregar(e.target.value) }} id="exampleSelectMulti" multiple>
                             {estudiantes && estudiantes.map((l) => {
                                 if (l.curso === Curso) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + " "  + l.apellido}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -755,7 +755,7 @@ const Observaciones = (props) => {
                                         </div>
                                         <div className="row m-4">
                                             <div className="d-flex justify-content-end">
-                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={datos && datos.estado === "formulado" || datos && datos.estado === "rechazada" ? false : true} >
+                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={(datos && datos.estado === "formulado") || (datos && datos.estado === "rechazada") ? false : true} >
                                                     Enviar a Evaluacion
                                                 </Button>
                                             </div>

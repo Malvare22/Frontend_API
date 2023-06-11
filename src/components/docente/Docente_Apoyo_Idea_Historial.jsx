@@ -53,7 +53,7 @@ export default function Historial(props) {
                     }
 
                     return (<div key={i}>
-                        <Evaluaciones key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones nombre={props.nombre} key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}
