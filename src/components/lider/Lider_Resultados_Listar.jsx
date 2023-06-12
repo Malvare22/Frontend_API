@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Tabla, Filtros } from '../useGeneral/Tabla';
 import { useNavigate } from "react-router-dom";
-import { getPreguntas, eliminarPregunta } from "./Lider_Preguntas_Endpoints";
+import { getResultadosFiltrados } from "./Filtros_endpoint"
 
 export default function useListarPreguntas() {
     const navigate = useNavigate();
-    const resultadosInfo = [
+    const [resultadosInfo, setResultadosInfo] = useState([
         {
             "codigo": 123654,
             "curso": 6 - 6,
@@ -34,13 +34,7 @@ export default function useListarPreguntas() {
             "calificacion": 60.0,
             "fecha": "23-04-22"
         }
-    ]
-
-    /*const [resultadosInfo, setResultadosInfo] = useState([]);
-
-    useEffect(() => {
-        getPreguntas({preguntaInfo, setPreguntaInfo});
-    }, [preguntaInfo, setPreguntaInfo]);*/
+    ]);
 
     let columnas = ["codigo", "curso", "estado", "calificacion", "fecha"];
 
@@ -50,6 +44,8 @@ export default function useListarPreguntas() {
 
     const handleFilter = (filtro) => {
         console.log(filtro);
+        const datosFiltrados = getResultadosFiltrados();
+        setResultadosInfo(datosFiltrados);
     }
 
     return (

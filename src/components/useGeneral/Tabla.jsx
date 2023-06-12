@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { getCursos } from '../lider/Filtros_endpoint';
 
 export const Tabla = ({ datos, columnas, handleEliminarClick, handleEditarClick, handleVisualizarClick, permisos }) => {
     /**Permisos:
@@ -16,7 +16,7 @@ export const Tabla = ({ datos, columnas, handleEliminarClick, handleEditarClick,
                         <thead>
                             <tr>
                                 {columnas.map((columna) => (
-                                    <th className='text-center thPrueba' key={columna}>{columna.charAt(0).toUpperCase() + columna.slice(1).toLowerCase()}</th>
+                                    <th className='text-center thPrueba' id="Color" key={columna}>{columna.charAt(0).toUpperCase() + columna.slice(1).toLowerCase()}</th>
                                 ))}
                                 <th className='text-center thPrueba'>Acciones</th>
                             </tr>
@@ -102,9 +102,21 @@ export const Filtros = ({ onFilter }) => {
         fechaInicio: '',
         fechaFin: ''
     });
+    const [cursos, setCursos] = useState([]);
+    useEffect(() => {
+        const obtenerCursos = async () => {
+          try {
+            const response = await getCursos();
+            setCursos(response);
+          } catch (error) {
+            console.error("Error al obtener los cursos:", error);
+          }
+        };
+        obtenerCursos();
+    }, []);
+      
 
     const handleSubmit = (e) => {
-        console.log(e)
         e.preventDefault();
         onFilter(filtro);
     };
@@ -129,7 +141,14 @@ export const Filtros = ({ onFilter }) => {
                     className="form-select selector text-black"
                     value={filtro.curso}
                     onChange={handleChange}>
-                    <option value="">curso</option>
+                    <option value="">
+                        Seleccione un curso
+                    </option>
+                    {cursos.map((curso, index) => (
+                        <option key={index} value={curso}>
+                            {curso}
+                        </option>
+                    ))}
                 </select>
             </div>
             <div className="col-auto d-flex align-items-center mb-1">
@@ -139,10 +158,7 @@ export const Filtros = ({ onFilter }) => {
                     onChange={handleChange}>
                     <option value="">Estado</option>
                     <option value="aprobada">Aprobada</option>
-                    <option value="rechazada">Desaprobada</option>
-                    <option value="vencida">Vencida</option>
-                    <option value="formulado">Formulación</option>
-                    <option value="pendiente">Pendiente</option>
+                    <option value="desaprobada">Desaprobada</option>
                 </select>
             </div>
             <div className="col-auto d-flex align-items-center mb-1">
