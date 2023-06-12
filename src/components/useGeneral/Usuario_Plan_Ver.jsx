@@ -474,7 +474,7 @@ const InfoGeneral = (props) => {
 
                                             <div className="row">
                                                 <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3" onClick={() => { getArchi() }}> Descargar formato completo</button></div>
-                                                {props.rol == "estudiante" ? <div className="col-auto"><button onClick={toggleAlert_Editar} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div> : ""}
+                                                {props.rol === "estudiante" ? <div className="col-auto"><button disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada") ? false : true } onClick={toggleAlert_Editar} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div> : ""}
 
                                             </div>
                                         </div>
@@ -793,7 +793,7 @@ const Observaciones = (props) => {
                                                     {error && <Alert color="danger">{error}</Alert>}
                                                 </FormGroup>
                                                 <div className="d-flex justify-content-center">
-                                                    <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
+                                                    <Button disabled={(datos && datos.estado === "formulado") || (datos && datos.estado === "rechazada") ? false : true } style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
                                                 </div>
 
                                             </Form>
@@ -900,6 +900,9 @@ function Tabla(props) {
 
     const [error, setError] = useState(null);
 
+    const [message, setMessage] = useState(null);
+
+
     const [Observacion, setObservacion] = useState(" ");
     const setObservacion_A = (a) => {
         setObservacion(a);
@@ -924,10 +927,15 @@ function Tabla(props) {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
 
             });
-
+            setMessage("Guardada con exito");
             //console.log(response.data);
         } catch (error) {
-            setError("Ya evaluaste esta idea de negocio")
+            setMessage(null);
+            if(Observacion === null || Nota === null){
+                setError("Debes asignar una calificacion")    
+            }else{
+                setError("Ya evaluaste esta idea de negocio")
+            }
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 console.log('Respuesta del backend:', error.response.data);
@@ -1027,6 +1035,7 @@ function Tabla(props) {
                         </FormGroup>
                     </div>
                     <div>     {error && <Alert color="danger" className="text-center">{error}</Alert>} </div>
+                    <div>     {message &&    <Alert color="success" className="text-center">{message}</Alert>} </div>
                     <div className="d-flex justify-content-center  ">
                         <Button className="m-2" style={{ backgroundColor: "#1C3B57" }} onClick={() => { enviarDatos() }}>Enviar</Button>
                     </div>
