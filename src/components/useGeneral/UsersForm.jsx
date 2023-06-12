@@ -414,8 +414,8 @@ export function FormDocente({ user, type }) {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
 
@@ -679,8 +679,8 @@ export const FormEstudiante = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' && <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput>}
@@ -913,8 +913,8 @@ export const FormAdministrativo = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
@@ -1132,8 +1132,8 @@ export const FormLider = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
