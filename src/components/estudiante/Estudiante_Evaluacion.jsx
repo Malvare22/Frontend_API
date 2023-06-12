@@ -2,9 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
 import Pregunta from './Estudiante_Preguntas';
 import styled from 'styled-components';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const EstudianteEvaluacion = () => {
+
+    const navigate = useNavigate();
     const formularioRef = useRef(null);
     const [datos, setDatos] = useState([]);
     const [respuestas, setRespuestas] = useState([]);
@@ -21,6 +24,7 @@ const EstudianteEvaluacion = () => {
             });
         setDatos(value);
     };
+
     useEffect(() => {
         getPreguntas();
     }, []);
@@ -39,6 +43,10 @@ const EstudianteEvaluacion = () => {
                 const response = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
                 console.log("hecho");
                 console.log([...formData.entries()]);
+
+                setRespuestas(null);
+                navigate('../ResultadoEvaluacion');
+
             } catch (error) {
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
@@ -59,8 +67,6 @@ const EstudianteEvaluacion = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let temp = [];
-
         const res = new FormData(formularioRef.current);
         const values = Object.fromEntries(res.entries());
 
@@ -68,6 +74,7 @@ const EstudianteEvaluacion = () => {
             const value = values[key];
             setRespuestas((prevOptions) => [...prevOptions, value]);
         });
+
     };
 
 
@@ -85,19 +92,21 @@ const EstudianteEvaluacion = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row mx-3zzzz rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
-                        <form ref={formularioRef} onSubmit={handleSubmit}>
-                            {datos && datos.map((v, i) => {
-                                return (
-                                    <Pregunta id={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
-                                );
-                            })}
-                            <div className="d-flex justify-content-center mb-3">
-                                <button type="submit" className="btn mt-2 rounded-4" style={{ background: '#DC4B4B', color: 'black' }}>
-                                    <b>Enviar</b>
-                                </button>
-                            </div>
-                        </form>
+                    <div className='container' style={{ width: "95%" }}>
+                        <div id='cuerpo' className="row mx-3zzzz rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
+                            <form ref={formularioRef} onSubmit={handleSubmit}>
+                                {datos && datos.map((v, i) => {
+                                    return (
+                                        <Pregunta id={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
+                                    );
+                                })}
+                                <div className="d-flex justify-content-center mb-3">
+                                    <button type="submit" className="btn mt-2 rounded-4" style={{ background: '#DC4B4B', color: 'black' }}>
+                                        <b>Enviar</b>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </Sobreponer>
             </div>
@@ -121,7 +130,7 @@ const Sobreponer = styled.div`
 
   #cuerpo {
     z-index: 1;
-    top: -15px;
+    top: -10px;
   }
 
   #titulo {
