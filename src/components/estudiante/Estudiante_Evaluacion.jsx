@@ -45,6 +45,7 @@ const EstudianteEvaluacion = () => {
                 console.log([...formData.entries()]);
 
                 setRespuestas(null);
+                localStorage.setItem("RELOAD", 1);
                 navigate('../ResultadoEvaluacion');
 
             } catch (error) {

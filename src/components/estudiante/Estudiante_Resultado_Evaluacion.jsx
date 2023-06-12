@@ -8,7 +8,15 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Estudiante_Evaluacion() {
 
     const navigate = useNavigate();
-    navigate(1);
+
+    useEffect(() => {
+        const value = localStorage.getItem("RELOAD");
+        if(value === "1"){
+            console.log("prueba")
+            localStorage.removeItem("RELOAD");
+            window.location.reload();
+        }
+    }, []);
 
     const [componentes, setComponentes] = useState([]);
     const [estadoEvaluacion, setEstadoEvaluacion] = useState('');
