@@ -91,6 +91,7 @@ import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
+import LiderResultadosListar from './components/lider/Lider_Resultados_Listar';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
 import { Relogin } from './routes/login/Relogin';
@@ -163,6 +164,9 @@ const router = createBrowserRouter(
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
             <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
+            
+            {/** Rutas del manejo de resultados */}
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
