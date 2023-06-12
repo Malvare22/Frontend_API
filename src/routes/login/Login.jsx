@@ -28,7 +28,7 @@ const useForm = (initialData, validar, navigate) => {
         //Validar -> verificación de campos
         const state = await validar(form)
         //Si hubo error:
-        if (state) {console.log('Iniciaste'); iniciarSesion()}
+        if (state) { console.log('Iniciaste'); iniciarSesion() }
         else {
             setFail(true)
         }
@@ -36,22 +36,22 @@ const useForm = (initialData, validar, navigate) => {
 
     const iniciarSesion = () => {
         const type = JSON.parse(localStorage.getItem('session')).rol;
-        let direction='/';
+        let direction = '/';
         switch (type) {
             case 'administrativo':
-                direction='../Administrativo/Perfil';
+                direction = '../Administrativo/Perfil';
                 break;
             case 'coordinador':
-                direction='../Lider/Perfil';
+                direction = '../Lider/Perfil';
                 break;
             case 'docente':
-                direction='../Docente/Perfil';
+                direction = '../Docente/Perfil';
                 break;
             case 'estudiante':
-                direction='../Estudiante/Perfil';
+                direction = '../Estudiante/Perfil';
                 break;
         }
-        navigate(direction)    
+        navigate(direction)
 
     }
 
@@ -59,14 +59,14 @@ const useForm = (initialData, validar, navigate) => {
 };
 
 
-export default function Login() {
+export default function Login(props) {
     return (
         <div className='container-fluid' style={{ background: "#1C3B57" }}>
             <div className='row p-5'>
                 <div className='col-md-6 col-12 p-5 d-flex justify-content-center align-items-center' style={{ background: "#68462C" }}>
                     <div className='flex-grow-1'>
                         <h2 className='text-center mb-5' style={{ color: "white", fontWeight: "bold" }}>SoftUE</h2>
-                        <Panel></Panel>
+                        <Panel Relogin={props.Relogin}></Panel>
                     </div>
                 </div>
                 <div className='col-md-6 col-12 p-0'>
@@ -77,7 +77,7 @@ export default function Login() {
     );
 }
 
-const Panel = () => {
+const Panel = (props) => {
     const navigate = useNavigate();
     const toggleA = () => {
         navigate('/forgetPassword');
@@ -88,23 +88,29 @@ const Panel = () => {
         let condition = undefined
         const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim()=='' || form.password.trim() == '' || password.exec(form.password) == null) {
+        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || form.password.trim() == '' || password.exec(form.password) == null) {
             return undefined;
         }
-       
+
         else {
             try {
                 condition = await axios.post('http://localhost:8080/login', {
                     email: form.userName,
                     password: form.password
                 }).then((response) => {
+                    const valor = props.Relogin;
                     localStorage.setItem('token_access', response.data.token)
-                    localStorage.setItem('session', JSON.stringify({"email": response.data.email, "rol": response.data.rol}))
-                    return true;
+                    localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
+                    if (valor === '1') {
+                        navigate(-1);
+                    }
+                    else {
+                        return true;
+                    }
                 })
             }
             catch {
-            }     
+            }
         }
         return condition;
         // if(form.userName=="estudiante") navigate('/estudiante');

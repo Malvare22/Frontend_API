@@ -57,7 +57,7 @@ const Evaluaciones = (props) => {
                 });
                 const data = response.data;
                 setProfesores(data);
-                console.log(data)
+                //console.log(data)
             } catch (error) {
                 console.error("Historial", error);
             }
@@ -85,7 +85,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
-        console.log(value)
+        //console.log(value)
     };
     useEffect(() => {
         getCalificadores();
@@ -120,11 +120,11 @@ const Evaluaciones = (props) => {
         //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
         let URLd = 'http://localhost:8080/planNegocio/calificacion';
         const response = await axios.delete(URLd, {
-            data: { codigoDocente: a, evaluacionIdeaId: b },
+            data: { codigoDocente: a, evaluacionPlanId: props.idi },
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
         }
         ).then(
-            console.log("hecho")
+            window.location.reload()
         ).catch(error => {
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -149,7 +149,7 @@ const Evaluaciones = (props) => {
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -172,9 +172,11 @@ const Evaluaciones = (props) => {
                         "X-Softue-JWT": localStorage.getItem("token_access")
                     }
                 });
+                set_Adverten(null)
                 window.location.reload();
-                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
             } catch (error) {
+                set_Adverten("No puedes asignar este docente.");
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
@@ -200,7 +202,7 @@ const Evaluaciones = (props) => {
                 }
             });
             setAdvice_A("El Plan Hasido creado exitosamente")
-            console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
         } catch (error) {
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -213,6 +215,11 @@ const Evaluaciones = (props) => {
         }
 
     };
+
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
 
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
@@ -335,9 +342,7 @@ const Evaluaciones = (props) => {
                                                         </div>
 
                                                     }
-
                                                 })}
-
                                                 {
                                                     props.rol == "coordinador" ? props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
@@ -348,9 +353,6 @@ const Evaluaciones = (props) => {
                                                         </button>
                                                     </div> : "" : ""
                                                 }
-
-
-
                                             </div>
 
                                             <div className="row mt-2">
@@ -367,7 +369,7 @@ const Evaluaciones = (props) => {
 
 
                                         </div>
-
+{/* 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
                                                 props.rol == "coordinador" ? props.estado == "Aprobado" ? props.identificador == 0 ? <div>
@@ -380,7 +382,7 @@ const Evaluaciones = (props) => {
                                                         <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : ""}</div>
                                                     </Form></div> : "" : "" : ""
                                             }
-                                        </div>
+                                        </div> */}
 
                                     </div>
                                 </div>
@@ -404,9 +406,10 @@ const Evaluaciones = (props) => {
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
