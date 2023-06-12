@@ -14,6 +14,9 @@ import { FormAdministrativo, FormDocente, HeadEdit, HeadRegister } from './Users
 //Componente general
 export default function DocenteEditarPerfil(props) {
     let user = null;
+    const labelText = 'Docente';
+    console.log(props.type)
+
     if(props.type!='registrar')
         user = JSON.parse(localStorage.getItem(props.location))
     
@@ -22,7 +25,7 @@ export default function DocenteEditarPerfil(props) {
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
+                {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
                 <div className='' id="info"> <FormDocente user={user} type={props.type}></FormDocente></div>
             </div>

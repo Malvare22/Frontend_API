@@ -94,6 +94,12 @@ body {
   color: white;
 }
 
+#subtituloListaG{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: x-large;
+  color: #DC4B4B;
+}
+
 .sobreponer {
   background: rgb(47, 47, 113);
   color: white;
