@@ -12,8 +12,7 @@ export default function TemplateEstudiante({ children }) {
     useEffect(() => {
         const sessionData = localStorage.getItem('session');
         if (!sessionData) {
-            localStorage.setItem('RELOGIN', 1);
-            navigate('/login');
+            navigate('/relogin');
         }
     }, [navigate]);
     const sessionData = localStorage.getItem('session');
