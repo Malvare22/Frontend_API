@@ -54,7 +54,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
-        console.log(value)
+        //console.log(value)
     };
     useEffect(() => {
         getCalificadores();

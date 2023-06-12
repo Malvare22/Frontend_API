@@ -83,7 +83,6 @@ import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 import EntidadEditar from './components/useGeneral/Editar_Entidad';
-import Listar_Componentes from './components/lider/Lider_componentes_listar';
 import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
@@ -93,16 +92,18 @@ import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
+import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
+import Footer from './components/Footer';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<Template></Template>} errorElement={<Error404></Error404>}>
         <Route path='/' element={<Home></Home>} />
-        <Route path='/login' element={<Login></Login>} />
-        <Route path='/forgetPassword' element={<Recovery></Recovery>} />
-        <Route exact path="/resetPassword" component={ResetPassword} element={<ResetPassword></ResetPassword>} />
-        <Route path="/resetPassword/:token" component={ResetPassword} element={<ResetPassword></ResetPassword>} />
+        <Route path='/login' element={<><Login/><Footer/></>} />
+        <Route path='/forgetPassword' element={<><Recovery></Recovery><Footer></Footer></>} />
+        <Route exact path="/resetPassword" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
+        <Route path="/resetPassword/:token" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
         <Route>
           <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='Perfil' element={<EstudiantePerfil location={'MY_PROFILE_INFO'} editable={true} />} loader={MiPerfilEstudiante} />
@@ -131,6 +132,7 @@ const router = createBrowserRouter(
             <Route path='Planes/Vista' element={<PlanVer></PlanVer>}></Route>
             <Route path='Evaluacion/Componentes' element={<LiderComponentesListar></LiderComponentesListar>}></Route>
             <Route path='Evaluacion/Componentes/Registrar' element={<LiderComponenteRegistrar></LiderComponenteRegistrar>}></Route>
+            <Route path='Evaluacion/Componentes/Editar' element={<LiderComponenteActualizar></LiderComponenteActualizar>}></Route>
             <Route path='Estudiantes' element={<ListarEstudiantes/>} />          
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />

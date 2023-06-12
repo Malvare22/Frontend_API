@@ -73,7 +73,7 @@ const InfoGeneral = (props) => {
     const navigate = useNavigate();
 
     const setInfo = async (titulo) => {
-        console.log(titulo)
+        //console.log(titulo)
         localStorage.setItem('titulo', titulo);
         window.location.reload();
       };
@@ -158,7 +158,7 @@ const InfoGeneral = (props) => {
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -195,11 +195,18 @@ const InfoGeneral = (props) => {
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    <li>{datos1.estudianteLiderInfo[1]}</li>
                                                     {datos1.estudiantesIntegrantesInfo && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
                                                     })}
@@ -436,13 +443,13 @@ const Observaciones = (props) => {
             var formData = new FormData();
             formData.append('titulo', datos1 && datos1.titulo);
             formData.append('documento', selectedFile);
-            console.log(datos1 && datos1.titulo)
-            console.log(selectedFile)
+            //console.log(datos1 && datos1.titulo)
+            //console.log(selectedFile)
             //let ruta = "http://144.22.37.238:8080/ideaNegocio/agregarDocumento";
             let ruta = "http://localhost:8080/ideaNegocio/agregarDocumento";
              let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
                  .then((response) => {
-                     console.log("hecho")
+                     //console.log("hecho")
                      window.location.reload();
                  })
                  .catch((error) => {

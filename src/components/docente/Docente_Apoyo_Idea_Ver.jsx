@@ -521,7 +521,7 @@ const Observaciones = (props) => {
                   headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
                 });
             
-                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
                 window.location.reload();
               } catch (error) {
                 console.error(error);
