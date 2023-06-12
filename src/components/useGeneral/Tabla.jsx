@@ -129,7 +129,7 @@ export const Filtros = ({ onFilter }) => {
     return (
         <form className="row gy-3 gx-2 mb-2" onSubmit={handleSubmit}>
             <div className="col-auto d-flex align-items-center mb-1">
-                <input type="text"
+                <input type="number"
                     placeholder="Código del estudiante"
                     className="form-control"
                     name="codigoEstudiante"
@@ -149,6 +149,22 @@ export const Filtros = ({ onFilter }) => {
                             {curso}
                         </option>
                     ))}
+                </select>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <select name="estado"
+                    className="form-select selector text-black"
+                    value={filtro.estado}
+                    onChange={handleChange}>
+                    <option value="">
+                        Seleccione un estado
+                    </option>
+                    <option value="aprobada">
+                        Aprobado
+                    </option>
+                    <option value="reprobada">
+                        Reprobado
+                    </option>
                 </select>
             </div>
             <div className="col-auto d-flex align-items-center mb-1">

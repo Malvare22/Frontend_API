@@ -5,47 +5,14 @@ import { getResultadosFiltrados, getResultados } from "./Filtros_endpoint"
 
 export default function useListarPreguntas() {
     const navigate = useNavigate();
-    const [resultadosInfo, setResultadosInfo] = useState([
-        {
-            "codigo": 123654,
-            "curso": 6 - 6,
-            "calificacion": 60.0,
-            "fecha": "23-04-22"
-        },
-        {
-            "codigo": 123654,
-            "curso": 6 - 6,
-            "calificacion": 60.0,
-            "fecha": "23-04-22"
-        },
-        {
-            "codigo": 123654,
-            "curso": 6 - 6,
-            "calificacion": 60.0,
-            "fecha": "23-04-22"
-        },
-        {
-            "codigo": 123654,
-            "curso": 6 - 6,
-            "calificacion": 60.0,
-            "fecha": "23-04-22"
-        }
-    ]);
+    const [resultadosInfo, setResultadosInfo] = useState([]);
 
 
     useEffect(() => {
         const obtenerResultado = async () => {
             try {
                 const resultados = await getResultados();
-                const resultadosMapeados = resultados.map((resultado) => {
-                    const fecha = resultado.fechaCreacion[0] + '-' + resultado.fechaCreacion[1] + '-' + resultado.fechaCreacion[2];
-                    return {
-                        ...resultado,
-                        codigo: resultado.estudiante.codigo,
-                        curso: resultado.estudiante.curso,
-                        fecha: fecha
-                    };
-                });
+                const resultadosMapeados = formateo(resultados);
                 setResultadosInfo(resultadosMapeados);
             } catch (error) {
                 console.error("Error al obtener los cursos:", error);
@@ -54,15 +21,18 @@ export default function useListarPreguntas() {
         obtenerResultado();
     }, []);
 
-    let columnas = ["codigo", "curso", "calificacion", "fecha"];
+    let columnas = ["codigo", "curso", "estado", "calificacion", "fecha"];
 
     const handleVisualizarClick = (dato) => {
         console.log(dato);
     }
 
-    const handleFilter = (filtro) => {
-        console.log(filtro);
-        const datosFiltrados = getResultadosFiltrados();
+    const handleFilter = async (filtro) => {
+        if(filtro.fechaInicio !== '' ^ filtro.fechaFin !== '') {
+            alert("Para filtrar por fecha debe agregar ambas.");
+        }
+        const datos = await getResultadosFiltrados(filtro);
+        const datosFiltrados = formateo(datos);
         setResultadosInfo(datosFiltrados);
     }
 
@@ -89,4 +59,18 @@ export default function useListarPreguntas() {
     );
 }
 
-
+const formateo = (resultados) => {
+    const datosFiltrados = resultados.map((resultado) => {
+        const fecha = resultado.fechaCreacion[0] + '-' + resultado.fechaCreacion[1] + '-' + resultado.fechaCreacion[2];
+        const calificacion = resultado.calificacion.toFixed(2);
+        return {
+            ...resultado,
+            codigo: resultado.estudianteInfo[0],
+            curso: resultado.estudianteInfo[1],
+            estado: resultado.estudianteInfo[2],
+            fecha: fecha,
+            calificacion: calificacion
+        };
+    });
+    return datosFiltrados
+}
