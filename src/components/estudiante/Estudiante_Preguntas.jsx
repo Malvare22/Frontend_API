@@ -14,7 +14,7 @@ const EstudiantePreguntas = (props) => {
                 return(
                 <div key={i} className='row d-flex'>
                     <div className="col-auto">
-                        <input required className='mx-1' type="radio"  value="" name=''/>
+                        <input required className='mx-1' type="radio"  value={v.id} name={props.id}/>
                     </div>
                     <div className="col">
                         <p style={{textAlign: 'justify'}} className='m-0'>{v.contenido}</p>
