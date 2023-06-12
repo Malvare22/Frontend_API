@@ -369,7 +369,7 @@ const Evaluaciones = (props) => {
 
 
                                         </div>
-
+{/* 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
                                                 props.rol == "coordinador" ? props.estado == "Aprobado" ? props.identificador == 0 ? <div>
@@ -382,7 +382,7 @@ const Evaluaciones = (props) => {
                                                         <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : ""}</div>
                                                     </Form></div> : "" : "" : ""
                                             }
-                                        </div>
+                                        </div> */}
 
                                     </div>
                                 </div>
