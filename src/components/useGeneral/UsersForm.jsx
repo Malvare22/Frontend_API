@@ -554,7 +554,7 @@ export const FormEstudiante = ({ user, type }) => {
             }
 
             if (type == 'registrar') {
-                dataToSend.capacitacionAprobada = "aprobada"
+                dataToSend.capacitacionAprobada = "reprobada"
                 await axios.post('http://localhost:8080/register/estudiante', dataToSend)
             }
 
