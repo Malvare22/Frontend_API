@@ -78,6 +78,7 @@ import DocenteEditarPerfil from './components/useGeneral/Editar_Perfil_Docente';
 import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
+import EstudianteResultadoEvaluacion from './components/estudiante/Estudiante_Resultado_Evaluacion'
 import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
@@ -108,6 +109,7 @@ const router = createBrowserRouter(
             <Route path='Perfil/Editar' element={<EstudianteEditarPerfil location={'MY_PROFILE_INFO'} type={'estudiante'}/>} loader={MiPerfilEstudiante} />
             <Route path='Test' element={<Tabla></Tabla>} />
             <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
+            <Route path='ResultadoEvaluacion' element={<EstudianteResultadoEvaluacion></EstudianteResultadoEvaluacion>} />
             <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
             <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
             <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />

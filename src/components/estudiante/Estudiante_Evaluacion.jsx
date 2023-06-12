@@ -25,8 +25,10 @@ const EstudianteEvaluacion = () => {
         getPreguntas();
     }, []);
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let temp = [];
 
         const res = new FormData(formularioRef.current);
         const values = Object.fromEntries(res.entries());
@@ -34,31 +36,37 @@ const EstudianteEvaluacion = () => {
         Object.keys(values).forEach((key) => {
             const value = values[key];
             setRespuestas(prevOptions => [...prevOptions, value]);
+            temp.push(value);
         });
 
+        console.log(temp);
+
         var formData = new FormData();
-        formData.append('respuestasId', respuestas);
+        formData.append('respuestasId', temp);
         var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
         formData.append('codigoEstudiante', parsedData.codigo);
 
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
         let ruta = "http://localhost:8080/test";
         let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
-          .then((response) => {
-            console.log("hecho")
-            console.log([...formData.entries()]);
-          })
-          .catch((error) => {
-            if (error.response) {
-              console.log('Código de estado:', error.response.status);
-              console.log('Respuesta del backend:', error.response.data);
-            } else if (error.request) {
-              console.log('No se recibió respuesta del backend');
-            } else {
-              console.log('Error al realizar la solicitud:', error.message);
-            }
-          });
-        
+            .then((response) => {
+                console.log("hecho")
+                console.log([...formData.entries()]);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
 
     }
 
@@ -76,7 +84,7 @@ const EstudianteEvaluacion = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row mx-3 rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
+                    <div className="row mx-3zzzz rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
                         <form ref={formularioRef} onSubmit={handleSubmit}>
                             {datos && datos.map((v, i) => {
                                 return (
@@ -93,7 +101,7 @@ const EstudianteEvaluacion = () => {
                 </Sobreponer>
             </div>
         </div>
-        
+
     );
 }
 

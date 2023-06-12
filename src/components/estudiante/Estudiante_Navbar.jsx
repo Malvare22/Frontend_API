@@ -27,6 +27,10 @@ const SideBarStatic = (props) => {
   const [arrow02, setArrow02] = useState(false);
   const [arrow03, setArrow03] = useState(false);
 
+  var localData = localStorage.getItem("MY_PROFILE_INFO");
+  var parsedData = JSON.parse(localData);
+  const estadoCapacitacion = parsedData.capacitacionAprobada;
+
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
 
@@ -76,14 +80,21 @@ const SideBarStatic = (props) => {
               <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
+
+          {estadoCapacitacion !== "aprobada" ?
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
+              </NavLink>
+            </NavItem>
+
+            : null
+
+          }
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
+              <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
             </NavLink>
           </NavItem>
 
@@ -109,11 +120,19 @@ const SideBarStatic = (props) => {
               <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
-            </NavLink>
-          </NavItem>
+
+          {estadoCapacitacion === "aprobada" ?
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
+              </NavLink>
+            </NavItem>
+
+            : null
+
+          }
+
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
               <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
@@ -215,6 +234,11 @@ const SideBarResponsive = () => {
   const navigate = useNavigate()
 
   const toggleNavbar = () => setCollapsed(!collapsed);
+
+  var localData = localStorage.getItem("MY_PROFILE_INFO");
+  var parsedData = JSON.parse(localData);
+  const estadoCapacitacion = parsedData.capacitacionAprobada;
+
   return (<div className="text-white d-flex flex-column flex-shrink-0" id='principal_div_nav' >
     <Nav vertical id='Sidebar' className='d-flex'>
       <div className='d-flex'>
@@ -266,16 +290,29 @@ const SideBarResponsive = () => {
 
           <UncontrolledCollapse id="despliegue" toggler="#Habilidades">
 
-            <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
-              </NavLink>
-            </NavItem>
+          <NavItem>
+            <NavLink className='offset-md-3 text-white text-start' href="#">
+              <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
+            </NavLink>
+          </NavItem>
+
+          {estadoCapacitacion !== "aprobada" ?
+
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
                 <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
               </NavLink>
             </NavItem>
+
+            : null
+
+          }
+
+          <NavItem>
+            <NavLink className='offset-md-3 text-white text-start' href="#">
+              <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
+            </NavLink>
+          </NavItem>
 
           </UncontrolledCollapse>
 
@@ -299,11 +336,19 @@ const SideBarResponsive = () => {
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
-              </NavLink>
-            </NavItem>
+
+            {estadoCapacitacion === "aprobada" ?
+
+              <NavItem>
+                <NavLink className='offset-md-3 text-white text-start' href="#">
+                  <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
+                </NavLink>
+              </NavItem>
+
+              : null
+
+            }
+
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
