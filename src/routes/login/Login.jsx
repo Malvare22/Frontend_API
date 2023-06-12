@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useUserSession, useUserTogglerSession } from '../../context/UserContext';
 import axios from 'axios';
+import { validarContrasenia } from '../../components/useGeneral/ProfilesValidations';
 //import Sidebar from '../../components/NavBar'
 
 
@@ -86,9 +87,8 @@ const Panel = (props) => {
     const validar = async (form) => {
         //Colocar método de verificación de clave (Cada input está en form)
         let condition = undefined
-        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || form.password.trim() == '' || password.exec(form.password) == null) {
+        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || !validarContrasenia(form.password)) {
             return undefined;
         }
 
