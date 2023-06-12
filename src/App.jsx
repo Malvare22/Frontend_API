@@ -213,7 +213,7 @@ const router = createBrowserRouter(
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
-            <Route path='Tutor/Aceptar/:idea' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
         </Route>
       </Route>

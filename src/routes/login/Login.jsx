@@ -99,12 +99,15 @@ const Panel = () => {
                     password: form.password
                 }).then((response) => {
                     const valor = localStorage.getItem('RELOGIN');
+                    console.log(valor)
                     if (valor === '1') {
+                        console.log("A")
                         localStorage.setItem('token_access', response.data.token)
                         localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
                         navigate(-1);
                     }
                     else {
+                        console.log("B")
                         localStorage.setItem('token_access', response.data.token)
                         localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
                         return true;
