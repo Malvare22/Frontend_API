@@ -82,7 +82,6 @@ import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 import EntidadEditar from './components/useGeneral/Editar_Entidad';
-import Listar_Componentes from './components/lider/Lider_componentes_listar';
 import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
