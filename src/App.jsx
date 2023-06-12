@@ -83,15 +83,16 @@ import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 import EntidadEditar from './components/useGeneral/Editar_Entidad';
 import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
+
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
-import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
-import Footer from './components/Footer';
 import Listar_Administrativos from './components/administrativo/Administrativo_administrativosListar';
 import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
+import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
+import Footer from './components/Footer';
 
 const router = createBrowserRouter(
   createRoutesFromElements(

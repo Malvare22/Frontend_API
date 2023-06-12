@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Docente_Tutor_Idea_Historial.jsx";
@@ -90,15 +90,15 @@ const InfoGeneral = (props) => {
 
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setAreas(data);
-        } catch (error) {
-            console.error("Historial", error);
-        }
+            try {
+                const response = await axios.get('http://localhost:8080/areaConocimiento', {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setAreas(data);
+            } catch (error) {
+                console.error("Historial", error);
+            }
     };
     useEffect(() => {
         getAreas();
@@ -108,22 +108,24 @@ const InfoGeneral = (props) => {
 
     {/*Listar docentes por area*/ }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
 
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setProfesores(data);
-            console.log(data)
-        } catch (error) {
-            console.error("Historial", error);
+        if(Area != null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
         }
     };
     useEffect(() => {
@@ -304,9 +306,11 @@ const InfoGeneral = (props) => {
                         "X-Softue-JWT": localStorage.getItem("token_access")
                     }
                 });
+                set_Adverten(null)
                 window.location.reload();
-                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
             } catch (error) {
+                set_Adverten("Este docente no puede ser asignado")
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
@@ -321,12 +325,10 @@ const InfoGeneral = (props) => {
 
     };
 
-    
-
-
-
-
-
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
 
     return (
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
@@ -424,9 +426,6 @@ const InfoGeneral = (props) => {
                                             <div className="row">
                                                 <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3" onClick={() => { getArchi() }}> Descargar formato completo</button></div>
                                             </div>
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -495,6 +494,7 @@ const InfoGeneral = (props) => {
                                 return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
@@ -518,8 +518,8 @@ const InfoGeneral = (props) => {
                         </Input>
                         <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
                         <Input type="select" name="selectMulti" onChange={(e) => { setAgregar(e.target.value) }} id="exampleSelectMulti" multiple>
-                            {estudiantes && estudiantes.map((l) => {
-                                if (l.curso === Curso) {
+                            {estudiantes && datos1 && estudiantes.map((l) => {
+                                if ((l.curso === Curso) && (l.correo  !== datos1.estudianteLiderInfo[0][0])) {
                                     return (<option key={l.correo} value={l.correo}>{l.nombre + " "  + l.apellido}</option>);
                                 } else {
                                     return ("");
@@ -707,7 +707,7 @@ const Observaciones = (props) => {
                     "X-Softue-JWT": localStorage.getItem("token_access")
                 }
             });
-            console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
             window.location.reload();
         } catch (error) {
             if (error.response) {

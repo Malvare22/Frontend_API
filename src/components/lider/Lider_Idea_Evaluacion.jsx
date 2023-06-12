@@ -16,7 +16,7 @@ const Evaluaciones = (props) => {
         setAdvice(a);
     }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
@@ -50,15 +50,17 @@ const Evaluaciones = (props) => {
     //AXIOS PARA RECIBIR LOS DOCENTES
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setProfesores(data);
-            console.log(data)
-        } catch (error) {
-            console.error("Historial", error);
+        if(Area !== null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
         }
     };
     useEffect(() => {
@@ -81,7 +83,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
-        console.log(value)
+        //console.log(value)
     };
     useEffect(() => {
         getCalificadores();
@@ -116,7 +118,7 @@ const Evaluaciones = (props) => {
         //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
         let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
         const response = await axios.delete(URLd, {
-            data: { codigoDocente: a, evaluacionIdeaId: b },
+            data: { codigoDocente: a, evaluacionIdeaId: props.idi },
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
         }
         ).then(
@@ -140,12 +142,12 @@ const Evaluaciones = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -168,9 +170,11 @@ const Evaluaciones = (props) => {
                         "X-Softue-JWT": localStorage.getItem("token_access")
                     }
                 });
+                set_Adverten(null)
                 window.location.reload();
-                console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
             } catch (error) {
+                set_Adverten("Este docente no puede ser asignado.")
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
@@ -194,7 +198,7 @@ const Evaluaciones = (props) => {
                 }
             });
             setAdvice_A("El Plan ha sido creado exitosamente")
-            console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
         } catch (error) {
             setAdvice_A("El Plan ya ha sido creado")
             if (error.response) {
@@ -209,7 +213,10 @@ const Evaluaciones = (props) => {
 
     };
 
-
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
 
 
     return (
@@ -337,17 +344,15 @@ const Evaluaciones = (props) => {
                                                 })}
 
                                                 {
-                                                    props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
+                                                    props.estado === "NA" ? calificadores && calificadores[0].calificacionesInfo.length !== 3 ? <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
                                                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
                                                                 <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
                                                             </svg>
                                                         </button>
-                                                    </div> : ""
+                                                    </div> : "" : ""
                                                 }
-
-
 
                                             </div>
 
@@ -368,7 +373,7 @@ const Evaluaciones = (props) => {
 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
-                                                props.estado != "NA" ? props.identificador == 0 ? <div>
+                                                props.estado === "Aprobado" ? props.identificador == 0 ? <div>
                                                     <Form className="justify-content-center align-content-center">
                                                         <FormGroup className="row">
                                                             <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} onClick={() => { enviarA_Plan() }}>Enviar a Plan <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
@@ -407,6 +412,7 @@ const Evaluaciones = (props) => {
                             })}
                         </Input>
                     </FormGroup>
+                    {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}    
                     <ModalFooter>
                         <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
                         <Button color="primary" onClick={toggleAlert}>Cancelar</Button>

@@ -407,13 +407,14 @@ function Tabla(props) {
         {/*Subir evaluacion*/}
 
         const [error, setError] = useState(null);
+        const [message, setMessage] = useState(null);
 
-        const [Observacion, setObservacion] = useState(" ");
+        const [Observacion, setObservacion] = useState(null);
         const setObservacion_A = (a) => {
             setObservacion(a);
         }
     
-        const [Nota, setNota] = useState("aprobada");
+        const [Nota, setNota] = useState(null);
         const setNota_A = (a) => {
             setNota(a);
         }
@@ -433,10 +434,15 @@ function Tabla(props) {
                 headers : { "X-Softue-JWT": localStorage.getItem("token_access") }
                 
               });
-              window.location.reload()
-              console.log(response.data);
+              setMessage("Guardada con exito");
             } catch (error) {
-                setError("Ya evaluaste esta idea de negocio")
+                setMessage(null);
+                if(Observacion === null || Nota === null){
+                    setError("Debes asignar una calificacion")    
+                }else{
+                    setError("Ya evaluaste esta idea de negocio")
+                }
+                
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
@@ -455,7 +461,7 @@ function Tabla(props) {
                     <div className="col-12 col-sm-6 align-content-center justify-content-center ">
                         <FormGroup>
                             <Label for="estado">Asigna una calificacion al proyecto</Label>
-                            <Input onChange={(e)=>{setNota_A(e.target.value)}} type="select" name="estado" id="estado">
+                            <Input required onChange={(e)=>{setNota_A(e.target.value)}} type="select" name="estado" id="estado">
                                 <option disabled selected>Seleccionar opción</option>
                                 <option value="aprobada">Aprobado</option>
                                 <option value="rechazada">Rechazado</option>
@@ -466,10 +472,11 @@ function Tabla(props) {
                     <div className="col-12 col-sm-6 align-content-center justify-content-center ">
                         <FormGroup>
                             <Label for="Observacion">Observaciones</Label>
-                            <Input onChange={(e)=>{setObservacion_A(e.target.value)}} type="textarea" name="Observacion" id="Observacion" />
+                            <Input required onChange={(e)=>{setObservacion_A(e.target.value)}} type="textarea" name="Observacion" id="Observacion" />
                         </FormGroup>
                     </div>
                     <div>     {error &&    <Alert color="danger" className="text-center">{error}</Alert>} </div>   
+                    <div>     {message &&    <Alert color="success" className="text-center">{message}</Alert>} </div>   
                     <div className="d-flex justify-content-center  ">
                         <Button className="m-2" style={{ backgroundColor: "#1C3B57" }} onClick={()=>{enviarDatos()}}>Enviar</Button>
                     </div>
