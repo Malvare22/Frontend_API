@@ -76,7 +76,6 @@ const InfoGeneral = (props) => {
         console.log(titulo)
         localStorage.setItem('titulo', titulo);
         window.location.reload();
-        
       };
     
     const editarIdea = async (areaN, TNuevo) => {
@@ -84,13 +83,13 @@ const InfoGeneral = (props) => {
         var formData = new FormData();
         formData.append('tituloActual', datos1 && datos1.titulo);
 
-        if (areaN != null) {
+        if (areaN !== null) {
             formData.append('area', areaN);
         } else {
             formData.append('area', datos1 && datos1.areaEnfoque);
         }
 
-        if (TNuevo != undefined && TNuevo != null) {
+        if (TNuevo !== undefined && TNuevo != null) {
             formData.append('tituloNuevo', TNuevo);
         } else {
             formData.append('tituloNuevo', datos1 && datos1.titulo);
@@ -102,6 +101,7 @@ const InfoGeneral = (props) => {
                 const data = response.data;
                 setInfo(titleNuevo);
                 return data;
+                
             })
             .catch(function (error) {
                 console.error(error);
@@ -274,7 +274,8 @@ const InfoGeneral = (props) => {
                         <Input type="text" name="name" id="exampleSelect" onChange={(e) => { tituloNuevo(e.target.value) }} defaultValue={datos1 && datos1.titulo}></Input>
                         <Label id="texto">Escoge el area de tu proyecto</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <Input type="select" name="select" onChange={(e) => { areaNueva(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}

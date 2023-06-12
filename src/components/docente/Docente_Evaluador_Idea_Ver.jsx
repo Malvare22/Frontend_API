@@ -433,7 +433,7 @@ function Tabla(props) {
                 headers : { "X-Softue-JWT": localStorage.getItem("token_access") }
                 
               });
-              
+              window.location.reload()
               console.log(response.data);
             } catch (error) {
                 setError("Ya evaluaste esta idea de negocio")
@@ -456,6 +456,7 @@ function Tabla(props) {
                         <FormGroup>
                             <Label for="estado">Asigna una calificacion al proyecto</Label>
                             <Input onChange={(e)=>{setNota_A(e.target.value)}} type="select" name="estado" id="estado">
+                                <option disabled selected>Seleccionar opción</option>
                                 <option value="aprobada">Aprobado</option>
                                 <option value="rechazada">Rechazado</option>
                             </Input>
