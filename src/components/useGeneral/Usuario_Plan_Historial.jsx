@@ -14,13 +14,14 @@ export default function Historial(props) {
             ).then(
             response => {
                 const data = response.data;
+                //console.log(data)
                 return data;
 
             }).catch(error => {
                 console.error(error);
             });
         setDatos(value)
-        console.log(value)
+       //console.log(value)
     };
     useEffect(() => {
         definir_Estado();
@@ -57,7 +58,7 @@ export default function Historial(props) {
                     }
 
                     return (<div key={i}>
-                        <Evaluaciones Token={props.Token} rol={props.rol} nombre={props.nombre} key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
+                        <Evaluaciones Token={props.Token} idi={v.id} rol={props.rol} nombre={props.nombre} key={i} estado={estado} color={color} fecha={v.fecha_creacion} identificador={i}></Evaluaciones>
                     </div>
                     );
                 })}

@@ -76,6 +76,7 @@ const InfoGeneral = (props) => {
         setAgregare(a);
         toggleAlertEliminar();
     }
+    
     //Elimnar Apoyo tomar el correo
     const eliminarApoyo = (a) => {
         setAgregare(a);
@@ -91,7 +92,7 @@ const InfoGeneral = (props) => {
             });
             const data = response.data;
             setDatos1(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error(error);
         }
@@ -110,7 +111,7 @@ const InfoGeneral = (props) => {
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -135,7 +136,7 @@ const InfoGeneral = (props) => {
                 });
                 const data = response.data;
                 setProfesores(data);
-                console.log(data)
+                //console.log(data)
             } catch (error) {
                 console.error("Historial", error);
             }
@@ -238,7 +239,9 @@ const InfoGeneral = (props) => {
                 });
                 window.location.reload();
                 console.log(response.data); // Puedes hacer algo con la respuesta recibida
+                set_Adverten(null);
             } catch (error) {
+                set_Adverten("Este docente no puede ser asignado");
                 if (error.response) {
                     console.log('Código de estado:', error.response.status);
                     console.log('Respuesta del backend:', error.response.data);
@@ -341,13 +344,17 @@ const InfoGeneral = (props) => {
             //let ruta = 'http://144.22.37.238:8080/coordinador/asignar/' + idea + '/' + docente;
             let ruta = 'http://localhost:8080/administrativo/asignarPlan/' + idea + '/' + docente;
             //localhost:8080/administrativo/asignarPlan/timbers/
-            console.log(ruta);
+            //console.log(ruta);
             value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
             ).then(
                 response => {
                     const data = response.data;
+                    set_Adverten(null);
+                    toggleAlert()
                     return data;
+                    
                 }).catch(error => {
+                    set_Adverten("Este docente no puede ser asignado");
                     if (error.response) {
                         console.log('Código de estado:', error.response.status);
                         console.log('Respuesta del backend:', error.response.data);
@@ -357,13 +364,18 @@ const InfoGeneral = (props) => {
                         console.log('Error al realizar la solicitud:', error.message);
                     }
                 });
-            console.log(value)
-            toggleAlert()
+            //console.log(value)
+            
 
         } else {
-            console.log("Ando vacio vago")
+            //console.log("Ando vacio vago")
         }
 
+    }
+
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
     }
 
     return (
@@ -436,9 +448,9 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="col-auto ">
                                                 <ul>
-                                                    {console.log(datos1 && datos1.docentesApoyoInfo[1])}
+                                                    {/*console.log(datos1 && datos1.docentesApoyoInfo[1])*/}
                                                     {datos1 && datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j}>{l} {props.rol == "tutor" ? <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        return (<li key={j}>{l} {props.rol === "tutor" ? <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                         </svg> : ""} </li>);
@@ -518,7 +530,7 @@ const InfoGeneral = (props) => {
                     <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
-
+{/*Aqui debe ir el alert de error de docente*/}
             <Modal centered isOpen={viewAlertDocente}>
                 <ModalBody>
                     <FormGroup>
@@ -536,6 +548,7 @@ const InfoGeneral = (props) => {
                                 return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
@@ -543,7 +556,7 @@ const InfoGeneral = (props) => {
                     </ModalFooter>
                 </ModalBody>
             </Modal>
-
+{/*Aqui debe ir el alert de error de docente*/}
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
@@ -558,9 +571,10 @@ const InfoGeneral = (props) => {
                         <Label for="exampleSelectMulti">Seleccciona al docente: </Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { getTutorN(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre +" "+ l.apellido}</option>);
                             })}
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
@@ -726,7 +740,7 @@ const Observaciones = (props) => {
             let ruta = "http://localhost:8080/planNegocio/agregarDocumento";
             let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
                 .then((response) => {
-                    console.log("hecho")
+                    //console.log("hecho")
                     window.location.reload();
                 })
                 .catch((error) => {
@@ -853,7 +867,7 @@ function Tabla(props) {
             });
             const data = response.data;
             setDatos1(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error(error);
         }
@@ -911,7 +925,7 @@ function Tabla(props) {
 
             });
 
-            console.log(response.data);
+            //console.log(response.data);
         } catch (error) {
             setError("Ya evaluaste esta idea de negocio")
             if (error.response) {
@@ -975,7 +989,7 @@ function Tabla(props) {
                     "X-Softue-JWT": localStorage.getItem("token_access")
                 }
             });
-            console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
             window.location.reload();
         } catch (error) {
             if (error.response) {
