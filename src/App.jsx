@@ -36,6 +36,7 @@ import LiderListarAdministrativos from './components/lider/Lider_administrativos
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
+import EstudianteCapacitacionGeneral from './components/estudiante/Estudiante_Capacitacion_General';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
@@ -110,6 +111,7 @@ const router = createBrowserRouter(
             <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>} />
             <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>} />
             <Route path='CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>} />
+            <Route path='CapacitacionGeneral' element={<EstudianteCapacitacionGeneral></EstudianteCapacitacionGeneral>} />
           </Route>
           <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
             <Route path='Perfil' element={<LiderPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilLider} />

@@ -93,3 +93,9 @@ body {
   background: rgb(48, 48, 90);
   color: white;
 }
+
+#subtituloListaG{
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: x-large;
+  color: #DC4B4B;
+}

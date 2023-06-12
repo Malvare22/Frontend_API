@@ -10,9 +10,9 @@ export default function Estudiante_ListarIdeas() {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let formData = new FormData();
-        var localData = localStorage.getItem("session");
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
-        formData.append('estudianteEmail', parsedData.email);
+        formData.append('codigoEstudiante', parsedData.codigo);
         let value = await axios.post("http://localhost:8080/ideaNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -61,6 +61,14 @@ export default function Estudiante_ListarIdeas() {
                                             <div className='rechazadas'></div>
                                             <div className='mx-2'>Iniciativa rechazada</div>
                                         </div>
+                                        <div className='d-flex col-auto justify-content-center align-items-center'>
+                                            <div className='formuladas'></div>
+                                            <div className='mx-2'>Iniciativa formulada</div>
+                                        </div>
+                                        <div className='d-flex col-auto justify-content-center align-items-center'>
+                                            <div className='vencidas'></div>
+                                            <div className='mx-2'>Iniciativa vencida</div>
+                                        </div>
                                     </div>
                                     <div className="row d-flex align-items-center">
                                         {datos && datos.map((v, i) => {
@@ -68,10 +76,14 @@ export default function Estudiante_ListarIdeas() {
                                             let color = "";
                                             if (v.estado === "aprobada") {
                                                 color = "#75C47D";
-                                            } else if (v.estado === "reprobada") {
+                                            } else if (v.estado === "rechazada") {
                                                 color = "#DC4B4B";
-                                            } else {
+                                            } else if (v.estado === "pendiente") {
                                                 color = "#ECB904";
+                                            } else if (v.estado === "formulado"){
+                                                color = "#4E7FAC";
+                                            } else {
+                                                color = "#909090";
                                             }
 
                                             return (<div key={i} className="col-12 col-lg-4 col-sm-6">
@@ -140,6 +152,24 @@ const Sobreponer = styled.div`
      -webkit-border-radius: 50%;
      border-radius: 50%;
      background: #DC4B4B;
+ }
+
+ .formuladas{
+     width: 10px;
+     height: 10px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+     background: #4E7FAC;
+ }
+
+ .vencidas{
+     width: 10px;
+     height: 10px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+     background: #909090;
  }
 
 `;

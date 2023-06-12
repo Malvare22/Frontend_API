@@ -48,7 +48,7 @@ const Table = ({ data }) => {
             } else if (column === 'Modulo') {
                 comparison = a.modulo.localeCompare(b.modulo);
             } else if (column === 'Fecha') {
-                comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
+                comparison = a.fechaCreacion.localeCompare(b.fechaCreacion);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -77,7 +77,7 @@ const Table = ({ data }) => {
             await axios.delete(`http://localhost:8080/formato/${formatoEliminar.id}`, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-            
+
             console.log("Formato eliminado correctamente");
             window.location.reload();
 
@@ -91,7 +91,7 @@ const Table = ({ data }) => {
                 console.log('Error al realizar la solicitud:', error.message);
             }
         }
-        
+
         setShowModal(false);
         setFormatoEliminar(null);
     };
@@ -133,6 +133,8 @@ const Table = ({ data }) => {
     return (
         <Sdiv>
             <div className='w-auto'>
+                <div className="col-auto d-flex align-items-center mt-3">
+                </div>
                 <table className="table table-striped">
                     <thead>
                         <tr>
@@ -206,30 +208,17 @@ max-height: 66.4vh;
     }}
 `;
 
-// Componente de filtros
-const Filters = ({ onFilter }) => {
-    const [modulo, setModulo] = useState("");
-    const handleSelectChange = (e) => {
-        const value = e.target.value;
-        setModulo(value);
-        onFilter(value);
-    };
-    return (<form className="row gy-2 gx-1">
-        <div className="col-auto d-flex align-items-center mb-1">
-            <select name="area" onChange={handleSelectChange} className="form-select-sm selector fw-bold text-black">
-                <option value="">Modulo</option>
-                <option value="idea">Idea</option>
-                <option value="plan">Plan</option>
-            </select>
-        </div>
-    </form>
-    );
-};
-
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Formatos() {
 
     const [filteredData, setFilteredData] = useState([]);
+    const [modulo, setModulo] = useState('');
+
+    const handleModuloChange = (e) => {
+        setModulo(e.target.value);
+    };
+
+    console.log(modulo);
 
     const getFormatos = async () => {
         try {
@@ -237,7 +226,13 @@ export default function Listar_Formatos() {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
 
-            const formatos = response.data.map((formato) => {
+            let formatos = response.data;
+
+            if (modulo !== '') {
+                formatos = formatos.filter(formato => formato.modulo === modulo);
+            }
+
+            formatos = formatos.map((formato) => {
                 const [year, month, day] = formato.fechaCreacion;
                 const fechaCreacion = `${day}/${month}/${year}`;
                 return { ...formato, fechaCreacion };
@@ -251,27 +246,22 @@ export default function Listar_Formatos() {
 
     useEffect(() => {
         getFormatos();
-    }, []);
+    }, [modulo]);
 
-    const handleFilter = async (modulo) => {
-        console.log(modulo)
-        try {
-            const response = await axios.get("../formatosFiltrados.json");
-            setFilteredData(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-        //ACA IRA LA SOLICITUD A BACK CON LOS PARAMETROS
-    };
+
     return (
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
                     <h1 className="fst-italic fw-bold fs-1 text-black">Historial de formatos de proyecto de emprendimiento</h1>
+                    <div className='container mt-3'>
+                        <select name="modulo" onChange={handleModuloChange} className="form-select-sm selector fw-bold text-black" required>
+                            <option value="">General</option>
+                            <option value="idea_de_negocio">Idea de negocio</option>
+                            <option value="plan_de_negocio">Plan de negocio</option>
+                        </select>
+                    </div>
                     <div className="container">
-                        <br></br>
-                        <Filters onFilter={handleFilter}></Filters>
-                        <br></br>
                         <Table data={filteredData}></Table>
                         <br></br>
                         <div className="d-flex justify-content-end">

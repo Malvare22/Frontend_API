@@ -95,12 +95,7 @@ export default function Subir_Formatos() {
                             <form onSubmit={handleSubmit}>
                                 <div className="row">
                                     <div className="col-auto d-flex align-items-center mb-1">
-                                        <select
-                                            name="area"
-                                            onChange={handleModuloChange}
-                                            className="form-select-sm selector fw-bold text-black"
-                                            required
-                                        >
+                                        <select name="modulo" onChange={handleModuloChange} className="form-select-sm selector fw-bold text-black" required>
                                             <option value="">Seleccione...</option>
                                             <option value="idea_de_negocio">Idea de negocio</option>
                                             <option value="plan_de_negocio">Plan de negocio</option>
