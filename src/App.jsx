@@ -82,9 +82,10 @@ import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
 import EntidadEditar from './components/useGeneral/Editar_Entidad';
-import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
+import PlanVer from './components/useGeneral/Usuario_Plan_Ver'; 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
+import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -148,6 +149,7 @@ const router = createBrowserRouter(
             {/** Rutas del manejo de preguntas */}
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
+            <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>

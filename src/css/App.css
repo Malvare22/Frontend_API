@@ -90,7 +90,7 @@ body {
   }}
 
 #btn-Azul {
-  background: rgb(48, 48, 90);
+  background: rgb(47, 47, 113);
   color: white;
 }
 
@@ -98,4 +98,18 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: x-large;
   color: #DC4B4B;
+}
+
+.sobreponer {
+  background: rgb(47, 47, 113);
+  color: white;
+  z-index: 999;
+  transform: translate(-10%, -60%);
+}
+
+.custom-hr {
+  height: 5px;
+  background-color: rgb(45, 45, 45);
+  margin: 10px 0;
+  box-shadow: 0px 2px 4px rgba(70, 69, 69, 0.6);
 }
