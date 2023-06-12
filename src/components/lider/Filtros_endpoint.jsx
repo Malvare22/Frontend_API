@@ -32,3 +32,17 @@ export const getResultadosFiltrados = () => {
         }
     ];
 }
+
+export const getResultados = async () => {
+    try {
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        const response = await axios.get(`http://localhost:8080/test`, config);
+        return response.data;        
+    } catch (error) {
+        console.error("Error al obtener los cursos:", error);
+    }
+}

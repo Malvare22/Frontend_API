@@ -152,16 +152,6 @@ export const Filtros = ({ onFilter }) => {
                 </select>
             </div>
             <div className="col-auto d-flex align-items-center mb-1">
-                <select name="estado"
-                    className="form-select selector text-black"
-                    value={filtro.estado}
-                    onChange={handleChange}>
-                    <option value="">Estado</option>
-                    <option value="aprobada">Aprobada</option>
-                    <option value="desaprobada">Desaprobada</option>
-                </select>
-            </div>
-            <div className="col-auto d-flex align-items-center mb-1">
                 <input name="fechaInicio"
                     type="date"
                     className="text-black form-control"

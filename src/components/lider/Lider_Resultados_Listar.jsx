@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Tabla, Filtros } from '../useGeneral/Tabla';
 import { useNavigate } from "react-router-dom";
-import { getResultadosFiltrados } from "./Filtros_endpoint"
+import { getResultadosFiltrados, getResultados } from "./Filtros_endpoint"
 
 export default function useListarPreguntas() {
     const navigate = useNavigate();
@@ -9,38 +9,56 @@ export default function useListarPreguntas() {
         {
             "codigo": 123654,
             "curso": 6 - 6,
-            "estado": "aprobada",
             "calificacion": 60.0,
             "fecha": "23-04-22"
         },
         {
             "codigo": 123654,
             "curso": 6 - 6,
-            "estado": "aprobada",
             "calificacion": 60.0,
             "fecha": "23-04-22"
         },
         {
             "codigo": 123654,
             "curso": 6 - 6,
-            "estado": "aprobada",
             "calificacion": 60.0,
             "fecha": "23-04-22"
         },
         {
             "codigo": 123654,
             "curso": 6 - 6,
-            "estado": "aprobada",
             "calificacion": 60.0,
             "fecha": "23-04-22"
         }
     ]);
 
-    let columnas = ["codigo", "curso", "estado", "calificacion", "fecha"];
+
+    useEffect(() => {
+        const obtenerResultado = async () => {
+            try {
+                const resultados = await getResultados();
+                const resultadosMapeados = resultados.map((resultado) => {
+                    const fecha = resultado.fechaCreacion[0] + '-' + resultado.fechaCreacion[1] + '-' + resultado.fechaCreacion[2];
+                    return {
+                        ...resultado,
+                        codigo: resultado.estudiante.codigo,
+                        curso: resultado.estudiante.curso,
+                        fecha: fecha
+                    };
+                });
+                setResultadosInfo(resultadosMapeados);
+            } catch (error) {
+                console.error("Error al obtener los cursos:", error);
+            }
+        };
+        obtenerResultado();
+    }, []);
+
+    let columnas = ["codigo", "curso", "calificacion", "fecha"];
 
     const handleVisualizarClick = (dato) => {
         console.log(dato);
-    } 
+    }
 
     const handleFilter = (filtro) => {
         console.log(filtro);
