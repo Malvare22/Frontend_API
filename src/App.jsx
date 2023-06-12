@@ -199,6 +199,8 @@ const router = createBrowserRouter(
             <Route path='Lider' element={<AdministrativoVerPerfilLider/>} />
             <Route path='Lider/Registrar' element={<LiderEditarPerfil type={'registrar'}/>} />
             <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
+            
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />
