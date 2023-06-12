@@ -30,7 +30,7 @@ export default function Aceptar_Tutoria() {
         try {
             console.log(titulo)
             await axios.get(`http://localhost:8080/docente/acceptarTutor/${titulo}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
-            navigate('/Docente/Tutor/Ideas');
+            navigate('/Docente/Perfil');
         } catch (error) {
             console.log(error);
         }
@@ -39,7 +39,7 @@ export default function Aceptar_Tutoria() {
     const rechazar = async (titulo) => {
         try {
             await axios.get(`http://localhost:8080/docente/acceptarTutor/${titulo}/false`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
-            navigate('/Docente/Tutor/Ideas');
+            navigate('/Docente/Perfil');
         } catch (error) {
             console.log(error);
         }
