@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { toLiderFormatStudentsToExport } from '../../context/functions_general';
 
-export default function RegistrarComponente() {
+export default function ActualizarComponente() {
     return (
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
@@ -34,11 +34,10 @@ const Head = () => {
 
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57", color: "#FFFFFF" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-plus-circle" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
             </svg>
-            <h5 className='text-white fw-bold'>Agregar componente</h5>
+            <h5 className='text-white fw-bold'>Actualizar componente</h5>
         </div>
     );
 }
@@ -66,6 +65,13 @@ const Information = () => {
     const jesucristo = useRef(null);
     const [formValues, setFormValues] = useState({ nombre: '', porcentaje: '' });
     const [errors, setErrors] = useState(initialErrors);
+    useEffect(() => {
+        const datosString = localStorage.getItem('datos');        
+        if (datosString) {
+          const datos = JSON.parse(datosString);
+          setFormValues({ nombre: datos.nombre, porcentaje: datos.valorPorcentaje });
+        }
+      }, []);
     const validar = () => {
         let newErrors = {
             nombre: false,
@@ -87,12 +93,15 @@ const Information = () => {
         return !fail;
     };
     const handleSubmit = (e) => {
+        const datosString = localStorage.getItem('datos');
+        const datos = JSON.parse(datosString);
         e.preventDefault();
         if (!validar()) {
             return;
         }
         const { nombre, porcentaje } = formValues;
         const data = {
+            id: datos.id,
             nombre: nombre,
             valorPorcentaje: parseFloat(porcentaje).toFixed(1),
         };
@@ -101,7 +110,7 @@ const Information = () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        axios.post('http://localhost:8080/componenteCompetencias', data, config)
+        axios.patch('http://localhost:8080/componenteCompetencias', data, config)
             .then((response) => {
                 toggleAlert();
                 navigate('/Lider/Evaluacion/Componentes');
@@ -132,7 +141,7 @@ const Information = () => {
                                 Componente:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" onChange={handleChange} className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} name='nombre' value={formValues.nombre}/> {errors.nombre && (<div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>)}
+                                <input type="text" onChange={handleChange} className={`form-control ${errors.nombre ? 'is-invalid' : ''}`} name='nombre' value={formValues.nombre} /> {errors.nombre && (<div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 caracteres.</div>)}
                             </div>
                         </div>
                         <div className='row' style={{ paddingBottom: "60px" }}>
@@ -147,16 +156,16 @@ const Information = () => {
                 </div>
                 <div className='btns'>
                     <button type='button' className='btn rounded-3' onClick={handleAddComponent}>
-                        <h6 className='text-white'>Añadir componente</h6>
+                        <h6 className='text-white'>Actualizar componente</h6>
                     </button>
-                    <button type='button' className='btn-danger rounded-3' onClick={()=>navigate('/Lider/Evaluacion/Componentes')}>
+                    <button type='button' className='btn-danger rounded-3' onClick={() => navigate('/Lider/Evaluacion/Componentes')}>
                         <h6 className='text-white'>Cancelar</h6>
                     </button>
                 </div>
             </form>
             <Modal isOpen={state} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                    <h6 className='m-0 p-0'>¿Está seguro de añadir este componente a la evaluación de competencias?</h6>
+                    <h6 className='m-0 p-0'>¿Está seguro de actualizar este componente a la evaluación de competencias?</h6>
                 </ModalBody>
                 <ModalFooter className='d-flex justify-content-center'>
                     <Button color="primary" onClick={handleSubmit} style={{ marginRight: "40px" }}>Aceptar</Button>

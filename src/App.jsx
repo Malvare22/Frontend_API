@@ -84,6 +84,7 @@ import EntidadEditar from './components/useGeneral/Editar_Entidad';
 import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
+import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -120,6 +121,7 @@ const router = createBrowserRouter(
             <Route path='Planes/Vista' element={<PlanVer></PlanVer>}></Route>
             <Route path='Evaluacion/Componentes' element={<LiderComponentesListar></LiderComponentesListar>}></Route>
             <Route path='Evaluacion/Componentes/Registrar' element={<LiderComponenteRegistrar></LiderComponenteRegistrar>}></Route>
+            <Route path='Evaluacion/Componentes/Editar' element={<LiderComponenteActualizar></LiderComponenteActualizar>}></Route>
             <Route path='Estudiantes' element={<ListarEstudiantes/>} />          
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
