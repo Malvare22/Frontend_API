@@ -59,14 +59,14 @@ const useForm = (initialData, validar, navigate) => {
 };
 
 
-export default function Login() {
+export default function Login(props) {
     return (
         <div className='container-fluid' style={{ background: "#1C3B57" }}>
             <div className='row p-5'>
                 <div className='col-md-6 col-12 p-5 d-flex justify-content-center align-items-center' style={{ background: "#68462C" }}>
                     <div className='flex-grow-1'>
                         <h2 className='text-center mb-5' style={{ color: "white", fontWeight: "bold" }}>SoftUE</h2>
-                        <Panel></Panel>
+                        <Panel Relogin={props.Relogin}></Panel>
                     </div>
                 </div>
                 <div className='col-md-6 col-12 p-0'>
@@ -77,7 +77,7 @@ export default function Login() {
     );
 }
 
-const Panel = () => {
+const Panel = (props) => {
     const navigate = useNavigate();
     const toggleA = () => {
         navigate('/forgetPassword');
@@ -98,7 +98,7 @@ const Panel = () => {
                     email: form.userName,
                     password: form.password
                 }).then((response) => {
-                    const valor = localStorage.getItem('RELOGIN');
+                    const valor = props.Relogin;
                     localStorage.setItem('token_access', response.data.token)
                     localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
                     if (valor === '1') {

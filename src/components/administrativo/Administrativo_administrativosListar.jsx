@@ -91,8 +91,9 @@ const Table = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
-                            <tr key={d.id}>
+                        {sortedData.map((d) => {
+                            if (d.correo!= (JSON.parse(localStorage.getItem('session'))).email)
+                            return <tr key={d.id}>
                                 <td className='text-center align-middle col-auto'>{d.apellido + " " + d.nombre}</td>
                                 <td className='text-center align-middle'>
                                     <div>
@@ -116,7 +117,9 @@ const Table = ({ data }) => {
                                     </div>
                                 </td>
                             </tr>
-                        ))}
+
+                        }
+                        )}
                     </tbody>
                 </table>
             </div>

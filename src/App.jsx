@@ -93,6 +93,7 @@ import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
+import { Relogin } from './routes/login/Relogin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -100,6 +101,7 @@ const router = createBrowserRouter(
       <Route element={<Template></Template>} errorElement={<Error404></Error404>}>
         <Route path='/' element={<Home></Home>} />
         <Route path='/login' element={<><Login/><Footer/></>} />
+        <Route path='/relogin' element={<><Relogin/><Footer/></>} />
         <Route path='/forgetPassword' element={<><Recovery></Recovery><Footer></Footer></>} />
         <Route exact path="/resetPassword" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
         <Route path="/resetPassword/:token" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
@@ -213,7 +215,7 @@ const router = createBrowserRouter(
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
-            <Route path='Tutor/Aceptar/:idea' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
         </Route>
       </Route>

@@ -554,7 +554,7 @@ export const FormEstudiante = ({ user, type }) => {
             }
 
             if (type == 'registrar') {
-                dataToSend.capacitacionAprobada = "aprobada"
+                dataToSend.capacitacionAprobada = "reprobada"
                 await axios.post('http://localhost:8080/register/estudiante', dataToSend)
             }
 
@@ -804,7 +804,7 @@ export const FormAdministrativo = ({ user, type }) => {
 
         try {
             const dataToSend = exportAdmins([{ ...form }])[0]
-            console.log(type)
+            console.log(dataToSend)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
