@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
-import { useParams } from 'react-router-dom';
+import { redirect, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 // Componente principal que contiene la tabla y los filtros
@@ -21,7 +21,11 @@ export default function Aceptar_Tutoria() {
                 setTituloIdea(response.data.titulo);
                 setArea(response.data.areaEnfoque);
             } catch (error) {
-                console.log(error);
+                console.log(error)
+                if(error.response.data.message==="Token Invalido" || localStorage.getItem('token_access')===null){
+                    localStorage.setItem('RELOGIN',1)                    
+                    navigate("/login")
+                }
             }
         };
         fetchData();
@@ -40,17 +44,17 @@ export default function Aceptar_Tutoria() {
     const navigate = useNavigate();
     const aceptar = async (tutor) => {
         try {
-            await axios.get(`http://localhost:8080/docente/acceptarTutor/${tutor}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });            
+            await axios.get(`http://localhost:8080/docente/acceptarTutor/${tutor}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
             navigate('/Docente/Tutor/Ideas');
 
         } catch (error) {
             console.log(error);
         }
     };
-    
+
     const rechazar = async (tutor) => {
         try {
-            await axios.get(`http://localhost:8080/docente/acceptarTutor/${tutor}/false`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });            
+            await axios.get(`http://localhost:8080/docente/acceptarTutor/${tutor}/false`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
             navigate('/Docente/Tutor/Ideas');
         } catch (error) {
             console.log(error);

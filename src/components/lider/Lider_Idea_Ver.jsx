@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Lider_Idea_Historial";
@@ -36,12 +36,11 @@ const InfoGeneral = (props) => {
         setViewAlertEliminar(!viewAlertEliminar);
     }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
  
-
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
@@ -67,12 +66,12 @@ const InfoGeneral = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
+            //console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -85,15 +84,17 @@ const InfoGeneral = (props) => {
 
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setProfesores(data);
-            console.log(data)
-        } catch (error) {
-            console.error("Historial", error);
+        if(Area !== null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
         }
     };
     useEffect(() => {
@@ -107,7 +108,7 @@ const InfoGeneral = (props) => {
 
 
     const asignarTutor = async (docente) => {
-        console.log(TutorNuevo,"Siass")
+        //console.log(TutorNuevo,"Siass")
         if (TutorNuevo) {
             let value = null;
             let idea = datos1 && datos1.titulo;
@@ -118,8 +119,12 @@ const InfoGeneral = (props) => {
              ).then(
                  response => {
                      const data = response.data;
+                     toggleAlert()
+                     set_Adverten(null)
                      return data;
+
                  }).catch(error => {
+                    set_Adverten("Este docente no puede ser asignado.")
                     if (error.response) {
                         console.log('Código de estado:', error.response.status);
                         console.log('Respuesta del backend:', error.response.data);
@@ -129,9 +134,6 @@ const InfoGeneral = (props) => {
                         console.log('Error al realizar la solicitud:', error.message);
                       }
                  });
-                 console.log(value)
-                 toggleAlert()
-
         }else{
             console.log("Ando vacio vago")
         }
@@ -145,7 +147,7 @@ const InfoGeneral = (props) => {
             let idea = datos1 && datos1.titulo;
             //let ruta = 'http://144.22.37.238:8080/administrativo/eliminarTutor/'+idea;
             let ruta = 'http://localhost:8080/administrativo/eliminarTutor/'+idea;
-            console.log(ruta);
+            //console.log(ruta);
             value = await axios.post(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
              ).then(
                  response => {
@@ -203,8 +205,10 @@ const InfoGeneral = (props) => {
             });
     };
 
-    
-
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
     let set = new Set();
 
     return (
@@ -245,7 +249,6 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    <li>{datos1 && datos1.estudianteLiderInfo[1]}</li>
                                                     {datos1.estudiantesIntegrantesInfo != null ? datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
 
@@ -368,9 +371,10 @@ const InfoGeneral = (props) => {
                         <Label for="exampleSelectMulti">Seleccciona al docente: </Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { getTutorN(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre +" "+ l.apellido}</option>);
                             })}
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
