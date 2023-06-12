@@ -19,7 +19,7 @@ const Formulario = () => {
     setTitulo(e.target.value);
   };
 
-  const handleCursoChange = e => {
+  const handleCursoChange = (e) => {
     setCursoSeleccionado(e.target.value);
   };
 
@@ -77,12 +77,19 @@ const Formulario = () => {
 
   const [estudiantes, setEstudiantes] = useState([]);
   const getEstudiantes = async () => {
+    
+    var localData = localStorage.getItem("session");
+    var parsedData = JSON.parse(localData);
+
     try {
       const response = await axios.get('http://localhost:8080/estudiante/listar', {
         headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
-      console.log(response.data);
-      setEstudiantes(response.data);
+
+      const estudiantesFiltrados = response.data.filter(estudiante => estudiante.correo !== parsedData.email);
+      setEstudiantes(estudiantesFiltrados);
+
+      console.log(estudiantesFiltrados);
     } catch (error) {
       console.log(error);
     }
@@ -191,7 +198,7 @@ const Formulario = () => {
                             </select>
 
                             <div className='mt-2'>
-                              <p><b>Los integrantes que ha seleccionado son: </b><i>{integrantesSeleccionados.join(', ')}</i></p> 
+                              <p><b>Los integrantes que ha seleccionado son: </b><i>{integrantesSeleccionados.join(', ')}</i></p>
                             </div>
 
                           </div>

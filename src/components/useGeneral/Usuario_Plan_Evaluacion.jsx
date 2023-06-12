@@ -16,7 +16,7 @@ const Evaluaciones = (props) => {
         setAdvice(a);
     }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
@@ -50,16 +50,19 @@ const Evaluaciones = (props) => {
     //AXIOS PARA RECIBIR LOS DOCENTES
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setProfesores(data);
-            console.log(data)
-        } catch (error) {
-            console.error("Historial", error);
+        if (Area !== null) {
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setProfesores(data);
+                console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
         }
+
     };
     useEffect(() => {
         getProfesores();
@@ -141,7 +144,7 @@ const Evaluaciones = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
@@ -306,7 +309,7 @@ const Evaluaciones = (props) => {
                                                                 </svg>
                                                             </div>
 
-                                                            {props.rol=="coordinador" ? props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
+                                                            {props.rol == "coordinador" ? props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
 
                                                                 <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
@@ -336,7 +339,7 @@ const Evaluaciones = (props) => {
                                                 })}
 
                                                 {
-                                                    props.rol=="coordinador" ? props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
+                                                    props.rol == "coordinador" ? props.estado == "NA" ? calificadores && calificadores[0].calificacionesInfo.length == 3 ? "" : <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
                                                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
@@ -367,7 +370,7 @@ const Evaluaciones = (props) => {
 
                                         <div className="d-flex justify-content-center align-content-center mt-5">
                                             {
-                                                props.rol=="coordinador" ? props.estado == "Aprobado" ? props.identificador == 0 ? <div>
+                                                props.rol == "coordinador" ? props.estado == "Aprobado" ? props.identificador == 0 ? <div>
                                                     <Form className="justify-content-center align-content-center">
                                                         <FormGroup className="row">
                                                             <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} >Aceptar Calificacion <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
@@ -375,7 +378,7 @@ const Evaluaciones = (props) => {
                                                             </svg></Button>
                                                         </FormGroup>
                                                         <div>{Advice != null ? <Alert color="success">{Advice}</Alert> : ""}</div>
-                                                    </Form></div> : "" : "" :""
+                                                    </Form></div> : "" : "" : ""
                                             }
                                         </div>
 
@@ -393,6 +396,7 @@ const Evaluaciones = (props) => {
                         <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}

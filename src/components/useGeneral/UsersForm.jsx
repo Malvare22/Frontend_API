@@ -38,7 +38,7 @@ const RegisterPasswordInput = ({ errors, form, handleChange }) => {
 
 
 //Componenete Head de Editar
-export function HeadEdit() {
+export function HeadEdit(props) {
 
     const icon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" className="bi bi-person-plus-fill" viewBox="0 0 16 16" style={{ height: "50px" }}>
         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -48,13 +48,13 @@ export function HeadEdit() {
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
             <img src={pencil} className='' style={{ width: "50px", height: "50px" }}></img>
-            <h5 className='text-white fw-bold'>Editar Información</h5>
+            <h5 className='text-white fw-bold'>Editar Información {props.labelText}</h5>
         </div>
     );
 }
 
 //Componenete Head de Registrar
-export function HeadRegister() {
+export function HeadRegister(props) {
 
     const icon = <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" className="bi bi-person-plus-fill" viewBox="0 0 16 16" style={{ height: "50px" }}>
         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
@@ -64,7 +64,7 @@ export function HeadRegister() {
     return (
         <div className='d-flex justify-content-center align-content-center align-items-center rounded-3' style={{ backgroundColor: "#1C3B57" }}>
             {icon}
-            <h5 className='text-white fw-bold'>Registrar</h5>
+            <h5 className='text-white fw-bold'>Registrar {props.labelText}</h5>
         </div>
     );
 }
@@ -84,16 +84,35 @@ const getPresentDate = () => {
     return `${year}-${month}-${day}`;
 }
 
-const changePassword = async (contrasenia) => {
-    const config = {
-        headers: {
-            "X-Softue-Reset": localStorage.getItem('token_access')
+const changePassword = async (correo, contrasenia, type) => {
+
+    if(type=='sudo'){
+        console.log('Vamos bien?')
+        let formData = new FormData()
+        formData.append("correo", correo)
+        formData.append("contrasenia", contrasenia)
+
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
         }
+
+        await axios.patch('http://localhost:8080/coordinador/restablecerOtroUsuario', formData, config)
     }
-    const dataToSend = {
-        "password": contrasenia
+    else{
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        const data = {
+            "password" : contrasenia
+        }
+        await axios.patch('http://localhost:8080/coordinador/reestablecer', data, config)
+
     }
-    await axios.patch('http://localhost:8080/coordinador/reestablecer', dataToSend, config)
+    
 }
 
 //Almacenamiento de datos, errores y mostrar alerta de envio
@@ -272,7 +291,7 @@ export function FormDocente({ user, type }) {
                 console.log('Export', dataToSend)
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
-                    await changePassword(form.contrasenia)
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
@@ -303,7 +322,7 @@ export function FormDocente({ user, type }) {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                nombre:
+                                Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
@@ -312,7 +331,7 @@ export function FormDocente({ user, type }) {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                apellido:
+                                Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
@@ -395,8 +414,8 @@ export function FormDocente({ user, type }) {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
 
@@ -542,9 +561,9 @@ export const FormEstudiante = ({ user, type }) => {
             else {
 
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
-                if (type == 'sudo') {
+                if (type != 'estudiante') {
                     if (form.contrasenia != '') {
-                        await changePassword(form.contrasenia)
+                        await changePassword(form.correo, form.contrasenia, type)
                     }
                 }
             }
@@ -576,7 +595,7 @@ export const FormEstudiante = ({ user, type }) => {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                nombre:
+                                Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} />
@@ -585,7 +604,7 @@ export const FormEstudiante = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                apellido:
+                                Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} />
@@ -660,8 +679,8 @@ export const FormEstudiante = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' && <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput>}
@@ -802,13 +821,11 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             else {
-                console.log('HALT')
                 await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
-                if (type == 'editar') {
-                    if (form.contrasenia != '-') {
-                        await changePassword(form.contrasenia)
-                    }
+                if (form.contrasenia != '-') {
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
+                
             }
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
@@ -838,7 +855,7 @@ export const FormAdministrativo = ({ user, type }) => {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                nombre:
+                                Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.nombre ? "is-invalid" : ""}`} name='nombre' value={form.nombre} onChange={handleChange} maxlength="50" />
@@ -847,7 +864,7 @@ export const FormAdministrativo = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                apellido:
+                                Apellidos:
                             </div>
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
@@ -896,8 +913,8 @@ export const FormAdministrativo = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
@@ -1027,7 +1044,7 @@ export const FormLider = ({ user, type }) => {
 
                 await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
-                    await changePassword(form.contrasenia)
+                    await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
@@ -1115,8 +1132,8 @@ export const FormLider = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
+                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}

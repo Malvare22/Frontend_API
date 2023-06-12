@@ -16,13 +16,13 @@ export default function LiderEditarPerfil(props) {
     let user = null;
     if(props.type!='registrar')
         user = JSON.parse(localStorage.getItem(props.location))
-    
+    const labelText = 'Lider de la Unidad'
     return (
 
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
+                {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
                 <div className='' id="info"> <FormLider user={user} type={props.type}></FormLider></div>
             </div>
@@ -30,9 +30,6 @@ export default function LiderEditarPerfil(props) {
 
     );
 };
-
-//Listado de Cursos para combobox (útil para carga y validación de dato curso)
-const courses = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto", "Séptimo", "Octavo", "Noveno", "Décimo", "Once"];
 
 const SContent = styled.div`
         #d_head{

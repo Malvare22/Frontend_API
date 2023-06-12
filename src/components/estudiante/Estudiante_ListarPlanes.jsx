@@ -11,9 +11,13 @@ export default function Estudiante_ListarPlanes() {
 
     const [datos, setDatos] = useState([]);
 
-    const definir_Color = async () => {
-        let value = null;
-        value = await axios.get('../ideas.json').then(
+    const getPlanes = async () => {
+        let formData = new FormData();
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
+        var parsedData = JSON.parse(localData);
+        formData.append('codigoEstudiante', parsedData.codigo);
+        let value = await axios.post("http://localhost:8080/planNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -24,19 +28,24 @@ export default function Estudiante_ListarPlanes() {
         console.log(value)
     };
     useEffect(() => {
-        definir_Color();
+        getPlanes();
 
     }, []);
 
     const setInfo = (titulo) => {
-        localStorage.setItem('titulo', titulo);
+        const objetoDatos = {
+            "titulo": titulo,
+            "rol": "estudiante"
+        };
+        const cadenaJSON = JSON.stringify(objetoDatos);
+        localStorage.setItem("info_plan", cadenaJSON);
         navigate('/Estudiante/Planes/Vista');
-      };
+    };
 
     return (
         <>
             <div className="container">
-                <img src="https://live.staticflickr.com/65535/52923103551_b041e3079c_o.png" className='img-fluid mt-2'/>
+                <img src="https://live.staticflickr.com/65535/52923103551_b041e3079c_o.png" className='img-fluid mt-2' />
                 <div className="container-fluid" style={{ width: "100%" }}>
                     <div className="row">
                         <Sobreponer>
@@ -62,21 +71,33 @@ export default function Estudiante_ListarPlanes() {
                                             <div className='rechazadas'></div>
                                             <div className='mx-2'>Iniciativa rechazada</div>
                                         </div>
+                                        <div className='d-flex col-auto justify-content-center align-items-center'>
+                                            <div className='formuladas'></div>
+                                            <div className='mx-2'>Iniciativa formulada</div>
+                                        </div>
+                                        <div className='d-flex col-auto justify-content-center align-items-center'>
+                                            <div className='vencidas'></div>
+                                            <div className='mx-2'>Iniciativa vencida</div>
+                                        </div>
                                     </div>
                                     <div className="row d-flex align-items-center">
                                         {datos && datos.map((v, i) => {
 
                                             let color = "";
-                                            if (v.estado === "a") {
+                                            if (v.estado === "aprobada") {
                                                 color = "#75C47D";
-                                            } else if (v.estado === "r") {
+                                            } else if (v.estado === "rechazada") {
                                                 color = "#DC4B4B";
-                                            } else {
+                                            } else if (v.estado === "pendiente") {
                                                 color = "#ECB904";
+                                            } else if (v.estado === "formulado"){
+                                                color = "#4E7FAC";
+                                            } else {
+                                                color = "#909090";
                                             }
 
                                             return (<div key={i} className="col-12 col-lg-4 col-sm-6">
-                                                <CardEs key={v.titulo} setInfo={()=>{setInfo(v.titulo)}} id={v.id} titulo={v.titulo} color={color}></CardEs>
+                                                <CardEs key={v.titulo} setInfo={() => { setInfo(v.titulo) }} id={v.id} titulo={v.titulo} color={color}></CardEs>
                                             </div>
                                             );
                                         })}
@@ -131,6 +152,24 @@ const Sobreponer = styled.div`
      -webkit-border-radius: 50%;
      border-radius: 50%;
      background: #DC4B4B;
+ }
+
+ .formuladas{
+     width: 10px;
+     height: 10px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+     background: #4E7FAC;
+ }
+
+ .vencidas{
+     width: 10px;
+     height: 10px;
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+     background: #909090;
  }
 
 `;
