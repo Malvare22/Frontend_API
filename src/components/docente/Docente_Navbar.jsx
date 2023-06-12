@@ -6,14 +6,30 @@ import '../../css/Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { CerrarSesion } from '../../context/functions_app';
 
+const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-down" viewBox="0 0 16 16">
+  <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+</svg>);
+
+const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
+  <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+</svg>);
+
 const Sidebar = () => {
 
+  const initValue = [false, false]
 
+  const [flechas, setFlechas] = useState(initValue)
 
-  return (<><div id='sbsid01'><SideBarStatic></SideBarStatic></div><div id='sbsid02'><SideBarResponsive></SideBarResponsive></div></>);
+  const toggleFlechas = (index) => {
+    let temp = [...flechas];
+    temp[index] = !temp[index]
+    setFlechas(temp)
+  }
+
+  return (<><div id='sbsid01'><SideBarStatic flechas={flechas} toggleFlechas={toggleFlechas}></SideBarStatic></div><div id='sbsid02'><SideBarResponsive flechas={flechas} toggleFlechas={toggleFlechas}></SideBarResponsive></div></>);
 }
 
-const SideBarStatic = () => {
+const SideBarStatic = ({flechas, toggleFlechas}) => {
   const navigate = useNavigate()
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
@@ -73,14 +89,14 @@ const SideBarStatic = () => {
         </NavItem>
 
         <NavItem>
-          <NavLink id="Ideas" href="#">
+          <NavLink id="Ideas" href="#" onClick={()=>toggleFlechas(0)}>
             <Row className='d-flex align-content-center align-items-center  justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                   <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
                 </svg>
               </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Idea de negocio</Col>
+              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Ideas de Negocio {flechas[0] ? arrowDown : arrowUp}</Col>
             </Row>
           </NavLink>
         </NavItem>
@@ -103,7 +119,7 @@ const SideBarStatic = () => {
         </UncontrolledCollapse>
 
         <NavItem>
-          <NavLink id="plan" href="#">
+          <NavLink id="plan" href="#" onClick={()=>toggleFlechas(1)}>
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-briefcase-fill" viewBox="0 0 16 16">
@@ -111,7 +127,7 @@ const SideBarStatic = () => {
                   <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z" />
                 </svg>
               </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Plan de Negocio</Col>
+              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Plan de Negocio {flechas[1] ? arrowDown : arrowUp}</Col>
             </Row>
           </NavLink>
         </NavItem>
@@ -197,7 +213,7 @@ const SideBarStatic = () => {
   );
 }
 
-const SideBarResponsive = () => {
+const SideBarResponsive = ({flechas, toggleFlechas}) => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate()
 
@@ -266,15 +282,14 @@ const SideBarResponsive = () => {
           </NavItem>
 
           <NavItem>
-            <NavLink id="Ideas" href="#">
+            <NavLink id="Ideas" href="#" onTouchEnd={()=>toggleFlechas(0)}>
               <Row className='d-flex align-content-center align-items-center  justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                     <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
                   </svg>
                 </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Idea de negocio</Col>
-              </Row>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Idea de Negocio {flechas[0] ? arrowDown : arrowUp}</Col>              </Row>
             </NavLink>
           </NavItem>
           <UncontrolledCollapse id="despliegue" toggler="#Ideas">
@@ -296,7 +311,7 @@ const SideBarResponsive = () => {
           </UncontrolledCollapse>
 
           <NavItem>
-            <NavLink id="plan" href="#">
+            <NavLink id="plan" href="#" onTouchEnd={()=>toggleFlechas(1)}>
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-briefcase-fill" viewBox="0 0 16 16">
@@ -304,8 +319,7 @@ const SideBarResponsive = () => {
                     <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z" />
                   </svg>
                 </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Plan de Negocio</Col>
-              </Row>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Plan de Negocio {flechas[1] ? arrowDown : arrowUp}</Col>              </Row>
             </NavLink>
           </NavItem>
           <UncontrolledCollapse id="despliegue" toggler="#plan">

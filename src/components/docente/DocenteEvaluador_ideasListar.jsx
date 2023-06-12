@@ -149,7 +149,6 @@ max-height: 66.4vh;
 const Filters = ({ onFilter }) => {
     const [estudiante, setEstudiante] = useState('');
     const [area, setArea] = useState('');
-    const [estado, setEstado] = useState('');
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFin, setFechaFin] = useState('');
 
@@ -157,8 +156,7 @@ const Filters = ({ onFilter }) => {
         e.preventDefault();
         const filters = {
             estudiante,
-            area,
-            estado,
+            area,            
             fechaInicio,
             fechaFin
         };
@@ -188,16 +186,6 @@ const Filters = ({ onFilter }) => {
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Area</option>
                 <Getareas></Getareas>
-            </select>
-        </div>
-        <div className="col-auto d-flex align-items-center mb-1">
-            <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
-                <option value="">Estado</option>
-                <option value="aprobada">Aprobada</option>
-                <option value="rechazada">Desaprobada</option>
-                <option value="vencida">Vencida</option>
-                <option value="formulado">Formulación</option>
-                <option value="pendiente">Pendiente</option>
             </select>
         </div>
         <div className="col-auto d-flex align-items-center mb-1">
@@ -246,9 +234,6 @@ export default function Listar_Ideas() {
         }
         if (filters.area !== '') {
             formData.append('area', filters.area);
-        }
-        if (filters.estado !== '') {
-            formData.append('estado', filters.estado);
         }
         if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
             console.log(filters.fechaInicio);
