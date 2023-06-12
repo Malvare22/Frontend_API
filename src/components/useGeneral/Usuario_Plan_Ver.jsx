@@ -12,17 +12,20 @@ export default function VistaIdea() {
         <InfoGeneral nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></InfoGeneral>
         <Observaciones nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Observaciones>
         {/* rol={(JSON.parse(localStorage.getItem("MY_PROFILE_INFO"))).tipoUsuario} */}
-        <div className="container-fluid" style={{ width: "95%" }}>
-            <div className="row">
-                <div className="col-12">
-                    <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
-                        <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
+        {(JSON.parse(localStorage.getItem("info_plan"))).rol !== "evaluador" ?
+            <div>
+                <div className="container-fluid" style={{ width: "95%" }}>
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="rounded-5 mt-2" style={{ background: "#1C3B57" }}>
+                                <h5 className="p-2 ms-3" style={{ color: "white" }}>Evaluaciones</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <Historial nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Historial>
             </div>
-        </div>
-        {true ?
-            <Historial nombre={(JSON.parse(localStorage.getItem("info_plan"))).titulo} rol={(JSON.parse(localStorage.getItem("info_plan"))).rol}></Historial>
             : ""}
 
     </div>
@@ -66,6 +69,8 @@ const InfoGeneral = (props) => {
     const setAgregare = (a) => {
         setAgregar(a);
     }
+
+
     //Elimnar Estudiantes tomar el correo
     const eliminarEstudiantes = (a) => {
         setAgregare(a);
@@ -100,7 +105,7 @@ const InfoGeneral = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento' + Area, {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
@@ -116,22 +121,24 @@ const InfoGeneral = (props) => {
 
     {/*Listar docentes por area*/ }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
 
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
-                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
-            });
-            const data = response.data;
-            setProfesores(data);
-            console.log(data)
-        } catch (error) {
-            console.error("Historial", error);
+        if (Area !== null) {
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setProfesores(data);
+                console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
         }
     };
     useEffect(() => {
@@ -317,6 +324,48 @@ const InfoGeneral = (props) => {
                 }
             });
     }
+
+    //Cambiar tutor
+
+    const [TutorNuevo, setTutorN] = useState(null);
+    const getTutorN = (a) => {
+        setTutorN(a);
+    }
+
+
+    const asignarTutor = async (docente) => {
+        console.log(TutorNuevo, "Siass")
+        if (TutorNuevo) {
+            let value = null;
+            let idea = datos1 && datos1.titulo;
+            //let ruta = 'http://144.22.37.238:8080/coordinador/asignar/' + idea + '/' + docente;
+            let ruta = 'http://localhost:8080/administrativo/asignarPlan/' + idea + '/' + docente;
+            //localhost:8080/administrativo/asignarPlan/timbers/
+            console.log(ruta);
+            value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+            ).then(
+                response => {
+                    const data = response.data;
+                    return data;
+                }).catch(error => {
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
+                });
+            console.log(value)
+            toggleAlert()
+
+        } else {
+            console.log("Ando vacio vago")
+        }
+
+    }
+
     return (
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
             {datos1 &&
@@ -368,8 +417,8 @@ const InfoGeneral = (props) => {
                                                 <p>{datos1.tutorInfo && datos1.tutorInfo[1]}</p>
                                             </div>
                                         </div>
-                                        {props.rol == "coordinador" ? <div> <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false} >Asignar</button>
-                                            <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button> </div> : ""}
+                                        {props.rol === "coordinador" ? <div> <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} >Asignar</button>
+                                            {/* {<button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" >Eliminar</button>*/} </div> : ""}
 
 
 
@@ -387,6 +436,7 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="col-auto ">
                                                 <ul>
+                                                    {console.log(datos1 && datos1.docentesApoyoInfo[1])}
                                                     {datos1 && datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j}>{l} {props.rol == "tutor" ? <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -472,9 +522,10 @@ const InfoGeneral = (props) => {
             <Modal centered isOpen={viewAlertDocente}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesita</Label>
+                        <Label id="texto">Escoge el area de enfoque</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
@@ -482,13 +533,38 @@ const InfoGeneral = (props) => {
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
                     </FormGroup>
                     <ModalFooter>
                         <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
                         <Button color="primary" onClick={toggleAlertDocente}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
+            </Modal>
+
+            <Modal centered isOpen={viewAlert}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge el area del docente: </Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                            <option disabled selected>Seleccionar opción</option>
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Seleccciona al docente: </Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { getTutorN(e.target.value) }} multiple>
+                            {profesores && profesores.map((l) => {
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                            })}
+                        </Input>
+                    </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
+                        <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
                     </ModalFooter>
                 </ModalBody>
             </Modal>
@@ -815,7 +891,7 @@ function Tabla(props) {
         setObservacion(a);
     }
 
-    const [Nota, setNota] = useState("aprobada");
+    const [Nota, setNota] = useState(null);
     const setNota_A = (a) => {
         setNota(a);
     }
@@ -830,8 +906,6 @@ function Tabla(props) {
             formData.append('nota', Nota);
             formData.append('observacion', Observacion);
 
-            console.log(props.nombre)
-            console.log(formData)
             const response = await axios.patch(url, formData, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
 
@@ -925,6 +999,7 @@ function Tabla(props) {
                         <FormGroup>
                             <Label for="estado">Asigna una calificacion al proyecto</Label>
                             <Input onChange={(e) => { setNota_A(e.target.value) }} type="select" name="estado" id="estado">
+                                <option disabled selected>Seleccionar opción</option>
                                 <option value="aprobada">Aprobado</option>
                                 <option value="rechazada">Rechazado</option>
                             </Input>
@@ -971,7 +1046,7 @@ function Tabla(props) {
                 </Sdiv>
 
                 <div className=" mt-4 ">
-                    {props.rol==="tutor" || props.rol === "apoyo" ?
+                    {props.rol === "tutor" || props.rol === "apoyo" ?
                         <div className="row m-4">
                             <div className="d-flex justify-content-end">
                                 <Button id="AgregarComentario" style={{ backgroundColor: "#1C3B57" }}>
@@ -979,7 +1054,7 @@ function Tabla(props) {
                                 </Button>
                             </div>
                         </div> : ""}
-                    {props.rol == "tutor" ?
+                    {props.rol === "tutor" ?
                         <div className="row m-4">
                             <div className="d-flex justify-content-end">
                                 <Button color="success" onClick={() => { enviarEvaluacion() }} disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada") ? false : true} >

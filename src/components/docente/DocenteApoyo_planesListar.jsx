@@ -27,20 +27,42 @@ export default function Listar_Planes() {
         getPlanes();
     }, []);
     const handleFilter = async (filters) => {
-        console.log(filters)
-        console.log(filters.estudiante)
         console.log(filters.area)
-        console.log(filters.estado)
-        console.log(filters.fechaInicio)
-        console.log(filters.fechaFin)
+        var formData = new FormData();
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
+        var parsedData = JSON.parse(localData);
+        formData.append('docenteCodigo', parsedData.codigo);
+        if (filters.estudiante !== '') {
+            formData.append('estudianteCodigo', filters.estudiante);
+        }
+        if (filters.area !== '') {
+            formData.append('area', filters.area);
+        }
+        if (filters.estado !== '') {
+            formData.append('estado', filters.estado);
+        }
         try {
-            let value = null;
-            value = await axios.get('../../../planesFiltrados.json').then(
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            const value = await axios.post("http://localhost:8080/planNegocio/PlanesDocentesApoyo", formData, config
+            ).then(
                 response => {
                     const data = response.data;
+                    console.log(data)
                     return data;
                 }).catch(error => {
-                    console.error(error);
+                    console.log("a");
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
                 });
             setFilteredData(value);
         } catch (error) {
@@ -54,9 +76,9 @@ export default function Listar_Planes() {
                 <div className="col-12 m-1 p-1">
                     <h1 className="fst-italic fw-bold fs-1 text-black">Planes de Negocio - Apoyo</h1>
                     <div className="container">
-                        <Filters onFilter={handleFilter}  user={'apoyo'}></Filters>
+                        <Filters onFilter={handleFilter} user={'apoyo'}></Filters>
                         <br></br>
-                        <Table data={filteredData}  user={'apoyo'}></Table>
+                        <Table data={filteredData} user={'apoyo'}></Table>
                         <br></br>
                         <div className='row'>
                             <div className="col">
@@ -73,7 +95,7 @@ export default function Listar_Planes() {
                                         </div>
                                     </div>
                                 </button>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>

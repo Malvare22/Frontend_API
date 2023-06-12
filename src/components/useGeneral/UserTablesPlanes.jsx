@@ -40,22 +40,23 @@ export const Table = ({ data, user }) => {
             //GENERAL
             if (column === 'Título') {
                 comparison = a.titulo && a.titulo.localeCompare(b.titulo);
-            } else if (column === 'Estudiante') {
+            }
+            if (column === 'Estudiante') {
                 comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
             }
-            else if (user === 'coordinador' || user === 'administrativo') {
+            if (user === 'coordinador' || user === 'administrativo') {
                 // PARA LIDER Y ADMIN
                 if (column === 'Tutor') {
                     comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
                 }
             }
-            else if (user === 'tutor' || user === 'apoyo' || user === 'evaluador') {
+            if (user === 'tutor' || user === 'apoyo' || user === 'evaluador') {
                 //PARA TUTOR, APOYO Y EVALUADOR
                 if (column === 'Area') {
                     comparison = a.areaEnfoque && a.areaEnfoque.localeCompare(b.areaEnfoque);
                 }
             }
-            else if (user === 'coordinador' || user === 'tutor' || user === 'evaluador') {
+            if (user === 'coordinador' || user === 'tutor' || user === 'evaluador') {
                 //PARA LIDER, TUTOR Y EVALUADOR
                 if (column === 'Fecha de corte') {
                     const dateA = new Date(a.fechaCorte && a.fechaCorte[0], (a.fechaCorte && a.fechaCorte[1]) - 1, a.fechaCorte && a.fechaCorte[2]);
@@ -209,23 +210,24 @@ export const Filters = ({ onFilter, user }) => {
     //General
     const [estudiante, setEstudiante] = useState('');
     const [area, setArea] = useState('');
+    //Lider, admin, tutor y apoyo
     const [estado, setEstado] = useState('');
     //Docente tutor, evaluador, lider y admin
     const [fechaInicio, setFechaInicio] = useState('');
     const [fechaFin, setFechaFin] = useState('');
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const filters = {
             //LIDER y ADMIN
-            tutor: (user === 'coordinador' || user === 'administrativo') ? tutor : null,
+            tutor: (user === 'coordinador' || user === 'administrativo') ? tutor : '',
             //General
             estudiante,
             area,
-            estado,
+            //Lider, admin, tutor y apoyo
+            estado: (user === 'coordinador' || user === 'administrativo' || user === 'tutor' || user === 'apoyo') ? estado : '',
             //Docente tutor, evaluador, lider y admin
-            fechaInicio: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaInicio : null,
-            fechaFin: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaFin : null
+            fechaInicio: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaInicio : '',
+            fechaFin: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaFin : ''
         };
         //Docente tutor, evaluador, lider y admin
         if (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') {
@@ -244,7 +246,6 @@ export const Filters = ({ onFilter, user }) => {
         }
         onFilter(filters);
     };
-
     return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
         {/* LIDER y ADMIN */}
         {(user === 'coordinador' || user === 'administrativo') && <div className="col-auto d-flex align-items-center mb-1">
@@ -263,10 +264,11 @@ export const Filters = ({ onFilter, user }) => {
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Area</option>
-                <Getareas></Getareas>
+                <Getareas user={user}></Getareas>
             </select>
         </div>
-        <div className="col-auto d-flex align-items-center mb-1">
+        {/* Lider, admin, tutor y apoyo */}
+        {(user === 'coordinador' || user === 'administrativo' || user === 'tutor' || user === 'apoyo') && <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Estado</option>
                 <option value="aprobada">Aprobada</option>
@@ -275,7 +277,7 @@ export const Filters = ({ onFilter, user }) => {
                 <option value="formulado">Formulación</option>
                 <option value="pendiente">Pendiente</option>
             </select>
-        </div>
+        </div>}
         {/* Docente tutor, evaluador, lider y admin */}
         {(user === 'tutor' || user === 'administrativo' || user === 'evaluador' || user === 'coordinador') &&
             <div className="col-auto d-flex align-items-center mb-1">
@@ -311,7 +313,7 @@ function Getdocentes() {
     return (
         datos && datos.map((d) => {
             return (
-                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+                <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
@@ -335,12 +337,12 @@ function Getestudiantes() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.correo} key={d.correo}>{d.nombre} {d.apellido}</option>
+                <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
             )
         })
     )
 }
-function Getareas() {
+function Getareas({ user }) {
     const [datos2, setDatos] = useState([]);
     const getAreas = async () => {
         const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
@@ -359,7 +361,8 @@ function Getareas() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+                <option value={user === 'evaluador' || user === 'apoyo' ? d.id : d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+
             )
         })
     )

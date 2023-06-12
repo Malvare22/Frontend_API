@@ -27,20 +27,48 @@ export default function Listar_Planes() {
         getPlanes();
     }, []);
     const handleFilter = async (filters) => {
-        console.log(filters)
+        var formData = new FormData();
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
+        var parsedData = JSON.parse(localData);
+        formData.append('docenteCodigo', parsedData.codigo);
         console.log(filters.estudiante)
-        console.log(filters.area)
-        console.log(filters.estado)
-        console.log(filters.fechaInicio)
-        console.log(filters.fechaFin)
+        if (filters.estudiante !== '') {
+            formData.append('estudianteCodigo', filters.estudiante);
+        }
+        if (filters.area !== '') {
+            formData.append('area', filters.area);
+        }
+        if (filters.estado !== '') {
+            formData.append('estado', filters.estado);
+        }
+        if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
+            console.log(filters.fechaInicio);
+            console.log(filters.fechaFin);
+            formData.append('fechaInicio', filters.fechaInicio);
+            formData.append('fechaFin', filters.fechaFin);
+        }
         try {
-            let value = null;
-            value = await axios.get('../../../planesFiltrados.json').then(
+            const config = {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem('token_access')
+                }
+            }
+            const value = await axios.post("http://localhost:8080/planNegocio/PlanesDocentesEvaluadores",  formData, config
+            ).then(
                 response => {
                     const data = response.data;
+                    console.log(data)
                     return data;
                 }).catch(error => {
-                    console.error(error);
+                    console.log("a");
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                    } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                    } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                    }
                 });
             setFilteredData(value);
         } catch (error) {

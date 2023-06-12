@@ -73,7 +73,7 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Capacitación
+              <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -186,7 +186,7 @@ const SideBarStatic = (props) => {
         </NavItem>
 
 
-        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={()=>CerrarSesion(navigate)}>
+        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -263,7 +263,7 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Capacitación
+                <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -375,7 +375,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem id='closeSession' onClick={()=>CerrarSesion(navigate)}>
+          <NavItem id='closeSession' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >

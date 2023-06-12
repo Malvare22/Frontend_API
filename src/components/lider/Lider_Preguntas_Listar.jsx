@@ -1,49 +1,56 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabla } from '../useGeneral/Tabla';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { getPreguntas, eliminarPregunta } from "./Lider_Preguntas_Endpoints";
 
 export default function useListarPreguntas() {
+    const navigate = useNavigate();
     const [preguntaInfo, setPreguntaInfo] = useState([]);
 
-    const getPreguntas = async () => {
-    try {
-        const config = {
-        headers: {
-            "X-Softue-JWT": localStorage.getItem('token_access')
-        }
-        }
-        const response = await axios.get('http://localhost:8080/pregunta', config);
-        setPreguntaInfo(response.data);
-    } catch (error) {
-        console.error("Error al obtener las preguntas:", error);
-    }
-    };
     useEffect(() => {
-    getPreguntas();
-    }, []);
+        getPreguntas({preguntaInfo, setPreguntaInfo});
+    }, [preguntaInfo, setPreguntaInfo]);
 
     let columnas = ["id", "enunciado", "componente"];
 
     const preguntasConComponente = preguntaInfo.map((pregunta) => {
         return {
-          ...pregunta,
-          componente: pregunta.componenteCompetenciasId.nombre
+            ...pregunta,
+            componente: pregunta.componenteCompetenciasId.nombre
         };
-      });
+    });
 
     const handleEliminarClick = (dato) => {
-        console.log(dato);
+        const idPregunta = dato.id;
+        eliminarPregunta({idPregunta});
     }
-    
+
     const handleEditarClick = (dato) => {
-        console.log(dato);
+        localStorage.setItem('idPregunta', dato.id);
+        navigate('/Lider/Preguntas/Listar/Editar');
     }
 
     return (
         <div className='m-5'>
-            <h1 className="fst-italic fw-bold fs-1 text-black mb-4">Preguntas Evaluacion de emprendimiento</h1>
-            <Tabla datos={preguntasConComponente} columnas={columnas} handleEliminarClick={handleEliminarClick} handleEditarClick={handleEditarClick} />
+            <div className="row">
+                <div className="col-1 mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="bi bi-question-circle img-fluid" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                </div>
+                <div className="col-10">
+                    <h1 className="fst-italic fw-bold fs-1 text-black mb-4">
+                        Preguntas Evaluacion de emprendimiento
+                        <div className="custom-hr"></div>
+                    </h1>
+                    
+                </div>
+            </div>
+
+            <Tabla datos={preguntasConComponente} columnas={columnas} handleEliminarClick={handleEliminarClick} handleEditarClick={handleEditarClick} handleVisualizarClick={null} permisos={[true, false, true, true]}/>
         </div>
     );
 }
+
 

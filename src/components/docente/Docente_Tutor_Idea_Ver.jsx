@@ -96,7 +96,6 @@ const InfoGeneral = (props) => {
             });
             const data = response.data;
             setAreas(data);
-            console.log(data)
         } catch (error) {
             console.error("Historial", error);
         }
@@ -131,6 +130,31 @@ const InfoGeneral = (props) => {
         getProfesores();
     }, [Area]);
 
+
+
+    //lISTAR CURSOS
+
+    //http://localhost:8080/estudiante/listarCursos
+
+    const [grado, setGrado] = useState([]);
+    const getGrado = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/estudiante/listarCursos', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setGrado(data);
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getGrado();
+    }, []);
+
+
+    //Listar estudiantes por curso
+
     const [Curso, setCurso] = useState(String);
     const getCurso = (a) => {
         setCurso(a);
@@ -150,7 +174,10 @@ const InfoGeneral = (props) => {
     };
     useEffect(() => {
         getEstudiantes();
-    }, []);
+    }, [Curso]);
+
+
+    //
 
     let set = new Set();
     let set1 = new Set();
@@ -186,7 +213,6 @@ const InfoGeneral = (props) => {
         try {
             //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/sie/'+estudiante;
             let URLd = 'http://localhost:8080/ideaNegocio/integrantes/' + props.nombre + '/' + estudiante;
-            console.log(URLd);
             await axios.post(URLd, null, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
@@ -265,8 +291,6 @@ const InfoGeneral = (props) => {
         setCorreo(a);
     }
 
-
-
     const agregarTutor = async () => {
 
         if (correoDocente) {
@@ -296,6 +320,10 @@ const InfoGeneral = (props) => {
         }
 
     };
+
+    
+
+
 
 
 
@@ -456,6 +484,7 @@ const InfoGeneral = (props) => {
                         <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {areas && areas.map((l, i) => {
                                 return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
@@ -463,7 +492,7 @@ const InfoGeneral = (props) => {
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
                         </Input>
                     </FormGroup>
@@ -482,20 +511,16 @@ const InfoGeneral = (props) => {
                         <Label id="texto">Escoge el curso del estudiante</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { getCurso(e.target.value) }} id="exampleSelect">
-                            {estudiantes && estudiantes.map((l, i) => {
-                                if (set2.has(l.curso)) {
-                                    return ("");
-                                } else {
-                                    set2.add(l.curso);
-                                    return (<option key={i} value={l.curso}>{l.curso}</option>);
-                                }
+                        <option disabled selected>Seleccionar opción</option>
+                            {grado && grado.map((l, i) => {
+                                return (<option key={i} value={l}>{l}</option>);
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
                         <Input type="select" name="selectMulti" onChange={(e) => { setAgregar(e.target.value) }} id="exampleSelectMulti" multiple>
                             {estudiantes && estudiantes.map((l) => {
                                 if (l.curso === Curso) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + " "  + l.apellido}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -730,7 +755,7 @@ const Observaciones = (props) => {
                                         </div>
                                         <div className="row m-4">
                                             <div className="d-flex justify-content-end">
-                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={datos && datos.estado === "formulado" ? false : true} >
+                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={(datos && datos.estado === "formulado") || (datos && datos.estado === "rechazada") ? false : true} >
                                                     Enviar a Evaluacion
                                                 </Button>
                                             </div>

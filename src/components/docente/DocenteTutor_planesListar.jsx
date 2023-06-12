@@ -9,9 +9,9 @@ export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
         let formData = new FormData()
-        var localData = localStorage.getItem("session");
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
-        formData.append('docenteEmail', parsedData.email);
+        formData.append('tutorCodigo', parsedData.codigo);
         let value = await axios.post("http://localhost:8080/planNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -27,11 +27,11 @@ export default function Listar_Planes() {
     }, []);
     const handleFilter = async (filters) => {
         var formData = new FormData();
-        var localData = localStorage.getItem("session");
+        var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
-        formData.append('docenteEmail', parsedData.email);
+        formData.append('tutorCodigo', parsedData.codigo);
         if (filters.estudiante !== '') {
-            formData.append('estudianteEmail', filters.estudiante);
+            formData.append('codigoEstudiante', filters.estudiante);
         }
         if (filters.area !== '') {
             formData.append('area', filters.area);
@@ -50,7 +50,7 @@ export default function Listar_Planes() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            const value = await axios.post("http://localhost:8080/ideaNegocio/filtrar", formData, config
+            const value = await axios.post("http://localhost:8080/planNegocio/filtrar", formData, config
             ).then(
                 response => {
                     const data = response.data;

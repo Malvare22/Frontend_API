@@ -183,6 +183,14 @@ const InfoGeneral = (props) => {
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
                                             </div>
                                             <div className="col-auto">

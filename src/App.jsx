@@ -36,6 +36,7 @@ import LiderListarAdministrativos from './components/lider/Lider_administrativos
 import EstudianteAgregarIdea from './components/estudiante/Estudiante_Agregar_Idea';
 import EstudianteCapacitacionIdea from './components/estudiante/Estudiante_Capacitacion_Idea';
 import EstudianteCapacitacionPlan from './components/estudiante/Estudiante_Capacitacion_Plan';
+import EstudianteCapacitacionGeneral from './components/estudiante/Estudiante_Capacitacion_General';
 import LiderListarPlanes from './components/lider/Listar_planes';
 import LiderListarFormatos from './components/lider/Lider_formatosListar';
 import LiderSubirFormatos from './components/lider/Lider_formatosSubir';
@@ -87,6 +88,10 @@ import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
 import Listar_Administrativos from './components/administrativo/Administrativo_administrativosListar';
+import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
+import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
+import Listar_Areas from './components/lider/Lider_areasListar';
+import RegistrarArea from './components/lider/Lider_Areas_Registrar';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -106,13 +111,14 @@ const router = createBrowserRouter(
             <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
             <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
             <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
-            <Route path='Planes/Vista' element={<EstudianteVistaPlan></EstudianteVistaPlan>} />
+            <Route path='Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='ListarIdeas/test' element={<ListarIdeasEstudiantetest></ListarIdeasEstudiantetest>} />
             <Route path='Perfil/Editar' element={<EditarPerfilEstudiante></EditarPerfilEstudiante>} />
             <Route path='EntidadesFinanciadoras' element={<EntidadesFinanciadoras></EntidadesFinanciadoras>} />
             <Route path='AgregarIdea' element={<EstudianteAgregarIdea></EstudianteAgregarIdea>} />
             <Route path='CapacitacionIdea' element={<EstudianteCapacitacionIdea></EstudianteCapacitacionIdea>} />
             <Route path='CapacitacionPlan' element={<EstudianteCapacitacionPlan></EstudianteCapacitacionPlan>} />
+            <Route path='CapacitacionGeneral' element={<EstudianteCapacitacionGeneral></EstudianteCapacitacionGeneral>} />
           </Route>
           <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
             <Route path='Perfil' element={<LiderPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilLider} />
@@ -120,10 +126,13 @@ const router = createBrowserRouter(
             <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
-
-            <Route path='Estudiantes' element={<ListarEstudiantes/>} />
+            <Route path='Planes/Vista' element={<PlanVer></PlanVer>}></Route>
+            <Route path='Evaluacion/Componentes' element={<LiderComponentesListar></LiderComponentesListar>}></Route>
+            <Route path='Evaluacion/Componentes/Registrar' element={<LiderComponenteRegistrar></LiderComponenteRegistrar>}></Route>
+            <Route path='Estudiantes' element={<ListarEstudiantes/>} />          
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
             <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
+            
             <Route path='Estudiantes/Registrar' element={<EstudianteEditarPerfil type={'registrar'} />} />
 
             <Route path='Docentes' element={<ListarDocentes/>}></Route>
@@ -142,10 +151,14 @@ const router = createBrowserRouter(
             <Route path='Formatos' element={<LiderListarFormatos></LiderListarFormatos>} />
             <Route path='AgregarFormato' element={<LiderSubirFormatos></LiderSubirFormatos>} />
             <Route path='tester' element={<StorageTest></StorageTest>} />
+            <Route path='TiemposEvaluacion' element={<TiemposEvaluacionAgregar></TiemposEvaluacionAgregar>}/>
+            <Route path='Areas/Listar' element={<Listar_Areas></Listar_Areas>}></Route>
+            <Route path='Areas/Registrar' element={<RegistrarArea></RegistrarArea>}></Route>
 
             {/** Rutas del manejo de preguntas */}
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
+            <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -171,7 +184,7 @@ const router = createBrowserRouter(
             <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
             <Route path='Ideas' element={<AdministrativoListarIdeas></AdministrativoListarIdeas>} />
             <Route path='Planes' element={<AdministrativoListarPlanes></AdministrativoListarPlanes>} />
-            <Route path='Planes/Vista' element={<AdministrativoPlanIdea></AdministrativoPlanIdea>} />
+            <Route path='Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Entidades' element={<AdministrativoListarEntidades></AdministrativoListarEntidades>} />
             <Route path='VistaEntidades' element={<AdministrativoVistaEntidadFinanciadora></AdministrativoVistaEntidadFinanciadora>} />
 
@@ -189,11 +202,11 @@ const router = createBrowserRouter(
             <Route path='Evaluador/Ideas' element={<DocenteEvaluadorListarIdeas></DocenteEvaluadorListarIdeas>} />
             <Route path='Evaluador/Ideas/Vista' element={<DocenteEvaluadorVerIdea></DocenteEvaluadorVerIdea>} />
             <Route path='Tutor/Planes' element={<DocenteTutorListarPlanes></DocenteTutorListarPlanes>} />
-            <Route path='Tutor/Planes/Vista' element={<DocenteTutorVerPlan></DocenteTutorVerPlan>} />
+            <Route path='Tutor/Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Apoyo/Planes' element={<DocenteApoyoListarPlanes></DocenteApoyoListarPlanes>} />
-            <Route path='Apoyo/Planes/Vista' element={<DocenteApoyoVerPlan></DocenteApoyoVerPlan>} />
+            <Route path='Apoyo/Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Evaluador/Planes' element={<DocenteEvaluadorListarPlanes></DocenteEvaluadorListarPlanes>} />
-            <Route path='Evaluador/Planes/Vista' element={<DocenteEvaluadorVerPlan></DocenteEvaluadorVerPlan>} />
+            <Route path='Evaluador/Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>} />
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
