@@ -25,7 +25,38 @@ const EstudianteEvaluacion = () => {
         getPreguntas();
     }, []);
 
-    const handleSubmit = async (e) =>{
+    useEffect(() => {
+        const enviarRespuestas = async () => {
+            var formData = new FormData();
+            formData.append('respuestasId', respuestas);
+
+            var localData = localStorage.getItem("MY_PROFILE_INFO");
+            var parsedData = JSON.parse(localData);
+            formData.append('codigoEstudiante', parsedData.codigo);
+
+            let ruta = "http://localhost:8080/test";
+            try {
+                const response = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+                console.log("hecho");
+                console.log([...formData.entries()]);
+            } catch (error) {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            }
+        };
+
+        if (respuestas.length > 0) {
+            enviarRespuestas();
+        }
+    }, [respuestas]);
+
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const res = new FormData(formularioRef.current);
@@ -33,34 +64,10 @@ const EstudianteEvaluacion = () => {
 
         Object.keys(values).forEach((key) => {
             const value = values[key];
-            setRespuestas(prevOptions => [...prevOptions, value]);
+            setRespuestas((prevOptions) => [...prevOptions, value]);
         });
+    };
 
-        var formData = new FormData();
-        formData.append('respuestasId', respuestas);
-        var localData = localStorage.getItem("MY_PROFILE_INFO");
-        var parsedData = JSON.parse(localData);
-        formData.append('codigoEstudiante', parsedData.codigo);
-
-        let ruta = "http://localhost:8080/test";
-        let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
-          .then((response) => {
-            console.log("hecho")
-            console.log([...formData.entries()]);
-          })
-          .catch((error) => {
-            if (error.response) {
-              console.log('Código de estado:', error.response.status);
-              console.log('Respuesta del backend:', error.response.data);
-            } else if (error.request) {
-              console.log('No se recibió respuesta del backend');
-            } else {
-              console.log('Error al realizar la solicitud:', error.message);
-            }
-          });
-        
-
-    }
 
     return (
         <div className="container">
@@ -93,7 +100,7 @@ const EstudianteEvaluacion = () => {
                 </Sobreponer>
             </div>
         </div>
-        
+
     );
 }
 
@@ -121,4 +128,3 @@ const Sobreponer = styled.div`
     border-radius: 4px;
     height: 40px;
   }`
-
