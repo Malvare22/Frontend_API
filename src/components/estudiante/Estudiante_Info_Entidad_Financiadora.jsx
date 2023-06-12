@@ -14,7 +14,7 @@ const Information = (props) => {
                             <div className="row">
                                 <div className="col-1 ms-4 p-4 d-flex justify-content-center align-items-center">
                                     <div>
-                                        {props.imagen ? <img className='rounded-circle' src={props.imagen} alt="Imagen Entidad Financiadora" /> : <img className='rounded-circle' src={imageDefault} alt="Imagen Predeterminada" />}
+                                        <img className='rounded-circle' src={`${props.foto == '' ? imageDefault : props.foto}`} alt="Imagen Entidad Financiadora" />
                                     </div>
                                 </div>
                                 <div className="col d-flex align-items-center">

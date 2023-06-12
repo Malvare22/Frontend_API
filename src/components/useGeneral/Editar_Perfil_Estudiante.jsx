@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 //Componente general
 export default function EstudianteEditarPerfil(props) {
     let user = null;
+    const labelText = 'Estudiante'
     if(props.type!='registrar')
         user = JSON.parse(localStorage.getItem(props.location))
     
@@ -18,7 +19,7 @@ export default function EstudianteEditarPerfil(props) {
         <SContent>
             <div className='d-flex justify-content-center' id='d_head'>
                 <div className='' id='head'>
-                    {props.type!='registrar'?<HeadEdit/>:<HeadRegister/>}
+                    {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
                 <div className='' id="info"> <FormEstudiante user={user} type={props.type}></FormEstudiante></div>
             </div>
