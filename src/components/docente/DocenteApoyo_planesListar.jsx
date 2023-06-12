@@ -47,7 +47,7 @@ export default function Listar_Planes() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            const value = await axios.post("http://localhost:8080/ideaNegocio/IdeasDocentesApoyo", formData, config
+            const value = await axios.post("http://localhost:8080/planNegocio/PlanesDocentesApoyo", formData, config
             ).then(
                 response => {
                     const data = response.data;

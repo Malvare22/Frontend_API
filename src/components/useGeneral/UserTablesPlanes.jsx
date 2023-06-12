@@ -210,6 +210,7 @@ export const Filters = ({ onFilter, user }) => {
     //General
     const [estudiante, setEstudiante] = useState('');
     const [area, setArea] = useState('');
+    //Lider, admin, tutor y apoyo
     const [estado, setEstado] = useState('');
     //Docente tutor, evaluador, lider y admin
     const [fechaInicio, setFechaInicio] = useState('');
@@ -222,7 +223,8 @@ export const Filters = ({ onFilter, user }) => {
             //General
             estudiante,
             area,
-            estado,
+            //Lider, admin, tutor y apoyo
+            estado: (user === 'coordinador' || user === 'administrativo' || user === 'tutor' || user === 'apoyo') ? estado : '',
             //Docente tutor, evaluador, lider y admin
             fechaInicio: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaInicio : '',
             fechaFin: (user === 'tutor' || user === 'evaluador' || user === 'coordinador' || user === 'administrativo') ? fechaFin : ''
@@ -262,10 +264,11 @@ export const Filters = ({ onFilter, user }) => {
         <div className="col-auto d-flex align-items-center mb-1">
             <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Area</option>
-                <Getareas></Getareas>
+                <Getareas user={user}></Getareas>
             </select>
         </div>
-        <div className="col-auto d-flex align-items-center mb-1">
+        {/* Lider, admin, tutor y apoyo */}
+        {(user === 'coordinador' || user === 'administrativo' || user === 'tutor' || user === 'apoyo') && <div className="col-auto d-flex align-items-center mb-1">
             <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
                 <option value="">Estado</option>
                 <option value="aprobada">Aprobada</option>
@@ -274,7 +277,7 @@ export const Filters = ({ onFilter, user }) => {
                 <option value="formulado">Formulación</option>
                 <option value="pendiente">Pendiente</option>
             </select>
-        </div>
+        </div>}
         {/* Docente tutor, evaluador, lider y admin */}
         {(user === 'tutor' || user === 'administrativo' || user === 'evaluador' || user === 'coordinador') &&
             <div className="col-auto d-flex align-items-center mb-1">
@@ -339,7 +342,7 @@ function Getestudiantes() {
         })
     )
 }
-function Getareas() {
+function Getareas({ user }) {
     const [datos2, setDatos] = useState([]);
     const getAreas = async () => {
         const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
@@ -358,7 +361,8 @@ function Getareas() {
     return (
         datos2 && datos2.map((d) => {
             return (
-                <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+                <option value={user === 'evaluador' || user === 'apoyo' ? d.id : d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
+
             )
         })
     )
