@@ -87,6 +87,7 @@ import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
+import Listar_Administrativos from './components/administrativo/Administrativo_administrativosListar';
 import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
@@ -178,10 +179,10 @@ const router = createBrowserRouter(
             <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'sudo'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
             
-            <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
+            <Route path='Administrativos' element={<Listar_Administrativos/>} />
             <Route path='Administrativos/Perfil' element={<AdministrativoPerfil location={'ADMINISTRATIVO_INFORMATION'} editable={true} />} loader={GestionarAdministrativo}></Route>
             <Route path='Administrativos/Perfil/Editar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'sudo'} />} loader={GestionarAdministrativo}></Route>
-            <Route path='Administrativos/Registrar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'registrar'} />} loader={GestionarAdministrativo}></Route>
+            <Route path='Administrativos/Registrar' element={<AdministrativoEditarPerfil type={'registrar'} />}></Route>
 
             
             <Route path='Ideas/Vista' element={<AdministrativoVistaIdea></AdministrativoVistaIdea>} />
