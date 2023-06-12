@@ -248,7 +248,7 @@ const InfoGeneral = (props) => {
 
                                                 <div className="col-auto"><button onClick={() => { getArchi() }} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
 
-                                                <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
+                                                <div className="col-auto"><button disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada") ? false : true } onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3" >  Editar  </button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -502,7 +502,7 @@ const Observaciones = (props) => {
                                                 {error && <Alert color="danger">{error}</Alert>}
                                             </FormGroup>
                                             <div className="d-flex justify-content-center">
-                                                <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} >Enviar</Button>
+                                                <Button style={{ backgroundColor: "#1C3B57" }} onClick={subirIdea} disabled={(datos1 && datos1.estado === "formulado") || (datos1 && datos1.estado === "rechazada") ? false : true }>Enviar</Button>
                                             </div>
 
                                         </Form>
