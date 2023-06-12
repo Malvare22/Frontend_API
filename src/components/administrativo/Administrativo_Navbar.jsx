@@ -3,16 +3,34 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
 import '../../css/Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { CerrarSesion } from '../../context/functions_app';
+
+const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-down" viewBox="0 0 16 16">
+  <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+</svg>);
+
+const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
+  <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+</svg>);
 
 const Sidebar = () => {
 
+  const initValue = [false, false]
 
+  const [flechas, setFlechas] = useState(initValue)
 
-  return (<><div id='sbsid01'><SideBarStatic></SideBarStatic></div><div id='sbsid02'><SideBarResponsive></SideBarResponsive></div></>);
+  const toggleFlechas = (index) => {
+    let temp = [...flechas];
+    temp[index] = !temp[index]
+    setFlechas(temp)
+  }
+
+  return (<><div id='sbsid01'><SideBarStatic flechas={flechas} toggleFlechas={toggleFlechas}></SideBarStatic></div><div id='sbsid02'><SideBarResponsive flechas={flechas} toggleFlechas={toggleFlechas}></SideBarResponsive></div></>);
 }
 
-const SideBarStatic = () => {
+const SideBarStatic = ({ flechas, toggleFlechas }) => {
+  const navigate = useNavigate()
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
 
@@ -42,14 +60,14 @@ const SideBarStatic = () => {
 
 
         <NavItem>
-          <NavLink id='Usuarios' href="#">
+          <NavLink id='Usuarios' href="#" onClick={() => toggleFlechas(0)}>
             <Row className='d-flex align-content-center align-items-center'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-people-fill" viewBox="0 0 16 16">
                   <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                 </svg>
               </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Usuarios</Col>
+              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Usuarios {flechas[0] ? arrowDown : arrowUp}</Col>
             </Row>
 
           </NavLink>
@@ -111,7 +129,7 @@ const SideBarStatic = () => {
         </NavItem>
 
         <NavItem>
-          <NavLink id="Habilidades" href="#">
+          <NavLink id="Habilidades" href="#" onClick={() => toggleFlechas(1)}>
             <Row className='d-flex align-content-center align-items-center  justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-clipboard2-check-fill" viewBox="0 0 16 16">
@@ -119,7 +137,7 @@ const SideBarStatic = () => {
                   <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
                 </svg>
               </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
+              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Evaluacion {flechas[1] ? arrowDown : arrowUp}</Col>
             </Row>
           </NavLink>
         </NavItem>
@@ -192,7 +210,7 @@ const SideBarStatic = () => {
           </NavLink>
         </NavItem>
 
-        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
+        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -213,8 +231,9 @@ const SideBarStatic = () => {
   );
 }
 
-const SideBarResponsive = () => {
+const SideBarResponsive = ({ flechas, toggleFlechas }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate()
 
   const toggleNavbar = () => setCollapsed(!collapsed);
   return (<div className="text-white d-flex flex-column flex-shrink-0" id='principal_div_nav' >
@@ -253,14 +272,14 @@ const SideBarResponsive = () => {
 
 
           <NavItem>
-            <NavLink id='Usuarios' href="#">
+            <NavLink id='Usuarios' href="#" onTouchEnd={() => toggleFlechas(0)}>
               <Row className='d-flex align-content-center align-items-center'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-people-fill" viewBox="0 0 16 16">
                     <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                   </svg>
                 </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Usuarios</Col>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Usuarios {flechas[0] ? arrowDown : arrowUp}</Col>
               </Row>
 
             </NavLink>
@@ -323,7 +342,7 @@ const SideBarResponsive = () => {
 
 
           <NavItem>
-            <NavLink id="Habilidades" href="#">
+            <NavLink id="Habilidades" href="#" onTouchEnd={() => toggleFlechas(1)}>
               <Row className='d-flex align-content-center align-items-center  justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-clipboard2-check-fill" viewBox="0 0 16 16">
@@ -331,8 +350,7 @@ const SideBarResponsive = () => {
                     <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
                   </svg>
                 </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
-              </Row>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Evaluacion {flechas[1] ? arrowDown : arrowUp}</Col>              </Row>
             </NavLink>
           </NavItem>
 
@@ -404,7 +422,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
+          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >

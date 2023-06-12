@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
-import { toLiderFormatStudentsFromImport } from '../../context/functions_general'
+import { importStudents, toLiderFormatStudentsFromImport } from '../../context/functions_general'
 
 import axios from "axios";
 
@@ -49,8 +49,8 @@ const Table = (props) => {
             } else if (column === 'Estudiante') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Curso') {
-                const cursoA = parseInt(a.curso.split(' ')[0], 10);
-                const cursoB = parseInt(b.curso.split(' ')[0], 10);
+                const cursoA = parseInt(a.cursoToString.split(' ')[0], 10);
+                const cursoB = parseInt(b.cursoToString.split(' ')[0], 10);
                 comparison = cursoA - cursoB;
             }
             if (!ascending) {
@@ -67,7 +67,10 @@ const Table = (props) => {
 
         navigate('../Estudiantes/Perfil')
     };
-    const toggleB = () => {
+    const toggleB = (value) => {
+        localStorage.setItem('ESTUDIANTE_EMAIL',value.correo)
+
+        navigate('../Estudiantes/Perfil/Editar')
     };
 
     const disableStudent = async () => {
@@ -107,7 +110,7 @@ const Table = (props) => {
                             <tr key={d.correo}>
                                 <td className='text-center align-middle col-auto'>{d.codigo}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
-                                <td className='text-center align-middle col-auto'>{d.curso}</td>
+                                <td className='text-center align-middle col-auto'>{d.cursoToString}</td>
                                 <td className='text-center align-middle'>
                                     <div>
 
@@ -118,17 +121,17 @@ const Table = (props) => {
                                                 <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                                             </svg>
                                         </button>
-                                        <button type="button" className="btn" onClick={toggleB} value={d.id} style={{ width: "auto", border: "none" }}>
+                                        <button type="button" className="btn" onClick={()=>toggleB(d)} value={d.id} style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-                                        <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ codigo: d.codigo, nombre: d.nombre, correo: d.correo })} className="btn" style={{ width: "auto", border: "none" }}>
+                                        {/* <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ codigo: d.codigo, nombre: d.nombre, correo: d.correo })} className="btn" style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                             </svg>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
                             </tr>
@@ -175,7 +178,7 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Estudiantes() {
+export default function ListarEstudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
@@ -185,7 +188,7 @@ export default function Listar_Estudiantes() {
             }
         }
         value = await axios.get('http://localhost:8080/estudiante/listar', config)
-        setFilteredData(toLiderFormatStudentsFromImport(value.data))
+        setFilteredData(importStudents(value.data))
 
 
     };

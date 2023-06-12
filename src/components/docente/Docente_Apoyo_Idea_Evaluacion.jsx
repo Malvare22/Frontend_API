@@ -37,29 +37,16 @@ const Evaluaciones = (props) => {
         setidEliminar(a);
     }
 
-    //AXIOS PARA RECIBIR LOS DOCENTES
-    const [profesores, setProfesores] = useState([]);
-    const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-    };
-    useEffect(() => {
-        getProfesores();
-    }, []);
 
     //AXIOS PARA RECIBIR A LOS DOCENTES CALIFICADORES CON SUS NOTAS Y OBSERVACIONES
 
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        value = await axios.get('../../../calificadores.json').then(
+        //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
+        let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -67,6 +54,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
+        //console.log(value)
     };
     useEffect(() => {
         getCalificadores();
@@ -147,7 +135,7 @@ const Evaluaciones = (props) => {
                                                     
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
-                                                        if (v.estado === 'aprobado') {
+                                                        if (v.estado === 'aprobada') {
                                                             colorin = "#2B9877"
                                                         } else if (v.estado === 'rechazada') {
                                                             colorin = "#DC4B4B"
@@ -201,53 +189,7 @@ const Evaluaciones = (props) => {
                         </UncontrolledCollapse>
                     </div>
                 </Sobreponer>
-            </div>
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
-                        <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                        <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l,i) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.docente+i} value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
-                            })}
-
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
-            <Modal centered isOpen={viewEliminar}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor {idEliminar}?</Label>
-                    </FormGroup>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
-                    <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>    
+            </div> 
         </main>
     )
 };

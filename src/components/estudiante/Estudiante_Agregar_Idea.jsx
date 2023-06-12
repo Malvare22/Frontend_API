@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import styled from 'styled-components';
+import { Input, Label } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Formulario = () => {
-  const [nombre, setNombre] = useState('');
-  const [integrantesIdea, setIntegrantesIdea] = useState([]);
+
+  const navigate = useNavigate();
+  const [titulo, setTitulo] = useState('');
+  const [cursoSeleccionado, setCursoSeleccionado] = useState('');
+  const [integrantesSeleccionados, setIntegrantesSeleccionados] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
   const [formatoIdea, setFormatoIdea] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleNombreChange = (e) => {
-    setNombre(e.target.value);
+
+  const handleTituloChange = (e) => {
+    setTitulo(e.target.value);
   };
 
-  const handleintegrantesIdeaChange = (event, values) => {
-    setIntegrantesIdea(values);
+  const handleCursoChange = (e) => {
+    setCursoSeleccionado(e.target.value);
+  };
+
+  const handleIntegrantesClick = (value) => {
+    if (integrantesSeleccionados.includes(value)) {
+      setIntegrantesSeleccionados(prevOptions => prevOptions.filter(option => option !== value));
+    } else {
+      setIntegrantesSeleccionados(prevOptions => [...prevOptions, value]);
+    }
   };
 
   const handleareaEnfoqueChange = (e) => {
@@ -26,48 +39,98 @@ const Formulario = () => {
     setFormatoIdea(e.target.files[0]);
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('nombre', nombre);
-    formData.append('integrantesIdea', JSON.stringify(integrantesIdea));
-    formData.append('areaEnfoque', areaEnfoque);
-    formData.append('formatoIdea', formatoIdea);
+    if (formatoIdea) {
+      setError(null);
+      var formData = new FormData();
+      formData.append('titulo', titulo);
+      formData.append('integrantes', integrantesSeleccionados);
+      formData.append('area', areaEnfoque);
+      formData.append('documento', formatoIdea);
 
-    try {
-      const response = await axios.post('http://localhost:8080', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-Softue-JWT': localStorage.getItem('token_access'),
-        },
-      });
-      
-      console.log(response.data);
-      
-    } catch (error) {
-      console.error(error);
+      let ruta = "http://localhost:8080/ideaNegocio";
+      let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
+        .then((response) => {
+          console.log("hecho")
+          console.log([...formData.entries()]);
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log('Código de estado:', error.response.status);
+            console.log('Respuesta del backend:', error.response.data);
+          } else if (error.request) {
+            console.log('No se recibió respuesta del backend');
+          } else {
+            console.log('Error al realizar la solicitud:', error.message);
+          }
+        });
+      setFormatoIdea(null);
+      navigate('../ListarIdeas')
+
+    } else {
+      setError('Por favor, selecciona un archivo');
     }
   };
 
-  const [datos, setDatos] = useState([]);
+  const [estudiantes, setEstudiantes] = useState([]);
+  const getEstudiantes = async () => {
+    
+    var localData = localStorage.getItem("session");
+    var parsedData = JSON.parse(localData);
 
-  const estudiantes = async () => {
     try {
       const response = await axios.get('http://localhost:8080/estudiante/listar', {
-        headers: {
-          'X-Softue-JWT': localStorage.getItem('token_access'),
-        },
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
-      console.log(response.data);
-      setDatos(response.data);
+
+      const estudiantesFiltrados = response.data.filter(estudiante => estudiante.correo !== parsedData.email);
+      setEstudiantes(estudiantesFiltrados);
+
+      console.log(estudiantesFiltrados);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    estudiantes();
+    getEstudiantes();
+  }, []);
+
+  const [areas, setAreas] = useState([]);
+  const getAreas = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/areaConocimiento', {
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+      });
+      console.log(response.data);
+      setAreas(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAreas();
+  }, []);
+
+  const [cursos, setCursos] = useState([]);
+  const getCursos = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/estudiante/listarCursos', {
+        headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+      });
+      console.log(response.data);
+      setCursos(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCursos();
   }, []);
 
   return (
@@ -78,7 +141,7 @@ const Formulario = () => {
           <div className="row">
             <Sobreponer>
               <div className="col-12">
-                <div id="titulo" className="rounded-3 mt-4" style={{ background: '#ECB904' }}>
+                <div id="titulo1" className="rounded-3 mt-4" style={{ background: '#ECB904' }}>
                   <div className="row">
                     <div className="d-flex col ms-3">
                       <h5 className="m-0 p-2" style={{ color: 'black' }}>
@@ -97,27 +160,52 @@ const Formulario = () => {
                         <input
                           type="text"
                           placeholder="Nombre"
-                          id="nombre"
-                          value={nombre}
-                          onChange={handleNombreChange}
+                          id="titulo"
+                          value={titulo}
+                          onChange={handleTituloChange}
+                          pattern="[A-Za-z\s]+"
                           required
                         />
                       </div>
-                      <div className="mt-3">
-                        <p>
-                          <b>2. Estudiantes que hacen parte del proyecto</b>
-                        </p>
-                        <Autocomplete
-                          style={{ background: 'white' }}
-                          id="integrantes"
-                          options={datos}
-                          getOptionLabel={(option) => option.correo}
-                          value={integrantesIdea}
-                          onChange={handleintegrantesIdeaChange}
-                          multiple
-                          renderInput={(params) => <TextField {...params} variant="standard" />}
-                        />
+
+                      <div className='mt-3'>
+
+                        <Label id="texto">Escoge el curso</Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={handleCursoChange} id="exampleSelect" required>
+                          <option value="">Seleccione...</option>
+                          {cursos && cursos.map((v, i) => {
+                            return (<option key={i} value={v}>{v}</option>);
+                          })}
+                        </Input>
+
+                        <div className='mt-3'>
+                          <Label for="exampleSelectMulti">Escoge los estudiantes</Label>
+                          <div>
+                            <select
+                              name="selectMulti"
+                              style={{ width: "100%" }}
+                              multiple
+                              required
+                            >
+                              {estudiantes && estudiantes.map((v, i) => {
+                                if (v.curso === cursoSeleccionado) {
+                                  return (<option key={i} onClick={() => handleIntegrantesClick(v.correo)}>{v.nombre + " " + v.apellido}</option>);
+                                } else {
+                                  return null;
+                                }
+                              })}
+                            </select>
+
+                            <div className='mt-2'>
+                              <p><b>Los integrantes que ha seleccionado son: </b><i>{integrantesSeleccionados.join(', ')}</i></p>
+                            </div>
+
+                          </div>
+                        </div>
+
                       </div>
+
                       <div className="mt-3">
                         <p>
                           <b>3. Área de enfoque</b>
@@ -129,12 +217,12 @@ const Formulario = () => {
                           onChange={handleareaEnfoqueChange}
                           required
                         >
-                          <option value="">Área de enfoque</option>
-                          <option value="minera">Minera</option>
-                          <option value="agropecuaria">Agropecuaria</option>
-                          <option value="comercial">Comercial</option>
-                          <option value="servicios">Servicios</option>
-                          <option value="industrial">Industrial</option>
+                          <option value="">Seleccione ...</option>
+                          {areas.map((v, i) => {
+                            return (
+                              <option key={i} value={v.nombre}>{v.nombre}</option>
+                            )
+                          })}
                         </select>
                       </div>
                       <div className="mt-3">
@@ -163,12 +251,13 @@ const Formulario = () => {
 export default Formulario;
 
 const Sobreponer = styled.div`
-  #titulo,
+
+  #titulo1,
   #cuerpo {
     position: relative;
   }
 
-  #titulo {
+  #titulo1 {
     z-index: 2;
   }
 
@@ -177,7 +266,7 @@ const Sobreponer = styled.div`
     top: -15px;
   }
 
-  #nombre {
+  #titulo {
     width: 100%;
     border: 1px solid grey;
     border-radius: 4px;

@@ -11,7 +11,8 @@ export default function TemplateLider({ children }) {
     const navigate = useNavigate()
     const Token = localStorage.getItem('token_access')
     const Usuario = JSON.parse(localStorage.getItem('session'))
-    if(JSON.parse(localStorage.getItem('session')).rol == 'coordinador')
+
+    //if(JSON.parse(localStorage.getItem('session')).rol == 'coordinador')
     return (
         <>
             <div className="container-fluid row m-0 p-0">
@@ -27,7 +28,8 @@ export default function TemplateLider({ children }) {
             <Footer></Footer>
         </>
     );
-    else return(<Error404></Error404>)
+
+    //else return(<Error404></Error404>)
 
 }
 
@@ -35,5 +37,4 @@ const Contenido = styled.div.attrs({
     className: 'flex-grow-1',
 
 })`
-    min-height:100vh;
 `;

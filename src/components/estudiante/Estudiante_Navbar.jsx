@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
 import '../../css/Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { CerrarSesion } from '../../context/functions_app';
 
 const Sidebar = () => {
 
@@ -12,13 +13,14 @@ const Sidebar = () => {
 };
 
 const SideBarStatic = (props) => {
+  const navigate = useNavigate()
 
-  const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+  const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-down" viewBox="0 0 16 16">
+    <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
   </svg>);
 
-  const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
+  const arrowDown = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-up" viewBox="0 0 16 16">
+    <path fillRule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />
   </svg>);
 
   const [arrow01, setArrow01] = useState(false);
@@ -71,12 +73,12 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Capacitacion
+              <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Evaluacion
+              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
             </NavLink>
           </NavItem>
 
@@ -99,7 +101,7 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+              <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -131,7 +133,7 @@ const SideBarStatic = (props) => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+              <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -184,7 +186,7 @@ const SideBarStatic = (props) => {
         </NavItem>
 
 
-        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
+        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -205,6 +207,7 @@ const SideBarStatic = (props) => {
 
 const SideBarResponsive = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate()
 
   const toggleNavbar = () => setCollapsed(!collapsed);
   return (<div className="text-white d-flex flex-column flex-shrink-0" id='principal_div_nav' >
@@ -260,12 +263,12 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Capacitacion
+                <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Evaluacion
+                <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
               </NavLink>
             </NavItem>
 
@@ -288,7 +291,7 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+                <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -320,7 +323,7 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitacion</Link>
+                <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
@@ -372,7 +375,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem id='closeSession'>
+          <NavItem id='closeSession' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >

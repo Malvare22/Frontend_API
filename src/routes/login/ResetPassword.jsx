@@ -28,6 +28,7 @@ export default function Screen() {
         } else if (password === confirmPassword) {
             axios.patch('http://localhost:8080/administrativo/resetPassword', { "password": password }, { headers: { 'X-Softue-Reset': token } })
                 .then((response) => {
+                    alert('Se ha reestablecido su contraseña, verifique su bandeja de entrada.');
                     navigate('../../Login');                    
                 })
                 .catch((error) => {

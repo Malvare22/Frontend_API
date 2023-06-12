@@ -24,7 +24,6 @@ const modalStyles = {
 // Componente de tabla
 const Table = ({ data }) => {
   const [orderBy, setOrderBy] = useState({ column: 'Título', ascending: true });
-
   const handleSort = (column) => {
     if (orderBy.column === column) {
       setOrderBy((prevState) => ({
@@ -40,16 +39,18 @@ const Table = ({ data }) => {
   };
   const sortData = () => {
     const { column, ascending } = orderBy;
-    return data.slice().sort((a, b) => {
+    return data && data.slice().sort((a, b) => {
       let comparison = 0;
       if (column === 'Título') {
-        comparison = a.titulo.localeCompare(b.titulo);
+        comparison = a.titulo && a.titulo.localeCompare(b.titulo);
       } else if (column === 'Estudiante') {
-        comparison = a.estudiante_codigo.localeCompare(b.estudiante_codigo);
+        comparison = a.estudianteLiderInfo && a.estudianteLiderInfo[0][0].localeCompare(b.estudianteLiderInfo && b.estudianteLiderInfo[0][0]);
       } else if (column === 'Tutor') {
-        comparison = a.docente_codigo.localeCompare(b.docente_codigo);
+        comparison = a.tutorInfo && a.tutorInfo[0][0].localeCompare(b.tutorInfo && b.tutorInfo[0][0]);
       } else if (column === 'Fecha de corte') {
-        comparison = a.fecha_creacion.localeCompare(b.fecha_creacion);
+        const dateA = new Date(a.fechaCorte && a.fechaCorte[0], (a.fechaCorte && a.fechaCorte[1]) - 1, a.fechaCorte && a.fechaCorte[2]);
+        const dateB = new Date(b.fechaCorte && b.fechaCorte[0], (b.fechaCorte && b.fechaCorte[1]) - 1, b.fechaCorte && b.fechaCorte[2]);
+        comparison = dateA - dateB;
       }
       if (!ascending) {
         comparison *= -1;
@@ -60,9 +61,40 @@ const Table = ({ data }) => {
   const sortedData = sortData();
   const { state, toggleAlert, valor } = useAlert();
   const navigate = useNavigate();
-  const toggleA = () => {
-    navigate('/Lider/Vista');
+  const toggleA = (titulo) => {
+    localStorage.setItem('titulo', titulo);
+    navigate('/Lider/Ideas/Vista');
   };
+  const descargarArchivo = (nombre) => {
+    let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + nombre;
+    axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+
+        // Obtener la extensión del nombre de archivo del encabezado Content-Type
+        const contentType = response.headers['content-type'];
+        const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+        link.href = url;
+        link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpiar el enlace temporal después de la descarga
+        link.parentNode.removeChild(link);
+      }).catch(error => {
+        if (error.response) {
+          console.log('Código de estado:', error.response.status);
+          console.log('Respuesta del backend:', error.response.data);
+        } else if (error.request) {
+          console.log('No se recibió respuesta del backend');
+        } else {
+          console.log('Error al realizar la solicitud:', error.message);
+        }
+      });
+  }
   return (
     <Sdiv>
       <div className='w-auto'>
@@ -77,29 +109,25 @@ const Table = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((d) => (
+            {sortedData && sortedData.map((d) => (
               <tr key={d.id}>
                 <td className='text-center align-middle col-auto'>{d.titulo}</td>
-                <td className='text-center align-middle col-auto'>{d.estudiante_codigo}</td>
-                <td className='text-center align-middle col-auto'>{d.docente_codigo}</td>
-                <td className='text-center align-middle'>{d.fecha_creacion}</td>
+                <td className='text-center align-middle col-auto'>{d.estudianteLiderInfo[1]}</td>
+                <td className='text-center align-middle col-auto'>{d.tutorInfo && d.tutorInfo[1]}</td>
+                <td className='text-center align-middle'>{d.fechaCorte && d.fechaCorte[0] && d.fechaCorte[1] && d.fechaCorte[2] && `${d.fechaCorte[2].toString().padStart(2, '0')}/${d.fechaCorte[1].toString().padStart(2, '0')}/${d.fechaCorte[0]}`}
+                </td>
                 <td className='text-center align-middle'>
                   <div>
-                    <button type="button" className="btn" onClick={toggleA} value={d.id} style={{ width: "auto", border: "none" }}>
+                    <button type="button" className="btn" onClick={() => toggleA(d.titulo)} value={d.titulo} style={{ width: "auto", border: "none" }}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-eye-fill" viewBox="0 0 16 16">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                       </svg>
                     </button>
-                    <button type="button" className="btn" value={d.id} style={{ width: "auto", border: "none" }}>
+                    <button type="button" className="btn" onClick={() => descargarArchivo(d.titulo)} value={d.titulo} style={{ width: "auto", border: "none" }}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
                         <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                      </svg>
-                    </button>
-                    <button type="button" id="eliminar" value={d.id} onClick={() => toggleAlert({ id: d.id, titulo: d.titulo })} className="btn" style={{ width: "auto", border: "none" }}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
-                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                       </svg>
                     </button>
                   </div>
@@ -184,34 +212,30 @@ const Filters = ({ onFilter }) => {
   return (<form className="row gy-2 gx-1" onSubmit={handleSubmit}>
     <div className="col-auto d-flex align-items-center mb-1">
       <select name="tutor" onChange={(e) => setTutor(e.target.value)} className="form-select-sm selector fw-bold text-black">
-        <option defaultValue="0">Tutor</option>
+        <option value="">Tutor</option>
         <Getdocentes></Getdocentes>
       </select>
     </div>
     <div className="col-auto d-flex align-items-center mb-1">
       <select name="estudiante" onChange={(e) => setEstudiante(e.target.value)} className="form-select-sm selector fw-bold text-black">
-        <option defaultValue="0">Estudiante</option>
+        <option value="">Estudiante</option>
         <Getestudiantes></Getestudiantes>
       </select>
     </div>
     <div className="col-auto d-flex align-items-center mb-1">
       <select name="area" onChange={(e) => setArea(e.target.value)} className="form-select-sm selector fw-bold text-black">
-        <option defaultValue="0">Area</option>
-        <option defaultValue="minera">Minera</option>
-        <option defaultValue="agrupecuaria">Agropecuaria</option>
-        <option defaultValue="comercial">Comercial</option>
-        <option defaultValue="servicios">Servicios</option>
-        <option defaultValue="industrial">Industrial</option>
+        <option value="">Area</option>
+        <Getareas></Getareas>
       </select>
     </div>
     <div className="col-auto d-flex align-items-center mb-1">
       <select name="estado" onChange={(e) => setEstado(e.target.value)} className="form-select-sm selector fw-bold text-black">
-        <option defaultValue="0">Estado</option>
-        <option defaultValue="aprobada">Aprobada</option>
-        <option defaultValue="desaprobada">Desaprobada</option>
-        <option defaultValue="vencida">Vencida</option>
-        <option defaultValue="formulacion">Formulación</option>
-        <option defaultValue="formulacion">Pendiente</option>
+        <option value="">Estado</option>
+        <option value="aprobada">Aprobada</option>
+        <option value="rechazada">Desaprobada</option>
+        <option value="vencida">Vencida</option>
+        <option value="formulado">Formulación</option>
+        <option value="pendiente">Pendiente</option>
       </select>
     </div>
     <div className="col-auto d-flex align-items-center mb-1">
@@ -229,44 +253,70 @@ const Filters = ({ onFilter }) => {
 
 // Componente principal que contiene la tabla y los filtros
 export default function Listar_Ideas() {
-
   const [filteredData, setFilteredData] = useState([]);
   const getIdeas = async () => {
-    let value = null;
-    value = await axios.get('../ideas.json').then(
+    const value = await axios.get("http://localhost:8080/ideaNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
       response => {
         const data = response.data;
         return data;
       }).catch(error => {
         console.error(error);
       });
-    setFilteredData(value)
+    setFilteredData(value);
   };
   useEffect(() => {
     getIdeas();
   }, []);
   const handleFilter = async (filters) => {
-    console.log(filters)
-    console.log(filters.tutor)
-    console.log(filters.estudiante)
-    console.log(filters.area)
-    console.log(filters.estado)
-    console.log(filters.fechaInicio)
-    console.log(filters.fechaFin)
+    let formData = new FormData()
+    console.log(filters);
+    if (filters.estudiante !== '') {
+      formData.append('codigoEstudiante', filters.estudiante);
+    }
+    if (filters.area !== '') {
+      formData.append('area', filters.area);
+    }
+    if (filters.tutor !== '') {
+      formData.append('tutorCodigo', filters.tutor);
+    }
+    if (filters.estado !== '') {
+      console.log(filters.estado)
+      formData.append('estado', filters.estado);
+    }
+    if (filters.fechaInicio !== '' && filters.fechaFin !== '') {
+      console.log(filters.fechaInicio);
+      console.log(filters.fechaFin);
+      formData.append('fechaInicio', filters.fechaInicio);
+      formData.append('fechaFin', filters.fechaFin);
+    }
+    console.log([...formData.entries()]);
     try {
-      let value = null;
-      value = await axios.get('../ideasFiltradas.json').then(
-      response => {
-        const data = response.data;
-        return data;
-      }).catch(error => {
-        console.error(error);
-      });
+      const config = {
+        headers: {
+          "X-Softue-JWT": localStorage.getItem('token_access')
+        }
+      }
+      let value = await axios.post("http://localhost:8080/ideaNegocio/filtrar", formData, config
+      ).then(
+        response => {
+          const data = response.data;
+          console.log(data);
+          return data;
+        }).catch(error => {
+          if (error.response) {
+            console.log('Código de estado:', error.response.status);
+            console.log('Respuesta del backend:', error.response.data);
+          } else if (error.request) {
+            console.log('No se recibió respuesta del backend');
+          } else {
+            console.log('Error al realizar la solicitud:', error.message);
+          }
+        });
       setFilteredData(value);
     } catch (error) {
       console.error(error);
     }
-    //ACA IRA LA SOLICITUD A BACK CON LOS PARAMETROS
   };
   return (
     <div className="container-fluid w-75">
@@ -302,8 +352,8 @@ export default function Listar_Ideas() {
 function Getdocentes() {
   const [datos, setDatos] = useState([]);
   const getDocentes = async () => {
-    let value = null;
-    value = await axios.get('../docentes.json').then(
+    const value = await axios.get('http://localhost:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
       response => {
         const data = response.data;
         return data;
@@ -316,9 +366,9 @@ function Getdocentes() {
     getDocentes();
   }, []);
   return (
-    datos.map((d) => {
+    datos && datos.map((d) => {
       return (
-        <option value={d.id} key={d.id}>{d.docente}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
       )
     })
   )
@@ -326,13 +376,13 @@ function Getdocentes() {
 function Getestudiantes() {
   const [datos2, setDatos] = useState([]);
   const getEstudiantes = async () => {
-    let value = null;
-    value = await axios.get('../estudiantes.json').then(
+    const value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
       response => {
         const data = response.data;
         return data;
       }).catch(error => {
-        console.error(error);
+        console.log(error);
       });
     setDatos(value)
   };
@@ -340,9 +390,34 @@ function Getestudiantes() {
     getEstudiantes();
   }, []);
   return (
-    datos2.map((d) => {
+    datos2 && datos2.map((d) => {
       return (
-        <option value={d.id} key={d.id}>{d.estudiante}</option>
+        <option value={d.codigo} key={d.correo}>{d.nombre} {d.apellido}</option>
+      )
+    })
+  )
+}
+
+function Getareas() {
+  const [datos2, setDatos] = useState([]);
+  const getAreas = async () => {
+    const value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.log(error);
+      });
+    setDatos(value)
+  };
+  useEffect(() => {
+    getAreas();
+  }, []);
+  return (
+    datos2 && datos2.map((d) => {
+      return (
+        <option value={d.nombre} key={d.id}>{d.nombre.charAt(0).toUpperCase() + d.nombre.slice(1).toLowerCase()}</option>
       )
     })
   )

@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
 import '../../css/Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { CerrarSesion } from '../../context/functions_app';
 
 const Sidebar = () => {
 
@@ -24,6 +25,8 @@ const SideBarStatic = () => {
   const [arrow01, setArrow01] = useState(false);
   const [arrow02, setArrow02] = useState(false);
   const [arrow03, setArrow03] = useState(false);
+  const [arrow04, setArrow04] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
@@ -109,12 +112,12 @@ const SideBarStatic = () => {
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Preguntas
+              <Link to={'Preguntas/Listar'} style={{ textDecoration: "none", color: "white" }}>Preguntas</Link>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Componentes
+              <Link to={'Evaluacion/Componentes'} style={{ textDecoration: "none", color: "white" }}>Componentes</Link>
             </NavLink>
           </NavItem>
         </UncontrolledCollapse>
@@ -204,18 +207,6 @@ const SideBarStatic = () => {
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-alarm-fill" viewBox="0 0 16 16">
-                  <path d="M6 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H9v1.07a7.001 7.001 0 0 1 3.274 12.474l.601.602a.5.5 0 0 1-.707.708l-.746-.746A6.97 6.97 0 0 1 8 16a6.97 6.97 0 0 1-3.422-.892l-.746.746a.5.5 0 0 1-.707-.708l.602-.602A7.001 7.001 0 0 1 7 2.07V1h-.5A.5.5 0 0 1 6 .5zm2.5 5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5zM.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z" />
-                </svg>
-              </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Fechas de Calificación</Col>
-            </Row>
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="#">
-            <Row className='d-flex align-content-center align-items-center justify-content-end'>
-              <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-calendar-week" viewBox="0 0 16 16">
                   <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z" />
                   <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
@@ -237,7 +228,34 @@ const SideBarStatic = () => {
             </Row>
           </NavLink>
         </NavItem>
-        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
+        <NavItem onClick={() => { setArrow04(!arrow04) }}>
+          <NavLink id='Configuracion' href="#">
+            <Row className='d-flex align-content-center align-items-center'>
+              <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                  <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                </svg>
+              </Col>
+              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Configuraciones {arrow04 ? arrowDown : arrowUp}</Col>
+            </Row>
+          </NavLink>
+        </NavItem>
+
+        <UncontrolledCollapse id="despliegue" toggler="#Configuracion">
+
+          <NavItem>
+            <NavLink className='offset-md-3 text-white text-start' href="#">
+              <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink className='offset-md-3 text-white text-start' href="#">
+              <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
+            </NavLink>
+          </NavItem>
+
+        </UncontrolledCollapse>
+        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -251,6 +269,7 @@ const SideBarStatic = () => {
           </NavLink>
         </NavItem>
 
+
       </Nav>
 
     </div>
@@ -263,6 +282,9 @@ const SideBarResponsive = () => {
   const [arrow01, setArrow01] = useState(false);
   const [arrow02, setArrow02] = useState(false);
   const [arrow03, setArrow03] = useState(false);
+  const [arrow04, setArrow04] = useState(false);
+  const navigate = useNavigate()
+
   const arrowUp = (<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-down" viewBox="0 0 16 16">
     <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
   </svg>);
@@ -371,7 +393,7 @@ const SideBarResponsive = () => {
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Componentes
+                <Link to={'Evaluacion/Componentes'} style={{ textDecoration: "none", color: "white" }}>Componentes</Link>
               </NavLink>
             </NavItem>
 
@@ -423,13 +445,11 @@ const SideBarResponsive = () => {
           </NavItem>
 
           <UncontrolledCollapse id="despliegue" toggler="#Documentos">
-
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start align-content-center' href="#">
                 <Link to={'Formatos'} style={{ textDecoration: "none", color: "white" }}>Historial de formatos</Link>
               </NavLink>
             </NavItem>
-
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start align-items-center' href="#">
                 Material de apoyo
@@ -467,21 +487,6 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-
-
-          <NavItem>
-            <NavLink href="#">
-              <Row className='d-flex align-content-center align-items-center justify-content-end'>
-                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-alarm-fill" viewBox="0 0 16 16">
-                    <path d="M6 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H9v1.07a7.001 7.001 0 0 1 3.274 12.474l.601.602a.5.5 0 0 1-.707.708l-.746-.746A6.97 6.97 0 0 1 8 16a6.97 6.97 0 0 1-3.422-.892l-.746.746a.5.5 0 0 1-.707-.708l.602-.602A7.001 7.001 0 0 1 7 2.07V1h-.5A.5.5 0 0 1 6 .5zm2.5 5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5zM.86 5.387A2.5 2.5 0 1 1 4.387 1.86 8.035 8.035 0 0 0 .86 5.387zM11.613 1.86a2.5 2.5 0 1 1 3.527 3.527 8.035 8.035 0 0 0-3.527-3.527z" />
-                  </svg>
-                </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Fechas de Calificación</Col>
-              </Row>
-            </NavLink>
-          </NavItem>
-
           <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -509,8 +514,34 @@ const SideBarResponsive = () => {
               </Row>
             </NavLink>
           </NavItem>
+          <NavItem onClick={() => { setArrow04(!arrow04) }}>
+            <NavLink id='Configuracion' href="#">
+              <Row className='d-flex align-content-center align-items-center'>
+                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                  </svg>
+                </Col>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Configuraciones {arrow04 ? arrowDown : arrowUp}</Col>
+              </Row>
+            </NavLink>
+          </NavItem>
 
-          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' >
+          <UncontrolledCollapse id="despliegue" toggler="#Configuracion">
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
+              </NavLink>
+            </NavItem>
+
+          </UncontrolledCollapse>
+          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >

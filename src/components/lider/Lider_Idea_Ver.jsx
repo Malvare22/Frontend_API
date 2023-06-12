@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Lider_Idea_Historial";
@@ -7,8 +7,9 @@ import Historial from "./Lider_Idea_Historial";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></InfoGeneral>
-        <Observaciones Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Observaciones>
+
+        <InfoGeneral Token='' nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones Token='' nombre={localStorage.getItem("titulo")}></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -18,7 +19,7 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial Token='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODUyNzQsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4ODg3NH0.Mw1S6nKiNx0a4lgkLjPi1POUFFp_xdKbp4OPvAyZ5ek' nombre="Idea de negocio de Rebeca.Brunell@gmail.com"></Historial>
+        <Historial Token='' nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
@@ -35,21 +36,17 @@ const InfoGeneral = (props) => {
         setViewAlertEliminar(!viewAlertEliminar);
     }
 
-    const [Area, setArea] = useState(String);
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
-
-
+ 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-        
-        // value = await  axios.get('../../../ideasdeveritas.json' 
-        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-            //method: "get",
-      //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
+        let URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -58,36 +55,160 @@ const InfoGeneral = (props) => {
                 console.error(error);
             });
         setDatos1(value)
-        console.log(value)
-
     };
     useEffect(() => {
         getDatos1();
     }, []);
 
 
+    {/* llistar areas de conocimiento*/ }
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setAreas(data);
+            //console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+
+    {/*Listar docentes por area*/ }//asdasdasdasdad
+
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        let value = null;
-        let URL = 'http://localhost:8080/docente/listar';
-        let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU1ODA4OTksInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTU4NDQ5OX0.6tcUXqDKRcFPyyAX8Z7PSdilnfcgymCUaln4Ih5b6-Y';
-        //value = await axios('../../../docentesdeveritas.json' 
-        value = await axios.get(URL, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-        ).then(
-            response => {
+        if(Area !== null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
                 const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
-        
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
+        }
     };
     useEffect(() => {
         getProfesores();
-    }, []);
+    }, [Area]);
+
+    const [TutorNuevo, setTutorN] = useState(null);
+    const getTutorN = (a) => {
+        setTutorN(a);
+    }
 
 
+    const asignarTutor = async (docente) => {
+        //console.log(TutorNuevo,"Siass")
+        if (TutorNuevo) {
+            let value = null;
+            let idea = datos1 && datos1.titulo;
+            //let ruta = 'http://144.22.37.238:8080/coordinador/asignar/' + idea + '/' + docente;
+            let ruta = 'http://localhost:8080/coordinador/asignar/' + idea + '/' + docente;
+            console.log(ruta);
+            value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+             ).then(
+                 response => {
+                     const data = response.data;
+                     toggleAlert()
+                     set_Adverten(null)
+                     return data;
+
+                 }).catch(error => {
+                    set_Adverten("Este docente no puede ser asignado.")
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                      } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                      } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                      }
+                 });
+        }else{
+            console.log("Ando vacio vago")
+        }
+
+    }
+
+
+    const EliminarTutor = async () => {
+        if (datos1.tutorInfo!=null) {
+            let value = null;
+            let idea = datos1 && datos1.titulo;
+            //let ruta = 'http://144.22.37.238:8080/administrativo/eliminarTutor/'+idea;
+            let ruta = 'http://localhost:8080/administrativo/eliminarTutor/'+idea;
+            //console.log(ruta);
+            value = await axios.post(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+             ).then(
+                 response => {
+                     const data = response.data;
+                     return data;
+                 }).catch(error => {
+                    if (error.response) {
+                        console.log('Código de estado:', error.response.status);
+                        console.log('Respuesta del backend:', error.response.data);
+                      } else if (error.request) {
+                        console.log('No se recibió respuesta del backend');
+                      } else {
+                        console.log('Error al realizar la solicitud:', error.message);
+                      }
+                 });
+                 console.log(value);
+                 toggleAlertEliminar();
+        }else{
+            console.log("Ando vacio vago")
+        }
+
+    }
+
+
+    const getArchi = async () => {
+        let value = null;
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+            
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+            
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+            
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                  } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                  } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                  }
+            });
+    };
+
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
     let set = new Set();
 
     return (
@@ -116,16 +237,23 @@ const InfoGeneral = (props) => {
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    <li>{datos1 && datos1.estudianteLiderInfo[1]}</li>
                                                     {datos1.estudiantesIntegrantesInfo != null ? datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
                                                         return (<li key={i}>{l}</li>);
 
                                                     })
-                                                    :"No se ha asignado docente tutor"
+                                                        : "No se ha asignado docente tutor"
                                                     }
 
                                                 </ul>
@@ -138,13 +266,13 @@ const InfoGeneral = (props) => {
                                             <div className="col-auto">
 
 
-                                                 <p>{datos1.tutorInfo != null ? datos1.tutorInfo[1] :<p>Pendiente...</p>}</p>
+                                                <p>{datos1.tutorInfo != null ? datos1.tutorInfo[1] : <p>Pendiente...</p>}</p>
 
                                             </div>
                                         </div>
 
-                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert} disabled={datos1 && datos1.tutorInfo !== null ? true : false } >Asignar</button>
-                                        <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true }>Eliminar</button>
+                                        <button type="button" id="Aceptare" className="btn btn-secondary btn-sm rounded-5 m-2" onClick={toggleAlert}  >Asignar</button>
+                                        {/* <button type="button" id="Eliminare" style={{ background: "#1C3B57", color: "white" }} onClick={toggleAlertEliminar} className="btn btn-sm rounded-5 m-2" disabled={datos1 && datos1.tutorInfo !== null ? false : true}>Eliminar</button> */}
 
                                         <div className="row mt-2">
                                             <div className="col-auto">
@@ -160,14 +288,17 @@ const InfoGeneral = (props) => {
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].lenght == 0 ? datos1.docentesApoyoInfo[1].map((l, j) => {
+                                                    {datos1.docentesApoyoInfo[1][0] != null ? datos1.docentesApoyoInfo[1].map((l, j) => {
                                                         return (<li key={j} >{l}</li>);
                                                     })
-                                                    :<p>No hay docentes de apoyo asignados</p> 
+                                                        : <p>No hay docentes de apoyo asignados</p>
                                                     }
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                            <div className="row">
+                                            <div className="col-auto"><button onClick={()=>{getArchi()}} type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -190,12 +321,13 @@ const InfoGeneral = (props) => {
                 </div>
 
             }
-            <Modal centered isOpen={viewAlert}>
+            {/* <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">Escoge al docente que necesitas</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
                             {profesores && profesores.map((l, i) => {
                                 if (set.has(l.area)) {
                                     return ("");
@@ -207,25 +339,48 @@ const InfoGeneral = (props) => {
                         </Input>
 
                         <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-
-
-                            {profesores && profesores.map((l,i) => {
+                        <Input type="select" name="selectMulti" onChange={(e) => { getTutorN(e.target.value) }} multiple>
+                            {profesores && profesores.map((l, i) => {
                                 if (l.area === Area) {
-                                    return (<option key={i} value={l.docente}>{l.nombre+l.apellido}</option>);
+                                    return (<option key={i} value={l.correo}>{l.nombre + l.apellido}</option>);
                                 } else {
                                     return ("");
                                 }
                             })}
-
                         </Input>
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Asignar</Button>
+                    <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
                     <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
                 </ModalFooter>
+            </Modal> */}
+
+             <Modal centered isOpen={viewAlert}>
+                <ModalBody>
+                    <FormGroup>
+                        <Label id="texto">Escoge el area del docente: </Label>
+                        <Label for="exampleSelect"></Label>
+                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
+                            })}
+                        </Input>
+                        <Label for="exampleSelectMulti">Seleccciona al docente: </Label>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { getTutorN(e.target.value) }} multiple>
+                            {profesores && profesores.map((l) => {
+                                return (<option key={l.correo} value={l.correo}>{l.nombre +" "+ l.apellido}</option>);
+                            })}
+                        </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
+                    </FormGroup>
+                    <ModalFooter>
+                        <Button color="danger" onClick={() => { asignarTutor(TutorNuevo) }}>Asignar</Button>
+                        <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                    </ModalFooter>
+                </ModalBody>
             </Modal>
 
             <Modal centered isOpen={viewAlertEliminar}>
@@ -236,7 +391,7 @@ const InfoGeneral = (props) => {
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" onClick={()=>{EliminarTutor()}}>Eliminar</Button>
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -439,13 +594,9 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-       // let nombre="Idea de negocio de Rebeca.Brunell@gmail.com";
-        let URLs = 'http://localhost:8080/observacionIdea/'+props.nombre;
-        
-        //value = await  axios.get('../../../Observaciones.json'
-        //    method: "get",
-        //    headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
-        value = await  axios.get(URLs,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
+        //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -458,6 +609,7 @@ function Tabla(props) {
     useEffect(() => {
         getIdeas();
     }, []);
+
     return (
         <Sdiv>
             <div className='w-auto m-2'>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 
 const Evaluaciones = (props) => {
     let identificador = "#a" + props.identificador;
@@ -11,7 +11,12 @@ const Evaluaciones = (props) => {
 
     let set = new Set();
 
-    const [Area, setArea] = useState(String);
+    const [Advice, setAdvice] = useState(null);
+    const setAdvice_A = (a) => {
+        setAdvice(a);
+    }
+
+    const [Area, setArea] = useState(null);
     const setArea_A = (a) => {
         setArea(a);
     }
@@ -30,7 +35,6 @@ const Evaluaciones = (props) => {
     const eliminar = (a) => {
         ObtenerIdElimnar(a);
         bottomEliminar();
-
     }
 
     const [viewEliminar, setViewEliminar] = useState(false);
@@ -46,31 +50,31 @@ const Evaluaciones = (props) => {
     //AXIOS PARA RECIBIR LOS DOCENTES
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        let value = null;
-        let URLs = 'http://localhost:8080/docente/listar';
-        value = await axios.get(URLs, {headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-        ).then(
-            response => {
+        if(Area !== null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
                 const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
+        }
     };
     useEffect(() => {
         getProfesores();
-    }, []);
+    }, [Area]);
 
     //AXIOS PARA RECIBIR A LOS DOCENTES CALIFICADORES CON SUS NOTAS Y OBSERVACIONES
 
     const [calificadores, setCalificadores] = useState();
     const getCalificadores = async () => {
         let value = null;
-        //value = await axios.get('../../../calificadores.json').then(
-        
+        //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
         let URLs = 'http://localhost:8080/ideaNegocio/evaluacion/' + props.nombre;
-        value = await axios.get(URLs, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ } }
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -79,7 +83,7 @@ const Evaluaciones = (props) => {
                 console.error(error);
             });
         setCalificadores(value)
-        console.log(value)
+        //console.log(value)
     };
     useEffect(() => {
         getCalificadores();
@@ -91,12 +95,9 @@ const Evaluaciones = (props) => {
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
         let value = null;
-        let URL = 'http://localhost:8080/ideaNegocio/'+props.nombre;
-        
-        // value = await  axios.get('../../../ideasdeveritas.json' 
-        value = await  axios.get(URL,{headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/}}
-            //method: "get",
-      //      headers: { "X-Softue-JWT": Token /*localStorage.getItem("token_access")*/}
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/'+props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        value = await axios.get(URL, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -110,21 +111,113 @@ const Evaluaciones = (props) => {
         getDatos1();
     }, []);
 
-    const ElimnarCalificadores = async (a,b) => {
+    const ElimnarCalificadores = async (a, b) => {
         bottomEliminar()
         let value = null;
+
+        //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
         let URLd = 'http://localhost:8080/ideaNegocio/calificacion';
-        value = await axios.delete(URLd, { headers: { "X-Softue-JWT": props.Token /*localStorage.getItem("token_access")*/ }, body : {    "codigoDocente" : a,
-        "evaluacionIdeaId" : b} }
+        const response = await axios.delete(URLd, {
+            data: { codigoDocente: a, evaluacionIdeaId: props.idi },
+            headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
+        }
         ).then(
-            console.log("hecho")
-            ).catch(error => {
-                console.error(error);
-                setAdverten()
-            });
-        
+            window.location.reload()
+        ).catch(error => {
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+            } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+            } else {
+                console.log('Error al realizar la solicitud:', error.message);
+            }
+            setAdverten()
+        });
     };
-    
+
+    {/* llistar areas de conocimiento*/ }
+
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/areaConocimiento', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setAreas(data);
+            //console.log(data)
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+
+    const [correoDocente, setCorreo] = useState(String);
+    const setCorreoDocente = (a) => {
+        setCorreo(a);
+    }
+
+    const agregarTutor = async () => {
+
+        if (correoDocente) {
+            try {
+                const response = await axios.post('http://localhost:8080/ideaNegocio/calificacion/' + props.nombre + '/' + correoDocente, {}, {
+                    headers: {
+                        "X-Softue-JWT": localStorage.getItem("token_access")
+                    }
+                });
+                set_Adverten(null)
+                window.location.reload();
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            } catch (error) {
+                set_Adverten("Este docente no puede ser asignado.")
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            }
+
+        }
+
+    };
+
+    const enviarA_Plan = async () => {
+
+        try {
+            const response = await axios.post('http://localhost:8080/planNegocio/' + props.nombre, {}, {
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem("token_access")
+                }
+            });
+            setAdvice_A("El Plan ha sido creado exitosamente")
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
+        } catch (error) {
+            setAdvice_A("El Plan ya ha sido creado")
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+            } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+            } else {
+                console.log('Error al realizar la solicitud:', error.message);
+            }
+        }
+
+    };
+
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
+
 
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
@@ -200,7 +293,7 @@ const Evaluaciones = (props) => {
 
                                                     if (v.id.codigoDocente != null) {
                                                         let colorin = "";
-                                                        if (v.estado === 'aprobado') {
+                                                        if (v.estado === 'aprobada') {
                                                             colorin = "#2B9877"
                                                         } else if (v.estado === 'rechazada') {
                                                             colorin = "#DC4B4B"
@@ -221,7 +314,7 @@ const Evaluaciones = (props) => {
                                                                 </svg>
                                                             </div>
 
-                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2"> 
+                                                            {props.estado == "NA" ? colorin === "#555555" ? <div className="col-2">
 
                                                                 <p style={{ color: "#000" }}> <svg style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" onClick={() => eliminar(v.id.codigoDocente)} width="24" height="24" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
@@ -251,17 +344,15 @@ const Evaluaciones = (props) => {
                                                 })}
 
                                                 {
-                                                    props.estado == "NA" ? docentes ? "" : <div className="row d-flex justify-content-end">
+                                                    props.estado === "NA" ? calificadores && calificadores[0].calificacionesInfo.length !== 3 ? <div className="row d-flex justify-content-end">
                                                         <button className="btn btn-sm" onClick={toggleAlert} style={{ backgroundColor: "transparent", width: "auto", border: "none" }}>
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-person-add" viewBox="0 0 16 16">
                                                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
                                                                 <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
                                                             </svg>
                                                         </button>
-                                                    </div> : ""
+                                                    </div> : "" : ""
                                                 }
-
-
 
                                             </div>
 
@@ -273,30 +364,26 @@ const Evaluaciones = (props) => {
 
                                                     <p style={{ color: "#000" }}>{calificadores ?
 
-
                                                         calificadores[props.identificador].fechaCorte[2] + "/" + calificadores[props.identificador].fechaCorte[1] + "/" + calificadores[props.identificador].fechaCorte[0] : ""}</p>
                                                 </div>
                                             </div>
 
-                                            <div className="d-flex justify-content-center align-content-center mt-5">
-                                                {
-                                                    props.estado != "NA" ? props.identificador == 0 ? <div>
-                                                        <Form className="justify-content-center align-content-center">
-                                                            <FormGroup className="row">
-                                                                <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }}>Aceptar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                                                                </svg></Button>
-                                                            </FormGroup>
-                                                            <FormGroup className="row">
-                                                                <Button className="m-auto col-12" style={{ backgroundColor: "#CA5F72" }}>Rechazar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-                                                                </svg></Button>
-                                                            </FormGroup>
-                                                        </Form></div> : "" : ""
 
-                                                }
-                                            </div>
+                                        </div>
 
+                                        <div className="d-flex justify-content-center align-content-center mt-5">
+                                            {
+                                                props.estado === "Aprobado" ? props.identificador == 0 ? <div>
+                                                    <Form className="justify-content-center align-content-center">
+                                                        <FormGroup className="row">
+                                                            <Button className="m-auto col-12" style={{ backgroundColor: "#4DB595" }} onClick={() => { enviarA_Plan() }}>Enviar a Plan <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                                                            </svg></Button>
+
+                                                        </FormGroup>
+                                                        <div>{Advice !== null ? <Alert color="success">{Advice}</Alert> : "" }</div>
+                                                    </Form></div> : "" : ""
+                                            }
                                         </div>
 
                                     </div>
@@ -310,46 +397,38 @@ const Evaluaciones = (props) => {
             <Modal centered isOpen={viewAlert}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores.map((l, i) => {
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
+                        <option disabled selected>Seleccionar opción</option>
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {profesores.map((l, i) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.docente + i} value={l.docente}>{l.docente}</option>);
-                                } else {
-                                    return ("");
-                                }
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
+                            {profesores && profesores.map((l) => {
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
                             })}
-
                         </Input>
                     </FormGroup>
+                    {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}    
+                    <ModalFooter>
+                        <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
+                        <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
+                    </ModalFooter>
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
             </Modal>
 
             <Modal centered isOpen={viewEliminar}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">¿Quieres eliminar a este docente tutor {idEliminar}?</Label>
+                        <Label id="texto">¿Quieres eliminar a este docente calificador {idEliminar}?</Label>
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                     <Button color="danger" onClick={()=>{ElimnarCalificadores(idEliminar,datos1.id)}}>Eliminar</Button> 
+                    <Button color="danger" onClick={() => { ElimnarCalificadores(idEliminar, datos1.id) }}>Eliminar</Button>
                     <Button color="primary" onClick={bottomEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -365,7 +444,6 @@ const Evaluaciones = (props) => {
                     <Button color="primary" onClick={setAdverten}>Aceptar</Button>
                 </ModalFooter>
             </Modal>
-            
         </main>
     )
 };

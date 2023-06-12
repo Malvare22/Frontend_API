@@ -8,8 +8,8 @@ import Historial from "./Docente_Apoyo_Plan_Historial.jsx";
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones ></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
                 <div className="col-12">
@@ -19,7 +19,7 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
@@ -139,6 +139,16 @@ const InfoGeneral = () => {
                                                 <p>{datos1.titulo}</p>
                                             </div>
                                         </div>
+
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        
                                         <div className="row mt-2">
                                             <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>

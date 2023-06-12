@@ -1,4 +1,4 @@
-# Librerías que usan los compañeritos:
+# Librerías a usar:
 
 **Notación->** nombre : comando
 - react-router-dom: npm i react-router-dom
@@ -8,7 +8,6 @@
 - react-bootstrap: npm i react-bootstrap
 - axios: npm install axios
 
-# Apartir de aquí es chachara
 
 # Getting Started with Create React App
 

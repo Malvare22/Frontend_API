@@ -1,15 +1,16 @@
 import styled from "styled-components";
-import { Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
+import { Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, UncontrolledCollapse } from 'reactstrap';
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Historial from "./Docente_Tutor_Idea_Historial.jsx";
+import { useNavigate } from "react-router-dom";
 
 
 
 export default function VistaIdea() {
     return (<div className="row">
-        <InfoGeneral></InfoGeneral>
-        <Observaciones ></Observaciones>
+        <InfoGeneral nombre={localStorage.getItem("titulo")}></InfoGeneral>
+        <Observaciones nombre={localStorage.getItem("titulo")}></Observaciones>
 
         <div className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -20,12 +21,12 @@ export default function VistaIdea() {
                 </div>
             </div>
         </div>
-        <Historial></Historial>
+        <Historial nombre={localStorage.getItem("titulo")}></Historial>
     </div>
     )
 };
 
-const InfoGeneral = () => {
+const InfoGeneral = (props) => {
 
     const [viewAlert, setViewAlert] = useState(false);
     const toggleAlert = () => {
@@ -53,11 +54,6 @@ const InfoGeneral = () => {
         setViewAlertEliminarApoyo(!viewAlertEliminarApoyo);
     }
 
-    const [Area, setArea] = useState(String);
-    const setArea_A = (a) => {
-        setArea(a);
-    }
-
     const [Agregar, setAgregar] = useState(String);
     const setAgregare = (a) => {
         setAgregar(a);
@@ -74,61 +70,267 @@ const InfoGeneral = () => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        const URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        try {
+            const response = await axios.get(URLs, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
             });
-        setDatos1(value)
-
+            const data = response.data;
+            setDatos1(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getDatos1();
     }, []);
 
+    {/* llistar areas de conocimiento*/ }
+
+
+    const [areas, setAreas] = useState([]);
+    const getAreas = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/areaConocimiento', {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
+                const data = response.data;
+                setAreas(data);
+            } catch (error) {
+                console.error("Historial", error);
+            }
+    };
+    useEffect(() => {
+        getAreas();
+    }, []);
+
+
+
+    {/*Listar docentes por area*/ }
+
+    const [Area, setArea] = useState(null);
+    const setArea_A = (a) => {
+        setArea(a);
+    }
 
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
-        let value = null;
-        value = await axios.get('../../../docentesdeveritas.json').then(
-            response => {
+        if(Area != null){
+            try {
+                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                    headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+                });
                 const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setProfesores(value)
+                setProfesores(data);
+                //console.log(data)
+            } catch (error) {
+                console.error("Historial", error);
+            }
+        }
     };
     useEffect(() => {
         getProfesores();
+    }, [Area]);
+
+
+
+    //lISTAR CURSOS
+
+    //http://localhost:8080/estudiante/listarCursos
+
+    const [grado, setGrado] = useState([]);
+    const getGrado = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/estudiante/listarCursos', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            const data = response.data;
+            setGrado(data);
+        } catch (error) {
+            console.error("Historial", error);
+        }
+    };
+    useEffect(() => {
+        getGrado();
     }, []);
+
+
+    //Listar estudiantes por curso
+
+    const [Curso, setCurso] = useState(String);
+    const getCurso = (a) => {
+        setCurso(a);
+    }
 
     const [estudiantes, setEstudiantes] = useState([]);
     const getEstudiantes = async () => {
-        let value = null;
-        value = await axios.get('../../../estudiantesdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+        try {
+            const response = await axios.get('http://localhost:8080/estudiante/listar', {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-        setEstudiantes(value)
+            const data = response.data;
+            setEstudiantes(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getEstudiantes();
-    }, []);
+    }, [Curso]);
+
+
+    //
 
     let set = new Set();
     let set1 = new Set();
     let set2 = new Set();
 
+    const [titleNuevo, settNuevo] = useState(null);
+    const tituloNuevo = (e) => {
+        settNuevo(e);
+    };
+
+    const [Advertencia, setAdvertencia] = useState(false);
+    const setAdverten = () => {
+        setAdvertencia(!Advertencia);
+    }
+
+    const eliminarIntegrante = async (estudiante) => {
+        toggleAlertEliminar();
+
+        try {
+            //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/'+props.nombre+'/'+estudiante;
+            let URLd = 'http://localhost:8080/ideaNegocio/integrantes/' + props.nombre + '/' + estudiante;
+            await axios.delete(URLd, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const agregarIntegrante = async (estudiante) => {
+        toggleAlertEstudiante();
+        try {
+            //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/sie/'+estudiante;
+            let URLd = 'http://localhost:8080/ideaNegocio/integrantes/' + props.nombre + '/' + estudiante;
+            await axios.post(URLd, null, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const eliminarDocenteApoyo = async () => {
+        toggleAlertEliminarApoyo();
+
+        var formData = new FormData();
+        formData.append('correoDocente', Agregar);
+        formData.append('tituloIdea', props.nombre);
+
+        try {
+            //let URLd = 'http://144.22.37.238:8080/docenteApoyo';
+            let URLd = 'http://localhost:8080/docenteApoyoIdea';
+            await axios.delete(URLd, {
+                data: formData,
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
+            });
+            window.location.reload();
+        } catch (error) {
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+            } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+            } else {
+                console.log('Error al realizar la solicitud:', error.message);
+            }
+        }
+    };
+    {/*Descarga del documento */ }
+
+    const getArchi = async () => {
+        let value = null;
+        //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    };
+
+    {/*Agregar Docente apoyo idea*/ }
+
+    const [correoDocente, setCorreo] = useState(String);
+    const setCorreoDocente = (a) => {
+        setCorreo(a);
+    }
+
+    const agregarTutor = async () => {
+
+        if (correoDocente) {
+            try {
+                const formData1 = new FormData();
+                formData1.append('correoDocente', correoDocente);
+                formData1.append('tituloIdea', props.nombre);
+
+                const response = await axios.post('http://localhost:8080/docenteApoyoIdea', formData1, {
+                    headers: {
+                        "X-Softue-JWT": localStorage.getItem("token_access")
+                    }
+                });
+                set_Adverten(null)
+                window.location.reload();
+                //console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            } catch (error) {
+                set_Adverten("Este docente no puede ser asignado")
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            }
+
+        }
+
+    };
+
+    const [Adverten, setAdvertenc] = useState(null);
+    const set_Adverten = (a) => {
+        setAdvertenc(a);
+    }
+
     return (
-
-
         <div className="container-fluid mt-4 mt-sm-0 " style={{ width: "95%" }}>
             {datos1 &&
 
@@ -152,14 +354,22 @@ const InfoGeneral = () => {
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-auto">
+                                                <h6 className="font-weight-bold"><b>Integrante lider:</b></h6>
+                                            </div>
+                                            <div className="col-auto">
+                                                <ul> {datos1.estudianteLiderInfo[1]}  </ul>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-auto">
                                                 <h6 className="font-weight-bold"><b>Integrantes:</b></h6>
                                             </div>
                                             <div className="col-auto">
                                                 <ul>
 
-                                                    {datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
+                                                    {datos1.estudiantesIntegrantesInfo && datos1.estudiantesIntegrantesInfo[1].map((l, i) => {
 
-                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{cursor: "pointer"}} className="bi bi-x-circle" viewBox="0 0 16 16">
+                                                        return (<li key={i}>{l} <svg onClick={() => { eliminarEstudiantes(datos1.estudiantesIntegrantesInfo[0][i]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
 
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
@@ -167,8 +377,7 @@ const InfoGeneral = () => {
                                                         </li>);
                                                     })}
 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="20" height="20" fill="currentColor" style={{cursor: "pointer"}} className="bi bi-person-fill-add" viewBox="0 0 16 16">
-
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertEstudiante} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                                     </svg>
@@ -182,10 +391,7 @@ const InfoGeneral = () => {
                                                 <h6 className="font-weight-bold"><b>Tutor:</b></h6>
                                             </div>
                                             <div className="col-auto">
-
-
-                                                <p>{datos1.tutorInfo[1]}</p>
-
+                                                <p>{datos1.tutorInfo && datos1.tutorInfo[1]}</p>
                                             </div>
                                         </div>
 
@@ -204,25 +410,22 @@ const InfoGeneral = () => {
                                             </div>
                                             <div className="col-auto ">
                                                 <ul>
-                                                    {datos1.docentesApoyoInfo[1].map((l, j) => {
-                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(l) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{cursor: "pointer"}} className="bi bi-x-circle" viewBox="0 0 16 16">
-
+                                                    {datos1 && datos1.docentesApoyoInfo[1].map((l, j) => {
+                                                        return (<li key={j}>{l} <svg onClick={() => { eliminarApoyo(datos1.docentesApoyoInfo[0][j]) }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#FF0000" style={{ cursor: "pointer" }} className="bi bi-x-circle" viewBox="0 0 16 16">
                                                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                                         </svg></li>);
                                                     })}
 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{cursor: "pointer"}} className="bi bi-person-fill-add" viewBox="0 0 16 16">
-
+                                                    <svg xmlns="http://www.w3.org/2000/svg" onClick={toggleAlertDocente} width="20" height="20" fill="currentColor" style={{ cursor: "pointer" }} className="bi bi-person-fill-add" viewBox="0 0 16 16">
                                                         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                         <path d="M2 13c0 1 1 1 1 1h5.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.544-3.393C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4Z" />
                                                     </svg>
                                                 </ul>
                                             </div>
-                                            <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3">Descargar formato completo</button></div>
-                                            <div className="col-auto"><button onClick={toggleAlert} type="button" style={{ background: "#C29B10", color: "white" }} className="btn btn-sm btn-warning rounded-5 m-2 p-2 px-3">  Editar  </button></div>
-
-
+                                            <div className="row">
+                                                <div className="col-auto"><button type="button" style={{ background: "#1C3B57", color: "white" }} className="btn btn-sm rounded-5  m-2 p-2 px-3" onClick={() => { getArchi() }}> Descargar formato completo</button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -248,43 +451,15 @@ const InfoGeneral = () => {
 
             }
 
-            <Modal centered isOpen={viewAlert}>
-                <ModalBody>
-                    <FormGroup>
-                        <Label for="Nombre">Escribe el nuevo nombre de tu Idea de negocio</Label>
-                        <Input type="text" name="name" id="exampleSelect"></Input>
-                        <Label id="texto">Escoge el area de tu proyecto</Label>
-                        <Label for="exampleSelect"></Label>
-
-                        <Input type="select" name="select" id="exampleSelect">
-                            {profesores && profesores.map((l, i) => {
-
-                                if (set.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
-                            })}
-                        </Input>
-                    </FormGroup>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="danger">Asignar</Button>
-                    <Button color="primary" onClick={toggleAlert}>Cancelar</Button>
-                </ModalFooter>
-            </Modal>
-
             <Modal centered isOpen={viewAlertEliminar}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">¿Quieres eliminar a este estudiante {Agregar}?</Label>
-
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" onClick={() => { eliminarIntegrante(Agregar) }}>Eliminar</Button>
                     <Button color="primary" onClick={toggleAlertEliminar}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -293,12 +468,11 @@ const InfoGeneral = () => {
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">¿Quieres eliminar a este docente de apoyo {Agregar}? </Label>
-
                     </FormGroup>
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="danger" onClick={() => { eliminarDocenteApoyo() }}>Eliminar</Button>
                     <Button color="primary" onClick={toggleAlertEliminarApoyo}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -306,58 +480,47 @@ const InfoGeneral = () => {
             <Modal centered isOpen={viewAlertDocente}>
                 <ModalBody>
                     <FormGroup>
-                        <Label id="texto">Escoge al docente que necesitas</Label>
+                        <Label id="texto">Escoge al docente que necesita</Label>
                         <Label for="exampleSelect"></Label>
                         <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {profesores && profesores.map((l, i) => {
-                                if (set1.has(l.area)) {
-                                    return ("");
-                                } else {
-                                    set1.add(l.area);
-                                    return (<option key={i} value={l.area}>{l.area}</option>);
-                                }
+                        <option disabled selected>Seleccionar opción</option>
+                            {areas && areas.map((l, i) => {
+                                return (<option key={i} value={l.nombre}>{l.nombre}</option>);
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Select Multiple</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                        <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                if (l.area === Area) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
-                                } else {
-                                    return ("");
-                                }
+                                return (<option key={l.correo} value={l.correo}>{l.nombre + " " + l.apellido}</option>);
                             })}
-
                         </Input>
+                        {Adverten !== null ? <Alert className="text-center m-2" color="danger"> {Adverten} </Alert>:""}
                     </FormGroup>
                     <ModalFooter>
-                        <Button color="danger">Asignar</Button>
+                        <Button color="danger" onClick={() => { agregarTutor() }}>Asignar</Button>
                         <Button color="primary" onClick={toggleAlertDocente}>Cancelar</Button>
                     </ModalFooter>
                 </ModalBody>
             </Modal>
 
+            {/* Agregar Estudiante */}
 
             <Modal centered isOpen={viewAlertEstudiante}>
                 <ModalBody>
                     <FormGroup>
                         <Label id="texto">Escoge el curso del estudiante</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={(e) => { setArea_A(e.target.value) }} id="exampleSelect">
-                            {estudiantes && estudiantes.map((l, i) => {
-                                if (set2.has(l.curso)) {
-                                    return ("");
-                                } else {
-                                    set2.add(l.curso);
-                                    return (<option key={i} value={l.curso}>{l.curso}</option>);
-                                }
+                        <Input type="select" name="select" onChange={(e) => { getCurso(e.target.value) }} id="exampleSelect">
+                        <option disabled selected>Seleccionar opción</option>
+                            {grado && grado.map((l, i) => {
+                                return (<option key={i} value={l}>{l}</option>);
                             })}
                         </Input>
                         <Label for="exampleSelectMulti">Selecciona al estudiante</Label>
-                        <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
-                            {estudiantes && estudiantes.map((l) => {
-                                if (l.curso === Area) {
-                                    return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                        <Input type="select" name="selectMulti" onChange={(e) => { setAgregar(e.target.value) }} id="exampleSelectMulti" multiple>
+                            {estudiantes && datos1 && estudiantes.map((l) => {
+                                if ((l.curso === Curso) && (l.correo  !== datos1.estudianteLiderInfo[0][0])) {
+                                    return (<option key={l.correo} value={l.correo}>{l.nombre + " "  + l.apellido}</option>);
                                 } else {
                                     return ("");
                                 }
@@ -365,9 +528,8 @@ const InfoGeneral = () => {
 
                         </Input>
                     </FormGroup>
-
                     <ModalFooter>
-                        <Button color="danger">Asignar</Button>
+                        <Button color="danger" onClick={() => { agregarIntegrante(Agregar) }}>Asignar</Button>
                         <Button color="primary" onClick={toggleAlertEstudiante}>Cancelar</Button>
                     </ModalFooter>
                 </ModalBody>
@@ -484,23 +646,83 @@ const SProgress = styled.div`
 }
 `;
 
-const Observaciones = () => {
+const Observaciones = (props) => {
 
-    const [datos, setDatos] = useState([]);
-    const getDatos = async () => {
-        let value = null;
-        value = await axios.get('../../../ideasdeveritas.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
+    const [datos, setDatos] = useState();
+    const getDatos1 = async () => {
+        const URLs = 'http://localhost:8080/ideaNegocio/' + props.nombre;
+        try {
+            const response = await axios.get(URLs, {
+                headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
             });
-        setDatos(value)
+            const data = response.data;
+            setDatos(data);
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
-        getDatos();
+        getDatos1();
     }, []);
+
+    const [comentario, setComentarios] = useState(String);
+    const getComentarios = (e) => {
+        setComentarios(e);
+    };
+
+    const eliminarDocenteApoyo = async () => {
+        if (comentario) {
+            try {
+                const formData1 = new FormData();
+                formData1.append('ideaTitulo', datos?.titulo);
+                formData1.append('observacion', comentario);
+
+                // let URLd = 'http://144.22.37.238:8080/observacionIdea';
+                const URLd = 'http://localhost:8080/observacionIdea';
+
+                const response = await axios.post(URLd, formData1, {
+                    headers: {
+                        "X-Softue-JWT": localStorage.getItem("token_access"),
+                    },
+                });
+
+                if (response.status === 200) {
+                    window.location.reload();
+                    console.log("hecho");
+                } else {
+                    console.error(`Request failed with status ${response.status}`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+    };
+    {/* Enviar a evaluacion */ }
+
+    const enviarEvaluacion = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/ideaNegocio/evaluacion/'+props.nombre,{}, { 
+                headers: {
+                    "X-Softue-JWT": localStorage.getItem("token_access")
+                }
+            });
+            //console.log(response.data); // Puedes hacer algo con la respuesta recibida
+            window.location.reload();
+        } catch (error) {
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+              } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+              } else {
+                console.log('Error al realizar la solicitud:', error.message);
+              }
+        }
+    };
+
+    //
+
     return (
         <main className="container-fluid" style={{ width: "95%" }}>
             <div className="row">
@@ -512,7 +734,7 @@ const Observaciones = () => {
                                     <h5 className="m-0 p-2" style={{ color: "white" }}>Observaciones de idea de negocio</h5>
                                 </div>
                                 <div className="d-flex justify-content-end align-items-center col-auto me-4">
-                                    <svg id="arrowObservaciones" style={{cursor: "pointer"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
+                                    <svg id="arrowObservaciones" style={{ cursor: "pointer" }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" className="bi bi-md bi-arrow-down" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
                                     </svg>
                                 </div>
@@ -521,7 +743,7 @@ const Observaciones = () => {
                         <UncontrolledCollapse id="observaciones" toggler="#arrowObservaciones">
                             <div id="cuerpo" className="row mx-3 rounded-2" style={{ background: "#CECECE" }}>
                                 <div className="mt-3">
-                                    <Tabla></Tabla>
+                                    <Tabla nombre={props.nombre}></Tabla>
 
                                     <div className=" mt-4 ">
                                         <div className="row m-4">
@@ -533,7 +755,7 @@ const Observaciones = () => {
                                         </div>
                                         <div className="row m-4">
                                             <div className="d-flex justify-content-end">
-                                                <Button color="success" disabled={datos && datos.estado === "formulado" ? false : true} >
+                                                <Button color="success" onClick={()=>{enviarEvaluacion()}} disabled={(datos && datos.estado === "formulado") || (datos && datos.estado === "rechazada") ? false : true} >
                                                     Enviar a Evaluacion
                                                 </Button>
                                             </div>
@@ -549,14 +771,14 @@ const Observaciones = () => {
                                                         <Label for="exampleEmail"><h3>Observaciones</h3></Label>
                                                     </div>
                                                     <div className="col-6 flex-column d-flex justify-content-center">
-                                                        <Input type="textarea" name="email" id="exampleEmail" placeholder="" />
+                                                        <Input type="textarea" onChange={(e) => { getComentarios(e.target.value) }} name="email" id="exampleEmail" placeholder="" />
                                                     </div>
 
                                                 </div>
                                             </FormGroup>
                                             <div className=" d-flex justify-content-end">
                                                 <button type="button" id="AgregarComentario" className="btn btn-danger m-2" style={{ backgroundColor: "#DC4B4B" }}>Cancelar</button>
-                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }}>Enviar</Button>
+                                                <Button className="m-2" style={{ backgroundColor: "#1C3B57" }} onClick={() => { eliminarDocenteApoyo() }}>Enviar</Button>
                                             </div>
                                         </Form>
                                     </UncontrolledCollapse>
@@ -620,8 +842,10 @@ function Tabla(props) {
     const [datos, setDatos] = useState([]);
     const getIdeas = async () => {
         let value = null;
-        value = await axios.get('../../../Observaciones.json').then(
-
+        //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://localhost:8080/observacionIdea/' + props.nombre;
+        value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
             response => {
                 const data = response.data;
                 return data;
@@ -633,6 +857,7 @@ function Tabla(props) {
     useEffect(() => {
         getIdeas();
     }, []);
+
     return (
         <Sdiv>
             <div className='w-auto m-2'>

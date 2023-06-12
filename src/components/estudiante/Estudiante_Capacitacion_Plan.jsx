@@ -1,20 +1,56 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ImagenIdeaNegocio from '../../assets/images/EstudianteCapacitaciones/ImagenPlanNegocio.png'
+import ImagenPlanNegocio from '../../assets/images/EstudianteCapacitaciones/ImagenPlanNegocio.png'
+import TablaMaterialApoyo from '../estudiante/TablaMaterialApoyo'
 
-export default function CapacitacionIdea() {
+export default function CapacitacionPlan() {
     return (
         <div className="container">
             <img src="https://live.staticflickr.com/65535/52923103551_b041e3079c_o.png" className='img-fluid mt-2' />
             <div className="container my-5" style={{ width: "80%" }}>
-                <InfoGeneralIdea></InfoGeneralIdea>
+                <InfoGeneralPlan></InfoGeneralPlan>
             </div>
         </div>
     )
 }
 
-const InfoGeneralIdea = () => {
+const InfoGeneralPlan = () => {
+
+    const obtenerFormato = async () => {
+
+        let value = null;
+        let URL = 'http://localhost:8080/formato/PlanNegocio';
+
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    };
+
     return (
         <main>
             <div className="row">
@@ -35,12 +71,12 @@ const InfoGeneralIdea = () => {
                     </div>
                 </div>
                 <div className="col-12 col-lg-5">
-                    <img src={ImagenIdeaNegocio} className='img-fluid m-auto' />
+                    <img src={ImagenPlanNegocio} className='img-fluid m-auto' />
                 </div>
             </div>
             <div className='row mt-3'>
                 <div className='container d-flex justify content center'>
-                    <button type="button" style={{ background: "#7FA9FC", color: "black" }} className="btn mx-auto">
+                    <button type="button" onClick={obtenerFormato} style={{ background: "#7FA9FC", color: "black" }} className="btn mx-auto">
                         Descargar formato
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download mx-2" viewBox="0 0 16 16">
                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
@@ -50,84 +86,8 @@ const InfoGeneralIdea = () => {
                 </div>
             </div>
             <div className='row my-4 d-flex justify-content-center align-items-center'>
-                <TablaMaterialPlan></TablaMaterialPlan>
+                <TablaMaterialApoyo></TablaMaterialApoyo>
             </div>
         </main>
     )
 }
-
-function TablaMaterialPlan() {
-    // const [datos, setDatos] = useState([]);
-    // const getIdeas = async () => {
-    //     let value = null;
-    //     value = await axios.get('../ideas.json').then(
-    //         response => {
-    //             const data = response.data;
-    //             return data;
-    //         }).catch(error => {
-    //             console.error(error);
-    //         });
-    //     setDatos(value)
-    // };
-    // useEffect(() => {
-    //     getIdeas();
-    // }, []);
-    return (
-        <Sdiv>
-            <div className='w-auto m-2'>
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th className='text-center' scope="col-auto">Tipo de material</th>
-                            <th className='text-center' scope="col-auto">Fecha de creación</th>
-                            <th className='text-center' scope="col-auto">Visualizar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* {datos.map((d) => ( */}
-                            <tr /*key={d.id}*/>
-                                <td className='text-center align-middle col-auto'>Documento</td>
-                                <td className='text-center align-middle'>2023/05/22</td>
-                                <td className='text-center align-middle col-auto'>
-                                    <button type="button" className="btn" /*value={d.id}*/ style={{ width: "auto", border: "none" }}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        {/* ))} */}
-                    </tbody>
-                </table>
-            </div>
-        </Sdiv>
-    );
-}
-
-const Sdiv = styled.div`
-  table{
-      table-layout: fixed;
-  }
-  
-  th, td {
-      border: 1px solid;
-      width: 100px;
-      word-wrap: break-word;
-  }
-  table th{
-      background-color: #1C3B57;
-      color: #FFF;
-  }
-  table td{
-    background-color:#FFF;
-  }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
-  
-  @media screen and (max-width: 576px){
-      th, td {
-          width: 60px;
-      }}
-`;

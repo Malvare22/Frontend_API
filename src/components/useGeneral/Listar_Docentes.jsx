@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import axios from "axios";
+import { importDocents } from '../../context/functions_general';
 
 const useAlert = () => {
     const [state, setState] = useState(false);
@@ -22,7 +23,7 @@ const modalStyles = {
 
 
 // Componente de tabla
-const Table = ({ data }) => {
+const Table = ({ data, updater }) => {
     const [orderBy, setOrderBy] = useState({ column: 'Cedula', ascending: true });
 
     const handleSort = (column) => {
@@ -44,7 +45,7 @@ const Table = ({ data }) => {
             } else if (column === 'Docente') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Area') {
-                comparison = a.area.localeCompare(b.area);
+                comparison = a.areaToString.localeCompare(b.areaToString);
             }
             if (!ascending) {
                 comparison *= -1;
@@ -63,6 +64,22 @@ const Table = ({ data }) => {
         localStorage.setItem('DOCENTE_EMAIL',correo)
         navigate('Perfil/Editar');
     };
+    const deleteUser = async ()=>{
+        const config = {
+            headers:{
+                "X-Softue-JWT":localStorage.getItem('token_access')
+            }
+        }
+        try{
+            await axios.get('http://localhost:8080/docente/deshabilitarDocente/'+ valor.correo, config)
+            updater()
+            toggleAlert(null)
+        }
+        catch(error){
+            alert(error)
+        }
+    }
+
     return (
         <Sdiv>
             <div className='w-auto'>
@@ -80,7 +97,7 @@ const Table = ({ data }) => {
                             <tr key={d.cedula}>
                                 <td className='text-center align-middle col-auto'>{d.cedula}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
-                                <td className='text-center align-middle col-auto'>{d.area}</td>
+                                <td className='text-center align-middle col-auto'>{d.areaToString}</td>
                                 <td className='text-center align-middle'>
                                     <div>
                                         <button type="button" className="btn" onClick={() => { toggleA(d.correo) }} value={d.cedula} style={{ width: "auto", border: "none" }}>
@@ -95,11 +112,11 @@ const Table = ({ data }) => {
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-                                        <button type="button" id="eliminar" value={d.cedula} onClick={() => toggleAlert({ id: d.cedula, docente: d.nombre })} className="btn" style={{ width: "auto", border: "none" }}>
+                                        {/* <button type="button" id="eliminar" onClick={() => toggleAlert({ id: d.cedula, docente: d.nombre, correo: d.correo })} className="btn" style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                             </svg>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
                             </tr>
@@ -114,7 +131,7 @@ const Table = ({ data }) => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger">Deshabilitar</Button>
+                    <Button color="danger" onClick={()=>{deleteUser()}}>Deshabilitar</Button>
                     <Button color="primary" onClick={() => toggleAlert(null)}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -146,8 +163,21 @@ max-height: 66.4vh;
 `;
 
 // Componente principal que contiene la tabla y los filtros
-export default function Listar_Docentes() {    
-    const filteredData  = (JSON.parse(localStorage.getItem('DOCENTES_LISTA')))
+export default function ListarDocentes() {    
+    const [filteredData, setFilteredData] = useState([]);
+    const getDocentes = async () => {
+        let value = null;
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        value = await axios.get('http://localhost:8080/docente/listar', config)
+        setFilteredData(importDocents(value.data))
+    };
+    useEffect(() => {
+        getDocentes();
+    }, []);
     return (
         <div className="container-fluid w-75">
             <div className="row">
@@ -155,7 +185,7 @@ export default function Listar_Docentes() {
                     <h1 className="fst-italic fw-bold fs-1 text-black">Docentes</h1>
                     <div className="container">
                         <br></br>
-                        <Table data={filteredData}></Table>
+                        <Table data={filteredData} updater={getDocentes}></Table>
                         <br></br>
                         <div className="d-flex justify-content-start">
                             <Link to={'Registrar'} type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
