@@ -5,6 +5,7 @@ import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactst
 import { importStudents, toLiderFormatStudentsFromImport } from '../../context/functions_general'
 
 import axios from "axios";
+import BtnExcel from './Cargar_Excel';
 
 const useAlert = () => {
     const [state, setState] = useState(false);
@@ -208,7 +209,7 @@ export default function ListarEstudiantes(props) {
                         <br></br>
                         <Table data={filteredData} type={props.type} updater={getEstudiantes}></Table>
                         <br></br>
-                        {props.type!='docente' && <div className="d-flex justify-content-start">
+                        {props.type!='docente' && <div className="d-flex justify-content-between">
                             <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }} onClick={addStudent}>
                                 <div className="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
@@ -217,6 +218,7 @@ export default function ListarEstudiantes(props) {
                                     </svg>
                                 </div>
                             </button>
+                            <BtnExcel/>
                         </div>}
                     </div>
                 </div>
