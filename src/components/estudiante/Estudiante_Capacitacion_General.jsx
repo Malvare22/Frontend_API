@@ -71,9 +71,9 @@ const InfoGeneralCapacitacion = () => {
                     Sacado de la tesis de grado presentada por Rolon Estupiñan, M. y Benavides Escalante, C. A. (2021).
                 </p></b>
             </div>
-            <div className='row my-5 d-flex justify-content-center align-items-center'>
+            {/* <div className='row my-5 d-flex justify-content-center align-items-center'>
                 <TablaMaterialApoyo></TablaMaterialApoyo>
-            </div>
+            </div> */}
         </main>
     )
 }
