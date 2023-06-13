@@ -161,6 +161,8 @@ export function FormDocente({ user, type }) {
 
     const [areas, setAreas] = useState([])
 
+    const [semaforo, setSemaforo] = useState(false)
+
     useEffect(() => {
         (loadAreas(setAreas))
     }, [])
@@ -297,7 +299,9 @@ export function FormDocente({ user, type }) {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(!semaforo) navigate(-1)
+
+            setSemaforo(true)
 
         } catch (error) {
             let msg = '';
@@ -437,7 +441,7 @@ export function FormDocente({ user, type }) {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -450,6 +454,8 @@ export function FormDocente({ user, type }) {
  *  **/
 export const FormEstudiante = ({ user, type }) => {
     const navigate = useNavigate()
+
+    const [semaforo, setSemaforo] = useState(false)
 
     if (type == 'registrar') {
         user = {
@@ -570,7 +576,9 @@ export const FormEstudiante = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(!semaforo) navigate(-1)
+
+            setSemaforo(true)
         }
         catch (error) {
             let msg = '';
@@ -701,7 +709,7 @@ export const FormEstudiante = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -711,6 +719,8 @@ export const FormEstudiante = ({ user, type }) => {
 export const FormAdministrativo = ({ user, type }) => {
 
     const navigate = useNavigate()
+
+    const [semaforo, setSemaforo] = useState(false)
 
     if (type == 'registrar') {
         user = {
@@ -830,7 +840,9 @@ export const FormAdministrativo = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(!semaforo) navigate(-1)
+
+            setSemaforo(true)
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
@@ -935,7 +947,7 @@ export const FormAdministrativo = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -944,6 +956,8 @@ export const FormAdministrativo = ({ user, type }) => {
 
 export const FormLider = ({ user, type }) => {
     const navigate = useNavigate();
+
+    const [semaforo, setSemaforo] = useState(false)
     const jesucristo = useRef(null)
     if (type == 'registrar') {
         user = {
@@ -1050,7 +1064,9 @@ export const FormLider = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(!semaforo) navigate(-1)
+
+            setSemaforo(true)
 
         } catch (error) {
             let msg = '';
@@ -1154,7 +1170,7 @@ export const FormLider = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
 
