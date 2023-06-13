@@ -200,7 +200,7 @@ const InfoGeneral = (props) => {
 
         try {
             //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/'+props.nombre+'/'+estudiante;
-            let URLd = 'http://144.22.32.132:8080/ideaNegocio/integrantes/' + props.nombre + '/' + estudiante;
+            let URLd = 'http://144.22.32.132:8080/ideaPlanteada' + props.nombre + '/' + estudiante;
             await axios.delete(URLd, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
@@ -214,7 +214,7 @@ const InfoGeneral = (props) => {
         toggleAlertEstudiante();
         try {
             //let URLd = 'http://144.22.37.238:8080/ideaNegocio/integrantes/sie/'+estudiante;
-            let URLd = 'http://144.22.32.132:8080/ideaNegocio/integrantes/' + props.nombre + '/' + estudiante;
+            let URLd = 'http://144.22.32.132:8080/ideaPlanteada' + props.nombre + '/' + estudiante;
             await axios.post(URLd, null, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
