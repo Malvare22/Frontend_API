@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from "axios";
+import { importStudents} from '../../context/functions_general'
 
 // Componente de tabla
 const Table = ({ data }) => {
@@ -106,14 +107,15 @@ export default function Listar_Estudiantes() {
     const [filteredData, setFilteredData] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('../estudiantes.json').then(
-            response => {
-                const data = response.data;
-                return data;
-            }).catch(error => {
-                console.error(error);
-            });
-        setFilteredData(value)
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        value = await axios.get('http://localhost:8080/estudiante/listar', config)
+        setFilteredData(importStudents(value.data))
+
+
     };
     useEffect(() => {
         getEstudiantes();
