@@ -148,7 +148,7 @@ const LiderInformacion = (props) =>{
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo=='M'? "Masculino":"Femenino"}
+                        {props.usuario.sexo}
                     </div>
                 </div>
             
@@ -202,7 +202,7 @@ const AdministradorInformacion = (props) =>{
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.sexo == 'M' ? "Masculino" : "Femenino"}
+                        {props.usuario.sexo}
                     </div>
                 </div>
                 <div className='row'>

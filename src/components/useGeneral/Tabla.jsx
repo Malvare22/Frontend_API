@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { getCursos } from '../lider/Filtros_endpoint';
 
 export const Tabla = ({ datos, columnas, handleEliminarClick, handleEditarClick, handleVisualizarClick, permisos }) => {
     /**Permisos:
@@ -16,7 +16,7 @@ export const Tabla = ({ datos, columnas, handleEliminarClick, handleEditarClick,
                         <thead>
                             <tr>
                                 {columnas.map((columna) => (
-                                    <th className='text-center thPrueba' key={columna}>{columna}</th>
+                                    <th className='text-center thPrueba' id="Color" key={columna}>{columna.charAt(0).toUpperCase() + columna.slice(1).toLowerCase()}</th>
                                 ))}
                                 <th className='text-center thPrueba'>Acciones</th>
                             </tr>
@@ -91,6 +91,104 @@ th{
     color: #FFFFFF;
   }
 `;
+export const Filtros = ({ onFilter }) => {
 
+    const [filtro, setFiltro] = useState({
+        codigoEstudiante: '',
+        curso: '',
+        estado: '',
+        fechaInicio: '',
+        fechaFin: ''
+    });
+    const [cursos, setCursos] = useState([]);
+    useEffect(() => {
+        const obtenerCursos = async () => {
+          try {
+            const response = await getCursos();
+            setCursos(response);
+          } catch (error) {
+            console.error("Error al obtener los cursos:", error);
+          }
+        };
+        obtenerCursos();
+    }, []);
+      
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onFilter(filtro);
+    };
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFiltro({ ...filtro, [name]: value });
+    };
+
+    return (
+        <form className="row gy-3 gx-2 mb-2" onSubmit={handleSubmit}>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <input type="number"
+                    placeholder="Código del estudiante"
+                    className="form-control"
+                    name="codigoEstudiante"
+                    value={filtro.codigoEstudiante}
+                    onChange={handleChange}/>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <select name="curso"
+                    className="form-select selector text-black"
+                    value={filtro.curso}
+                    onChange={handleChange}>
+                    <option value="">
+                        Seleccione un curso
+                    </option>
+                    {cursos.map((curso, index) => (
+                        <option key={index} value={curso}>
+                            {curso}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <select name="estado"
+                    className="form-select selector text-black"
+                    value={filtro.estado}
+                    onChange={handleChange}>
+                    <option value="">
+                        Seleccione un estado
+                    </option>
+                    <option value="aprobada">
+                        Aprobado
+                    </option>
+                    <option value="reprobada">
+                        Reprobado
+                    </option>
+                </select>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <input name="fechaInicio"
+                    type="date"
+                    className="text-black form-control"
+                    id="start"
+                    min="2020-01-01"
+                    max="3000-12-31"
+                    value={filtro.fechaInicio}
+                    onChange={handleChange}>
+                </input>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <input name="fechaFin"
+                    type="date"
+                    className="text-black form-control"
+                    id="finish"
+                    min="2020-01-01"
+                    max="3000-12-31"
+                    value={filtro.fechaFin}
+                    onChange={handleChange}></input>
+            </div>
+            <div className="col-auto d-flex align-items-center mb-1">
+                <button type="submit" className="btn btn-warning text-black">Aplicar</button>
+            </div>
+        </form>
+    );
+};

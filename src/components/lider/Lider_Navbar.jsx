@@ -107,7 +107,7 @@ const SideBarStatic = () => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Resultados
+              <Link to={'Resultados/Listar'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -383,12 +383,12 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Resultados
+                  <Link to={'Resultados/Listar'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Preguntas
+              <Link to={'Preguntas/Listar'} style={{ textDecoration: "none", color: "white" }}>Preguntas</Link>
               </NavLink>
             </NavItem>
             <NavItem>

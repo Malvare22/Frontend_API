@@ -81,6 +81,11 @@ const SideBarStatic = (props) => {
               <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink className='offset-md-3 text-white text-start' href="#">
+              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
+            </NavLink>
+          </NavItem>
 
         </UncontrolledCollapse>
 

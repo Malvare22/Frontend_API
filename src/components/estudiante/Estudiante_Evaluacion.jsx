@@ -1,12 +1,13 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Pregunta from './Estudiante_Preguntas';
 import styled from 'styled-components';
 
 
 const EstudianteEvaluacion = () => {
-
+    const formularioRef = useRef(null);
     const [datos, setDatos] = useState([]);
+    const [respuestas, setRespuestas] = useState([]);
 
     const getPreguntas = async () => {
         let value = null;
@@ -24,6 +25,50 @@ const EstudianteEvaluacion = () => {
         getPreguntas();
     }, []);
 
+    useEffect(() => {
+        const enviarRespuestas = async () => {
+            var formData = new FormData();
+            formData.append('respuestasId', respuestas);
+
+            var localData = localStorage.getItem("MY_PROFILE_INFO");
+            var parsedData = JSON.parse(localData);
+            formData.append('codigoEstudiante', parsedData.codigo);
+
+            let ruta = "http://localhost:8080/test";
+            try {
+                const response = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+                console.log("hecho");
+                console.log([...formData.entries()]);
+            } catch (error) {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            }
+        };
+
+        if (respuestas.length > 0) {
+            enviarRespuestas();
+        }
+    }, [respuestas]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const res = new FormData(formularioRef.current);
+        const values = Object.fromEntries(res.entries());
+
+        Object.keys(values).forEach((key) => {
+            const value = values[key];
+            setRespuestas((prevOptions) => [...prevOptions, value]);
+        });
+    };
+
+
     return (
         <div className="container">
             <img src="https://live.staticflickr.com/65535/52965391213_c807af25a6_o.png" className='img-fluid mt-2' />
@@ -39,10 +84,10 @@ const EstudianteEvaluacion = () => {
                         </div>
                     </div>
                     <div className="row mx-3 rounded-2 pt-3" style={{ background: '#DEDEDE' }}>
-                        <form>
+                        <form ref={formularioRef} onSubmit={handleSubmit}>
                             {datos && datos.map((v, i) => {
                                 return (
-                                    <Pregunta key={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
+                                    <Pregunta id={i} enunciado={(i + 1) + ". " + v.enunciado} respuestas={v.listaRespuestas}></Pregunta>
                                 );
                             })}
                             <div className="d-flex justify-content-center mb-3">
@@ -55,7 +100,7 @@ const EstudianteEvaluacion = () => {
                 </Sobreponer>
             </div>
         </div>
-        
+
     );
 }
 
@@ -82,8 +127,5 @@ const Sobreponer = styled.div`
     border: 1px solid grey;
     border-radius: 4px;
     height: 40px;
+
   }`
-
-
-
-
