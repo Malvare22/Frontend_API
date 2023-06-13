@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
@@ -26,14 +26,14 @@ const SideBarStatic = (props) => {
 
   const [arrow01, setArrow01] = useState(false);
   const [arrow02, setArrow02] = useState(false);
-  const [arrow03, setArrow03] = useState(false);  
+  const [arrow03, setArrow03] = useState(false);
   const [disablePlanes, setDisablePlanes] = useState(false);
   const [disableEntidades, setDisableEntidades] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const email = (JSON.parse(localStorage.getItem('session'))).email        
+        const email = (JSON.parse(localStorage.getItem('session'))).email
         var formData = new FormData();
         formData.append('correoEstudiante', email);
         let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
@@ -63,6 +63,31 @@ const SideBarStatic = (props) => {
     };
 
     fetchData();
+  }, []);
+
+  const [estadoEvaluacion, setEstadoEvaluacion] = useState('');
+  var localData = localStorage.getItem("MY_PROFILE_INFO");
+  var parsedData = JSON.parse(localData);
+  var emailEstudiante = parsedData.correo;
+
+  const getEstudiante = async () => {
+
+    let value = await axios.get("http://localhost:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+
+    setEstadoEvaluacion(value.capacitacionAprobada);
+    console.log(estadoEvaluacion);
+
+  };
+
+  useEffect(() => {
+    getEstudiante();
   }, []);
 
   return (
@@ -114,14 +139,21 @@ const SideBarStatic = (props) => {
               <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
+
+          {estadoEvaluacion !== "aprobada" ?
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
+              </NavLink>
+            </NavItem>
+
+            : null
+
+          }
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
+              <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
             </NavLink>
           </NavItem>
 
@@ -146,11 +178,19 @@ const SideBarStatic = (props) => {
               <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink className="offset-md-3 text-white text-start" href="#">
-              <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
-            </NavLink>
-          </NavItem>
+
+          {estadoEvaluacion === "aprobada" ?
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
+              </NavLink>
+            </NavItem>
+
+            : null
+
+          }
+
           <NavItem>
             <NavLink className="offset-md-3 text-white text-start" href="#">
               <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
@@ -251,9 +291,35 @@ const SideBarResponsive = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate()
 
-  const toggleNavbar = () => setCollapsed(!collapsed);  
+  const toggleNavbar = () => setCollapsed(!collapsed);
   const [disablePlanes, setDisablePlanes] = useState(false);
   const [disableEntidades, setDisableEntidades] = useState(false);
+
+  const [estadoEvaluacion, setEstadoEvaluacion] = useState('');
+  var localData = localStorage.getItem("MY_PROFILE_INFO");
+  var parsedData = JSON.parse(localData);
+  var emailEstudiante = parsedData.correo;
+
+  const getEstudiante = async () => {
+
+    let value = await axios.get("http://localhost:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+
+    setEstadoEvaluacion(value.capacitacionAprobada);
+    console.log(estadoEvaluacion);
+
+  }
+
+  useEffect(() => {
+    getEstudiante();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -345,27 +411,39 @@ const SideBarResponsive = () => {
                 <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
+
+            {estadoEvaluacion !== "aprobada" ?
+
+              <NavItem>
+                <NavLink className='offset-md-3 text-white text-start' href="#">
+                  <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
+                </NavLink>
+              </NavItem>
+
+              : null
+
+            }
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                <Link to={'E_Evaluacion'} style={{ textDecoration: "none", color: "white" }}>Evaluación</Link>
+                <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
               </NavLink>
             </NavItem>
 
           </UncontrolledCollapse>
 
-
           <NavItem>
-            <NavLink id="idea" href="#">
-              <Row className='d-flex align-content-center align-items-center  justify-content-end'>
-                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
-                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
-                  </svg>
-                </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center"> Ideas de Negocio</Col>
-              </Row>
-            </NavLink>
-          </NavItem>
+              <NavLink id="idea" href="#">
+                <Row className='d-flex align-content-center align-items-center  justify-content-end'>
+                  <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+                      <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
+                    </svg>
+                  </Col>
+                  <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Ideas de Negocio</Col>
+                </Row>
+              </NavLink>
+            </NavItem>
+
           <UncontrolledCollapse id="despliegue" toggler="#idea">
 
             <NavItem>
@@ -373,17 +451,27 @@ const SideBarResponsive = () => {
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
-            <NavItem>
-              <NavLink className="offset-md-3 text-white text-start" href="#">
-                <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
-              </NavLink>
-            </NavItem>
+
+            {estadoEvaluacion === "aprobada" ?
+
+              <NavItem>
+                <NavLink className='offset-md-3 text-white text-start' href="#">
+                  <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
+                </NavLink>
+              </NavItem>
+
+              : null
+
+            }
+
             <NavItem>
               <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
+
           </UncontrolledCollapse>
+
           <NavItem>
             <NavLink id="plan" href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -428,6 +516,7 @@ const SideBarResponsive = () => {
               </Row>
             </NavLink>
           </NavItem>
+
           <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -440,6 +529,7 @@ const SideBarResponsive = () => {
               </Row>
             </NavLink>
           </NavItem>
+
           <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
@@ -454,7 +544,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem id='closeSession' onClick={() => CerrarSesion(navigate)}>
+          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -467,14 +557,12 @@ const SideBarResponsive = () => {
               </Row>
             </NavLink>
           </NavItem>
+
         </Collapse>
       </div>
     </Nav>
-  </div>
-  );
-};
-
-
-
+    </div>
+    );
+  };
 
 export default Sidebar;

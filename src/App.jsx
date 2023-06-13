@@ -78,6 +78,7 @@ import DocenteEditarPerfil from './components/useGeneral/Editar_Perfil_Docente';
 import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
+import EstudianteResultadoEvaluacion from './components/estudiante/Estudiante_Resultado_Evaluacion'
 import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
@@ -92,6 +93,7 @@ import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
 import LiderResultadosListar from './components/lider/Lider_Resultados_Listar';
+import LiderResultadosVer from './components/lider/Lider_Resultados_Ver';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
 import { Relogin } from './routes/login/Relogin';
@@ -112,6 +114,7 @@ const router = createBrowserRouter(
             <Route path='Perfil/Editar' element={<EstudianteEditarPerfil location={'MY_PROFILE_INFO'} type={'estudiante'}/>} loader={MiPerfilEstudiante} />
             <Route path='Test' element={<Tabla></Tabla>} />
             <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
+            <Route path='ResultadoEvaluacion' element={<EstudianteResultadoEvaluacion></EstudianteResultadoEvaluacion>} />
             <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
             <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
             <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
@@ -167,6 +170,7 @@ const router = createBrowserRouter(
             
             {/** Rutas del manejo de resultados */}
             <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -201,6 +205,8 @@ const router = createBrowserRouter(
             <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
             
             <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
+            
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />
@@ -219,7 +225,8 @@ const router = createBrowserRouter(
             <Route path='Evaluador/Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>} />
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
-            <Route path='Estudiantes' element={<ListarEstudiantes></ListarEstudiantes>} />
+            <Route path='Estudiantes' element={<ListarEstudiantes type={'docente'}></ListarEstudiantes>} />
+            <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'}/>} loader={GestionarEstudiante} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
             <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
