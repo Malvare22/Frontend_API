@@ -23,8 +23,9 @@ const modalStyles = {
 
 
 // Componente de tabla
-const Table = ({ data, updater }) => {
+const Table = (props) => {
     const [orderBy, setOrderBy] = useState({ column: 'Cedula', ascending: true });
+    const [orderData, setOrderData] = useState([])
 
     const handleSort = (column) => {
         if (orderBy.column === column) {
@@ -38,17 +39,20 @@ const Table = ({ data, updater }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Cedula') {
-                comparison = a.cedula.localeCompare(b.cedula, undefined, { numeric: true });
+                comparison = a.cedula.localeCompare(b.cedula);
             } else if (column === 'Docente') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Area') {
-                comparison = a.areaToString.localeCompare(b.areaToString);
+                comparison = a.area.localeCompare(b.areaToString);
             }
             if (!ascending) {
                 comparison *= -1;
+            }
+            if(comparison===0){
+                comparison = a.codigo-b.codigo;
             }
             return comparison;
         });
@@ -72,14 +76,13 @@ const Table = ({ data, updater }) => {
         }
         try{
             await axios.get('http://localhost:8080/docente/deshabilitarDocente/'+ valor.correo, config)
-            updater()
+            props.updater();
             toggleAlert(null)
         }
         catch(error){
             alert(error)
         }
     }
-
     return (
         <Sdiv>
             <div className='w-auto'>
@@ -93,8 +96,8 @@ const Table = ({ data, updater }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
-                            <tr key={d.cedula}>
+                        {sortData && sortedData.map((d) => (
+                            <tr key={d.codigo}>
                                 <td className='text-center align-middle col-auto'>{d.cedula}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
                                 <td className='text-center align-middle col-auto'>{d.areaToString}</td>
@@ -112,11 +115,11 @@ const Table = ({ data, updater }) => {
                                                 <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                                             </svg>
                                         </button>
-                                        <button type="button" id="eliminar" onClick={() => toggleAlert({ id: d.cedula, docente: d.nombre, correo: d.correo })} className="btn" style={{ width: "auto", border: "none" }}>
+                                        {/* <button type="button" id="eliminar" onClick={() => toggleAlert({ id: d.cedula, docente: d.nombre, correo: d.correo })} className="btn" style={{ width: "auto", border: "none" }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3-fill" viewBox="0 0 16 16">
                                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
                                             </svg>
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </td>
                             </tr>
@@ -172,11 +175,13 @@ export default function ListarDocentes() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://localhost:8080/docente/listar', config)
+        value = await axios.get('http://localhost:8080/docente/listar', config)     
+        console.log(value);
         setFilteredData(importDocents(value.data))
     };
     useEffect(() => {
-        getDocentes();
+
+        getDocentes();        
     }, []);
     return (
         <div className="container-fluid w-75">

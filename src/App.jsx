@@ -78,6 +78,7 @@ import DocenteEditarPerfil from './components/useGeneral/Editar_Perfil_Docente';
 import LiderPerfil from './components/useGeneral/Perfil_Lider';
 import LiderEditarPerfil from './components/useGeneral/Editar_Perfil_Lider';
 import EstudiantePerfil from './components/useGeneral/Perfil_Estudiante';
+import EstudianteResultadoEvaluacion from './components/estudiante/Estudiante_Resultado_Evaluacion'
 import ListarDocentes from './components/useGeneral/Listar_Docentes';
 import ListarEstudiantes from './components/useGeneral/Listar_Estudiantes';
 import AdministrativoVerPerfilLider from './components/administrativo/Ver_Lider';
@@ -86,13 +87,16 @@ import PlanVer from './components/useGeneral/Usuario_Plan_Ver';
 
 import LiderPreguntasListar from './components/lider/Lider_Preguntas_Listar';
 import LiderPreguntasAgregar from './components/lider/Lider_Preguntas_Agregar';
-import Listar_Administrativos from './components/administrativo/Administrativo_administrativosListar';
+
 import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
+import LiderResultadosListar from './components/lider/Lider_Resultados_Listar';
+import LiderResultadosVer from './components/lider/Lider_Resultados_Ver';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
+import { Relogin } from './routes/login/Relogin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -100,6 +104,7 @@ const router = createBrowserRouter(
       <Route element={<Template></Template>} errorElement={<Error404></Error404>}>
         <Route path='/' element={<Home></Home>} />
         <Route path='/login' element={<><Login/><Footer/></>} />
+        <Route path='/relogin' element={<><Relogin/><Footer/></>} />
         <Route path='/forgetPassword' element={<><Recovery></Recovery><Footer></Footer></>} />
         <Route exact path="/resetPassword" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
         <Route path="/resetPassword/:token" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
@@ -109,6 +114,7 @@ const router = createBrowserRouter(
             <Route path='Perfil/Editar' element={<EstudianteEditarPerfil location={'MY_PROFILE_INFO'} type={'estudiante'}/>} loader={MiPerfilEstudiante} />
             <Route path='Test' element={<Tabla></Tabla>} />
             <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
+            <Route path='ResultadoEvaluacion' element={<EstudianteResultadoEvaluacion></EstudianteResultadoEvaluacion>} />
             <Route path='ListarIdeas' element={<ListarIdeasEstudiante></ListarIdeasEstudiante>} />
             <Route path='Ideas/Vista' element={<EstudianteVistaIdea></EstudianteVistaIdea>} />
             <Route path='ListarPlanes' element={<ListarPlanesEstudiante></ListarPlanesEstudiante>} />
@@ -161,6 +167,10 @@ const router = createBrowserRouter(
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
             <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
+            
+            {/** Rutas del manejo de resultados */}
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -177,7 +187,7 @@ const router = createBrowserRouter(
             <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'sudo'} />} loader={GestionarDocente} />
             <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
             
-            <Route path='Administrativos' element={<Listar_Administrativos/>} />
+            <Route path='Administrativos' element={<AdministrativoListarAdministrativos/>} />
             <Route path='Administrativos/Perfil' element={<AdministrativoPerfil location={'ADMINISTRATIVO_INFORMATION'} editable={true} />} loader={GestionarAdministrativo}></Route>
             <Route path='Administrativos/Perfil/Editar' element={<AdministrativoEditarPerfil location={'ADMINISTRATIVO_INFORMATION'} type={'sudo'} />} loader={GestionarAdministrativo}></Route>
             <Route path='Administrativos/Registrar' element={<AdministrativoEditarPerfil type={'registrar'} />}></Route>
@@ -193,6 +203,10 @@ const router = createBrowserRouter(
             <Route path='Lider' element={<AdministrativoVerPerfilLider/>} />
             <Route path='Lider/Registrar' element={<LiderEditarPerfil type={'registrar'}/>} />
             <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
+            
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
+            
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />
@@ -211,9 +225,10 @@ const router = createBrowserRouter(
             <Route path='Evaluador/Planes/Vista' element={<PlanVer></PlanVer>} />
             <Route path='Entidades' element={<DocenteListarEntidades></DocenteListarEntidades>} />
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
-            <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
+            <Route path='Estudiantes' element={<ListarEstudiantes type={'docente'}></ListarEstudiantes>} />
+            <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'}/>} loader={GestionarEstudiante} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
-            <Route path='Tutor/Aceptar/:idea' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
         </Route>
       </Route>
