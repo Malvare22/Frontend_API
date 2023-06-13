@@ -74,7 +74,7 @@ const Table = ({ data }) => {
 
     const eliminarFormato = async () => {
         try {
-            await axios.delete(`http://129.151.121.230:8080/formato/${formatoEliminar.id}`, {
+            await axios.delete(`http://144.22.32.132:8080/formato/${formatoEliminar.id}`, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
 
@@ -100,7 +100,7 @@ const Table = ({ data }) => {
     const descargarDocumento = async (documentoId) => {
         let value = null;
 
-        let URL = `http://129.151.121.230:8080/formato/recuperar/${documentoId}`;
+        let URL = `http://144.22.32.132:8080/formato/recuperar/${documentoId}`;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -222,7 +222,7 @@ export default function Listar_Formatos() {
 
     const getFormatos = async () => {
         try {
-            const response = await axios.get('http://129.151.121.230:8080/formato/listar', {
+            const response = await axios.get('http://144.22.32.132:8080/formato/listar', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
 
@@ -287,5 +287,6 @@ export default function Listar_Formatos() {
         </div>
     );
 }
+
 
 

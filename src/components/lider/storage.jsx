@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const generarToken=()=>{
-    axios.post('http://129.151.121.230:8080/login',{
+    axios.post('http://144.22.32.132:8080/login',{
         
         email: 'Ericka.Eckblad@gmail.com',
         password: 'Ericka2022-07-13'
@@ -22,5 +22,6 @@ const Button = () => {
 }
 
 export default StorageTest;
+
 
 

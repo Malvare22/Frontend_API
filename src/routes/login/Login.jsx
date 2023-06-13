@@ -94,7 +94,7 @@ const Panel = (props) => {
 
         else {
             try {
-                condition = await axios.post('http://129.151.121.230:8080/login', {
+                condition = await axios.post('http://144.22.32.132:8080/login', {
                     email: form.userName,
                     password: form.password
                 }).then((response) => {
@@ -196,6 +196,7 @@ const ErrorMessage = () => {
             <div className='text-white m-2 mt-1 mb-1'>Usuario y/o contraseña incorrectos</div>
         </div>);
 };
+
 
 
 

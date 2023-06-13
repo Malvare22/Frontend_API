@@ -13,7 +13,7 @@ export default function Estudiante_ListarIdeas() {
         var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
         formData.append('codigoEstudiante', parsedData.codigo);
-        let value = await axios.post("http://129.151.121.230:8080/ideaNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.post("http://144.22.32.132:8080/ideaNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -173,5 +173,6 @@ const Sobreponer = styled.div`
  }
 
 `;
+
 
 

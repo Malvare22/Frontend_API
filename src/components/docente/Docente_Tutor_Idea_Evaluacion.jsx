@@ -44,7 +44,7 @@ const Evaluaciones = (props) => {
     const getCalificadores = async () => {
         let value = null;
         //let URLs = 'http://144.22.37.238:8080/ideaNegocio/evaluacion/' + props.nombre;
-        let URLs = 'http://129.151.121.230:8080/ideaNegocio/evaluacion/' + props.nombre;
+        let URLs = 'http://144.22.32.132:8080/ideaNegocio/evaluacion/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -212,5 +212,6 @@ const Sobreponer = styled.div`
  }
 
 `;
+
 
 

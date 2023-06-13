@@ -11,7 +11,7 @@ const EstudianteEvaluacion = () => {
 
     const getPreguntas = async () => {
         let value = null;
-        value = await axios.get("http://129.151.121.230:8080/pregunta", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        value = await axios.get("http://144.22.32.132:8080/pregunta", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -129,3 +129,4 @@ const Sobreponer = styled.div`
     height: 40px;
 
   }`
+

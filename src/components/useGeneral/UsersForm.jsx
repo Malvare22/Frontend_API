@@ -98,7 +98,7 @@ const changePassword = async (correo, contrasenia, type) => {
             }
         }
 
-        await axios.patch('http://129.151.121.230:8080/coordinador/restablecerOtroUsuario', formData, config)
+        await axios.patch('http://144.22.32.132:8080/coordinador/restablecerOtroUsuario', formData, config)
     }
     else{
         const config = {
@@ -109,7 +109,7 @@ const changePassword = async (correo, contrasenia, type) => {
         const data = {
             "password" : contrasenia
         }
-        await axios.patch('http://129.151.121.230:8080/coordinador/reestablecer', data, config)
+        await axios.patch('http://144.22.32.132:8080/coordinador/reestablecer', data, config)
 
     }
     
@@ -285,17 +285,17 @@ export function FormDocente({ user, type }) {
                 }
             }
             if (type == 'registrar') {
-                await axios.post('http://129.151.121.230:8080/register/docente', dataToSend)
+                await axios.post('http://144.22.32.132:8080/register/docente', dataToSend)
             }
             else {
                 console.log('Export', dataToSend)
-                await axios.patch('http://129.151.121.230:8080/docente/actualizar', dataToSend, config)
+                await axios.patch('http://144.22.32.132:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
                     await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
-            await axios.post('http://129.151.121.230:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://144.22.32.132:8080/coordinador/guardarFoto', formData, config)
 
             navigate(-1)
 
@@ -555,12 +555,12 @@ export const FormEstudiante = ({ user, type }) => {
 
             if (type == 'registrar') {
                 dataToSend.capacitacionAprobada = "reprobada"
-                await axios.post('http://129.151.121.230:8080/register/estudiante', dataToSend)
+                await axios.post('http://144.22.32.132:8080/register/estudiante', dataToSend)
             }
 
             else {
 
-                await axios.patch('http://129.151.121.230:8080/estudiante/actualizar', dataToSend, config)
+                await axios.patch('http://144.22.32.132:8080/estudiante/actualizar', dataToSend, config)
                 if (type != 'estudiante') {
                     if (form.contrasenia != '') {
                         await changePassword(form.correo, form.contrasenia, type)
@@ -568,7 +568,7 @@ export const FormEstudiante = ({ user, type }) => {
                 }
             }
 
-            await axios.post('http://129.151.121.230:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://144.22.32.132:8080/coordinador/guardarFoto', formData, config)
 
             navigate(-1)
         }
@@ -817,18 +817,18 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             if (type == 'registrar') {
-                await axios.post('http://129.151.121.230:8080/register', dataToSend)
+                await axios.post('http://144.22.32.132:8080/register', dataToSend)
             }
 
             else {
-                await axios.patch('http://129.151.121.230:8080/administrativo/update', dataToSend, config)
+                await axios.patch('http://144.22.32.132:8080/administrativo/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(form.correo, form.contrasenia, type)
                 }
                 
             }
 
-            await axios.post('http://129.151.121.230:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://144.22.32.132:8080/coordinador/guardarFoto', formData, config)
 
             navigate(-1)
 
@@ -1038,17 +1038,17 @@ export const FormLider = ({ user, type }) => {
                 }
             }
             if (type == 'registrar') {
-                await axios.post('http://129.151.121.230:8080/register', dataToSend)
+                await axios.post('http://144.22.32.132:8080/register', dataToSend)
             }
             else {
 
-                await axios.patch('http://129.151.121.230:8080/coordinador/update', dataToSend, config)
+                await axios.patch('http://144.22.32.132:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(form.correo, form.contrasenia, type)
                 }
             }
 
-            await axios.post('http://129.151.121.230:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://144.22.32.132:8080/coordinador/guardarFoto', formData, config)
 
             navigate(-1)
 
@@ -1176,6 +1176,7 @@ const SInfo = styled.div`
     }
 }
 `;
+
 
 
 

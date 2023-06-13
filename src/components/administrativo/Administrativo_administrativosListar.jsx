@@ -65,7 +65,7 @@ const Table = ({ data }) => {
     const disableAdmin = async () => {
 
         try{
-            await axios.get('http://129.151.121.230:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
+            await axios.get('http://144.22.32.132:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
             headers: {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
@@ -172,7 +172,7 @@ export default function Listar_Administrativos() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = (await axios.get('http://129.151.121.230:8080/coordinador/listar/administrativo', config)).data
+        value = (await axios.get('http://144.22.32.132:8080/coordinador/listar/administrativo', config)).data
             
         setFilteredData(value)
     };
@@ -205,5 +205,6 @@ export default function Listar_Administrativos() {
         </div>
     );
 }
+
 
 

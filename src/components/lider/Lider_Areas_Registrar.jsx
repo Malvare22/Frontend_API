@@ -43,7 +43,7 @@ const Information = () => {
             };
             console.log(nombre.valor)
 
-            await axios.post("http://129.151.121.230:8080/areaConocimiento", formData, config)
+            await axios.post("http://144.22.32.132:8080/areaConocimiento", formData, config)
             toggleConfirmacion(null)
 
         }
@@ -199,5 +199,6 @@ const SInfo = styled.div`
     }
 }
 `;
+
 
 

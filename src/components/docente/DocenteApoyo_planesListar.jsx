@@ -13,7 +13,7 @@ export default function Listar_Planes() {
         var parsedData = JSON.parse(localData);
         formData.append('docenteCodigo', parsedData.codigo);
         console.log([...formData.entries()]);
-        let value = await axios.post("http://129.151.121.230:8080/planNegocio/PlanesDocentesApoyo", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.post("http://144.22.32.132:8080/planNegocio/PlanesDocentesApoyo", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -47,7 +47,7 @@ export default function Listar_Planes() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            const value = await axios.post("http://129.151.121.230:8080/planNegocio/PlanesDocentesApoyo", formData, config
+            const value = await axios.post("http://144.22.32.132:8080/planNegocio/PlanesDocentesApoyo", formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -103,5 +103,6 @@ export default function Listar_Planes() {
         </div>
     );
 }
+
 
 

@@ -121,12 +121,12 @@ const FormEntidad = (props) => {
                 }
             }
             if (props.type == 'registrar') {
-                await axios.post('http://129.151.121.230:8080/entidadFinanciadora', dataToSend, config)
+                await axios.post('http://144.22.32.132:8080/entidadFinanciadora', dataToSend, config)
             }
             else {
-                await axios.patch('http://129.151.121.230:8080/entidadFinanciadora', dataToSend, config)
+                await axios.patch('http://144.22.32.132:8080/entidadFinanciadora', dataToSend, config)
             }
-            await axios.post('http://129.151.121.230:8080/entidadFinanciadora/guardarFoto/' + form.correo, formData, config)
+            await axios.post('http://144.22.32.132:8080/entidadFinanciadora/guardarFoto/' + form.correo, formData, config)
 
             navigate(-1)
 
@@ -236,5 +236,6 @@ const SInfo = styled.div`
 `;
 
 export default FormEntidad;
+
 
 

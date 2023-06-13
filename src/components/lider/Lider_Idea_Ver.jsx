@@ -45,7 +45,7 @@ const InfoGeneral = (props) => {
     const getDatos1 = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/' + props.nombre;
-        let URLs = 'http://129.151.121.230:8080/ideaNegocio/' + props.nombre;
+        let URLs = 'http://144.22.32.132:8080/ideaNegocio/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -66,7 +66,7 @@ const InfoGeneral = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://129.151.121.230:8080/areaConocimiento', {
+            const response = await axios.get('http://144.22.32.132:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
@@ -86,7 +86,7 @@ const InfoGeneral = (props) => {
     const getProfesores = async () => {
         if(Area !== null){
             try {
-                const response = await axios.get('http://129.151.121.230:8080/docente/listar/' + Area, {
+                const response = await axios.get('http://144.22.32.132:8080/docente/listar/' + Area, {
                     headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
                 });
                 const data = response.data;
@@ -113,7 +113,7 @@ const InfoGeneral = (props) => {
             let value = null;
             let idea = datos1 && datos1.titulo;
             //let ruta = 'http://144.22.37.238:8080/coordinador/asignar/' + idea + '/' + docente;
-            let ruta = 'http://129.151.121.230:8080/coordinador/asignar/' + idea + '/' + docente;
+            let ruta = 'http://144.22.32.132:8080/coordinador/asignar/' + idea + '/' + docente;
             console.log(ruta);
             value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
              ).then(
@@ -146,7 +146,7 @@ const InfoGeneral = (props) => {
             let value = null;
             let idea = datos1 && datos1.titulo;
             //let ruta = 'http://144.22.37.238:8080/administrativo/eliminarTutor/'+idea;
-            let ruta = 'http://129.151.121.230:8080/administrativo/eliminarTutor/'+idea;
+            let ruta = 'http://144.22.32.132:8080/administrativo/eliminarTutor/'+idea;
             //console.log(ruta);
             value = await axios.post(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
              ).then(
@@ -175,7 +175,7 @@ const InfoGeneral = (props) => {
     const getArchi = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        let URL = 'http://129.151.121.230:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://144.22.32.132:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
@@ -595,7 +595,7 @@ function Tabla(props) {
     const getIdeas = async () => {
         let value = null;
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
-        let URLs = 'http://129.151.121.230:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://144.22.32.132:8080/observacionIdea/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -635,6 +635,7 @@ function Tabla(props) {
         </Sdiv>
     );
 }
+
 
 
 
