@@ -146,8 +146,6 @@ export function FormDocente({ user, type }) {
 
     const [areas, setAreas] = useState([])
 
-    const [semaforo, setSemaforo] = useState(false)
-
     useEffect(() => {
         (loadAreas(setAreas))
     }, [])
@@ -252,7 +250,6 @@ export function FormDocente({ user, type }) {
     //Método para cargar la información
     const updateProfile = async () => {
         try {
-            setSemaforo(true)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -282,7 +279,6 @@ export function FormDocente({ user, type }) {
 
         } catch (error) {
             let msg = '';
-            setSemaforo(false)
 
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -411,7 +407,7 @@ export function FormDocente({ user, type }) {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -424,8 +420,6 @@ export function FormDocente({ user, type }) {
  *  **/
 export const FormEstudiante = ({ user, type }) => {
     const navigate = useNavigate()
-
-    const [semaforo, setSemaforo] = useState(false)
 
     if (type == 'registrar') {
         user = {
@@ -510,7 +504,6 @@ export const FormEstudiante = ({ user, type }) => {
     const updateProfile = async () => {
         //Aquí se hace la actualización de la info
         try {
-            setSemaforo(true)
 
             let dataToSend = exportStudents([{ ...form }])[0];
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
@@ -546,7 +539,6 @@ export const FormEstudiante = ({ user, type }) => {
         }
         catch (error) {
             let msg = '';
-            setSemaforo(false)
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
@@ -665,7 +657,7 @@ export const FormEstudiante = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -675,8 +667,6 @@ export const FormEstudiante = ({ user, type }) => {
 export const FormAdministrativo = ({ user, type }) => {
 
     const navigate = useNavigate()
-
-    const [semaforo, setSemaforo] = useState(false)
 
     if (type == 'registrar') {
         user = {
@@ -761,7 +751,6 @@ export const FormAdministrativo = ({ user, type }) => {
     const updateProfile = async () => {
 
         try {
-            setSemaforo(true)
             const dataToSend = exportAdmins([{ ...form }])[0]
             console.log(dataToSend)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
@@ -793,7 +782,6 @@ export const FormAdministrativo = ({ user, type }) => {
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
-            setSemaforo(false)
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -886,7 +874,7 @@ export const FormAdministrativo = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
         </div>
@@ -896,7 +884,6 @@ export const FormAdministrativo = ({ user, type }) => {
 export const FormLider = ({ user, type }) => {
     const navigate = useNavigate();
 
-    const [semaforo, setSemaforo] = useState(false)
     const jesucristo = useRef(null)
     if (type == 'registrar') {
         user = {
@@ -971,7 +958,6 @@ export const FormLider = ({ user, type }) => {
     const updateProfile = async () => {
 
         try {
-            setSemaforo(true)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -1000,7 +986,6 @@ export const FormLider = ({ user, type }) => {
 
 
         } catch (error) {
-            setSemaforo(false)
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -1093,7 +1078,7 @@ export const FormLider = ({ user, type }) => {
                 </div>
             </form>
 
-            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert} semaforo={semaforo}></ModalConfirmation>
+            <ModalConfirmation viewAlert={viewAlert} updateProfile={updateProfile} toggleAlert={toggleAlert}></ModalConfirmation>
             <WindowForPassword viewAlertPassword={viewAlertPassword} toggleAlertPassword={toggleAlertPassword} form={form} setForm={setForm}></WindowForPassword>
 
 
