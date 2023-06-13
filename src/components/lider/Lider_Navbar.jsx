@@ -107,7 +107,7 @@ const SideBarStatic = () => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Resultados
+              <Link to={'Resultados/Listar'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -117,7 +117,7 @@ const SideBarStatic = () => {
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-              Componentes
+              <Link to={'Evaluacion/Componentes'} style={{ textDecoration: "none", color: "white" }}>Componentes</Link>
             </NavLink>
           </NavItem>
         </UncontrolledCollapse>
@@ -232,9 +232,9 @@ const SideBarStatic = () => {
           <NavLink id='Configuracion' href="#">
             <Row className='d-flex align-content-center align-items-center'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
-              </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                  <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                </svg>
               </Col>
               <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Configuraciones {arrow04 ? arrowDown : arrowUp}</Col>
             </Row>
@@ -245,17 +245,17 @@ const SideBarStatic = () => {
 
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-            <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
+              <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink className='offset-md-3 text-white text-start' href="#">
-            <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
+              <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
             </NavLink>
           </NavItem>
 
         </UncontrolledCollapse>
-        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={()=>CerrarSesion(navigate)}>
+        <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >
@@ -268,7 +268,7 @@ const SideBarStatic = () => {
             </Row>
           </NavLink>
         </NavItem>
-        
+
 
       </Nav>
 
@@ -383,17 +383,17 @@ const SideBarResponsive = () => {
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Resultados
+                  <Link to={'Resultados/Listar'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Preguntas
+              <Link to={'Preguntas/Listar'} style={{ textDecoration: "none", color: "white" }}>Preguntas</Link>
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
-                Componentes
+                <Link to={'Evaluacion/Componentes'} style={{ textDecoration: "none", color: "white" }}>Componentes</Link>
               </NavLink>
             </NavItem>
 
@@ -515,33 +515,33 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
           <NavItem onClick={() => { setArrow04(!arrow04) }}>
-          <NavLink id='Configuracion' href="#">
-            <Row className='d-flex align-content-center align-items-center'>
-              <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
-                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
-              </svg>
-              </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Configuraciones {arrow04 ? arrowDown : arrowUp}</Col>
-            </Row>
-          </NavLink>
-        </NavItem>
-
-        <UncontrolledCollapse id="despliegue" toggler="#Configuracion">
-
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-            <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-            <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
+            <NavLink id='Configuracion' href="#">
+              <Row className='d-flex align-content-center align-items-center'>
+                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                  </svg>
+                </Col>
+                <Col xs="9" className="d-flex text-white text-start justify-content-between align-items-center">Configuraciones {arrow04 ? arrowDown : arrowUp}</Col>
+              </Row>
             </NavLink>
           </NavItem>
 
-        </UncontrolledCollapse>
-          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={()=>CerrarSesion(navigate)}>
+          <UncontrolledCollapse id="despliegue" toggler="#Configuracion">
+
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'TiemposEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Fechas de Calificación</Link>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'Areas/Listar'} style={{ textDecoration: "none", color: "white" }}>Areas de conocimiento</Link>
+              </NavLink>
+            </NavItem>
+
+          </UncontrolledCollapse>
+          <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className=" text-white align-items-end justify-content-end d-flex" xs="3" >

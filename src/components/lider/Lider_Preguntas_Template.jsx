@@ -58,8 +58,9 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
             if (respuesta.valor === "" || respuesta.valor < 0 || respuesta.valor > 100) {
                 errores.valorInvalido = true;
                 valid = false;
+                console.log("invalido");
             }
-            return errores;
+            return { ...errores, id: respuesta.id };
         });
 
         setErrorRespuestasState(errorRespuestas);
