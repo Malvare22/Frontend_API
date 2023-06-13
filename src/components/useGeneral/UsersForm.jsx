@@ -275,6 +275,7 @@ export function FormDocente({ user, type }) {
     //Método para cargar la información
     const updateProfile = async () => {
         try {
+            setSemaforo(true)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -299,12 +300,13 @@ export function FormDocente({ user, type }) {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            if(!semaforo) navigate(-1)
+            navigate(-1)
 
-            setSemaforo(true)
 
         } catch (error) {
             let msg = '';
+            setSemaforo(false)
+
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
@@ -547,6 +549,8 @@ export const FormEstudiante = ({ user, type }) => {
     const updateProfile = async () => {
         //Aquí se hace la actualización de la info
         try {
+            setSemaforo(true)
+
             let dataToSend = exportStudents([{ ...form }])[0];
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
@@ -576,12 +580,12 @@ export const FormEstudiante = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            if(!semaforo) navigate(-1)
+            navigate(-1)
 
-            setSemaforo(true)
         }
         catch (error) {
             let msg = '';
+            setSemaforo(false)
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
@@ -813,6 +817,7 @@ export const FormAdministrativo = ({ user, type }) => {
     const updateProfile = async () => {
 
         try {
+            setSemaforo(true)
             const dataToSend = exportAdmins([{ ...form }])[0]
             console.log(dataToSend)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
@@ -840,12 +845,11 @@ export const FormAdministrativo = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            if(!semaforo) navigate(-1)
-
-            setSemaforo(true)
+            navigate(-1)
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
+            setSemaforo(false)
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
@@ -1040,6 +1044,7 @@ export const FormLider = ({ user, type }) => {
     const updateProfile = async () => {
 
         try {
+            setSemaforo(true)
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
             const formData = new FormData();
@@ -1064,11 +1069,11 @@ export const FormLider = ({ user, type }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            if(!semaforo) navigate(-1)
+            navigate(-1)
 
-            setSemaforo(true)
 
         } catch (error) {
+            setSemaforo(false)
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
