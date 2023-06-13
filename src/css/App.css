@@ -70,9 +70,15 @@ body {
 }
 
 .thPrueba, .tdPrueba {
+  background-color: #1C3B57;
   border: 1px solid;
   width: 100px;
   word-wrap: break-word;
+}
+
+#Color {
+  background-color: #1C3B57;
+  color: white;
 }
 
 .btnPrueba {
@@ -90,7 +96,7 @@ body {
   }}
 
 #btn-Azul {
-  background: rgb(47, 47, 113);
+  background: #1C3B57;
   color: white;
 }
 
@@ -101,7 +107,7 @@ body {
 }
 
 .sobreponer {
-  background: rgb(47, 47, 113);
+  background: #1C3B57;
   color: white;
   z-index: 999;
   transform: translate(-10%, -60%);
