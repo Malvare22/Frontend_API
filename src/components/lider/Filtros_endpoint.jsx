@@ -63,3 +63,4 @@ export const getResultados = async () => {
         console.error("Error al obtener los cursos:", error);
     }
 }
+

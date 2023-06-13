@@ -32,3 +32,5 @@ const EstudianteCardIdea = (props) => {
 export default EstudianteCardIdea;
 
 
+
+
