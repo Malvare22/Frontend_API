@@ -95,6 +95,7 @@ const Information = () => {
         const data = {
             nombre: nombre,
             valorPorcentaje: parseFloat(porcentaje).toFixed(1),
+            eliminada: false
         };
         const config = {
             headers: {
