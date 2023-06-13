@@ -93,6 +93,7 @@ import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
 import LiderResultadosListar from './components/lider/Lider_Resultados_Listar';
+import LiderResultadosVer from './components/lider/Lider_Resultados_Ver';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
 import { Relogin } from './routes/login/Relogin';
@@ -169,6 +170,7 @@ const router = createBrowserRouter(
             
             {/** Rutas del manejo de resultados */}
             <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -203,6 +205,8 @@ const router = createBrowserRouter(
             <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
             
             <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
+            <Route path='Resultados/Ver' element={<LiderResultadosVer></LiderResultadosVer>} />
+            
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />

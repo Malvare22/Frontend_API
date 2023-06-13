@@ -24,7 +24,11 @@ export default function useListarPreguntas() {
     let columnas = ["codigo", "curso", "estado", "calificacion", "fecha"];
 
     const handleVisualizarClick = (dato) => {
-        console.log(dato);
+        localStorage.setItem('estado', dato.estado);
+        localStorage.setItem('codigo', dato.codigo);
+        localStorage.setItem('calificacion', dato.calificacion);
+        localStorage.setItem('id', dato.id);
+        navigate('../Resultados/Ver')
     }
 
     const handleFilter = async (filtro) => {
@@ -54,7 +58,7 @@ export default function useListarPreguntas() {
                 </div>
             </div>
             <Filtros onFilter={handleFilter} />
-            <Tabla datos={resultadosInfo} columnas={columnas} handleEliminarClick={null} handleEditarClick={null} handleVisualizarClick={null} permisos={[false, true, false, false]} />
+            <Tabla datos={resultadosInfo} columnas={columnas} handleEliminarClick={null} handleEditarClick={null} handleVisualizarClick={handleVisualizarClick} permisos={[false, true, false, false]} />
         </div>
     );
 }

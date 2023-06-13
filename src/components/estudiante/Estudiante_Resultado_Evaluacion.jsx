@@ -3,11 +3,9 @@ import styled from "styled-components";
 import React, { useEffect, useState } from 'react';
 import ImagenAprobado from '../../assets/images/aprobado.png'
 import ImagenReprobado from '../../assets/images/reprobado.png'
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Estudiante_Evaluacion() {
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         const value = localStorage.getItem("RELOAD");
@@ -181,9 +179,7 @@ export default function Estudiante_Evaluacion() {
                                 </div>
 
                             </>
-
                         }
-
                     </div>
                 </div>
             </Style>
@@ -227,9 +223,6 @@ const Sdiv = styled.div`
   table td{
     background-color:#FFF;
   }
-  overflow-y: scroll;
-  height: fit-content;
-  max-height: 66.4vh;
   
   @media screen and (max-width: 576px){
       th, td {
