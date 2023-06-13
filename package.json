@@ -25,6 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start-dev": "xvfb-run --auto-servernum react-scripts start",
+    "build-dev": "xvfb-run --auto-servernum react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
