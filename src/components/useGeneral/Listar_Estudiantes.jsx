@@ -45,7 +45,7 @@ const Table = (props) => {
         return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Código') {
-                comparison = a.codigo.localeCompare(b.codigo, undefined, { numeric: true });
+                comparison = a.codigo - b.codigo;
             } else if (column === 'Estudiante') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Curso') {
