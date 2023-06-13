@@ -26,25 +26,14 @@ const SideBarStatic = (props) => {
 
   const [arrow01, setArrow01] = useState(false);
   const [arrow02, setArrow02] = useState(false);
-  const [arrow03, setArrow03] = useState(false);
-
-  const [disableIdeas, setDisableIdeas] = useState(false);
+  const [arrow03, setArrow03] = useState(false);  
   const [disablePlanes, setDisablePlanes] = useState(false);
   const [disableEntidades, setDisableEntidades] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const email = (JSON.parse(localStorage.getItem('session'))).email
-        let zelda = "http://localhost:8080/estudiante/" + email;
-        const response = await axios.get(zelda, {
-          headers: {
-            "X-Softue-JWT": localStorage.getItem('token_access')
-          }
-        })
-        const data = response.data;
-        const disableClickValue = data.capacitacionAprobada;
-        setDisableIdeas(disableClickValue);
+        const email = (JSON.parse(localStorage.getItem('session'))).email        
         var formData = new FormData();
         formData.append('correoEstudiante', email);
         let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
@@ -153,17 +142,17 @@ const SideBarStatic = (props) => {
         </NavItem>
         <UncontrolledCollapse id="despliegue" toggler="#idea">
           <NavItem>
-            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+            <NavLink className="offset-md-3 text-white text-start" href="#">
               <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+            <NavLink className="offset-md-3 text-white text-start" href="#">
               <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+            <NavLink className="offset-md-3 text-white text-start" href="#">
               <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
             </NavLink>
           </NavItem>
@@ -185,7 +174,7 @@ const SideBarStatic = (props) => {
         <UncontrolledCollapse id="despliegue" toggler="#plan">
 
           <NavItem>
-            <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
+            <NavLink className="offset-md-3 text-white text-start" href="#">
               <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
@@ -198,7 +187,7 @@ const SideBarStatic = (props) => {
         </UncontrolledCollapse>
 
         <NavItem>
-          <NavLink href="#" className={`${setDisableIdeas ? 'disabled' : ''}`}>
+          <NavLink href="#" className={`${setDisableEntidades ? 'disabled' : ''}`}>
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
@@ -262,25 +251,13 @@ const SideBarResponsive = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate()
 
-  const toggleNavbar = () => setCollapsed(!collapsed);
-
-  const [disableIdeas, setDisableIdeas] = useState(false);
+  const toggleNavbar = () => setCollapsed(!collapsed);  
   const [disablePlanes, setDisablePlanes] = useState(false);
   const [disableEntidades, setDisableEntidades] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const email = (JSON.parse(localStorage.getItem('session'))).email
-        let zelda = "http://localhost:8080/estudiante/" + email;
-        const response = await axios.get(zelda, {
-          headers: {
-            "X-Softue-JWT": localStorage.getItem('token_access')
-          }
-        })
-        const data = response.data;
-        const disableClickValue = data.capacitacionAprobada;
-        setDisableIdeas(disableClickValue);
         var formData = new FormData();
         formData.append('correoEstudiante', email);
         let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
@@ -392,17 +369,17 @@ const SideBarResponsive = () => {
           <UncontrolledCollapse id="despliegue" toggler="#idea">
 
             <NavItem>
-              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
@@ -424,7 +401,7 @@ const SideBarResponsive = () => {
           <UncontrolledCollapse id="despliegue" toggler="#plan">
 
             <NavItem>
-              <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
@@ -437,7 +414,7 @@ const SideBarResponsive = () => {
           </UncontrolledCollapse>
 
           <NavItem>
-            <NavLink href="#" className={`${setDisableIdeas ? 'disabled' : ''}`}>
+            <NavLink href="#" className={`${setDisableEntidades ? 'disabled' : ''}`}>
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
