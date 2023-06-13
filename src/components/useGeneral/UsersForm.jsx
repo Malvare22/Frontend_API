@@ -69,21 +69,6 @@ export function HeadRegister(props) {
     );
 }
 
-
-const getPresentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    if (month < 10) {
-        month = '0' + month; // Agrega un cero al mes si es menor a 10
-    }
-    let day = today.getDate();
-    if (day < 10) {
-        day = '0' + day; // Agrega un cero al día si es menor a 10
-    }
-    return `${year}-${month}-${day}`;
-}
-
 const changePassword = async (correo, contrasenia, type) => {
 
     if(type=='sudo'){
@@ -179,7 +164,6 @@ export function FormDocente({ user, type }) {
             "contrasenia": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
-            "fecha_nacimiento": "",
             "sexo": ""
         };
     }
@@ -194,7 +178,6 @@ export function FormDocente({ user, type }) {
         "contrasenia": false,
         "telefono": false,
         "foto": false,
-        "fecha_nacimiento": false,
         "sexo": false
     };
 
@@ -211,7 +194,6 @@ export function FormDocente({ user, type }) {
             "contrasenia": false,
             "telefono": false,
             "foto": false,
-            "fecha_nacimiento": false,
             "sexo": false
         }
 
@@ -242,11 +224,6 @@ export function FormDocente({ user, type }) {
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
-            fail = true;
-        }
-
-        if (user.fecha_nacimiento == '' || !(Date.parse(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
             fail = true;
         }
 
@@ -380,15 +357,6 @@ export function FormDocente({ user, type }) {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -468,7 +436,6 @@ export const FormEstudiante = ({ user, type }) => {
             "curso": "",
             "subcurso": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "nombre_acudiente": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
@@ -479,7 +446,6 @@ export const FormEstudiante = ({ user, type }) => {
     const initialErrors = {
         nombre: false,
         apellido: false,
-        fecha_nacimiento: false,
         sexo: false,
         nombre_acudiente: false,
         telefono: false,
@@ -492,7 +458,6 @@ export const FormEstudiante = ({ user, type }) => {
         let errors = {
             nombre: false,
             apellido: false,
-            fecha_nacimiento: false,
             sexo: false,
             nombre_acudiente: false,
             telefono: false,
@@ -512,10 +477,6 @@ export const FormEstudiante = ({ user, type }) => {
         }
         if (isNaN(form.curso) || form.curso > 11 || form.curso < 1 || isNaN(form.subcurso) || form.subcurso > 11 || form.subcurso < 1) {
             errors.curso = true;
-            fail = true;
-        }
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
             fail = true;
         }
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
@@ -642,15 +603,6 @@ export const FormEstudiante = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -733,7 +685,6 @@ export const FormAdministrativo = ({ user, type }) => {
             "nombre": "",
             "documento": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
             "contrasenia": ""
@@ -746,7 +697,6 @@ export const FormAdministrativo = ({ user, type }) => {
         "apellido": false,
         "documento": false,
         "sexo": false,
-        "fecha_nacimiento": false,
         "telefono": false,
         "foto": false,
         "contrasenia": false,
@@ -760,7 +710,6 @@ export const FormAdministrativo = ({ user, type }) => {
             "apellido": false,
             "documento": false,
             "sexo": false,
-            "fecha_nacimiento": false,
             "telefono": false,
             "foto": false,
             "contrasenia": false,
@@ -784,11 +733,6 @@ export const FormAdministrativo = ({ user, type }) => {
                 errors.contrasenia = true
                 fail = true
             }
-        }
-
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
-            fail = true;
         }
 
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
@@ -908,15 +852,6 @@ export const FormAdministrativo = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -970,7 +905,6 @@ export const FormLider = ({ user, type }) => {
             "apellido": "",
             "nombre": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
         };
@@ -981,7 +915,6 @@ export const FormLider = ({ user, type }) => {
         "apellido": false,
         "nombre": false,
         "sexo": false,
-        "fecha_nacimiento": false,
         "telefono": false,
         "foto": false,
     };
@@ -992,7 +925,6 @@ export const FormLider = ({ user, type }) => {
             "apellido": false,
             "nombre": false,
             "sexo": false,
-            "fecha_nacimiento": false,
             "telefono": false,
             "foto": false,
         };
@@ -1011,11 +943,6 @@ export const FormLider = ({ user, type }) => {
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
-            fail = true;
-        }
-
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
             fail = true;
         }
 
@@ -1109,15 +1036,6 @@ export const FormLider = ({ user, type }) => {
                             <div className='col-sm-8 col-6'>
                                 <input type="text" className={`form-control ${errors.apellido ? "is-invalid" : ""}`} name='apellido' value={form.apellido} onChange={handleChange} maxlength="50" />
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
                             </div>
                         </div>
                         <div className='row'>
