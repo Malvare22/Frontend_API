@@ -67,11 +67,12 @@ const formateo = (resultados) => {
     const datosFiltrados = resultados.map((resultado) => {
         const fecha = resultado.fechaCreacion[0] + '-' + resultado.fechaCreacion[1] + '-' + resultado.fechaCreacion[2];
         const calificacion = resultado.calificacion.toFixed(2);
+        const estado = (calificacion >= 75) ? "aprobada" : "reprobada";
         return {
             ...resultado,
             codigo: resultado.estudianteInfo[0],
             curso: resultado.estudianteInfo[1],
-            estado: resultado.estudianteInfo[2],
+            estado: estado,
             fecha: fecha,
             calificacion: calificacion
         };
