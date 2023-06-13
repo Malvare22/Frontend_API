@@ -447,7 +447,7 @@ const SideBarResponsive = () => {
           <UncontrolledCollapse id="despliegue" toggler="#idea">
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
@@ -465,7 +465,7 @@ const SideBarResponsive = () => {
             }
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
