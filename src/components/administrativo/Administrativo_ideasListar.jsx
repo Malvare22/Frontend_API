@@ -322,7 +322,7 @@ export default function Listar_Ideas() {
                         <br></br>
                         <div className='row'>
                             <div className="col">
-                                {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
                                             Formato actual
@@ -334,10 +334,10 @@ export default function Listar_Ideas() {
                                             </svg>
                                         </div>
                                     </div>
-                                </button> */}
+                                </button>
                             </div>
                             <div className="col d-flex justify-content-end">
-                                {/* <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
                                             Generar informe
@@ -349,7 +349,7 @@ export default function Listar_Ideas() {
                                             </svg>
                                         </div>
                                     </div>
-                                </button> */}
+                                </button>
                             </div>
                         </div>
 
