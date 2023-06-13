@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Col, Collapse, Nav, NavItem, NavLink, Row, UncontrolledCollapse } from 'reactstrap';
 import Emprender_Aprender from '../../assets/images/Login/Emprender_Aprender.png'
 import '../../css/Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { CerrarSesion } from '../../context/functions_app';
+import axios from 'axios';
 
 const Sidebar = () => {
 
@@ -26,6 +27,54 @@ const SideBarStatic = (props) => {
   const [arrow01, setArrow01] = useState(false);
   const [arrow02, setArrow02] = useState(false);
   const [arrow03, setArrow03] = useState(false);
+
+  const [disableIdeas, setDisableIdeas] = useState(false);
+  const [disablePlanes, setDisablePlanes] = useState(false);
+  const [disableEntidades, setDisableEntidades] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const email = (JSON.parse(localStorage.getItem('session'))).email
+        let zelda = "http://localhost:8080/estudiante/" + email;
+        const response = await axios.get(zelda, {
+          headers: {
+            "X-Softue-JWT": localStorage.getItem('token_access')
+          }
+        })
+        const data = response.data;
+        const disableClickValue = data.capacitacionAprobada;
+        setDisableIdeas(disableClickValue);
+        var formData = new FormData();
+        formData.append('correoEstudiante', email);
+        let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
+        let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada";
+        let value = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+          response => {
+            const data2 = response.data;
+            return data2;
+          }).catch(error => {
+            console.error(error);
+          });
+        const disableClickValue2 = Object.keys(value).length === 0 ? false : true;
+        setDisablePlanes(disableClickValue2);
+        let value2 = await axios.get(zelda3, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+          response => {
+            const data2 = response.data;
+            return data2;
+          }).catch(error => {
+            console.error(error);
+          });
+        const disableClickValue3 = Object.keys(value2).length === 0 ? false : true;
+        setDisableEntidades(disableClickValue3);
+      } catch (error) {
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div id="Sidebar" className="d-flex flex-column flex-shrink-0 text-white" style={{}}>
@@ -87,7 +136,7 @@ const SideBarStatic = (props) => {
 
         <NavItem onClick={() => setArrow02(!arrow02)}>
           <NavLink id="idea" href="#">
-            <Row className='d-flex align-content-center align-items-center  justify-content-end'>
+            <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
                   <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
@@ -98,19 +147,18 @@ const SideBarStatic = (props) => {
           </NavLink>
         </NavItem>
         <UncontrolledCollapse id="despliegue" toggler="#idea">
-
           <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
               <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
               <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
               <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
             </NavLink>
           </NavItem>
@@ -132,12 +180,12 @@ const SideBarStatic = (props) => {
         <UncontrolledCollapse id="despliegue" toggler="#plan">
 
           <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
               <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
               <Link to={'ListarPlanes'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
             </NavLink>
           </NavItem>
@@ -145,7 +193,7 @@ const SideBarStatic = (props) => {
         </UncontrolledCollapse>
 
         <NavItem>
-          <NavLink href="#">
+          <NavLink href="#" className={`${setDisableIdeas ? 'disabled' : ''}`}>
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
@@ -210,6 +258,55 @@ const SideBarResponsive = () => {
   const navigate = useNavigate()
 
   const toggleNavbar = () => setCollapsed(!collapsed);
+
+  const [disableIdeas, setDisableIdeas] = useState(false);
+  const [disablePlanes, setDisablePlanes] = useState(false);
+  const [disableEntidades, setDisableEntidades] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const email = (JSON.parse(localStorage.getItem('session'))).email
+        let zelda = "http://localhost:8080/estudiante/" + email;
+        const response = await axios.get(zelda, {
+          headers: {
+            "X-Softue-JWT": localStorage.getItem('token_access')
+          }
+        })
+        const data = response.data;
+        const disableClickValue = data.capacitacionAprobada;
+        setDisableIdeas(disableClickValue);
+        var formData = new FormData();
+        formData.append('correoEstudiante', email);
+        let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
+        let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada";
+        let value = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+          response => {
+            const data2 = response.data;
+            return data2;
+          }).catch(error => {
+            console.error(error);
+          });
+        const disableClickValue2 = Object.keys(value).length === 0 ? false : true;
+        setDisablePlanes(disableClickValue2);
+        let value2 = await axios.get(zelda3, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+          response => {
+            const data2 = response.data;
+            return data2;
+          }).catch(error => {
+            console.error(error);
+          });
+        const disableClickValue3 = Object.keys(value2).length === 0 ? false : true;
+        setDisableEntidades(disableClickValue3);
+      } catch (error) {
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (<div className="text-white d-flex flex-column flex-shrink-0" id='principal_div_nav' >
     <Nav vertical id='Sidebar' className='d-flex'>
       <div className='d-flex'>
@@ -290,17 +387,17 @@ const SideBarResponsive = () => {
           <UncontrolledCollapse id="despliegue" toggler="#idea">
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
                 <Link to={'AgregarIdea'} style={{ textDecoration: "none", color: "white" }}>Nueva idea</Link>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${setDisableIdeas ? '' : 'disabled'}`} href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
@@ -322,12 +419,12 @@ const SideBarResponsive = () => {
           <UncontrolledCollapse id="despliegue" toggler="#plan">
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
                 <Link to={'CapacitacionPlan'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
                 <Link to={'ListarPlanes'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
@@ -335,7 +432,7 @@ const SideBarResponsive = () => {
           </UncontrolledCollapse>
 
           <NavItem>
-            <NavLink href="#">
+            <NavLink href="#" className={`${setDisableIdeas ? 'disabled' : ''}`}>
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
