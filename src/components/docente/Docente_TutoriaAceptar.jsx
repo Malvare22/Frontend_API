@@ -28,11 +28,12 @@ export default function Aceptar_Tutoria() {
     const navigate = useNavigate();
     const aceptar = async (titulo) => {
         try {
-            console.log(titulo)
             await axios.get(`http://localhost:8080/docente/acceptarTutor/${titulo}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
             navigate('/Docente/Perfil');
         } catch (error) {
-            console.log(error);
+            console.log("A?");
+            alert(error.response.data.errorMessage);
+            navigate('/Docente/Perfil')
         }
     };
 
