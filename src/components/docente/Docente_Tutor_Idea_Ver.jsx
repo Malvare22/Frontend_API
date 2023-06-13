@@ -206,7 +206,14 @@ const InfoGeneral = (props) => {
             });
             window.location.reload();
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+              } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+              } else {
+                console.log('Error al realizar la solicitud:', error.message);
+              }
         }
     };
 
@@ -220,7 +227,14 @@ const InfoGeneral = (props) => {
             });
             window.location.reload();
         } catch (error) {
-            console.error(error);
+            if (error.response) {
+                console.log('Código de estado:', error.response.status);
+                console.log('Respuesta del backend:', error.response.data);
+              } else if (error.request) {
+                console.log('No se recibió respuesta del backend');
+              } else {
+                console.log('Error al realizar la solicitud:', error.message);
+              }
         }
     };
 
