@@ -23,8 +23,9 @@ const modalStyles = {
 
 
 // Componente de tabla
-const Table = ({ data, updater }) => {
+const Table = (props) => {
     const [orderBy, setOrderBy] = useState({ column: 'Cedula', ascending: true });
+    const [orderData, setOrderData] = useState([])
 
     const handleSort = (column) => {
         if (orderBy.column === column) {
@@ -38,17 +39,20 @@ const Table = ({ data, updater }) => {
     };
     const sortData = () => {
         const { column, ascending } = orderBy;
-        return data.slice().sort((a, b) => {
+        return props.data.slice().sort((a, b) => {
             let comparison = 0;
             if (column === 'Cedula') {
-                comparison = a.cedula.localeCompare(b.cedula, undefined, { numeric: true });
+                comparison = a.cedula.localeCompare(b.cedula);
             } else if (column === 'Docente') {
                 comparison = a.nombre.localeCompare(b.nombre);
             } else if (column === 'Area') {
-                comparison = a.areaToString.localeCompare(b.areaToString);
+                comparison = a.area.localeCompare(b.areaToString);
             }
             if (!ascending) {
                 comparison *= -1;
+            }
+            if(comparison===0){
+                comparison = a.codigo-b.codigo;
             }
             return comparison;
         });
@@ -72,14 +76,13 @@ const Table = ({ data, updater }) => {
         }
         try{
             await axios.get('http://144.22.32.132:8080/docente/deshabilitarDocente/'+ valor.correo, config)
-            updater()
+            props.updater();
             toggleAlert(null)
         }
         catch(error){
             alert(error)
         }
     }
-
     return (
         <Sdiv>
             <div className='w-auto'>
@@ -93,8 +96,8 @@ const Table = ({ data, updater }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedData.map((d) => (
-                            <tr key={d.cedula}>
+                        {sortData && sortedData.map((d) => (
+                            <tr key={d.codigo}>
                                 <td className='text-center align-middle col-auto'>{d.cedula}</td>
                                 <td className='text-center align-middle col-auto'>{d.nombre}</td>
                                 <td className='text-center align-middle col-auto'>{d.areaToString}</td>
@@ -172,11 +175,13 @@ export default function ListarDocentes() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://144.22.32.132:8080/docente/listar', config)
+        value = await axios.get('http://144.22.32.132:8080/docente/listar', config)     
+        console.log(value);
         setFilteredData(importDocents(value.data))
     };
     useEffect(() => {
-        getDocentes();
+
+        getDocentes();        
     }, []);
     return (
         <div className="container-fluid w-75">

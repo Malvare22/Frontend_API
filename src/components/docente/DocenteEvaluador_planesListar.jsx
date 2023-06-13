@@ -76,6 +76,36 @@ export default function Listar_Planes() {
         }
         //ACA IRA LA SOLICITUD A BACK CON LOS PARAMETROS
     };
+    const obtenerFormato = async () => {
+        let value = null;
+        let URL = 'http://localhost:8080/formato/PlanNegocio';
+        axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        ).then(
+            response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                // Obtener la extensión del nombre de archivo del encabezado Content-Type
+                const contentType = response.headers['content-type'];
+                const extension = contentType === 'application/octet-stream' ? '.docx' : '.pdf';
+
+                link.href = url;
+                link.setAttribute('download', `documento${extension}`); // Establecer el nombre del archivo con la extensión obtenida
+                document.body.appendChild(link);
+                link.click();
+
+                // Limpiar el enlace temporal después de la descarga
+                link.parentNode.removeChild(link);
+            }).catch(error => {
+                if (error.response) {
+                    console.log('Código de estado:', error.response.status);
+                    console.log('Respuesta del backend:', error.response.data);
+                } else if (error.request) {
+                    console.log('No se recibió respuesta del backend');
+                } else {
+                    console.log('Error al realizar la solicitud:', error.message);
+                }
+            });
+    };
     return (
         <div className="container-fluid w-75">
             <div className="row">
@@ -88,7 +118,7 @@ export default function Listar_Planes() {
                         <br></br>
                         <div className='row'>
                             <div className="col">
-                                <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
+                                <button onClick={obtenerFormato} type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
                                             Formato actual

@@ -8,7 +8,7 @@ export default function ModalConfirmation(props){
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
-                    <Button color="primary" style={{ marginRight: "40px" }} onClick={props.updateProfile} >Aceptar</Button>
+                    <Button color="primary" style={{ marginRight: "40px" }} onClick={async()=>{await props.updateProfile()}} >Aceptar</Button>
                     <Button color="secondary" style={{ marginLeft: "40px" }} onClick={props.toggleAlert}>Cancelar</Button>
                 </ModalFooter>
     </Modal>

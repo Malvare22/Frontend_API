@@ -19,6 +19,7 @@ const useAlert = () => {
     }
     return { state, toggleAlert, valor, setValue }
 }
+
 const Information = () => {
     const { state, toggleAlert, valor, setValue } = useAlert();
     const [confirmacionView, setConfirmacionView] = useState(false);
@@ -54,9 +55,14 @@ const Information = () => {
 
         }
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        toggleAlert(null);
+      };
     return(
     <div>
-        <div className="container rounded-3" style={{ backgroundColor: "#ECECEC" }}>
+        <form onSubmit={handleSubmit} className="container rounded-3" style={{ backgroundColor: "#ECECEC" }}>
             <div >
                 <div className='row container' style={{ paddingTop: "80px" }}>
                     <div className='col-sm-4 col-6 fw-bold  d-flex justify-content-center align-items-center '>
@@ -68,7 +74,7 @@ const Information = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center mb-3 p-2">
-                <button onClick={()=>{toggleAlert()}} className="btn my-2 rounded-4" style={{ background: '#1C3B57', color: 'white' }}>
+                <button type='submit' className="btn my-2 rounded-4" style={{ background: '#1C3B57', color: 'white' }}>
                     <b>Guardar Area</b>
                 </button>
             </div>
@@ -86,7 +92,7 @@ const Information = () => {
             </Modal>
             <ModalAceptar viewAlert={confirmacionView} msg="Se agrego la nueva area de conocimiento" toggleAlert={toggleConfirmacion}></ModalAceptar>
             <ModalAceptar viewAlert={errorView} msg="Esa area de conocimiento ya existe" toggleAlert={toggleError}></ModalAceptar>
-        </div>
+        </form>
         
     </div>
 
