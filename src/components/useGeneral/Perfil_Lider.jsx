@@ -8,3 +8,5 @@ export default function LiderPerfil(props) {
     let user = JSON.parse(localStorage.getItem(props.location))
     return (<PerfilLider usuario={user} editable={props.editable}></PerfilLider>);
 }
+
+

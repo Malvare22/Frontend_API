@@ -8,3 +8,5 @@ export default function DocentePerfil(props) {
     let user = JSON.parse(localStorage.getItem(props.location))
     return (<PerfilDocente usuario={user} editable={props.editable}></PerfilDocente>);
 }
+
+

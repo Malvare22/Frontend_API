@@ -66,7 +66,7 @@ const Table = (props) => {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
                 data: formData
             };
-            await axios.delete("http://localhost:8080/entidadFinanciadora", config)
+            await axios.delete("http://129.151.121.230:8080/entidadFinanciadora", config)
             props.updater();
             toggleAlert(null)
         }
@@ -158,7 +158,7 @@ export default function Listar_Entidades() {
     const navigate = useNavigate();
     const getEntidades = async () => {
         let value = null;
-        value = await axios.get('http://localhost:8080/entidadFinanciadora', {
+        value = await axios.get('http://129.151.121.230:8080/entidadFinanciadora', {
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
         }).then(
             response => {
@@ -202,3 +202,5 @@ export default function Listar_Entidades() {
         </div>
     );
 }
+
+

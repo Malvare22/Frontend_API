@@ -51,7 +51,7 @@ const Formulario = () => {
       formData.append('area', areaEnfoque);
       formData.append('documento', formatoIdea);
 
-      let ruta = "http://localhost:8080/ideaNegocio";
+      let ruta = "http://129.151.121.230:8080/ideaNegocio";
       let value = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           console.log("hecho")
@@ -82,7 +82,7 @@ const Formulario = () => {
     var parsedData = JSON.parse(localData);
 
     try {
-      const response = await axios.get('http://localhost:8080/estudiante/listar', {
+      const response = await axios.get('http://129.151.121.230:8080/estudiante/listar', {
         headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
 
@@ -102,7 +102,7 @@ const Formulario = () => {
   const [areas, setAreas] = useState([]);
   const getAreas = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/areaConocimiento', {
+      const response = await axios.get('http://129.151.121.230:8080/areaConocimiento', {
         headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
       console.log(response.data);
@@ -119,7 +119,7 @@ const Formulario = () => {
   const [cursos, setCursos] = useState([]);
   const getCursos = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/estudiante/listarCursos', {
+      const response = await axios.get('http://129.151.121.230:8080/estudiante/listarCursos', {
         headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
       });
       console.log(response.data);
@@ -273,3 +273,6 @@ const Sobreponer = styled.div`
     height: 40px;
   }
 `;
+
+
+

@@ -8,3 +8,5 @@ export default function AdministrativoPerfil(props) {
     let user = JSON.parse(localStorage.getItem(props.location))
     return (<PerfilAdministrativo usuario={user} editable={props.editable}></PerfilAdministrativo>);
 }
+
+

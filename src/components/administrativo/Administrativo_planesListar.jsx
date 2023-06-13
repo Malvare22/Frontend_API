@@ -9,7 +9,7 @@ import { Filters, Table } from '../useGeneral/UserTablesPlanes';
 export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
-        const value = await axios.get("http://localhost:8080/planNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get("http://129.151.121.230:8080/planNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -48,7 +48,7 @@ export default function Listar_Planes() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            let value = await axios.post("http://localhost:8080/planNegocio/filtrar", formData, config
+            let value = await axios.post("http://129.151.121.230:8080/planNegocio/filtrar", formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -118,3 +118,5 @@ export default function Listar_Planes() {
         </div>
     );
 }
+
+

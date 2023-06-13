@@ -44,7 +44,7 @@ const Table = ({ data }) => {
         navigate('../Tutor/Ideas/Vista');
     };
     const descargarArchivo = (nombre) => {
-        let URL = 'http://localhost:8080/ideaNegocio/recuperarDocumento/' + nombre;
+        let URL = 'http://129.151.121.230:8080/ideaNegocio/recuperarDocumento/' + nombre;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -217,7 +217,7 @@ export default function Listar_Ideas() {
         var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
         formData.append('tutorCodigo', parsedData.codigo);
-        let value = await axios.post("http://localhost:8080/ideaNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.post("http://129.151.121.230:8080/ideaNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -255,7 +255,7 @@ export default function Listar_Ideas() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            const value = await axios.post("http://localhost:8080/ideaNegocio/filtrar", formData, config
+            const value = await axios.post("http://129.151.121.230:8080/ideaNegocio/filtrar", formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -315,7 +315,7 @@ function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
         let value = null;
-        value = await axios.get('http://localhost:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        value = await axios.get('http://129.151.121.230:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -340,7 +340,7 @@ function Getareas() {
     const [datos3, setDatos] = useState([]);
     const getAreas = async () => {
         let value = null;
-        value = await axios.get('http://localhost:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        value = await axios.get('http://129.151.121.230:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -361,3 +361,5 @@ function Getareas() {
         })
     )
 }
+
+

@@ -132,3 +132,5 @@ export default function Listar_Estudiantes() {
         </div>
     );
 }
+
+

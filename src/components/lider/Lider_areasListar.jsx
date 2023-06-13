@@ -35,7 +35,7 @@ const Table = (props) => {
                 data: formData
             };
             console.log(nombre)
-            await axios.delete("http://localhost:8080/areaConocimiento", config)
+            await axios.delete("http://129.151.121.230:8080/areaConocimiento", config)
             toggleAlert(null)
             window.location.reload();
         }
@@ -117,7 +117,7 @@ export default function Listar_Areas() {
     const navigate = useNavigate();
     const getAreas = async () => {
         let value = null;
-        value = await axios.get('http://localhost:8080/areaConocimiento', {
+        value = await axios.get('http://129.151.121.230:8080/areaConocimiento', {
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
         }).then(
             response => {
@@ -163,3 +163,5 @@ export default function Listar_Areas() {
         </div>
     );
 }
+
+

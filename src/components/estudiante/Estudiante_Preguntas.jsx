@@ -34,3 +34,6 @@ EstudiantePreguntas.propTypes = {
 
 
 export default EstudiantePreguntas;
+
+
+

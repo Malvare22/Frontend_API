@@ -27,7 +27,7 @@ const VistaGeneral = () => {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            let data = (await axios.get('http://localhost:8080/coordinador/listar/coordinador', config).then(response => response.data))
+            let data = (await axios.get('http://129.151.121.230:8080/coordinador/listar/coordinador', config).then(response => response.data))
 
             if (data.length == 0) {
                 setModalAdd(true)
@@ -37,7 +37,7 @@ const VistaGeneral = () => {
                 let archivo;
                 try {
                     data = (importLider(data))[0]
-                    foto = await axios.get('http://localhost:8080/coordinador/foto/' + data.codigo, {
+                    foto = await axios.get('http://129.151.121.230:8080/coordinador/foto/' + data.codigo, {
                         headers: {
                             "X-Softue-JWT": localStorage.getItem('token_access')
                         },
@@ -91,7 +91,7 @@ const VistaGeneral = () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.get('http://localhost:8080/coordinador/deshabilitarUsuario/' + usuario.correo, config)
+        await axios.get('http://129.151.121.230:8080/coordinador/deshabilitarUsuario/' + usuario.correo, config)
     }
 
     const toggleAddAlert = () => {
@@ -128,7 +128,7 @@ const VistaGeneral = () => {
                     </FormGroup>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="danger" onClick={() => { disableLider(); navigate(0); }}>Confirmar</Button>
+                    <Button color="danger" onClick={async () => { await disableLider(); navigate(0); }}>Confirmar</Button>
                     <Button color="primary" onClick={toggleDisableAlert}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
@@ -242,3 +242,5 @@ const Sdiv03 = styled.div`
     top: -50px;
     left: -30px;
 `;
+
+

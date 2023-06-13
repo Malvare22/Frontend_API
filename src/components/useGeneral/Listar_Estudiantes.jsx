@@ -76,7 +76,7 @@ const Table = (props) => {
     const disableStudent = async () => {
 
         try{
-            await axios.get('http://localhost:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
+            await axios.get('http://129.151.121.230:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
             headers: {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
@@ -187,7 +187,7 @@ export default function ListarEstudiantes() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://localhost:8080/estudiante/listar', config)
+        value = await axios.get('http://129.151.121.230:8080/estudiante/listar', config)
         setFilteredData(importStudents(value.data))
 
 
@@ -224,3 +224,5 @@ export default function ListarEstudiantes() {
         </div>
     );
 }
+
+

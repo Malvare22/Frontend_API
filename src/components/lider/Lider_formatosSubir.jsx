@@ -32,7 +32,7 @@ export default function Subir_Formatos() {
             formData.append('modulo', modulo);
             formData.append('documento', formato);
 
-            let ruta = 'http://localhost:8080/formato';
+            let ruta = 'http://129.151.121.230:8080/formato';
             let value = await axios
                 .post(ruta, formData, { headers: { 'X-Softue-JWT': localStorage.getItem('token_access') } })
                 .then((response) => {
@@ -145,3 +145,5 @@ export default function Subir_Formatos() {
         </div>
     );
 }
+
+

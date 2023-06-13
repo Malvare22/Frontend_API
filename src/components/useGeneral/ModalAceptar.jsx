@@ -12,3 +12,5 @@ export default function ModalAceptar(props){
                 </ModalFooter>
     </Modal>
 }
+
+

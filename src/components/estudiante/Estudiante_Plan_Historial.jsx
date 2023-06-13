@@ -60,3 +60,6 @@ export default function Historial() {
         </div>
     )
 }
+
+
+

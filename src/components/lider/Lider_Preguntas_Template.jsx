@@ -22,7 +22,7 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            const response = await axios.get('http://localhost:8080/componenteCompetencias', config);
+            const response = await axios.get('http://129.151.121.230:8080/componenteCompetencias', config);
             setComponentes(response.data);
         } catch (error) {
             console.error("Error al obtener las componentes:", error);
@@ -266,3 +266,6 @@ const Respuesta = ({ respuesta, onChangeRespuesta, errorRespuesta }) => {
         </div>
     );
 }
+
+
+

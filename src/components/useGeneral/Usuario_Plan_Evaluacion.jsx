@@ -52,7 +52,7 @@ const Evaluaciones = (props) => {
     const getProfesores = async () => {
         if (Area !== null) {
             try {
-                const response = await axios.get('http://localhost:8080/docente/listar/' + Area, {
+                const response = await axios.get('http://129.151.121.230:8080/docente/listar/' + Area, {
                     headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
                 });
                 const data = response.data;
@@ -74,7 +74,7 @@ const Evaluaciones = (props) => {
     const getCalificadores = async () => {
         let value = null;
         //let URLs='http://144.22.37.238:8080/planNegocio/evaluacion/'+props.nombre;
-        let URLs = 'http://localhost:8080/planNegocio/evaluacion/' + props.nombre;
+        let URLs = 'http://129.151.121.230:8080/planNegocio/evaluacion/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -98,7 +98,7 @@ const Evaluaciones = (props) => {
     const getIdeas = async () => {
         let value = null;
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
-        let URLs = 'http://localhost:8080/observacionPlan/' + props.nombre;
+        let URLs = 'http://129.151.121.230:8080/observacionPlan/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -118,7 +118,7 @@ const Evaluaciones = (props) => {
         let value = null;
 
         //let URLd = 'http://144.22.37.238:8080/ideaNegocio/calificacion';
-        let URLd = 'http://localhost:8080/planNegocio/calificacion';
+        let URLd = 'http://129.151.121.230:8080/planNegocio/calificacion';
         const response = await axios.delete(URLd, {
             data: { codigoDocente: a, evaluacionPlanId: props.idi },
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
@@ -144,7 +144,7 @@ const Evaluaciones = (props) => {
     const [areas, setAreas] = useState([]);
     const getAreas = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/areaConocimiento', {
+            const response = await axios.get('http://129.151.121.230:8080/areaConocimiento', {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data;
@@ -167,7 +167,7 @@ const Evaluaciones = (props) => {
 
         if (correoDocente) {
             try {
-                const response = await axios.post('http://localhost:8080/planNegocio/calificacion/' + props.nombre + '/' + correoDocente, {}, {
+                const response = await axios.post('http://129.151.121.230:8080/planNegocio/calificacion/' + props.nombre + '/' + correoDocente, {}, {
                     headers: {
                         "X-Softue-JWT": localStorage.getItem("token_access")
                     }
@@ -196,7 +196,7 @@ const Evaluaciones = (props) => {
     const enviarA_Plan = async () => {
 
         try {
-            const response = await axios.post('http://localhost:8080/planNegocio/' + props.nombre, {}, {
+            const response = await axios.post('http://129.151.121.230:8080/planNegocio/' + props.nombre, {}, {
                 headers: {
                     "X-Softue-JWT": localStorage.getItem("token_access")
                 }
@@ -465,3 +465,5 @@ const Sobreponer = styled.div`
  }
 
 `;
+
+

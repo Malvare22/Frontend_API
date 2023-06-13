@@ -110,7 +110,7 @@ const Information = () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        axios.patch('http://localhost:8080/componenteCompetencias', data, config)
+        axios.patch('http://129.151.121.230:8080/componenteCompetencias', data, config)
             .then((response) => {
                 toggleAlert();
                 navigate('/Lider/Evaluacion/Componentes');
@@ -246,3 +246,5 @@ const SInfo = styled.div`
     }
 }
 `;
+
+

@@ -150,7 +150,7 @@ export async function loadAreas(setAreas){
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const value = await axios.get('http://localhost:8080/areaConocimiento', config).then(response => response.data)
+        const value = await axios.get('http://129.151.121.230:8080/areaConocimiento', config).then(response => response.data)
         setAreas(value.map((area)=> area.nombre))
     }
     catch (error) {
@@ -166,3 +166,5 @@ export async function loadAreas(setAreas){
         alert(msg)
     }
 }
+
+

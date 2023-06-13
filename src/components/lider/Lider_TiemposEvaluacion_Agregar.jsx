@@ -14,7 +14,7 @@ export default function TiemposEvaluacionAgregar(){
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-          let ruta = "http://localhost:8080/periodo";
+          let ruta = "http://129.151.121.230:8080/periodo";
           let value = await axios.patch(ruta, {
             diasPeriodoIdea : tiempoIdea,
             diasPeriodoPlan : tiempoPlan
@@ -86,3 +86,5 @@ export default function TiemposEvaluacionAgregar(){
         </div>
     )
 };
+
+

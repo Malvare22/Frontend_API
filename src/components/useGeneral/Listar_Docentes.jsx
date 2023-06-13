@@ -71,7 +71,7 @@ const Table = ({ data, updater }) => {
             }
         }
         try{
-            await axios.get('http://localhost:8080/docente/deshabilitarDocente/'+ valor.correo, config)
+            await axios.get('http://129.151.121.230:8080/docente/deshabilitarDocente/'+ valor.correo, config)
             updater()
             toggleAlert(null)
         }
@@ -172,7 +172,7 @@ export default function ListarDocentes() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://localhost:8080/docente/listar', config)
+        value = await axios.get('http://129.151.121.230:8080/docente/listar', config)
         setFilteredData(importDocents(value.data))
     };
     useEffect(() => {
@@ -203,3 +203,5 @@ export default function ListarDocentes() {
         </div>
     );
 }
+
+

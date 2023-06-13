@@ -9,7 +9,7 @@ export default function Historial(props) {
     const definir_Estado = async () => {
         let value = null;
         //let URLs='http://144.22.37.238:8080/planNegocio/evaluacion/'+props.nombre;
-        let URLs='http://localhost:8080/planNegocio/evaluacion/'+props.nombre;
+        let URLs='http://129.151.121.230:8080/planNegocio/evaluacion/'+props.nombre;
         value = await axios.get(URLs,{headers: { "X-Softue-JWT": localStorage.getItem("token_access")}}
             ).then(
             response => {
@@ -66,3 +66,5 @@ export default function Historial(props) {
         </div>
     )
 }
+
+

@@ -20,7 +20,7 @@ const InfoGeneralIdea = () => {
     const obtenerFormato = async () => {
 
         let value = null;
-        let URL = 'http://localhost:8080/formato/IdeaNegocio';
+        let URL = 'http://129.151.121.230:8080/formato/IdeaNegocio';
         
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
@@ -88,3 +88,5 @@ const InfoGeneralIdea = () => {
         </main>
     )
 }
+
+

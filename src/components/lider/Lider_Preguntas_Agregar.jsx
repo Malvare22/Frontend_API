@@ -55,3 +55,6 @@ export default function AgregarPregunta() {
         </div>
     );
 }
+
+
+

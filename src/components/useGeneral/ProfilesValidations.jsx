@@ -81,3 +81,5 @@ export default function WindowForPassword(props){
         </ModalFooter>
     </Modal>)
 }
+
+
