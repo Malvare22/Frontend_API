@@ -30,9 +30,12 @@ export default function Aceptar_Tutoria() {
         try {
             console.log(titulo)
             await axios.get(`http://144.22.32.132:8080/docente/acceptarTutor/${titulo}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+
             navigate('/Docente/Perfil');
         } catch (error) {
-            console.log(error);
+            console.log("A?");
+            alert(error.response.data.errorMessage);
+            navigate('/Docente/Perfil')
         }
     };
 

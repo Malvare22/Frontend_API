@@ -185,7 +185,7 @@ export default function Listar_Entidades() {
                         <div className="d-flex justify-content-start">
                             <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }} onClick={()=> navigate('Registrar')}>
                                 <div className='container'>
-                                    Registrar area
+                                    Registrar entidad
                                     <div className="col-auto">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-building-fill-add" viewBox="0 0 16 16">
                                             <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Z" />
