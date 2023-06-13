@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import axios from 'axios';
 
 export default function Subir_Formatos() {
@@ -32,6 +31,11 @@ export default function Subir_Formatos() {
             formData.append('modulo', modulo);
             formData.append('documento', formato);
 
+            // Cambiar el nombre del archivo antes de enviarlo
+            const nombreArchivoEsperado = modulo === 'idea_de_negocio' ? 'idea_de_negocio' : 'plan_de_negocio';
+            const nuevoNombreArchivo = nombreArchivoEsperado + '.' + formato.name.split('.').pop();
+            formData.set('documento', formato, nuevoNombreArchivo);
+
             let ruta = 'http://localhost:8080/formato';
             let value = await axios
                 .post(ruta, formData, { headers: { 'X-Softue-JWT': localStorage.getItem('token_access') } })
@@ -60,28 +64,32 @@ export default function Subir_Formatos() {
         }
     };
 
-    const verificarNombreArchivo = (nombreArchivo) => {
-        // Nombre de archivo esperado para la validación
+    const cambiarNombreArchivo = (nombreArchivo) => {
         const nombreArchivoEsperado = modulo === 'idea_de_negocio' ? 'idea_de_negocio' : 'plan_de_negocio';
-      
-        // Dividir el nombre del archivo en nombre y extensión
         const partesNombreArchivo = nombreArchivo.split('.');
-        const nombreArchivoSinExtension = partesNombreArchivo[0];
-        const extensionArchivo = partesNombreArchivo[1];
-      
-        if (nombreArchivoSinExtension === nombreArchivoEsperado && (extensionArchivo === 'pdf' || extensionArchivo === 'docx')) {
-          setNombreArchivoValido(true);
-          setFormatoValido(true);
-        } else {
-          setNombreArchivoValido(false);
-          setFormatoValido(false);
-        }
-      };
+        const extensionArchivo = partesNombreArchivo[partesNombreArchivo.length - 1];
 
+        if (extensionArchivo === 'pdf' || extensionArchivo === 'docx') {
+            setFormatoValido(true);
+            const nuevoNombreArchivo = nombreArchivoEsperado + '.' + extensionArchivo;
+            setNombreArchivoValido(true);
+            return nuevoNombreArchivo;
+        } else {
+            setFormatoValido(false);
+            setNombreArchivoValido(false);
+            return nombreArchivo;
+        }
+    };
 
     useEffect(() => {
         if (formato) {
-            verificarNombreArchivo(formato.name);
+            const nuevoNombreArchivo = cambiarNombreArchivo(formato.name);
+            if (nuevoNombreArchivo !== formato.name) {
+                setFormato((prevFormato) => {
+                    const formatoModificado = new File([prevFormato], nuevoNombreArchivo, { type: prevFormato.type });
+                    return formatoModificado;
+                });
+            }
         }
     }, [formato]);
 
@@ -113,7 +121,9 @@ export default function Subir_Formatos() {
                                                     <p className="text-center">
                                                         <b>4. Subir formato de la idea de negocio</b>
                                                     </p>
-                                                    <p style={{fontSize:"smaller"}} className="text-center">Tenga en cuenta que el formato a subir debe llamarse "idea_de_negocio" y coincidir con el formato esperado</p>
+                                                    <p style={{ fontSize: 'smaller' }} className="text-center">
+                                                        Tenga en cuenta que el formato a subir debe coincidir con el formato esperado (PDF o DOCX)
+                                                    </p>
                                                     <div className="d-flex justify-content-center align-items-center">
                                                         <input type="file" id="formatoIdea" onChange={handleformatoChange} accept=".pdf,.docx" required />
                                                     </div>
@@ -123,7 +133,9 @@ export default function Subir_Formatos() {
                                                     <p className="text-center">
                                                         <b>4. Subir formato del plan de negocio</b>
                                                     </p>
-                                                    <p style={{fontSize:"smaller"}} className="text-center">Tenga en cuenta que el formato a subir debe llamarse "plan_de_negocio" y coincidir con el formato esperado</p>
+                                                    <p style={{ fontSize: 'smaller' }} className="text-center">
+                                                        Tenga en cuenta que el formato a subir debe coincidir con el formato esperado (PDF o DOCX)
+                                                    </p>
                                                     <div className="d-flex justify-content-center align-items-center">
                                                         <input type="file" id="formatoPlan" onChange={handleformatoChange} accept=".pdf,.docx" required />
                                                     </div>
