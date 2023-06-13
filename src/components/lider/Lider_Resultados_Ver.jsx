@@ -3,7 +3,7 @@ import styled from "styled-components";
 import React, { useEffect, useState } from 'react';
 import ImagenAprobado from '../../assets/images/aprobado.png';
 import ImagenReprobado from '../../assets/images/reprobado.png';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 
 export default function useListarPreguntas() {
 
