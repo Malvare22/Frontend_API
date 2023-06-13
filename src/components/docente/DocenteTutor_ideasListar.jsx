@@ -279,7 +279,7 @@ export default function Listar_Ideas() {
     };
     const obtenerFormato = async () => {
         let value = null;
-        let URL = 'http://localhost:8080/formato/IdeaNegocio';
+        let URL = 'http://144.22.32.132:8080/formato/IdeaNegocio';
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
@@ -390,6 +390,7 @@ function Getareas() {
         })
     )
 }
+
 
 
 

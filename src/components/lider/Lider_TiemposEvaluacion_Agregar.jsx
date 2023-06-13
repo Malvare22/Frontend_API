@@ -20,7 +20,7 @@ export default function TiemposEvaluacionAgregar(){
     }
     const getTiempos = async () => {
      
-      let ruta = "http://localhost:8080/periodo";
+      let ruta = "http://144.22.32.132:8080/periodo";
       let value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           const data = response.data;
@@ -125,6 +125,7 @@ export default function TiemposEvaluacionAgregar(){
         </div>
     )
 };
+
 
 
 

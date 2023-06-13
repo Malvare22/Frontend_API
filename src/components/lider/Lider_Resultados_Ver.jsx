@@ -23,7 +23,7 @@ export default function useListarPreguntas() {
 
     const getEstudiante = async () => {
 
-        let value = await axios.get("http://localhost:8080/estudiante/visualizarConId/" + codigo, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.get("http://144.22.32.132:8080/estudiante/visualizarConId/" + codigo, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -41,7 +41,7 @@ export default function useListarPreguntas() {
 
     const getEvaluacion = async () => {
 
-        let value = await axios.get("http://localhost:8080/test/resultados/" + id, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.get("http://144.22.32.132:8080/test/resultados/" + id, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
