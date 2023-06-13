@@ -169,11 +169,13 @@ const SideBarStatic = () => {
               <Link to={'Formatos'} style={{ textDecoration: "none", color: "white" }}>Historial de formatos</Link>
             </NavLink>
           </NavItem>
-          <NavItem>
+
+          {/* <NavItem>
             <NavLink className='offset-md-3 text-white text-start align-items-center' href="#">
               Material de apoyo
             </NavLink>
-          </NavItem>
+          </NavItem> */}
+
         </UncontrolledCollapse>
         <NavItem>
           <NavLink href="#">
@@ -191,7 +193,8 @@ const SideBarStatic = () => {
             </Row>
           </NavLink>
         </NavItem>
-        <NavItem>
+
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -202,8 +205,9 @@ const SideBarStatic = () => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
             </Row>
           </NavLink>
-        </NavItem>
-        <NavItem>
+        </NavItem> */}
+
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -215,8 +219,9 @@ const SideBarStatic = () => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
             </Row>
           </NavLink>
-        </NavItem>
-        <NavItem>
+        </NavItem> */}
+
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -227,7 +232,8 @@ const SideBarStatic = () => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Informe general UE</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
+
         <NavItem onClick={() => { setArrow04(!arrow04) }}>
           <NavLink id='Configuracion' href="#">
             <Row className='d-flex align-content-center align-items-center'>
@@ -474,7 +480,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -485,9 +491,9 @@ const SideBarResponsive = () => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -499,10 +505,10 @@ const SideBarResponsive = () => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -513,7 +519,8 @@ const SideBarResponsive = () => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Informe general UE</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
+
           <NavItem onClick={() => { setArrow04(!arrow04) }}>
             <NavLink id='Configuracion' href="#">
               <Row className='d-flex align-content-center align-items-center'>
