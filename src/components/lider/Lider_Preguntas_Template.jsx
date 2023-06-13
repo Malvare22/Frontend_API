@@ -49,7 +49,7 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
     const handleClickEnviar = () => {
         let valid = true;
 
-        const errorRespuestas = preguntaState.listaRespuestas.map((respuesta) => {
+        const errorRespuestas = preguntaState && preguntaState.listaRespuestas.map((respuesta) => {
             const errores = {};
             if (respuesta.contenido === "") {
                 errores.contenidoInvalido = true;
@@ -169,7 +169,7 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                             <option value={preguntaState.componente}>
                                 {preguntaState.componente.charAt(0).toUpperCase() + preguntaState.componente.slice(1).toLowerCase()}
                             </option>
-                            {componentes.map((componente) => (
+                            {componentes && componentes.map((componente) => (
                                 componente.nombre === preguntaState.componente ? "" : (
                                     <option key={componente.id} value={componente.nombre}>
                                         {componente.nombre.charAt(0).toUpperCase() + componente.nombre.slice(1).toLowerCase()}
@@ -190,7 +190,7 @@ export const Enunciado = ({ pregunta, enviarDatos }) => {
                 </div>
             </div>
 
-            {preguntaState.listaRespuestas.map((respuesta) => (
+            {preguntaState && preguntaState.listaRespuestas.map((respuesta) => (
                 <Respuesta
                     key={respuesta.id}
                     respuesta={respuesta}
