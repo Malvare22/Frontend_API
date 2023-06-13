@@ -16,7 +16,7 @@ export default function Estudiante_ListarPlanes() {
         var localData = localStorage.getItem("MY_PROFILE_INFO");
         var parsedData = JSON.parse(localData);
         formData.append('codigoEstudiante', parsedData.codigo);
-        let value = await axios.post("http://144.22.32.132:8080/planNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.post("http://144.22.63.128:8080/planNegocio/filtrar", formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -173,6 +173,7 @@ const Sobreponer = styled.div`
  }
 
 `;
+
 
 
 

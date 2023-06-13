@@ -27,7 +27,7 @@ const VistaGeneral = () => {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            let data = (await axios.get('http://144.22.32.132:8080/coordinador/listar/coordinador', config).then(response => response.data))
+            let data = (await axios.get('http://144.22.63.128:8080/coordinador/listar/coordinador', config).then(response => response.data))
 
             if (data.length == 0) {
                 setModalAdd(true)
@@ -37,7 +37,7 @@ const VistaGeneral = () => {
                 let archivo;
                 try {
                     data = (importLider(data))[0]
-                    foto = await axios.get('http://144.22.32.132:8080/coordinador/foto/' + data.codigo, {
+                    foto = await axios.get('http://144.22.63.128:8080/coordinador/foto/' + data.codigo, {
                         headers: {
                             "X-Softue-JWT": localStorage.getItem('token_access')
                         },
@@ -91,7 +91,7 @@ const VistaGeneral = () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.get('http://144.22.32.132:8080/coordinador/deshabilitarUsuario/' + usuario.correo, config)
+        await axios.get('http://144.22.63.128:8080/coordinador/deshabilitarUsuario/' + usuario.correo, config)
     }
 
     const toggleAddAlert = () => {
@@ -242,6 +242,7 @@ const Sdiv03 = styled.div`
     top: -50px;
     left: -30px;
 `;
+
 
 
 

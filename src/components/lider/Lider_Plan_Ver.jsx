@@ -45,7 +45,7 @@ const InfoGeneral = () => {
     const getDatos1 = async () => {
         let value = null;
         let nombre = "Idea de negocio de Rebeca.Brunell@gmail.com";
-        let URL = 'http://144.22.32.132:8080/ideaNegocio/' + nombre;
+        let URL = 'http://144.22.63.128:8080/ideaNegocio/' + nombre;
         let Token = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
 
         value = await axios.get('../../../ideasdeveritas.json'
@@ -69,7 +69,7 @@ const InfoGeneral = () => {
     const [profesores, setProfesores] = useState([]);
     const getProfesores = async () => {
         let value = null;
-        // let URL = 'http://144.22.32.132:8080/docente/listar';
+        // let URL = 'http://144.22.63.128:8080/docente/listar';
         // let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
         value = await axios('../../../docentesdeveritas.json'
             //  method: "get",
@@ -438,7 +438,7 @@ function Tabla() {
     const getIdeas = async () => {
         let value = null;
         // let nombre="Idea de negocio de Rebeca.Brunell@gmail.com";
-        //let URL = 'http://144.22.32.132:8080/observacionIdea/'+nombre;
+        //let URL = 'http://144.22.63.128:8080/observacionIdea/'+nombre;
         //let Token ='eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJFcmlja2EuRWNrYmxhZEBnbWFpbC5jb20iLCJpYXQiOjE2ODU0OTQ5NzIsInN1YiI6ImNvb3JkaW5hZG9yIiwiaXNzIjoiTWFpbiIsImV4cCI6MTY4NTQ5ODU3Mn0.Omd4OBwAP31FjUr_gWPXLGEduV-OynA_iFKC0eYbjn4';
 
         value = await axios.get('../../../Observaciones.json'
@@ -481,6 +481,7 @@ function Tabla() {
         </Sdiv>
     );
 }
+
 
 
 

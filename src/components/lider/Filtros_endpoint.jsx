@@ -7,7 +7,7 @@ export const getCursos = async () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.get(`http://144.22.32.132:8080/estudiante/listarCursos`, config);
+        const response = await axios.get(`http://144.22.63.128:8080/estudiante/listarCursos`, config);
         return response.data;        
     } catch (error) {
         console.error("Error al obtener los cursos:", error);
@@ -33,7 +33,7 @@ export const getResultadosFiltrados = async (filtro) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.post('http://144.22.32.132:8080/test/filtrar', formData, config);
+        const response = await axios.post('http://144.22.63.128:8080/test/filtrar', formData, config);
         return response.data;
     }
     catch (error) {
@@ -57,12 +57,13 @@ export const getResultados = async () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.get(`http://144.22.32.132:8080/test`, config);
+        const response = await axios.get(`http://144.22.63.128:8080/test`, config);
         return response.data;        
     } catch (error) {
         console.error("Error al obtener los cursos:", error);
     }
 }
+
 
 
 
