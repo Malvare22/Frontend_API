@@ -92,8 +92,10 @@ import LiderPreguntasEditar from './components/lider/Lider_Preguntas_Editar';
 import TiemposEvaluacionAgregar from './components/lider/Lider_TiemposEvaluacion_Agregar';
 import Listar_Areas from './components/lider/Lider_areasListar';
 import RegistrarArea from './components/lider/Lider_Areas_Registrar';
+import LiderResultadosListar from './components/lider/Lider_Resultados_Listar';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
+import { Relogin } from './routes/login/Relogin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -101,6 +103,7 @@ const router = createBrowserRouter(
       <Route element={<Template></Template>} errorElement={<Error404></Error404>}>
         <Route path='/' element={<Home></Home>} />
         <Route path='/login' element={<><Login/><Footer/></>} />
+        <Route path='/relogin' element={<><Relogin/><Footer/></>} />
         <Route path='/forgetPassword' element={<><Recovery></Recovery><Footer></Footer></>} />
         <Route exact path="/resetPassword" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
         <Route path="/resetPassword/:token" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
@@ -163,6 +166,9 @@ const router = createBrowserRouter(
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
             <Route path='Preguntas/Listar/Agregar' element={<LiderPreguntasAgregar></LiderPreguntasAgregar>} />
             <Route path='Preguntas/Listar/Editar' element={<LiderPreguntasEditar></LiderPreguntasEditar>} />
+            
+            {/** Rutas del manejo de resultados */}
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
 
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
@@ -195,6 +201,8 @@ const router = createBrowserRouter(
             <Route path='Lider' element={<AdministrativoVerPerfilLider/>} />
             <Route path='Lider/Registrar' element={<LiderEditarPerfil type={'registrar'}/>} />
             <Route path='Lider/Editar' element={<LiderEditarPerfil location={'LIDER_INFORMATION'} type={'sudo'}/>} loader={GestionarLider}/>
+            
+            <Route path='Resultados/Listar' element={<LiderResultadosListar></LiderResultadosListar>} />
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />
@@ -215,7 +223,7 @@ const router = createBrowserRouter(
             <Route path='VistaEntidades' element={<DocenteVistaEntidadFinanciadora></DocenteVistaEntidadFinanciadora>} />
             <Route path='Estudiantes' element={<DocenteListarEstudiantes></DocenteListarEstudiantes>} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
-            <Route path='Tutor/Aceptar/:idea' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
           </Route>
         </Route>
       </Route>

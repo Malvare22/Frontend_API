@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useUserSession, useUserTogglerSession } from '../../context/UserContext';
 import axios from 'axios';
+import { validarContrasenia } from '../../components/useGeneral/ProfilesValidations';
 //import Sidebar from '../../components/NavBar'
 
 
@@ -59,14 +60,14 @@ const useForm = (initialData, validar, navigate) => {
 };
 
 
-export default function Login() {
+export default function Login(props) {
     return (
         <div className='container-fluid' style={{ background: "#1C3B57" }}>
             <div className='row p-5'>
                 <div className='col-md-6 col-12 p-5 d-flex justify-content-center align-items-center' style={{ background: "#68462C" }}>
                     <div className='flex-grow-1'>
                         <h2 className='text-center mb-5' style={{ color: "white", fontWeight: "bold" }}>SoftUE</h2>
-                        <Panel></Panel>
+                        <Panel Relogin={props.Relogin}></Panel>
                     </div>
                 </div>
                 <div className='col-md-6 col-12 p-0'>
@@ -77,7 +78,7 @@ export default function Login() {
     );
 }
 
-const Panel = () => {
+const Panel = (props) => {
     const navigate = useNavigate();
     const toggleA = () => {
         navigate('/forgetPassword');
@@ -86,9 +87,8 @@ const Panel = () => {
     const validar = async (form) => {
         //Colocar método de verificación de clave (Cada input está en form)
         let condition = undefined
-        const password = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || form.password.trim() == '' || password.exec(form.password) == null) {
+        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || !validarContrasenia(form.password)) {
             return undefined;
         }
 
@@ -98,7 +98,7 @@ const Panel = () => {
                     email: form.userName,
                     password: form.password
                 }).then((response) => {
-                    const valor = localStorage.getItem('RELOGIN');
+                    const valor = props.Relogin;
                     localStorage.setItem('token_access', response.data.token)
                     localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
                     if (valor === '1') {
