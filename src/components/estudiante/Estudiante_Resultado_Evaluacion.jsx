@@ -68,7 +68,7 @@ export default function Estudiante_Evaluacion() {
                 console.error(error);
             });
 
-        setResultadoEvaluacion(value.calificacion);
+        setResultadoEvaluacion(value.calificacion.toFixed(2));
 
     };
 
