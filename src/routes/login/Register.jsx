@@ -36,14 +36,27 @@ export default function Screen() {
 
 const PanelPrincipal = (props) => {
     const navigate = useNavigate();
-    const handleSubmit = (e) => {        
+    const handleSubmit = () => {        
         if (!validar()) {
             return;
         }
         const { codigo, contrasenia } = formValues;
-        // ACÁ VA LA SOLICITUD AL BACKEND
-        console.log(codigo);
-        console.log(contrasenia);
+        var formData = new FormData();
+        formData.append('codigo', codigo);
+        formData.append('contrasenia', contrasenia);
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        axios.post('http://localhost:8080/register/estudiante/codigo', formData, config)
+            .then((response) => {
+                alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
+                navigate('/Login');
+            })
+            .catch((error) => {
+                alert(error.response.data.errorMessage);
+            });
     };
     const initialErrors = {
         codigo: false,
