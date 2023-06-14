@@ -294,7 +294,10 @@ export function FormDocente({ user, type, myself }) {
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
-            else navigate(-1)
+            else{
+                localStorage.setItem('DOCENTE_EMAIL', form.correo) 
+                navigate(-1)
+            }
 
 
         } catch (error) {
@@ -580,7 +583,10 @@ export const FormEstudiante = ({ user, type, myself }) => {
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
-            else navigate(-1)
+            else{
+                localStorage.setItem('ESTUDIANTE_EMAIL', form.correo) 
+                navigate(-1)
+            }
 
         }
         catch (error) {
@@ -855,7 +861,10 @@ export const FormAdministrativo = ({ user, type, myself }) => {
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
-            else navigate(-1)
+            else{
+                localStorage.setItem('ADMINISTRATIVO_EMAIL', form.correo) 
+                navigate(-1)
+            }
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
@@ -1079,7 +1088,10 @@ export const FormLider = ({ user, type, myself }) => {
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
-            else navigate(-1)
+            else{
+                localStorage.setItem('LIDER_EMAIL', form.correo) 
+                navigate(-1)
+            }
 
 
         } catch (error) {
