@@ -83,7 +83,7 @@ const Panel = (props) => {
     const toggleA = () => {
         navigate('/forgetPassword');
     };
-    const register = () =>{
+    const register = () => {
         navigate('/registro')
     }
     //Aquí se hace toda la validación de los campos
@@ -91,37 +91,69 @@ const Panel = (props) => {
         //Colocar método de verificación de clave (Cada input está en form)
         let condition = undefined
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || !validarContrasenia(form.password)) {
-            return undefined;
+        const userEstudiante = !isNaN(form.userName);
+        if (!userEstudiante) {
+            if (!email_regex.test(form.userName) || form.userName.length > 50 || form.userName.trim() == '' || !validarContrasenia(form.password)) {
+                return undefined;
+            }
+            else {
+                try {
+                    condition = await axios.post('http://localhost:8080/login', {
+                        email: form.userName,
+                        password: form.password
+                    }).then((response) => {
+                        const valor = props.Relogin;
+                        localStorage.setItem('token_access', response.data.token)
+                        localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
+                        if (valor === '1') {
+                            navigate(-1);
+                        }
+                        else {
+                            return true;
+                        }
+                    })
+                }
+                catch {
+                }
+            }
+            return condition;
+            // if(form.userName=="estudiante") navigate('/estudiante');
+            // if(form.userName=="lider") navigate('/lider');
+            // if(form.userName=="docente") navigate('/docente');
+            // if(form.userName=="admin") navigate('/admin');
         }
-
         else {
-            try {
-                condition = await axios.post('http://localhost:8080/login', {
-                    email: form.userName,
-                    password: form.password
-                }).then((response) => {
-                    const valor = props.Relogin;
-                    localStorage.setItem('token_access', response.data.token)
-                    localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
-                    if (valor === '1') {
-                        navigate(-1);
-                    }
-                    else {
-                        return true;
-                    }
-                })
+            if (form.userName.length > 50 || form.userName.trim() == '' || !validarContrasenia(form.password)) {
+                return undefined;
             }
-            catch {
+            else {
+                try {
+                    let endpoint="http://localhost:8080/estudiante/obtenerCorreoIngreo/"+form.userName;
+                    const correo = await axios.get(endpoint).then((response)=>{
+                        return(response.data);
+                    })
+                    condition = await axios.post('http://localhost:8080/login', {
+                        email: correo,
+                        password: form.password
+                    }).then((response) => {
+                        console.log(response.data)
+                        const valor = props.Relogin;
+                        localStorage.setItem('token_access', response.data.token)
+                        localStorage.setItem('session', JSON.stringify({ "email": response.data.email, "rol": response.data.rol }))
+                        if (valor === '1') {
+                            navigate(-1);
+                        }
+                        else {
+                            return true;
+                        }
+                    })
+                }
+                catch {
+                }
             }
-        }
-        return condition;
-        // if(form.userName=="estudiante") navigate('/estudiante');
-        // if(form.userName=="lider") navigate('/lider');
-        // if(form.userName=="docente") navigate('/docente');
-        // if(form.userName=="admin") navigate('/admin');
-    };
-
+            return condition;
+        };
+    }
     //Plantilla del objeto user
     const user = {
         userName: '',
@@ -154,7 +186,7 @@ const Panel = (props) => {
                 <div className='d-flex align-items-center position-relative'>
                     <svg xmlns="http://www.w3.org/2000/svg" className='m-1 mb-0 mt-0 bi bi-person-fill' width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                    </svg><input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' name='userName' value={form.userName} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "5%" }}></input>
+                    </svg><input type='text' className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' name='userName' value={form.userName} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "5%" }}></input>
                 </div>
             </div>
             <div className='mt-4'>
