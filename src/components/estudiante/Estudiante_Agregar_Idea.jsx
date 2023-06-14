@@ -10,6 +10,7 @@ const Formulario = () => {
   const [titulo, setTitulo] = useState('');
   const [cursoSeleccionado, setCursoSeleccionado] = useState('');
   const [integrantesSeleccionados, setIntegrantesSeleccionados] = useState([]);
+  const [integrantesSeleccionadosNombres, setIntegrantesSeleccionadosNombres] = useState([]);
   const [areaEnfoque, setAreaEnfoque] = useState('');
   const [formatoIdea, setFormatoIdea] = useState(null);
   const [error, setError] = useState(null);
@@ -23,11 +24,17 @@ const Formulario = () => {
     setCursoSeleccionado(e.target.value);
   };
 
-  const handleIntegrantesClick = (value) => {
-    if (integrantesSeleccionados.includes(value)) {
-      setIntegrantesSeleccionados(prevOptions => prevOptions.filter(option => option !== value));
-    } else {
+  const handleIntegrantesClick = (value,correo) => {
+    if (!integrantesSeleccionados.includes(value)) {
       setIntegrantesSeleccionados(prevOptions => [...prevOptions, value]);
+      setIntegrantesSeleccionadosNombres(prevOptions => [...prevOptions, correo]);
+    }
+  };
+
+  const handleIntegrantesClickEliminar = (value,correo) => {
+    if (integrantesSeleccionados.includes(value)) {
+       setIntegrantesSeleccionados(prevOptions => prevOptions.filter(option => option !== value));
+       setIntegrantesSeleccionadosNombres(prevOptions => prevOptions.filter(option => option !== correo));
     }
   };
 
@@ -172,38 +179,49 @@ const Formulario = () => {
 
                         <Label id="texto">Escoge el curso</Label>
                         <Label for="exampleSelect"></Label>
-                        <Input type="select" name="select" onChange={handleCursoChange} id="exampleSelect" required>
+                        <Input type="select" name="select" onChange={handleCursoChange} id="exampleSelect">
                           <option value="">Seleccione...</option>
                           {cursos && cursos.map((v, i) => {
                             return (<option key={i} value={v}>{v}</option>);
                           })}
                         </Input>
 
-                        <div className='mt-3'>
-                          <Label for="exampleSelectMulti">Escoge los estudiantes</Label>
-                          <div>
-                            <select
-                              name="selectMulti"
-                              style={{ width: "100%" }}
-                              multiple
-                              required
-                            >
-                              {estudiantes && estudiantes.map((v, i) => {
-                                if (v.curso === cursoSeleccionado) {
-                                  return (<option key={i} onClick={() => handleIntegrantesClick(v.correo)}>{v.nombre + " " + v.apellido}</option>);
-                                } else {
-                                  return null;
-                                }
-                              })}
-                            </select>
+                        <div className='row'>
+                          <div className='mt-3 col'>
+                            <Label for="exampleSelectMulti"><b>Escoge los estudiantes</b></Label>
+                            <p>Haz clic sobre el estudiante para seleecionarlo</p>
+                            <div>
+                              <select
+                                name="selectMulti"
+                                style={{ width: "100%" }}
+                                multiple
+                              >
+                                {estudiantes && estudiantes.map((v, i) => {
+                                  if (v.curso === cursoSeleccionado) {
+                                    return (<option key={i} onClick={() => handleIntegrantesClick(v.correo,v.nombre+" "+v.apellido)}>{v.nombre + " " + v.apellido}</option>);
+                                  } else {
+                                    return null;
+                                  }
+                                })}
+                              </select>
 
-                            <div className='mt-2'>
-                              <p><b>Los integrantes que ha seleccionado son: </b><i>{integrantesSeleccionados.join(', ')}</i></p>
                             </div>
+                          </div>
 
+                          <div className='col mt-2'>
+                            <p><b>Estudiantes seleccionados</b></p>
+                            <p>Si quieres sacar a un estudiante de la lista debes seleccionarlo</p>
+                             <select
+                                name="selectMulti"
+                                style={{ width: "100%" }}
+                                multiple
+                              >
+                                {integrantesSeleccionadosNombres && integrantesSeleccionadosNombres.map((v, i) => {
+                                  return (<option key={i} onClick={() => handleIntegrantesClickEliminar(integrantesSeleccionados[i],integrantesSeleccionadosNombres[i])}>{integrantesSeleccionadosNombres[i]}</option>);
+                                })}
+                              </select>
                           </div>
                         </div>
-
                       </div>
 
                       <div className="mt-3">
