@@ -1208,7 +1208,6 @@ const SInfo = styled.div`
         margin: 5%;
     }
 }
-
 `;
 
 
