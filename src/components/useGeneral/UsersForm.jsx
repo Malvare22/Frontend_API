@@ -144,6 +144,8 @@ const useForm = (initialData, validar, initialErrors) => {
 export function FormDocente({ user, type }) {
     const navigate = useNavigate()
 
+    let C_CORREO;
+
     const [areas, setAreas] = useState([])
 
     useEffect(() => {
@@ -165,6 +167,10 @@ export function FormDocente({ user, type }) {
             "sexo": ""
         };
     }
+    else{
+            C_CORREO = user.correo;
+        }
+    
 
     const initialErrors = {
         "nombre": false,
@@ -266,10 +272,18 @@ export function FormDocente({ user, type }) {
                 await axios.post('http://localhost:8080/register/docente', dataToSend)
             }
             else {
+                dataToSend.correo = C_CORREO;
                 console.log('Export', dataToSend)
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
                     await changePassword(form.correo, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+
                 }
             }
 
@@ -385,8 +399,8 @@ export function FormDocente({ user, type }) {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
 
@@ -422,6 +436,8 @@ export function FormDocente({ user, type }) {
 export const FormEstudiante = ({ user, type }) => {
     const navigate = useNavigate()
 
+    let C_CORREO;
+
     if (type == 'registrar') {
         user = {
             "codigoInstitucional": "",
@@ -437,6 +453,9 @@ export const FormEstudiante = ({ user, type }) => {
             "foto": { "archivo": "", "direccion": "" },
             "tipo_usuario": "",
         };
+    }
+    else{
+        C_CORREO = user.correo;
     }
 
     const initialErrors = {
@@ -513,7 +532,6 @@ export const FormEstudiante = ({ user, type }) => {
     const updateProfile = async () => {
         //Aquí se hace la actualización de la info
         try {
-
             let dataToSend = exportStudents([{ ...form }])[0];
             const imageRef = form.foto.direccion == '' ? default_profile : form.foto.direccion
             const file = await fetch(imageRef).then(response => response.blob());
@@ -534,9 +552,16 @@ export const FormEstudiante = ({ user, type }) => {
             }
 
             else {
-
+                dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
                 if (type != 'estudiante') {
+                    if(form.correo != C_CORREO){
+                        let formDataCorreo = new FormData()
+                        formDataCorreo.append('codigo', form.codigo)
+                        formDataCorreo.append('correo', form.correo)
+                        await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+
+                    }
                     if (form.contrasenia != '') {
                         await changePassword(form.correo, form.contrasenia, type)
                     }
@@ -692,6 +717,8 @@ export const FormAdministrativo = ({ user, type }) => {
 
     const navigate = useNavigate()
 
+    let C_CORREO;
+
     if (type == 'registrar') {
         user = {
             "correo": "",
@@ -704,6 +731,9 @@ export const FormAdministrativo = ({ user, type }) => {
             "contrasenia": ""
         }
     }
+    else{
+            C_CORREO = user.correo;
+        }
 
     const initialErrors = {
         "correo": false,
@@ -794,9 +824,17 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             else {
+                dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(form.correo, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+
                 }
                 
             }
@@ -877,8 +915,8 @@ export const FormAdministrativo = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
@@ -910,6 +948,9 @@ export const FormLider = ({ user, type }) => {
     const navigate = useNavigate();
 
     const jesucristo = useRef(null)
+
+    let C_CORREO;
+
     if (type == 'registrar') {
         user = {
             "correo": "",
@@ -921,6 +962,10 @@ export const FormLider = ({ user, type }) => {
             "foto": { "archivo": "", "direccion": "" },
         };
     }
+    else{
+        C_CORREO = user.correo;
+    }
+
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
@@ -1000,9 +1045,17 @@ export const FormLider = ({ user, type }) => {
             }
             else {
 
+                dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(form.correo, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+
                 }
             }
 
