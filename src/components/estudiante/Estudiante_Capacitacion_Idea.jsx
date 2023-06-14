@@ -82,9 +82,11 @@ const InfoGeneralIdea = () => {
                     </button>
                 </div>
             </div>
-            {/* <div className='row my-4 d-flex justify-content-center align-items-center'>
-                <TablaMaterialApoyo></TablaMaterialApoyo>
-            </div> */}
+            
+            <div className='row my-4 d-flex justify-content-center align-items-center'>
+                <TablaMaterialApoyo tipo="IdeaNegocio"></TablaMaterialApoyo>
+            </div> 
+            
         </main>
     )
 }

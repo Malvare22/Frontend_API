@@ -9,7 +9,7 @@ export default function CapacitacionPlan() {
         <div className="container">
             <img src="https://live.staticflickr.com/65535/52923103551_b041e3079c_o.png" className='img-fluid mt-2' />
             <div className="container my-5" style={{ width: "80%" }}>
-                <InfoGeneralPlan></InfoGeneralPlan>
+                <InfoGeneralPlan ></InfoGeneralPlan>
             </div>
         </div>
     )
@@ -85,9 +85,9 @@ const InfoGeneralPlan = () => {
                     </button>
                 </div>
             </div>
-            {/* <div className='row my-4 d-flex justify-content-center align-items-center'>
-                <TablaMaterialApoyo></TablaMaterialApoyo>
-            </div> */}
+            <div className='row my-4 d-flex justify-content-center align-items-center'>
+                <TablaMaterialApoyo tipo="PlanNegocio"></TablaMaterialApoyo>
+            </div>
         </main>
     )
 }
