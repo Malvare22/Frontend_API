@@ -83,6 +83,9 @@ const Panel = (props) => {
     const toggleA = () => {
         navigate('/forgetPassword');
     };
+    const register = () =>{
+        navigate('/registro')
+    }
     //Aquí se hace toda la validación de los campos
     const validar = async (form) => {
         //Colocar método de verificación de clave (Cada input está en form)
@@ -174,9 +177,19 @@ const Panel = (props) => {
                 </div>
             </div>
             <div className='mt-3 mb-4'>
-                <div className='text-center'>
-                    <a href='' onClick={toggleA}>¿Olvidaste tu contraseña?</a>
+                <div className='row'>
+                    <div className='col'>
+                        <div className='text-center'>
+                            <a href='' onClick={toggleA}>¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </div>
+                    <div className='col'>
+                        <div className='text-center'>
+                            <a href='' onClick={register}>Registrar estudiante</a>
+                        </div>
+                    </div>
                 </div>
+
                 <div className='text-center mt-3'>
                     <button type="submit" className="btn" style={{ backgroundColor: "#2B9877", color: "white" }}>Ingresar</button>
                 </div>
