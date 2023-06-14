@@ -339,7 +339,7 @@ const EstudianteInformacion = (props) => {
                         Correo eléctronico:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.correo}
+                        {props.usuario.correo==("correoNoRegistrado@usuario.correo"+props.usuario.codigoInstitucional)? "": props.usuario.correo}
                     </div>
                 </div>
                 <div className='row'>
