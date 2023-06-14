@@ -11,6 +11,7 @@ import default_profile from './../../assets/images/Users/default_profile.png'
 import axios from "axios";
 import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents, loadAreas } from "../../context/functions_general";
 import { useEffect } from "react";
+import {CerrarSesion} from './../../context/functions_app'
 
 const REGEX_NUMERO = /^[0-9][0-9\-]*[0-9]$/;
 
@@ -292,7 +293,8 @@ export function FormDocente({ user, type, myself }) {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else navigate(-1)
 
 
         } catch (error) {
@@ -577,7 +579,8 @@ export const FormEstudiante = ({ user, type, myself }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else navigate(-1)
 
         }
         catch (error) {
@@ -851,7 +854,8 @@ export const FormAdministrativo = ({ user, type, myself }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else navigate(-1)
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
@@ -1074,7 +1078,8 @@ export const FormLider = ({ user, type, myself }) => {
 
             await axios.post('http://localhost:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else navigate(-1)
 
 
         } catch (error) {
