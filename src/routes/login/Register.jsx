@@ -101,11 +101,14 @@ const PanelPrincipal = (props) => {
             axios.post('http://localhost:8080/register/estudiante/codigo', formData, config)
             .then((response) => {
                 alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
-                props.navigate('/Login');
+                navigate('/Login');
             })
             .catch((error) => {
                 alert(error.response.data.errorMessage);
             });
+        }
+        else{
+            alert('Hola')
         }
     };
 

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import ModalConfirmation from './ModalConfirmation'
 import axios from "axios"
 
-export default function BtnExcel() {
+export default function BtnExcel(props) {
 
     const fileInput = useRef(null)
 
@@ -24,8 +24,10 @@ export default function BtnExcel() {
             }
         }
         try{
-            await axios.post('http://localhost:8080/register/estudiante/archivo', formdata, config)
-            toggleAlert()
+            if(props.type=='Estudiante') {
+                await axios.post('http://localhost:8080/register/estudiante/archivo', formdata, config)
+                toggleAlert()
+            }
         }
         catch (error) {
             let msg = '';

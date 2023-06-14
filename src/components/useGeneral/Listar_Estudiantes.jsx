@@ -222,7 +222,7 @@ export default function ListarEstudiantes(props) {
                                     </svg>
                                 </div>
                             </button>
-                            <BtnExcel/>
+                            <BtnExcel type={'Estudiante'}/>
                         </div>}
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Button, Modal, ModalBody, ModalFooter, FormGroup, Label } from 'reactstrap';
 import axios from "axios";
 import { importDocents } from '../../context/functions_general';
+import BtnExcel from './Cargar_Excel';
 
 const useAlert = () => {
     const [state, setState] = useState(false);
@@ -192,7 +193,7 @@ export default function ListarDocentes(props) {
                         <br></br>
                         <Table data={filteredData} type={props.type} updater={getDocentes}></Table>
                         <br></br>
-                        {(props.type!='lider') && <div className="d-flex justify-content-start">
+                        {(props.type!='docente' && props.type!='lider') && <div className="d-flex justify-content-between">
                             <Link to={'Registrar'} type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                 <div className="col-auto" onClick={()=>{console.log("A")}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill-add" viewBox="0 0 16 16">
@@ -201,6 +202,8 @@ export default function ListarDocentes(props) {
                                     </svg>
                                 </div>
                             </Link>
+                            <BtnExcel type={'Docente'}/>
+
                         </div>}
                     </div>
                 </div>
