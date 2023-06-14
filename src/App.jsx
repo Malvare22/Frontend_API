@@ -138,16 +138,11 @@ const router = createBrowserRouter(
             <Route path='Evaluacion/Componentes' element={<LiderComponentesListar></LiderComponentesListar>}></Route>
             <Route path='Evaluacion/Componentes/Registrar' element={<LiderComponenteRegistrar></LiderComponenteRegistrar>}></Route>
             <Route path='Evaluacion/Componentes/Editar' element={<LiderComponenteActualizar></LiderComponenteActualizar>}></Route>
-            <Route path='Estudiantes' element={<ListarEstudiantes/>} />          
-            <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
-            <Route path='Estudiantes/Perfil/Editar' element={<EstudianteEditarPerfil location={'ESTUDIANTE_INFORMATION'} type={'sudo'}/>} loader={GestionarEstudiante} />
+            <Route path='Estudiantes' element={<ListarEstudiantes type={'lider'}/>} />          
+            <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={false} />} loader={GestionarEstudiante} />
             
-            <Route path='Estudiantes/Registrar' element={<EstudianteEditarPerfil type={'registrar'} />} />
-
-            <Route path='Docentes' element={<ListarDocentes/>}></Route>
-            <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={true} />} loader={GestionarDocente} />
-            <Route path='Docentes/Perfil/Editar' element={<DocenteEditarPerfil location={'DOCENTE_INFORMATION'} type={'sudo'} />} loader={GestionarDocente} />
-            <Route path='Docentes/Registrar' element={<DocenteEditarPerfil type={'registrar'}/>}/>
+            <Route path='Docentes' element={<ListarDocentes type={'lider'}/>}></Route>
+            <Route path='Docentes/Perfil' element={<DocentePerfil location={'DOCENTE_INFORMATION'} editable={false} />} loader={GestionarDocente} />
             
             <Route path='Administrativos' element={<LiderListarAdministrativos></LiderListarAdministrativos>} />
             <Route path='Administrativos/Perfil' element={<AdministrativoPerfil location={'ADMINISTRATIVO_INFORMATION'} editable={false} />} loader={GestionarAdministrativo}></Route>

@@ -134,15 +134,6 @@ const LiderInformacion = (props) =>{
                         {props.usuario.apellido}
                     </div>
                 </div>
-
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
-                    </div>
-                </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Sexo:
@@ -187,14 +178,6 @@ const AdministradorInformacion = (props) =>{
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.apellido+" "+props.usuario.nombre}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>
@@ -256,14 +239,6 @@ const DocenteInformacion = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.cedula}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>
@@ -341,14 +316,6 @@ const EstudianteInformacion = (props) => {
                     </div>
                     <div className='col-sm-4 col-6'>
                         {props.usuario.cursoToString}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
                     </div>
                 </div>
                 <div className='row'>

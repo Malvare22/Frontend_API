@@ -4,7 +4,7 @@ export default function ModalConfirmation(props){
 
     return <Modal isOpen={props.viewAlert} centered={true}>
                 <ModalBody className='d-flex justify-content-center align-content-center p-4'>
-                    <h6 className='m-0 p-0'>¿Está seguro de guardar los cambios?</h6>
+                    <h6 className='m-0 p-0'>{props.texto? props.texto:"¿Está seguro de guardar los cambios?"}</h6>
                 </ModalBody>
 
                 <ModalFooter className='d-flex justify-content-center'>
