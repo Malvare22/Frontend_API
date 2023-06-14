@@ -215,15 +215,13 @@ const Panel = (props) => {
                             <a href='' onClick={toggleA}>¿Olvidaste tu contraseña?</a>
                         </div>
                     </div>
-                    <div className='col'>
-                        <div className='text-center'>
-                            <a href='' onClick={register}>Registrar estudiante</a>
-                        </div>
-                    </div>
                 </div>
 
-                <div className='text-center mt-3'>
-                    <button type="submit" className="btn" style={{ backgroundColor: "#2B9877", color: "white" }}>Ingresar</button>
+                <div className='d-flex mt-3 justify-content-center'>
+                
+                    <button type="submit" className="btn me-5" style={{ backgroundColor: "#2B9877", color: "white", width: "170px" }}>Ingresar</button>
+                    <button onClick={(e)=>{e.preventDefault(); register();}} className="btn ms-5" style={{ backgroundColor: "#1C3B57", color: "white", width: "170px" }}>Registrar Usuario</button>
+                
                 </div>
             </div>
         </form>
