@@ -28,6 +28,10 @@ export default function BtnExcel(props) {
                 await axios.post('http://localhost:8080/register/estudiante/archivo', formdata, config)
                 toggleAlert()
             }
+            if(props.type=='Docente') {
+                await axios.post('http://localhost:8080/register/docente/archivo', formdata, config)
+                toggleAlert()
+            }
         }
         catch (error) {
             let msg = '';

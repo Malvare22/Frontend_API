@@ -56,10 +56,20 @@ const PanelPrincipal = (props) => {
         let fail = false;
 
         if (rol == 'Estudiante' || rol=='Docente') {
-            if (isNaN(form.usuario) || form.usuario <= 0) {
-                newErrors.usuario = true;
-                fail = true;
-                alert('El campo de código no puede ser negativo.', 'error');
+            if(rol == 'Estudiante'){
+                if (isNaN(form.usuario) || form.usuario <= 0) {
+                    newErrors.usuario = true;
+                    fail = true;
+                    alert('El campo de código no puede ser negativo.', 'error');
+                }
+            }
+            else{
+                const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+                if (!email_regex.test(form.usuario)) {
+                    newErrors.usuario = true;
+                    fail = true;
+                    alert('El campo de correo debe tener un valor válido.', 'error');
+                }
             }
 
             if (form.contrasenia.trim() === '') {
@@ -89,15 +99,16 @@ const PanelPrincipal = (props) => {
             return;
         }
         const { usuario, contrasenia } = form;
-        var formData = new FormData();
-        formData.append('codigo', usuario);
-        formData.append('contrasenia', contrasenia);
+
         const config = {
             headers: {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
         if(rol == 'Estudiante'){
+            var formData = new FormData();
+            formData.append('codigo', usuario);
+            formData.append('contrasenia', contrasenia);
             axios.post('http://localhost:8080/register/estudiante/codigo', formData, config)
             .then((response) => {
                 alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
@@ -107,9 +118,20 @@ const PanelPrincipal = (props) => {
                 alert(error.response.data.errorMessage);
             });
         }
-        else{
-            alert('Hola')
+        if(rol == 'Docente'){
+            var formData = new FormData();
+            formData.append('correo', usuario);
+            formData.append('contrasenia', contrasenia);
+            axios.post('http://localhost:8080/register/docente/correo', formData, config)
+            .then((response) => {
+                alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
+                navigate('/Login');
+            })
+            .catch((error) => {
+                alert(error.response.data.errorMessage);
+            });
         }
+        
     };
 
     const toggleSelect = (e) => {
@@ -130,8 +152,8 @@ const PanelPrincipal = (props) => {
                 </div>
                 {rol != 0 && <RegisterForm rol={rol} form={form} handleChange={handleChange} errors={errors}/>}
                 <div className='d-flex justify-content-center align-content-center'>
-                    <button type="button" className="btn m-4" style={{ backgroundColor: "#2B9877", color: "white" }}>
-                        <p onClick={() => navigate('/login')} className='d-flex align-items-center justify-content-center m-1'>Volver</p>
+                    <button type="button" className="btn m-4"  onClick={(e) => {e.preventDefault(); navigate('/login')}} style={{ backgroundColor: "#2B9877", color: "white" }}>
+                        <p className='d-flex align-items-center justify-content-center m-1'>Volver</p>
                     </button>
                     <button type="button" onClick={() => handleSubmit()} className="btn m-4" style={{ backgroundColor: "#2B9877", color: "white" }}> <p className='d-flex align-items-center justify-content-center m-1'>Enviar</p></button>
                 </div>
@@ -148,11 +170,15 @@ const RegisterForm = (props) => {
         setType(type === 'password' ? 'text' : 'password');
     };
 
+    const Header = props.rol=='Estudiante'? "Introduzca su código institucional de estudiante:":"Introduzca su correo del docente:"
+
+    const TypeInput = props.rol=='Estudiante'? "number": "text"
+
     return (<>
         <div>
-            <p className='text-center mt-4 fw-bold'>{"Introduzca su código institucional de estudiante:"}</p>
+            <p className='text-center mt-4 fw-bold'>{Header}</p>
             <div className='d-flex justify-content-center'>
-                <input type='number' min={0} onChange={props.handleChange} className={`required form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75 ${props.errors.usuario ? 'is-invalid' : ''}`} name='usuario' value={props.form.usuario} style={{ backgroundColor: "#D9D9D9" }} />
+                <input type={TypeInput} min={0} onChange={props.handleChange} className={`required form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75 ${props.errors.usuario ? 'is-invalid' : ''}`} name='usuario' value={props.form.usuario} style={{ backgroundColor: "#D9D9D9" }} />
             </div>
         </div>
         <div>
