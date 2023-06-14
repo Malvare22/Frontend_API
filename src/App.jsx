@@ -111,7 +111,7 @@ const router = createBrowserRouter(
         <Route>
           <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='Perfil' element={<EstudiantePerfil location={'MY_PROFILE_INFO'} editable={true} />} loader={MiPerfilEstudiante} />
-            <Route path='Perfil/Editar' element={<EstudianteEditarPerfil location={'MY_PROFILE_INFO'} type={'estudiante'}/>} loader={MiPerfilEstudiante} />
+            <Route path='Perfil/Editar' element={<EstudianteEditarPerfil location={'MY_PROFILE_INFO'} type={'estudiante'} myself={true}/>} loader={MiPerfilEstudiante} />
             <Route path='Test' element={<Tabla></Tabla>} />
             <Route path='E_Evaluacion' element={<EstudianteEvaluacion></EstudianteEvaluacion>} />
             <Route path='ResultadoEvaluacion' element={<EstudianteResultadoEvaluacion></EstudianteResultadoEvaluacion>} />
@@ -129,7 +129,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Lider' element={<TemplateLider></TemplateLider>}>
             <Route path='Perfil' element={<LiderPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilLider} />
-            <Route path='Perfil/Editar' element={<LiderEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'}/>} loader={MiPerfilLider}/>
+            <Route path='Perfil/Editar' element={<LiderEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'} myself={true}/>} loader={MiPerfilLider}/>
             <Route path='Ideas' element={<LiderListarIdeas></LiderListarIdeas>}></Route>
             <Route path='Ideas/Vista' element={<LiderVistaIdea></LiderVistaIdea>}></Route>
             <Route path='Planes' element={<LiderListarPlanes></LiderListarPlanes>}></Route>
@@ -170,7 +170,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Administrativo' element={<TemplateAdministrativo></TemplateAdministrativo>}>
             <Route path='Perfil' element={<AdministrativoPerfil location={"MY_PROFILE_INFO"} editable={true}/>} loader={MiPerfilAdministrativo}></Route>
-            <Route path='Perfil/Editar' element={<AdministrativoEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'}/>} loader={MiPerfilAdministrativo}></Route>
+            <Route path='Perfil/Editar' element={<AdministrativoEditarPerfil location={"MY_PROFILE_INFO"} type={'editar'} myself={true}/>} loader={MiPerfilAdministrativo}></Route>
             
             <Route path='Estudiantes' element={<ListarEstudiantes/>} />
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'} editable={true} />} loader={GestionarEstudiante} />
@@ -205,7 +205,7 @@ const router = createBrowserRouter(
           </Route>
           <Route path='/Docente' element={<TemplateDocente></TemplateDocente>}>
             <Route path='Perfil' element={<DocentePerfil location={'MY_PROFILE_INFO'} editable={true}/>} loader={MiPerfilDocente} />
-            <Route path='Perfil/Editar' element={<DocenteEditarPerfil location={'MY_PROFILE_INFO'} type={'editar'}/>} loader={MiPerfilDocente} />
+            <Route path='Perfil/Editar' element={<DocenteEditarPerfil location={'MY_PROFILE_INFO'} type={'editar'} myself={true}/>} loader={MiPerfilDocente} />
             <Route path='Tutor/Ideas/Vista' element={<DocenteTutorVerIdea></DocenteTutorVerIdea>} />
             <Route path='Tutor/Ideas' element={<DocenteTutorListarIdeas></DocenteTutorListarIdeas>} />
             <Route path='Apoyo/Ideas/Vista' element={<DocenteApoyoVerIdea></DocenteApoyoVerIdea>} />

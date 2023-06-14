@@ -24,7 +24,7 @@ export default function LiderEditarPerfil(props) {
                 <div className='' id='head'>
                 {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
-                <div className='' id="info"> <FormLider user={user} type={props.type}></FormLider></div>
+                <div className='' id="info"> <FormLider user={user} type={props.type} myself={props.myself}></FormLider></div>
             </div>
         </SContent>
 

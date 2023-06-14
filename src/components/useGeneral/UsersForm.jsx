@@ -141,7 +141,7 @@ const useForm = (initialData, validar, initialErrors) => {
 };
 
 //Contenido del formulario
-export function FormDocente({ user, type }) {
+export function FormDocente({ user, type, myself }) {
     const navigate = useNavigate()
 
     let C_CORREO;
@@ -276,14 +276,17 @@ export function FormDocente({ user, type }) {
                 console.log('Export', dataToSend)
                 await axios.patch('http://localhost:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
                 }
                 if(form.correo != C_CORREO){
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
                     await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
-
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
             }
 
@@ -433,7 +436,7 @@ export function FormDocente({ user, type }) {
  *  Formulario de estudiante, dispone de tres variantes:
  *  Registro ("registrar"), fuertemente editable ("sudo") y levemente editable ("estudiante")
  *  **/
-export const FormEstudiante = ({ user, type }) => {
+export const FormEstudiante = ({ user, type, myself }) => {
     const navigate = useNavigate()
 
     let C_CORREO;
@@ -554,14 +557,18 @@ export const FormEstudiante = ({ user, type }) => {
             else {
                 dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
-                if (type != 'estudiante') {
+                
                     if(form.correo != C_CORREO){
                         let formDataCorreo = new FormData()
                         formDataCorreo.append('codigo', form.codigo)
                         formDataCorreo.append('correo', form.correo)
                         await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
-
+                        if(myself){
+                            let aux = (JSON.parse(localStorage.getItem('session')))
+                            localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                        }
                     }
+                if (type != 'estudiante') {
                     if (form.contrasenia != '') {
                         await changePassword(form.correo, form.contrasenia, type)
                     }
@@ -713,7 +720,7 @@ export const FormEstudiante = ({ user, type }) => {
     );
 }
 
-export const FormAdministrativo = ({ user, type }) => {
+export const FormAdministrativo = ({ user, type, myself }) => {
 
     const navigate = useNavigate()
 
@@ -827,14 +834,17 @@ export const FormAdministrativo = ({ user, type }) => {
                 dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
                 if (form.contrasenia != '-') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
                 }
                 if(form.correo != C_CORREO){
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
                     await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
-
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
                 
             }
@@ -944,7 +954,7 @@ export const FormAdministrativo = ({ user, type }) => {
     );
 }
 
-export const FormLider = ({ user, type }) => {
+export const FormLider = ({ user, type, myself }) => {
     const navigate = useNavigate();
 
     const jesucristo = useRef(null)
@@ -1048,14 +1058,17 @@ export const FormLider = ({ user, type }) => {
                 dataToSend.correo = C_CORREO;
                 await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
                 }
                 if(form.correo != C_CORREO){
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
                     await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
-
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
             }
 
