@@ -27,7 +27,7 @@ export default function DocenteEditarPerfil(props) {
                 <div className='' id='head'>
                 {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
-                <div className='' id="info"> <FormDocente user={user} type={props.type}></FormDocente></div>
+                <div className='' id="info"> <FormDocente user={user} type={props.type} myself={props.myself}></FormDocente></div>
             </div>
         </SContent>
 
