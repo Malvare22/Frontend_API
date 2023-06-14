@@ -183,7 +183,7 @@ const RegisterForm = (props) => {
         </div>
         <div>
             <p className='text-center mt-4 fw-bold'>Establezca una contraseña:</p>
-            <div className='d-flex justify-content-center'>
+            <div className='d-flex justify-content-center align-content-center align-items-center'>
                 <input onChange={props.handleChange} type={type} className={`required form-control border-0 border-bottom rounded-0 border-dark shadow-none w-75 ${props.errors.contrasenia ? 'is-invalid' : ''}`} name='contrasenia' value={props.form.contrasenia} style={{ backgroundColor: "#D9D9D9" }} />
                 {type === 'password' ? (
                     <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} className='bi bi-eye-fill' width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
