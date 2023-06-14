@@ -98,6 +98,7 @@ import LiderComponenteActualizar from './components/lider/Lider_componente_edita
 import Footer from './components/Footer';
 import { Relogin } from './routes/login/Relogin';
 import DocenteAceptarTutoriaPlan from './components/docente/Docente_Tutoria_AceptarPlan';
+import Registro from './routes/login/Register';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -109,6 +110,7 @@ const router = createBrowserRouter(
         <Route path='/forgetPassword' element={<><Recovery></Recovery><Footer></Footer></>} />
         <Route exact path="/resetPassword" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
         <Route path="/resetPassword/:token" component={ResetPassword} element={<><ResetPassword></ResetPassword><Footer></Footer></>} />
+        <Route path='/registro' element={<><Registro></Registro><Footer></Footer></>} />
         <Route>
           <Route path='/Estudiante' element={<TemplateEstudiante></TemplateEstudiante>}>
             <Route path='Perfil' element={<EstudiantePerfil location={'MY_PROFILE_INFO'} editable={true} />} loader={MiPerfilEstudiante} />
