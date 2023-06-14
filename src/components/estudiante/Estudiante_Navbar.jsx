@@ -31,14 +31,12 @@ const SideBarStatic = (props) => {
   const [disableEntidades, setDisableEntidades] = useState(false);
 
   useEffect(() => {
+    const email = (JSON.parse(localStorage.getItem('session'))).email;
+    let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + email;
+    let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + email;
     const fetchData = async () => {
       try {
-        const email = (JSON.parse(localStorage.getItem('session'))).email
-        var formData = new FormData();
-        formData.append('correoEstudiante', email);
-        let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
-        let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada";
-        let value = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value2 = await axios.get(zelda2, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
           response => {
             const data2 = response.data;
@@ -46,9 +44,12 @@ const SideBarStatic = (props) => {
           }).catch(error => {
             console.error(error);
           });
-        const disableClickValue2 = Object.keys(value).length === 0 ? false : true;
-        setDisablePlanes(disableClickValue2);
-        let value2 = await axios.get(zelda3, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        if (Array.isArray(value2) && value2.length === 0) {
+          setDisablePlanes(false);
+        } else {
+          setDisablePlanes(true);
+        }
+        let value3 = await axios.get(zelda3, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
           response => {
             const data2 = response.data;
@@ -56,8 +57,11 @@ const SideBarStatic = (props) => {
           }).catch(error => {
             console.error(error);
           });
-        const disableClickValue3 = Object.keys(value2).length === 0 ? false : true;
-        setDisableEntidades(disableClickValue3);
+        if (Array.isArray(value3) && value3.length === 0) {
+          setDisableEntidades(false);
+        } else {
+          setDisableEntidades(true);
+        }
       } catch (error) {
       }
     };
@@ -69,6 +73,7 @@ const SideBarStatic = (props) => {
   var localData = localStorage.getItem("MY_PROFILE_INFO");
   var parsedData = JSON.parse(localData);
   var emailEstudiante = parsedData.correo;
+  var codigoEstudiante = parsedData.codigo;
 
   const getEstudiante = async () => {
 
@@ -82,12 +87,42 @@ const SideBarStatic = (props) => {
       });
 
     setEstadoEvaluacion(value.capacitacionAprobada);
-    console.log(estadoEvaluacion);
 
   };
 
+  const [testDisponible, setTestDisponible] = useState('');
+  const getEstadoTest = async () => {
+
+    let value = await axios.get("http://localhost:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+    setTestDisponible(value);
+
+  };
+
+  const [testReciente, setTestReciente] = useState('');
+  const getRecienteTest = async () => {
+
+    let value = await axios.get("http://localhost:8080/test/resultadosEstudiante/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        setTestReciente(true)
+        return data;
+      }).catch(error => {
+        setTestReciente(false)
+      });
+
+  };
   useEffect(() => {
     getEstudiante();
+    getEstadoTest();
+    getRecienteTest();
   }, []);
 
   return (
@@ -139,8 +174,8 @@ const SideBarStatic = (props) => {
               <Link to={'CapacitacionGeneral'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
             </NavLink>
           </NavItem>
-
-          {estadoEvaluacion !== "aprobada" ?
+          
+          {(estadoEvaluacion && estadoEvaluacion !== "aprobada") ? (testDisponible && testDisponible === true) ? (
 
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
@@ -148,14 +183,19 @@ const SideBarStatic = (props) => {
               </NavLink>
             </NavItem>
 
+          ) : null
             : null
-
           }
-          <NavItem>
-            <NavLink className='offset-md-3 text-white text-start' href="#">
-              <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
-            </NavLink>
-          </NavItem>
+
+          {(testReciente && testReciente === true) ? (
+            <NavItem>
+              <NavLink className='offset-md-3 text-white text-start' href="#">
+                <Link to={'ResultadoEvaluacion'} style={{ textDecoration: "none", color: "white" }}>Resultados</Link>
+              </NavLink>
+            </NavItem>
+          ) : null
+          }
+
 
         </UncontrolledCollapse>
 
@@ -219,7 +259,7 @@ const SideBarStatic = (props) => {
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
+            <NavLink className={`offset-md-3 text-white text-start ${disablePlanes ? '' : 'disabled'}`} href="#">
               <Link to={'ListarPlanes'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
             </NavLink>
           </NavItem>
@@ -227,7 +267,7 @@ const SideBarStatic = (props) => {
         </UncontrolledCollapse>
 
         <NavItem>
-          <NavLink href="#" className={`${setDisableEntidades ? 'disabled' : ''}`}>
+          <NavLink href="#" className={`${disableEntidades ? '' : 'disabled'}`}>
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
@@ -241,7 +281,7 @@ const SideBarStatic = (props) => {
             </Row>
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -252,8 +292,8 @@ const SideBarStatic = (props) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
             </Row>
           </NavLink>
-        </NavItem>
-        <NavItem>
+        </NavItem> */}
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -265,7 +305,7 @@ const SideBarStatic = (props) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Actividades</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
 
         <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
@@ -312,23 +352,36 @@ const SideBarResponsive = () => {
       });
 
     setEstadoEvaluacion(value.capacitacionAprobada);
-    console.log(estadoEvaluacion);
 
   }
 
+  const [testDisponible, setTestDisponible] = useState('');
+  const getEstadoTest = async () => {
+
+    let value = await axios.get("http://localhost:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    ).then(
+      response => {
+        const data = response.data;
+        return data;
+      }).catch(error => {
+        console.error(error);
+      });
+
+    setTestDisponible(value);
+
+  };
+
   useEffect(() => {
     getEstudiante();
+    getEstadoTest();
   }, []);
 
   useEffect(() => {
+    let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + emailEstudiante;
+    let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + emailEstudiante;
     const fetchData = async () => {
       try {
-        const email = (JSON.parse(localStorage.getItem('session'))).email
-        var formData = new FormData();
-        formData.append('correoEstudiante', email);
-        let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada";
-        let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada";
-        let value = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value2 = await axios.get(zelda2, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
           response => {
             const data2 = response.data;
@@ -336,9 +389,12 @@ const SideBarResponsive = () => {
           }).catch(error => {
             console.error(error);
           });
-        const disableClickValue2 = Object.keys(value).length === 0 ? false : true;
-        setDisablePlanes(disableClickValue2);
-        let value2 = await axios.get(zelda3, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        if (Array.isArray(value2) && value2.length === 0) {
+          setDisablePlanes(false);
+        } else {
+          setDisablePlanes(true);
+        }
+        let value3 = await axios.get(zelda3, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
           response => {
             const data2 = response.data;
@@ -346,8 +402,11 @@ const SideBarResponsive = () => {
           }).catch(error => {
             console.error(error);
           });
-        const disableClickValue3 = Object.keys(value2).length === 0 ? false : true;
-        setDisableEntidades(disableClickValue3);
+        if (Array.isArray(value3) && value3.length === 0) {
+          setDisableEntidades(false);
+        } else {
+          setDisableEntidades(true);
+        }
       } catch (error) {
       }
     };
@@ -412,7 +471,7 @@ const SideBarResponsive = () => {
               </NavLink>
             </NavItem>
 
-            {estadoEvaluacion !== "aprobada" ?
+            {(estadoEvaluacion && estadoEvaluacion !== "aprobada") ? (testDisponible && testDisponible === true) ? (
 
               <NavItem>
                 <NavLink className='offset-md-3 text-white text-start' href="#">
@@ -420,8 +479,8 @@ const SideBarResponsive = () => {
                 </NavLink>
               </NavItem>
 
+            ) : null
               : null
-
             }
             <NavItem>
               <NavLink className='offset-md-3 text-white text-start' href="#">
@@ -432,22 +491,22 @@ const SideBarResponsive = () => {
           </UncontrolledCollapse>
 
           <NavItem>
-              <NavLink id="idea" href="#">
-                <Row className='d-flex align-content-center align-items-center  justify-content-end'>
-                  <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
-                      <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
-                    </svg>
-                  </Col>
-                  <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Ideas de Negocio</Col>
-                </Row>
-              </NavLink>
-            </NavItem>
+            <NavLink id="idea" href="#">
+              <Row className='d-flex align-content-center align-items-center  justify-content-end'>
+                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+                    <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z" />
+                  </svg>
+                </Col>
+                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Ideas de Negocio</Col>
+              </Row>
+            </NavLink>
+          </NavItem>
 
           <UncontrolledCollapse id="despliegue" toggler="#idea">
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'CapacitacionIdea'} style={{ textDecoration: "none", color: "white" }}>Capacitación</Link>
               </NavLink>
             </NavItem>
@@ -465,7 +524,7 @@ const SideBarResponsive = () => {
             }
 
             <NavItem>
-              <NavLink className='offset-md-3 text-white text-start' href="#">
+              <NavLink className="offset-md-3 text-white text-start" href="#">
                 <Link to={'ListarIdeas'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
@@ -494,7 +553,7 @@ const SideBarResponsive = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className={`offset-md-3 text-white text-start ${setDisablePlanes ? 'disabled' : ''}`} href="#">
+              <NavLink className={`offset-md-3 text-white text-start ${disablePlanes ? '' : 'disabled'}`} href="#">
                 <Link to={'ListarPlanes'} style={{ textDecoration: "none", color: "white" }}>Gestionar</Link>
               </NavLink>
             </NavItem>
@@ -502,7 +561,7 @@ const SideBarResponsive = () => {
           </UncontrolledCollapse>
 
           <NavItem>
-            <NavLink href="#" className={`${setDisableEntidades ? 'disabled' : ''}`}>
+            <NavLink href="#" className={`${disableEntidades ? '' : 'disabled'}`}>
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-building-fill-gear" viewBox="0 0 16 16">
@@ -517,7 +576,7 @@ const SideBarResponsive = () => {
             </NavLink>
           </NavItem>
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -528,9 +587,9 @@ const SideBarResponsive = () => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -542,7 +601,7 @@ const SideBarResponsive = () => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Actividades</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
           <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
@@ -561,8 +620,8 @@ const SideBarResponsive = () => {
         </Collapse>
       </div>
     </Nav>
-    </div>
-    );
-  };
+  </div>
+  );
+};
 
 export default Sidebar;

@@ -97,6 +97,7 @@ import LiderResultadosVer from './components/lider/Lider_Resultados_Ver';
 import LiderComponenteActualizar from './components/lider/Lider_componente_editar';
 import Footer from './components/Footer';
 import { Relogin } from './routes/login/Relogin';
+import DocenteAceptarTutoriaPlan from './components/docente/Docente_Tutoria_AceptarPlan';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -224,6 +225,7 @@ const router = createBrowserRouter(
             <Route path='Estudiantes/Perfil' element={<PerfilEstudiante location={'ESTUDIANTE_INFORMATION'}/>} loader={GestionarEstudiante} />
             <Route exact path='Tutor/Aceptar' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
             <Route path='Tutor/Aceptar/:titulo' component={DocenteAceptarTutoria} element={<DocenteAceptarTutoria></DocenteAceptarTutoria>} />
+            <Route path='Tutor/AceptarPlan/:tituloPlan' component={DocenteAceptarTutoriaPlan} element={<DocenteAceptarTutoriaPlan></DocenteAceptarTutoriaPlan>} />
           </Route>
         </Route>
       </Route>

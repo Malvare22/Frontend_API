@@ -164,7 +164,7 @@ const Panel = (props) => {
                         <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
                     </svg>
                     <input className='form-control border-0 border-bottom rounded-0 border-dark shadow-none' type={type} name='password' value={form.password} onChange={handleChange} style={{ backgroundColor: "#D9D9D9", position: "relative", left: "1%", marginRight: "2%", width: "86%" }}></input>
-                    {type == 'password' ? <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} className='m-1 mb-0 mt-0 bi bi-eye-fill' width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    {type == 'password' ? <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} className='bi bi-eye-fill' width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                         <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                     </svg> : <svg xmlns="http://www.w3.org/2000/svg" onClick={changeType} width="20" height="20" fill="currentColor" className="bi bi-eye-slash-fill" viewBox="0 0 16 16">
