@@ -200,6 +200,10 @@ export default function ListarEstudiantes(props) {
     useEffect(() => {
         getEstudiantes();
     }, []);
+
+
+
+
     return (
         <div className="container-fluid w-75">
             <div className="row">

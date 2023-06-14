@@ -262,6 +262,7 @@ export function FormDocente({ user, type }) {
                 }
             }
             if (type == 'registrar') {
+                dataToSend.usuarioActivo = true
                 await axios.post('http://localhost:8080/register/docente', dataToSend)
             }
             else {
@@ -423,6 +424,7 @@ export const FormEstudiante = ({ user, type }) => {
 
     if (type == 'registrar') {
         user = {
+            "codigoInstitucional": "",
             "correo": "",
             "contrasenia": "",
             "apellido": "",
@@ -444,7 +446,8 @@ export const FormEstudiante = ({ user, type }) => {
         nombre_acudiente: false,
         telefono: false,
         correo: false,
-        contrasenia: false
+        contrasenia: false,
+        codigoInstitucional: false
     };
 
 
@@ -456,7 +459,8 @@ export const FormEstudiante = ({ user, type }) => {
             nombre_acudiente: false,
             telefono: false,
             correo: false,
-            contrasenia: false
+            contrasenia: false,
+            codigoInstitucional: false
         };
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -484,6 +488,11 @@ export const FormEstudiante = ({ user, type }) => {
 
         if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
+            fail = true;
+        }
+
+        if (user.codigoInstitucional == '' || isNaN(user.codigoInstitucional)) {
+            errors.codigoInstitucional = true;
             fail = true;
         }
 
@@ -519,6 +528,8 @@ export const FormEstudiante = ({ user, type }) => {
 
             if (type == 'registrar') {
                 dataToSend.capacitacionAprobada = "reprobada"
+                dataToSend.usuarioActivo = true
+
                 await axios.post('http://localhost:8080/register/estudiante', dataToSend)
             }
 
@@ -541,7 +552,9 @@ export const FormEstudiante = ({ user, type }) => {
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
-                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+                if (error.response.data.errorMessage == "could not execute statement; SQL [n/a]; constraint [UK_okh9f47317rlaebh5n11vlfwb]")
+                msg = "Ese código institucional ya se encuentra en uso."
+                else msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
             } else if (error.request) {
                 msg = 'Error: No se recibió respuesta de la base de datos';
             } else {
@@ -560,6 +573,16 @@ export const FormEstudiante = ({ user, type }) => {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
+                                Código Institucional:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                {type=='registrar'? <><input type="number" className={`form-control ${errors.codigoInstitucional ? "is-invalid" : ""}`} name='codigoInstitucional' value={form.codigoInstitucional} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite valores númericos y válidos.</div></>: form.codigoInstitucional}
+                            </div>
+                        </div>
+
+                        <div className='row' >
+                            <div className='col-sm-4 col-6 fw-bold'>
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -567,6 +590,7 @@ export const FormEstudiante = ({ user, type }) => {
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
+                        
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Apellidos:
@@ -635,8 +659,8 @@ export const FormEstudiante = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' && <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput>}
@@ -765,6 +789,7 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             if (type == 'registrar') {
+                dataToSend.usuarioActivo = true
                 await axios.post('http://localhost:8080/register', dataToSend)
             }
 
@@ -970,6 +995,7 @@ export const FormLider = ({ user, type }) => {
                 }
             }
             if (type == 'registrar') {
+                dataToSend.usuarioActivo = true
                 await axios.post('http://localhost:8080/register', dataToSend)
             }
             else {
@@ -1056,8 +1082,8 @@ export const FormLider = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}

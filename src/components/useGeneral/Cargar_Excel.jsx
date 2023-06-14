@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import ModalConfirmation from './ModalConfirmation'
+import axios from "axios"
 
 export default function BtnExcel() {
 
@@ -12,6 +13,34 @@ export default function BtnExcel() {
             if (excel) toggleAlert()
         }, [excel]
     )
+
+
+    const loadExcel = async () => {
+        let formdata = new FormData()
+        formdata.append('file', excel)
+        const config = {
+            headers: {
+                "X-Softue-JWT": localStorage.getItem('token_access')
+            }
+        }
+        try{
+            await axios.post('http://localhost:8080/register/estudiante/archivo', formdata, config)
+            toggleAlert()
+        }
+        catch (error) {
+            let msg = '';
+            if (error.response) {
+                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+            } else if (error.request) {
+                msg = 'Error: No se recibió respuesta de la base de datos';
+            } else {
+                msg = "Error al realizar la solicitud: " + error.message;
+            }
+            alert(msg)
+
+        }
+    }
+
 
     const handleButton = (e) => {
         e.preventDefault()
@@ -31,13 +60,9 @@ export default function BtnExcel() {
         setViewAlert(!viewAlert)
     }
 
-    const updateInfo = () =>{
-        alert('Hola')
-    }
-
     return (
         <>
-            <ModalConfirmation toggleAlert={toggleAlert} viewAlert={viewAlert} updateProfile={updateInfo} texto={"¿Estas seguro de que deseas cargar el listado de docentes?"}/>
+            <ModalConfirmation toggleAlert={toggleAlert} viewAlert={viewAlert} updateProfile={loadExcel} texto={"¿Estas seguro de que deseas cargar el listado de docentes?"}/>
             <input type='file' accept=".xlsx" className='d-none' ref={fileInput} onChange={handleInput}></input>
             <button type="button" className="btn rounded-3" onClick={handleButton} style={{ background: "#1C3B57", color: "#FFFFFF" }} >
                 <div className="col-auto d-flex justify-content-center align-content-center aling-items-center">
