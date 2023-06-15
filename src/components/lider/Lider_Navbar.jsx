@@ -170,11 +170,11 @@ const SideBarStatic = () => {
             </NavLink>
           </NavItem>
 
-          {/* <NavItem>
-            <NavLink className='offset-md-3 text-white text-start align-items-center' href="#">
-              Material de apoyo
+          <NavItem>
+          <NavLink className='offset-md-3 text-white text-start align-content-center' href="#">
+              <Link to={'Capacitacion'} style={{ textDecoration: "none", color: "white" }}>Historial de capacitaciones</Link>
             </NavLink>
-          </NavItem> */}
+          </NavItem>
 
         </UncontrolledCollapse>
         <NavItem>

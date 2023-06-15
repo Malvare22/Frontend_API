@@ -9,7 +9,7 @@ export default function TablaMaterialIdea(props) {
         try {
             let urls;
             if(props.tipo !== "")  urls='http://localhost:8080/formato/material'+props.tipo;
-            else  urls='http://localhost:8080/formato/material';
+            else  urls='http://localhost:8080/formato/materialGeneral';
             const response = await axios.get(urls, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
