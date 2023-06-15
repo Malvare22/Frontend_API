@@ -97,7 +97,7 @@ export default function Listar_Entidades() {
     const [filteredData, setFilteredData] = useState([]);
     const getEntidades = async () => {
         let value = null;
-        value = await axios.get('http://144.22.63.128:8080/entidadFinanciadora', {
+        value = await axios.get('http://146.235.246.199:8080/entidadFinanciadora', {
             headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
         }).then(
             response => {
@@ -125,6 +125,8 @@ export default function Listar_Entidades() {
         </div>
     );
 }
+
+
 
 
 

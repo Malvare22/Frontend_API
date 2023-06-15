@@ -7,7 +7,7 @@ export default function EntidadesFinanciadoras() {
 
     const entidad_Financiadora = async () => {
         try {
-            const response = await axios.get('http://144.22.63.128:8080/entidadFinanciadora/' + localStorage.getItem("correo"), {
+            const response = await axios.get('http://146.235.246.199:8080/entidadFinanciadora/' + localStorage.getItem("correo"), {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
             const data = response.data
@@ -44,6 +44,8 @@ export default function EntidadesFinanciadoras() {
         </div>
     )
 }
+
+
 
 
 

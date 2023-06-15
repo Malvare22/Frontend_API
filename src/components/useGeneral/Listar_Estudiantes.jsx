@@ -77,7 +77,7 @@ const Table = (props) => {
     const disableStudent = async () => {
 
         try{
-            await axios.get('http://144.22.63.128:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
+            await axios.get('http://146.235.246.199:8080/coordinador/deshabilitarUsuario/' + valor.correo, {
             headers: {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
@@ -188,7 +188,7 @@ export default function ListarEstudiantes(props) {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://144.22.63.128:8080/estudiante/listar', config)
+        value = await axios.get('http://146.235.246.199:8080/estudiante/listar', config)
         setFilteredData(importStudents(value.data))
 
 
@@ -230,6 +230,8 @@ export default function ListarEstudiantes(props) {
         </div>
     );
 }
+
+
 
 
 

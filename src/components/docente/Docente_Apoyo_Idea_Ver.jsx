@@ -72,7 +72,7 @@ const InfoGeneral = (props) => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        const URLs = 'http://144.22.63.128:8080/ideaNegocio/' + props.nombre;
+        const URLs = 'http://146.235.246.199:8080/ideaNegocio/' + props.nombre;
         try {
             const response = await axios.get(URLs, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
@@ -127,7 +127,7 @@ const InfoGeneral = (props) => {
     const getArchi = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        let URL = 'http://144.22.63.128:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://146.235.246.199:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -517,7 +517,7 @@ const Observaciones = (props) => {
                 const formData = new FormData();
                 formData.append('ideaTitulo', props.nombre);
                 formData.append('observacion', Observacion );
-                const response = await axios.post('http://144.22.63.128:8080/observacionIdea', formData, {
+                const response = await axios.post('http://146.235.246.199:8080/observacionIdea', formData, {
                   headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
                 });
             
@@ -527,7 +527,7 @@ const Observaciones = (props) => {
                 console.error(error);
               }
         };
-        //144.22.63.128:8080/observacionIdea
+        //146.235.246.199:8080/observacionIdea
 
             {/*Descarga del documento */ }
 
@@ -645,7 +645,7 @@ function Tabla(props) {
     const getIdeas = async () => {
         let value = null;
         //let URLs = 'http://144.22.37.238:8080/observacionIdea/' + props.nombre;
-        let URLs = 'http://144.22.63.128:8080/observacionIdea/' + props.nombre;
+        let URLs = 'http://146.235.246.199:8080/observacionIdea/' + props.nombre;
         value = await axios.get(URLs, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -685,6 +685,8 @@ function Tabla(props) {
         </Sdiv>
     );
 }
+
+
 
 
 

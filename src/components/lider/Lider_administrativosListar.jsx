@@ -97,7 +97,7 @@ max-height: 66.4vh;
 export default function Listar_Administrativos() {
     const [filteredData, setFilteredData] = useState([]);
     const getAdministrativos = async () => {
-        const value = await axios.get("http://144.22.63.128:8080/coordinador/listar/administrativo", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get("http://146.235.246.199:8080/coordinador/listar/administrativo", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -124,6 +124,8 @@ export default function Listar_Administrativos() {
         </div>
     );
 }
+
+
 
 
 

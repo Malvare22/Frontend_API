@@ -96,7 +96,7 @@ export const Table = ({ data, user }) => {
         }
     };
     const descargarPlan = (nombre) => {
-        let URL = 'http://144.22.63.128:8080/planNegocio/recuperarDocumento/' + nombre;
+        let URL = 'http://146.235.246.199:8080/planNegocio/recuperarDocumento/' + nombre;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -297,7 +297,7 @@ export const Filters = ({ onFilter, user }) => {
 function Getdocentes() {
     const [datos, setDatos] = useState([]);
     const getDocentes = async () => {
-        const value = await axios.get('http://144.22.63.128:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get('http://146.235.246.199:8080/docente/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -321,7 +321,7 @@ function Getdocentes() {
 function Getestudiantes() {
     const [datos2, setDatos] = useState([]);
     const getEstudiantes = async () => {
-        const value = await axios.get('http://144.22.63.128:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get('http://146.235.246.199:8080/estudiante/listar', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -345,7 +345,7 @@ function Getestudiantes() {
 function Getareas({ user }) {
     const [datos2, setDatos] = useState([]);
     const getAreas = async () => {
-        const value = await axios.get('http://144.22.63.128:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get('http://146.235.246.199:8080/areaConocimiento', { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -367,6 +367,8 @@ function Getareas({ user }) {
         })
     )
 }
+
+
 
 
 

@@ -32,14 +32,14 @@ export default function Subir_Formatos() {
             formData.append('documento', formato);
 
 <<<<<<< HEAD
-            let ruta = 'http://144.22.63.128:8080/formato';
+            let ruta = 'http://146.235.246.199:8080/formato';
 =======
             // Cambiar el nombre del archivo antes de enviarlo
             const nombreArchivoEsperado = modulo === 'idea_de_negocio' ? 'idea_de_negocio' : 'plan_de_negocio';
             const nuevoNombreArchivo = nombreArchivoEsperado + '.' + formato.name.split('.').pop();
             formData.set('documento', formato, nuevoNombreArchivo);
 
-            let ruta = 'http://localhost:8080/formato';
+            let ruta = 'http://146.235.246.199:8080/formato';
 >>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
             let value = await axios
                 .post(ruta, formData, { headers: { 'X-Softue-JWT': localStorage.getItem('token_access') } })
@@ -173,3 +173,5 @@ export default function Subir_Formatos() {
 
 =======
 >>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
+
+

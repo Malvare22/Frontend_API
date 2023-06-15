@@ -44,7 +44,7 @@ const Information = () => {
             };
             console.log(nombre.valor)
 
-            await axios.post("http://144.22.63.128:8080/areaConocimiento", formData, config)
+            await axios.post("http://146.235.246.199:8080/areaConocimiento", formData, config)
             toggleConfirmacion(null)
 
         }
@@ -205,6 +205,8 @@ const SInfo = styled.div`
     }
 }
 `;
+
+
 
 
 

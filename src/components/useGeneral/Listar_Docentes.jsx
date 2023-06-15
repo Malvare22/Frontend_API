@@ -76,7 +76,7 @@ const Table = (props) => {
             }
         }
         try{
-            await axios.get('http://144.22.63.128:8080/docente/deshabilitarDocente/'+ valor.correo, config)
+            await axios.get('http://146.235.246.199:8080/docente/deshabilitarDocente/'+ valor.correo, config)
             props.updater();
             toggleAlert(null)
         }
@@ -176,7 +176,7 @@ export default function ListarDocentes(props) {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://144.22.63.128:8080/docente/listar', config)     
+        value = await axios.get('http://146.235.246.199:8080/docente/listar', config)     
         console.log(value);
         setFilteredData(importDocents(value.data))
     };
@@ -211,6 +211,8 @@ export default function ListarDocentes(props) {
         </div>
     );
 }
+
+
 
 
 

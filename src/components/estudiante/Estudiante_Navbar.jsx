@@ -32,16 +32,16 @@ const SideBarStatic = (props) => {
 
   useEffect(() => {
     const email = (JSON.parse(localStorage.getItem('session'))).email;
-    let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + email;
-    let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + email;
+    let zelda2 = "http://146.235.246.199:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + email;
+    let zelda3 = "http://146.235.246.199:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + email;
     const fetchData = async () => {
       try {
 <<<<<<< HEAD
         const email = (JSON.parse(localStorage.getItem('session'))).email
         var formData = new FormData();
         formData.append('correoEstudiante', email);
-        let zelda2 = "http://144.22.63.128:8080/ideaNegocio/comprobarIdeaAprobada";
-        let zelda3 = "http://144.22.63.128:8080/planNegocio/comprobarPlanAprobada";
+        let zelda2 = "http://146.235.246.199:8080/ideaNegocio/comprobarIdeaAprobada";
+        let zelda3 = "http://146.235.246.199:8080/planNegocio/comprobarPlanAprobada";
         let value2 = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
 =======
         let value2 = await axios.get(zelda2, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
@@ -86,7 +86,7 @@ const SideBarStatic = (props) => {
 
   const getEstudiante = async () => {
 
-    let value = await axios.get("http://144.22.63.128:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    let value = await axios.get("http://146.235.246.199:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -102,7 +102,7 @@ const SideBarStatic = (props) => {
   const [testDisponible, setTestDisponible] = useState('');
   const getEstadoTest = async () => {
 
-    let value = await axios.get("http://localhost:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    let value = await axios.get("http://146.235.246.199:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -117,7 +117,7 @@ const SideBarStatic = (props) => {
   const [testReciente, setTestReciente] = useState('');
   const getRecienteTest = async () => {
 
-    let value = await axios.get("http://localhost:8080/test/resultadosEstudiante/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    let value = await axios.get("http://146.235.246.199:8080/test/resultadosEstudiante/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -351,7 +351,7 @@ const SideBarResponsive = () => {
 
   const getEstudiante = async () => {
 
-    let value = await axios.get("http://144.22.63.128:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    let value = await axios.get("http://146.235.246.199:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -367,7 +367,7 @@ const SideBarResponsive = () => {
   const [testDisponible, setTestDisponible] = useState('');
   const getEstadoTest = async () => {
 
-    let value = await axios.get("http://localhost:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+    let value = await axios.get("http://146.235.246.199:8080/test/testDisponible", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
     ).then(
       response => {
         const data = response.data;
@@ -386,16 +386,16 @@ const SideBarResponsive = () => {
   }, []);
 
   useEffect(() => {
-    let zelda2 = "http://localhost:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + emailEstudiante;
-    let zelda3 = "http://localhost:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + emailEstudiante;
+    let zelda2 = "http://146.235.246.199:8080/ideaNegocio/comprobarIdeaAprobada?correoEstudiante=" + emailEstudiante;
+    let zelda3 = "http://146.235.246.199:8080/planNegocio/comprobarPlanAprobada?correoEstudiante=" + emailEstudiante;
     const fetchData = async () => {
       try {
 <<<<<<< HEAD
         const email = (JSON.parse(localStorage.getItem('session'))).email
         var formData = new FormData();
         formData.append('correoEstudiante', email);
-        let zelda2 = "http://144.22.63.128:8080/ideaNegocio/comprobarIdeaAprobada";
-        let zelda3 = "http://144.22.63.128:8080/planNegocio/comprobarPlanAprobada";
+        let zelda2 = "http://146.235.246.199:8080/ideaNegocio/comprobarIdeaAprobada";
+        let zelda3 = "http://146.235.246.199:8080/planNegocio/comprobarPlanAprobada";
         let value2 = await axios.get(zelda2, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
 
 =======
@@ -644,6 +644,8 @@ const SideBarResponsive = () => {
 };
 
 export default Sidebar;
+
+
 
 
 

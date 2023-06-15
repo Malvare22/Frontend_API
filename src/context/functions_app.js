@@ -3,7 +3,7 @@ import { importAdmins, importDocents, importLider, importStudents } from "./func
 import { Navigate } from "react-router-dom";
 
 export const MiPerfilDocente = async () => {
-  let zelda = "http://144.22.63.128:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
+  let zelda = "http://146.235.246.199:8080/docente/" + (JSON.parse(localStorage.getItem('session'))).email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -11,7 +11,7 @@ export const MiPerfilDocente = async () => {
   })
   let temp_user = importDocents([value.data])[0]
   console.log(temp_user)
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto = '';
   let archivo = '';
   try {
@@ -40,14 +40,14 @@ export const MiPerfilDocente = async () => {
 
 export const GestionarDocente = async () => {
 
-  let zelda = "http://144.22.63.128:8080/docente/" + (localStorage.getItem('DOCENTE_EMAIL'));
+  let zelda = "http://146.235.246.199:8080/docente/" + (localStorage.getItem('DOCENTE_EMAIL'));
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
   let temp_user = importDocents([value.data])[0]
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto = '';
   let archivo = '';
   try {
@@ -76,7 +76,7 @@ export const GestionarDocente = async () => {
 
 
 export const ListarDocentes = async () => {
-  let zelda = "http://144.22.63.128:8080/docente/listar";
+  let zelda = "http://146.235.246.199:8080/docente/listar";
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -90,14 +90,14 @@ export const ListarDocentes = async () => {
 export const MiPerfilEstudiante = async () => {
   //localStorage.setItem('session', JSON.stringify({"email": "Jany.Viddah@gmail.com", "rol": "estudiante"}))
   const email = (JSON.parse(localStorage.getItem('session'))).email
-  let zelda = "http://144.22.63.128:8080/estudiante/" + email;
+  let zelda = "http://146.235.246.199:8080/estudiante/" + email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   })
   let temp_user = importStudents([value.data])[0]
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto;
   let archivo;
   try {
@@ -126,7 +126,7 @@ export const MiPerfilEstudiante = async () => {
 }
 
 export const GestionarEstudiante = async () => {
-  let zelda = "http://144.22.63.128:8080/estudiante/" + (localStorage.getItem('ESTUDIANTE_EMAIL'));
+  let zelda = "http://146.235.246.199:8080/estudiante/" + (localStorage.getItem('ESTUDIANTE_EMAIL'));
 
   const value = await axios.get(zelda, {
     headers: {
@@ -134,7 +134,7 @@ export const GestionarEstudiante = async () => {
     }
   })
   let temp_user = importStudents([value.data])[0]
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto = '';
   let archivo = '';
 
@@ -163,7 +163,7 @@ export const GestionarEstudiante = async () => {
 }
 
 export const MiPerfilAdministrativo = async () => {
-  let zelda = "http://144.22.63.128:8080/administrativo/" + (JSON.parse(localStorage.getItem('session'))).email;
+  let zelda = "http://146.235.246.199:8080/administrativo/" + (JSON.parse(localStorage.getItem('session'))).email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -172,7 +172,7 @@ export const MiPerfilAdministrativo = async () => {
 
   let temp_user = importAdmins([value.data])[0]
   temp_user.contrasenia = '-'
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto = '';
   let archivo = '';
   try {
@@ -200,7 +200,7 @@ export const MiPerfilAdministrativo = async () => {
 }
 
 export const GestionarAdministrativo = async () => {
-  let zelda = "http://144.22.63.128:8080/administrativo/" + (localStorage.getItem('ADMINISTRATIVO_EMAIL'));
+  let zelda = "http://146.235.246.199:8080/administrativo/" + (localStorage.getItem('ADMINISTRATIVO_EMAIL'));
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -209,7 +209,7 @@ export const GestionarAdministrativo = async () => {
 
   let temp_user = importAdmins([value.data])[0]
   temp_user.contrasenia = '-'
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto = '';
   let archivo = '';
   try {
@@ -238,7 +238,7 @@ export const GestionarAdministrativo = async () => {
 
 export const MiPerfilLider = async () => {
   const email = (JSON.parse(localStorage.getItem('session'))).email
-  let zelda = "http://144.22.63.128:8080/coordinador/" + email;
+  let zelda = "http://146.235.246.199:8080/coordinador/" + email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -246,7 +246,7 @@ export const MiPerfilLider = async () => {
   })
 
   let temp_user = importLider([value.data])[0]
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto;
   let archivo;
   try {
@@ -278,7 +278,7 @@ export const MiPerfilLider = async () => {
 
 export const GestionarLider = async () => {
   const email = (localStorage.getItem('LIDER_EMAIL'))
-  let zelda = "http://144.22.63.128:8080/coordinador/" + email;
+  let zelda = "http://146.235.246.199:8080/coordinador/" + email;
   const value = await axios.get(zelda, {
     headers: {
       "X-Softue-JWT": localStorage.getItem('token_access')
@@ -286,7 +286,7 @@ export const GestionarLider = async () => {
   })
 
   let temp_user = importLider([value.data])[0]
-  zelda = 'http://144.22.63.128:8080/coordinador/foto/'
+  zelda = 'http://146.235.246.199:8080/coordinador/foto/'
   let foto;
   let archivo;
   try {
@@ -323,12 +323,12 @@ export const GestionarEntidad = async () => {
       "X-Softue-JWT": localStorage.getItem('token_access')
     }
   }
-  const entidad = (await axios.get('http://144.22.63.128:8080/entidadFinanciadora/' + email, config)).data
+  const entidad = (await axios.get('http://146.235.246.199:8080/entidadFinanciadora/' + email, config)).data
   console.log(entidad)
   let foto;
   let archivo;
   try {
-    foto = await axios.get('http://144.22.63.128:8080/entidadFinanciadora/foto/' + email, {
+    foto = await axios.get('http://146.235.246.199:8080/entidadFinanciadora/foto/' + email, {
       ...config,
       responseType: 'arraybuffer' // asegúrate de especificar el tipo de respuesta como arraybuffer
     }).then(response => {
@@ -357,6 +357,8 @@ export function CerrarSesion(navigate){
   navigate('/login')
   localStorage.clear();
 }
+
+
 
 
 

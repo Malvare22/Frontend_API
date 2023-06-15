@@ -156,7 +156,7 @@ export default function Listar_Estudiantes() {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        value = await axios.get('http://144.22.63.128:8080/estudiante/listar', config)
+        value = await axios.get('http://146.235.246.199:8080/estudiante/listar', config)
         setFilteredData(importStudents(value.data))
 
 
@@ -189,6 +189,8 @@ export default function Listar_Estudiantes() {
         </div>
     );
 }
+
+
 
 
 

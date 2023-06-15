@@ -7,7 +7,7 @@ export const getPreguntas = async ({preguntaInfo, setPreguntaInfo}) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.get('http://144.22.63.128:8080/pregunta', config);
+        const response = await axios.get('http://146.235.246.199:8080/pregunta', config);
         setPreguntaInfo(response.data);
     } catch (error) {
         console.error("Error al obtener las preguntas:", error);
@@ -21,7 +21,7 @@ export const getPregunta = async ({preguntaInfo, setPreguntaInfo}) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.get(`http://144.22.63.128:8080/pregunta/${localStorage.getItem('idPregunta')}`, config);
+        const response = await axios.get(`http://146.235.246.199:8080/pregunta/${localStorage.getItem('idPregunta')}`, config);
         const preguntaData = {
             ...response.data,
             componente: response.data.componenteCompetenciasId.nombre
@@ -43,7 +43,7 @@ export const crearPregunta = async (datos) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        const response = await axios.post('http://144.22.63.128:8080/pregunta', formData, config);
+        const response = await axios.post('http://146.235.246.199:8080/pregunta', formData, config);
         return response.data;
     }
     catch (error) {
@@ -71,7 +71,7 @@ export const actualizarPregunta = async (datos) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.patch('http://144.22.63.128:8080/pregunta', formData, config);
+        await axios.patch('http://146.235.246.199:8080/pregunta', formData, config);
     }
     catch (error) {
         let msg = '';
@@ -94,7 +94,7 @@ export const eliminarPregunta = async ({idPregunta}) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.delete(`http://144.22.63.128:8080/pregunta/${idPregunta}`, config);
+        await axios.delete(`http://146.235.246.199:8080/pregunta/${idPregunta}`, config);
         
     } catch (error) {
         console.error("Error al obtener las preguntas:", error);
@@ -112,7 +112,7 @@ export const crearRespuesta = async (respuesta) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.post('http://144.22.63.128:8080/respuesta', formData, config);
+        await axios.post('http://146.235.246.199:8080/respuesta', formData, config);
     }
     catch (error) {
         let msg = '';
@@ -140,7 +140,7 @@ export const actualizarRespuesta = async (respuesta) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.patch('http://144.22.63.128:8080/respuesta', formData, config);
+        await axios.patch('http://146.235.246.199:8080/respuesta', formData, config);
     }
     catch (error) {
         let msg = '';
@@ -163,7 +163,7 @@ export const eliminarRespuesta = async (respuesta) => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        await axios.delete(`http://144.22.63.128:8080/respuesta/${respuesta.id}`, config);
+        await axios.delete(`http://146.235.246.199:8080/respuesta/${respuesta.id}`, config);
     }
     catch (error) {
         let msg = '';
@@ -178,6 +178,8 @@ export const eliminarRespuesta = async (respuesta) => {
         console.error(msg);
     }
 };
+
+
 
 
 

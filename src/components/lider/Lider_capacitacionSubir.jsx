@@ -36,7 +36,7 @@ export default function Subir_Formatos() {
             const nuevoNombreArchivo = nombreArchivoEsperado + '.' + formato.name.split('.').pop();
             formData.set('documento', formato, nuevoNombreArchivo);
 
-            let ruta = 'http://localhost:8080/formato';
+            let ruta = 'http://146.235.246.199:8080/formato';
             let value = await axios
                 .post(ruta, formData, { headers: { 'X-Softue-JWT': localStorage.getItem('token_access') } })
                 .then((response) => {
@@ -173,3 +173,5 @@ export default function Subir_Formatos() {
         </div>
     );
 }
+
+

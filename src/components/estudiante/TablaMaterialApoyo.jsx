@@ -8,8 +8,8 @@ export default function TablaMaterialIdea(props) {
     const getMaterial = async () => {
         try {
             let urls;
-            if(props.tipo !== "")  urls='http://localhost:8080/formato/material'+props.tipo;
-            else  urls='http://localhost:8080/formato/materialGeneral';
+            if(props.tipo !== "")  urls='http://146.235.246.199:8080/formato/material'+props.tipo;
+            else  urls='http://146.235.246.199:8080/formato/materialGeneral';
             const response = await axios.get(urls, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
@@ -30,7 +30,7 @@ export default function TablaMaterialIdea(props) {
     const getArchi = async (id) => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        let URL = 'http://localhost:8080/formato/recuperar/'+id;
+        let URL = 'http://146.235.246.199:8080/formato/recuperar/'+id;
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
@@ -126,6 +126,8 @@ const Sdiv = styled.div`
           width: 60px;
       }}
 `;
+
+
 
 
 

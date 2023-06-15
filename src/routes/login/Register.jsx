@@ -109,7 +109,7 @@ const PanelPrincipal = (props) => {
             var formData = new FormData();
             formData.append('codigo', usuario);
             formData.append('contrasenia', contrasenia);
-            axios.post('http://localhost:8080/register/estudiante/codigo', formData, config)
+            axios.post('http://146.235.246.199:8080/register/estudiante/codigo', formData, config)
             .then((response) => {
                 alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
                 navigate('/Login');
@@ -122,7 +122,7 @@ const PanelPrincipal = (props) => {
             var formData = new FormData();
             formData.append('correo', usuario);
             formData.append('contrasenia', contrasenia);
-            axios.post('http://localhost:8080/register/docente/correo', formData, config)
+            axios.post('http://146.235.246.199:8080/register/docente/correo', formData, config)
             .then((response) => {
                 alert("Se ha creado exitosamente su usuario, ya puede iniciar sesión con su código institucional y contraseña.")
                 navigate('/Login');
@@ -206,3 +206,4 @@ const StyledDiv = styled.div`
         p{font-size: 1rem;}
     }
 `;
+

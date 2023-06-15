@@ -27,7 +27,7 @@ export default function Estudiante_Evaluacion() {
 
     const getEstudiante = async () => {
 
-        let value = await axios.get("http://144.22.63.128:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.get("http://146.235.246.199:8080/estudiante/" + emailEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -42,7 +42,7 @@ export default function Estudiante_Evaluacion() {
 
     const getEvaluacion = async () => {
 
-        let value = await axios.get("http://144.22.63.128:8080/test/resultadosEstudiante/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.get("http://146.235.246.199:8080/test/resultadosEstudiante/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -57,7 +57,7 @@ export default function Estudiante_Evaluacion() {
 
     const getResultado = async () => {
 
-        let value = await axios.get("http://144.22.63.128:8080/test/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        let value = await axios.get("http://146.235.246.199:8080/test/" + codigoEstudiante, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -229,6 +229,8 @@ const Sdiv = styled.div`
           width: 60px;
       }}
 `;
+
+
 
 
 
