@@ -100,6 +100,9 @@ import { Relogin } from './routes/login/Relogin';
 import DocenteAceptarTutoriaPlan from './components/docente/Docente_Tutoria_AceptarPlan';
 import Registro from './routes/login/Register';
 
+import LiderListarCapacitacion from './components/lider/Lider_capacitacionListar';
+import LiderSubirCapacitacion from './components/lider/Lider_capacitacionSubir';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -160,6 +163,9 @@ const router = createBrowserRouter(
             <Route path='TiemposEvaluacion' element={<TiemposEvaluacionAgregar></TiemposEvaluacionAgregar>}/>
             <Route path='Areas/Listar' element={<Listar_Areas></Listar_Areas>}></Route>
             <Route path='Areas/Registrar' element={<RegistrarArea></RegistrarArea>}></Route>
+
+            <Route path='Capacitacion' element={<LiderListarCapacitacion></LiderListarCapacitacion>} />
+            <Route path='AgregarCapacitacion' element={<LiderSubirCapacitacion></LiderSubirCapacitacion>} />
 
             {/** Rutas del manejo de preguntas */}
             <Route path='Preguntas/Listar' element={<LiderPreguntasListar></LiderPreguntasListar>} />
