@@ -107,7 +107,7 @@ export default function Subir_Formatos() {
                                             <option value="">Seleccione...</option>
                                             <option value="material_idea_negocio">Idea de negocio</option>
                                             <option value="material_plan_negocio">Plan de negocio</option>
-                                            <option value="material_general">material general</option>
+                                            <option value="material_general">Material general</option>
                                         </select>
                                     </div>
                                 </div>
