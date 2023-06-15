@@ -269,12 +269,8 @@ export function FormDocente({ user, type, myself }) {
                 }
             }
             if (type == 'registrar') {
-<<<<<<< HEAD
-                await axios.post('http://146.235.246.199:8080/register/docente', dataToSend)
-=======
                 dataToSend.usuarioActivo = true
                 await axios.post('http://146.235.246.199:8080/register/docente', dataToSend)
->>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
             }
             else {
                 dataToSend.correo = C_CORREO;
@@ -558,14 +554,6 @@ export const FormEstudiante = ({ user, type, myself }) => {
 
             if (type == 'registrar') {
                 dataToSend.capacitacionAprobada = "reprobada"
-<<<<<<< HEAD
-                await axios.post('http://146.235.246.199:8080/register/estudiante', dataToSend)
-            }
-
-            else {
-
-                await axios.patch('http://146.235.246.199:8080/estudiante/actualizar', dataToSend, config)
-=======
                 dataToSend.usuarioActivo = true
 
                 await axios.post('http://146.235.246.199:8080/register/estudiante', dataToSend)
@@ -585,7 +573,6 @@ export const FormEstudiante = ({ user, type, myself }) => {
                             localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
                         }
                     }
->>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (type != 'estudiante') {
                     if (form.contrasenia != '') {
                         await changePassword(form.correo, form.contrasenia, type)
@@ -848,13 +835,6 @@ export const FormAdministrativo = ({ user, type, myself }) => {
             }
 
             if (type == 'registrar') {
-<<<<<<< HEAD
-                await axios.post('http://146.235.246.199:8080/register', dataToSend)
-            }
-
-            else {
-                await axios.patch('http://146.235.246.199:8080/administrativo/update', dataToSend, config)
-=======
                 dataToSend.usuarioActivo = true
                 await axios.post('http://146.235.246.199:8080/register', dataToSend)
             }
@@ -862,7 +842,6 @@ export const FormAdministrativo = ({ user, type, myself }) => {
             else {
                 dataToSend.correo = C_CORREO;
                 await axios.patch('http://146.235.246.199:8080/administrativo/update', dataToSend, config)
->>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (form.contrasenia != '-') {
                     await changePassword(C_CORREO, form.contrasenia, type)
                 }
@@ -1084,13 +1063,6 @@ export const FormLider = ({ user, type, myself }) => {
                 }
             }
             if (type == 'registrar') {
-<<<<<<< HEAD
-                await axios.post('http://146.235.246.199:8080/register', dataToSend)
-            }
-            else {
-
-                await axios.patch('http://146.235.246.199:8080/coordinador/update', dataToSend, config)
-=======
                 dataToSend.usuarioActivo = true
                 await axios.post('http://146.235.246.199:8080/register', dataToSend)
             }
@@ -1098,7 +1070,6 @@ export const FormLider = ({ user, type, myself }) => {
 
                 dataToSend.correo = C_CORREO;
                 await axios.patch('http://146.235.246.199:8080/coordinador/update', dataToSend, config)
->>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (form.contrasenia != '-') {
                     await changePassword(C_CORREO, form.contrasenia, type)
                 }
