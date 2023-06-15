@@ -10,8 +10,17 @@ export default function EntidadesFinanciadoras() {
             const response = await axios.get('http://144.22.63.128:8080/entidadFinanciadora/' + localStorage.getItem("correo"), {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") }
             });
-            console.log(response.data);
-            setDatos(response.data);
+            const data = response.data
+            let foto;
+            if (data.fotoEntidadFinanciadoraId === null) {
+                foto = ""
+            }
+            else {
+                // Establecer la fuente de la imagen como el string Base64
+                foto = "data:image/png;base64," + data.fotoEntidadFinanciadoraId.foto;
+            }
+            data.foto = foto;
+            setDatos(data);
         } catch (error) {
             console.log(error);
         }
@@ -30,6 +39,7 @@ export default function EntidadesFinanciadoras() {
                 sitioweb={datos.sitioWeb}
                 correo={datos.correo}
                 descripcion={datos.descripcion}
+                imagen={datos.foto}
             />
         </div>
     )

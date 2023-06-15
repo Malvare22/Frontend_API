@@ -1,18 +1,5 @@
 import axios from "axios";
 
-export function toLiderFormatStudentsFromImport(students){
-    
-
-    return students.map((student,i)=>{
-        student.curso= student.area.charAt(0).toUpperCase() + student.curso.slice(1)
-        setDateAndYearsOld(student)
-        student.sexo = setGenreToImport(student)
-        student.nombre_acudiente = student.nombreAcudiente
-        console.log(i,student)
-        return student;
-
-    });
-}
 
 export function importStudents(students){
     
@@ -21,7 +8,6 @@ export function importStudents(students){
         student.cursoToString = student.curso
         student.curso= split[0]
         student.subcurso = split[1]
-        setDateAndYearsOld(student)
         student.sexo = setGenreToImport(student)
         student.nombre_acudiente = student.nombreAcudiente
         return student;
@@ -35,39 +21,6 @@ const setGenreToImport = (user)=>{
 
 const setGenreToExport = (user)=>{
     return user.sexo == 'Masculino'? 'M':'F';
-}
-
-const setDateAndYearsOld=(user)=>{
-    const date = user.fecha_nacimiento[0]+"-"+user.fecha_nacimiento[1]+"-"+user.fecha_nacimiento[2];
-    const today = new Date()
-    const birth = Date.parse(date);
-    const ans = new Date(today-birth)
-    user.edad = ans.getUTCFullYear()-1970
-    user.fecha_nacimiento = new Date(date).toISOString().split('T')[0];
-}
-
-export function toLiderFormatStudentsToExport(students){
-    const grades = {
-        "Primero":"primero",
-        "Segundo":"segundo",
-        "Tercero":"tercero",
-        "Cuarto":"cuarto",
-        "Quinto":"quinto",
-        "Sexto":"sexto",
-        "Séptimo":"septimo",
-        "Octavo":"octavo",
-        "Noveno":"noveno",
-        "Décimo":"decimo",
-        "Once":"once",
-    }
-    return students.map((student)=>{
-        student.curso = grades[student.curso]
-        student.sexo = setGenreToExport(student)
-        student.nombreAcudiente = student.nombre_acudiente
-
-        return student
-    })
-
 }
 
 export function exportStudents(students){
@@ -90,7 +43,6 @@ export function importAdmins(admins){
 
     return admins.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
-        setDateAndYearsOld(elemento)
         return elemento
     })
 }
@@ -108,7 +60,6 @@ export function importDocents(docentes){
     
     return docentes.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
-        setDateAndYearsOld(elemento)
         elemento.areaToString= elemento.area.charAt(0).toUpperCase() + elemento.area.slice(1)
         return elemento
     })
@@ -129,7 +80,6 @@ export function importLider(admins){
     return admins.map((elemento)=>{
         elemento.sexo = setGenreToImport(elemento)
         elemento.contrasenia = '-'
-        setDateAndYearsOld(elemento)
         return elemento
     })
 }

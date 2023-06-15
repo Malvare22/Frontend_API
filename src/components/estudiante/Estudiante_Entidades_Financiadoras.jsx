@@ -14,10 +14,15 @@ export default function EntidadesFinanciadoras() {
       const newData = response.data.map(
         (v) => {
           let foto;
-
-          // Establecer la fuente de la imagen como el string Base64
-          foto = "data:image/png;base64," + v.fotoEntidadFinanciadoraId.foto;
-          return {...v, "foto": foto}
+          console.log(v)
+          if (v.fotoEntidadFinanciadoraId === null) {
+            foto = ""
+          }
+          else {
+            // Establecer la fuente de la imagen como el string Base64
+            foto = "data:image/png;base64," + v.fotoEntidadFinanciadoraId.foto;
+          }
+          return { ...v, "foto": foto }
         }
       )
 

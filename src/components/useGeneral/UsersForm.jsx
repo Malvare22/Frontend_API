@@ -11,6 +11,7 @@ import default_profile from './../../assets/images/Users/default_profile.png'
 import axios from "axios";
 import { contraseniaNoCumple, exportAdmins, exportDocents, exportLider, exportStudents, loadAreas } from "../../context/functions_general";
 import { useEffect } from "react";
+import {CerrarSesion} from './../../context/functions_app'
 
 const REGEX_NUMERO = /^[0-9][0-9\-]*[0-9]$/;
 
@@ -67,21 +68,6 @@ export function HeadRegister(props) {
             <h5 className='text-white fw-bold'>Registrar {props.labelText}</h5>
         </div>
     );
-}
-
-
-const getPresentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    if (month < 10) {
-        month = '0' + month; // Agrega un cero al mes si es menor a 10
-    }
-    let day = today.getDate();
-    if (day < 10) {
-        day = '0' + day; // Agrega un cero al día si es menor a 10
-    }
-    return `${year}-${month}-${day}`;
 }
 
 const changePassword = async (correo, contrasenia, type) => {
@@ -156,8 +142,10 @@ const useForm = (initialData, validar, initialErrors) => {
 };
 
 //Contenido del formulario
-export function FormDocente({ user, type }) {
+export function FormDocente({ user, type, myself }) {
     const navigate = useNavigate()
+
+    let C_CORREO;
 
     const [areas, setAreas] = useState([])
 
@@ -177,10 +165,13 @@ export function FormDocente({ user, type }) {
             "contrasenia": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
-            "fecha_nacimiento": "",
             "sexo": ""
         };
     }
+    else{
+            C_CORREO = user.correo;
+        }
+    
 
     const initialErrors = {
         "nombre": false,
@@ -192,7 +183,6 @@ export function FormDocente({ user, type }) {
         "contrasenia": false,
         "telefono": false,
         "foto": false,
-        "fecha_nacimiento": false,
         "sexo": false
     };
 
@@ -209,7 +199,6 @@ export function FormDocente({ user, type }) {
             "contrasenia": false,
             "telefono": false,
             "foto": false,
-            "fecha_nacimiento": false,
             "sexo": false
         }
 
@@ -240,11 +229,6 @@ export function FormDocente({ user, type }) {
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
-            fail = true;
-        }
-
-        if (user.fecha_nacimiento == '' || !(Date.parse(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
             fail = true;
         }
 
@@ -285,22 +269,44 @@ export function FormDocente({ user, type }) {
                 }
             }
             if (type == 'registrar') {
+<<<<<<< HEAD
                 await axios.post('http://144.22.63.128:8080/register/docente', dataToSend)
+=======
+                dataToSend.usuarioActivo = true
+                await axios.post('http://localhost:8080/register/docente', dataToSend)
+>>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
             }
             else {
+                dataToSend.correo = C_CORREO;
                 console.log('Export', dataToSend)
                 await axios.patch('http://144.22.63.128:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
             }
 
             await axios.post('http://144.22.63.128:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else{
+                localStorage.setItem('DOCENTE_EMAIL', form.correo) 
+                navigate(-1)
+            }
+
 
         } catch (error) {
             let msg = '';
+
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
                 msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
@@ -374,15 +380,6 @@ export function FormDocente({ user, type }) {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -414,8 +411,8 @@ export function FormDocente({ user, type }) {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
 
@@ -448,11 +445,14 @@ export function FormDocente({ user, type }) {
  *  Formulario de estudiante, dispone de tres variantes:
  *  Registro ("registrar"), fuertemente editable ("sudo") y levemente editable ("estudiante")
  *  **/
-export const FormEstudiante = ({ user, type }) => {
+export const FormEstudiante = ({ user, type, myself }) => {
     const navigate = useNavigate()
+
+    let C_CORREO;
 
     if (type == 'registrar') {
         user = {
+            "codigoInstitucional": "",
             "correo": "",
             "contrasenia": "",
             "apellido": "",
@@ -460,23 +460,25 @@ export const FormEstudiante = ({ user, type }) => {
             "curso": "",
             "subcurso": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "nombre_acudiente": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
             "tipo_usuario": "",
         };
     }
+    else{
+        C_CORREO = user.correo;
+    }
 
     const initialErrors = {
         nombre: false,
         apellido: false,
-        fecha_nacimiento: false,
         sexo: false,
         nombre_acudiente: false,
         telefono: false,
         correo: false,
-        contrasenia: false
+        contrasenia: false,
+        codigoInstitucional: false
     };
 
 
@@ -484,12 +486,12 @@ export const FormEstudiante = ({ user, type }) => {
         let errors = {
             nombre: false,
             apellido: false,
-            fecha_nacimiento: false,
             sexo: false,
             nombre_acudiente: false,
             telefono: false,
             correo: false,
-            contrasenia: false
+            contrasenia: false,
+            codigoInstitucional: false
         };
         let fail = false;
         const email_regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -506,10 +508,6 @@ export const FormEstudiante = ({ user, type }) => {
             errors.curso = true;
             fail = true;
         }
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
-            fail = true;
-        }
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
             errors.sexo = true;
             fail = true;
@@ -521,6 +519,11 @@ export const FormEstudiante = ({ user, type }) => {
 
         if (user.telefono.trim() == '' || REGEX_NUMERO.exec(user.telefono) == null) {
             errors.telefono = true;
+            fail = true;
+        }
+
+        if (user.codigoInstitucional == '' || isNaN(user.codigoInstitucional)) {
+            errors.codigoInstitucional = true;
             fail = true;
         }
 
@@ -555,12 +558,34 @@ export const FormEstudiante = ({ user, type }) => {
 
             if (type == 'registrar') {
                 dataToSend.capacitacionAprobada = "reprobada"
+<<<<<<< HEAD
                 await axios.post('http://144.22.63.128:8080/register/estudiante', dataToSend)
             }
 
             else {
 
                 await axios.patch('http://144.22.63.128:8080/estudiante/actualizar', dataToSend, config)
+=======
+                dataToSend.usuarioActivo = true
+
+                await axios.post('http://localhost:8080/register/estudiante', dataToSend)
+            }
+
+            else {
+                dataToSend.correo = C_CORREO;
+                await axios.patch('http://localhost:8080/estudiante/actualizar', dataToSend, config)
+                
+                    if(form.correo != C_CORREO){
+                        let formDataCorreo = new FormData()
+                        formDataCorreo.append('codigo', form.codigo)
+                        formDataCorreo.append('correo', form.correo)
+                        await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                        if(myself){
+                            let aux = (JSON.parse(localStorage.getItem('session')))
+                            localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                        }
+                    }
+>>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (type != 'estudiante') {
                     if (form.contrasenia != '') {
                         await changePassword(form.correo, form.contrasenia, type)
@@ -570,13 +595,20 @@ export const FormEstudiante = ({ user, type }) => {
 
             await axios.post('http://144.22.63.128:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else{
+                localStorage.setItem('ESTUDIANTE_EMAIL', form.correo) 
+                navigate(-1)
+            }
+
         }
         catch (error) {
             let msg = '';
             if (error.response) {
                 console.log('Código de estado:', error.response.status);
-                msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
+                if (error.response.data.errorMessage == "could not execute statement; SQL [n/a]; constraint [UK_okh9f47317rlaebh5n11vlfwb]")
+                msg = "Ese código institucional ya se encuentra en uso."
+                else msg = "Error " + error.response.status + ": " + error.response.data.errorMessage;
             } else if (error.request) {
                 msg = 'Error: No se recibió respuesta de la base de datos';
             } else {
@@ -595,6 +627,16 @@ export const FormEstudiante = ({ user, type }) => {
                     <SInfo>
                         <div className='row' style={{ paddingTop: "60px" }}>
                             <div className='col-sm-4 col-6 fw-bold'>
+                                Código Institucional:
+                            </div>
+                            <div className='col-sm-8 col-6'>
+                                {type=='registrar'? <><input type="number" className={`form-control ${errors.codigoInstitucional ? "is-invalid" : ""}`} name='codigoInstitucional' value={form.codigoInstitucional} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite valores númericos y válidos.</div></>: form.codigoInstitucional}
+                            </div>
+                        </div>
+
+                        <div className='row' >
+                            <div className='col-sm-4 col-6 fw-bold'>
                                 Nombres:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -602,6 +644,7 @@ export const FormEstudiante = ({ user, type }) => {
                                 <div className="invalid-feedback">Este campo solo admite letras y una longitud máxima de 50 carácteres.</div>
                             </div>
                         </div>
+                        
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
                                 Apellidos:
@@ -627,15 +670,6 @@ export const FormEstudiante = ({ user, type }) => {
                                     </div>
                                     {errors.curso && <div className="text-danger">Este campo solo admite los cursos establecidos.</div>}
                                 </div>}
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
@@ -679,8 +713,8 @@ export const FormEstudiante = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' && <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput>}
@@ -708,9 +742,11 @@ export const FormEstudiante = ({ user, type }) => {
     );
 }
 
-export const FormAdministrativo = ({ user, type }) => {
+export const FormAdministrativo = ({ user, type, myself }) => {
 
     const navigate = useNavigate()
+
+    let C_CORREO;
 
     if (type == 'registrar') {
         user = {
@@ -719,12 +755,14 @@ export const FormAdministrativo = ({ user, type }) => {
             "nombre": "",
             "documento": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
             "contrasenia": ""
         }
     }
+    else{
+            C_CORREO = user.correo;
+        }
 
     const initialErrors = {
         "correo": false,
@@ -732,7 +770,6 @@ export const FormAdministrativo = ({ user, type }) => {
         "apellido": false,
         "documento": false,
         "sexo": false,
-        "fecha_nacimiento": false,
         "telefono": false,
         "foto": false,
         "contrasenia": false,
@@ -746,7 +783,6 @@ export const FormAdministrativo = ({ user, type }) => {
             "apellido": false,
             "documento": false,
             "sexo": false,
-            "fecha_nacimiento": false,
             "telefono": false,
             "foto": false,
             "contrasenia": false,
@@ -770,11 +806,6 @@ export const FormAdministrativo = ({ user, type }) => {
                 errors.contrasenia = true
                 fail = true
             }
-        }
-
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
-            fail = true;
         }
 
         if (user.sexo != 'Masculino' && user.sexo != 'Femenino') {
@@ -817,20 +848,44 @@ export const FormAdministrativo = ({ user, type }) => {
             }
 
             if (type == 'registrar') {
+<<<<<<< HEAD
                 await axios.post('http://144.22.63.128:8080/register', dataToSend)
             }
 
             else {
                 await axios.patch('http://144.22.63.128:8080/administrativo/update', dataToSend, config)
+=======
+                dataToSend.usuarioActivo = true
+                await axios.post('http://localhost:8080/register', dataToSend)
+            }
+
+            else {
+                dataToSend.correo = C_CORREO;
+                await axios.patch('http://localhost:8080/administrativo/update', dataToSend, config)
+>>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (form.contrasenia != '-') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
                 
             }
 
             await axios.post('http://144.22.63.128:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else{
+                localStorage.setItem('ADMINISTRATIVO_EMAIL', form.correo) 
+                navigate(-1)
+            }
 
             console.log('Archivo enviado correctamente.');
         } catch (error) {
@@ -892,15 +947,6 @@ export const FormAdministrativo = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Teléfono:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -913,8 +959,8 @@ export const FormAdministrativo = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}
@@ -942,9 +988,13 @@ export const FormAdministrativo = ({ user, type }) => {
     );
 }
 
-export const FormLider = ({ user, type }) => {
+export const FormLider = ({ user, type, myself }) => {
     const navigate = useNavigate();
+
     const jesucristo = useRef(null)
+
+    let C_CORREO;
+
     if (type == 'registrar') {
         user = {
             "correo": "",
@@ -952,18 +1002,20 @@ export const FormLider = ({ user, type }) => {
             "apellido": "",
             "nombre": "",
             "sexo": "",
-            "fecha_nacimiento": "",
             "telefono": "",
             "foto": { "archivo": "", "direccion": "" },
         };
     }
+    else{
+        C_CORREO = user.correo;
+    }
+
     const initialErrors = {
         "correo": false,
         "contrasenia": false,
         "apellido": false,
         "nombre": false,
         "sexo": false,
-        "fecha_nacimiento": false,
         "telefono": false,
         "foto": false,
     };
@@ -974,7 +1026,6 @@ export const FormLider = ({ user, type }) => {
             "apellido": false,
             "nombre": false,
             "sexo": false,
-            "fecha_nacimiento": false,
             "telefono": false,
             "foto": false,
         };
@@ -993,11 +1044,6 @@ export const FormLider = ({ user, type }) => {
 
         if (type == 'registrar' && !validarContrasenia(user.contrasenia)) {
             errors.contrasenia = true;
-            fail = true;
-        }
-
-        if (user.fecha_nacimiento == '' || !(new Date(user.fecha_nacimiento)) || ((new Date())).getTime() < ((new Date(user.fecha_nacimiento)).getTime())) {
-            errors.fecha_nacimiento = true;
             fail = true;
         }
 
@@ -1038,19 +1084,44 @@ export const FormLider = ({ user, type }) => {
                 }
             }
             if (type == 'registrar') {
+<<<<<<< HEAD
                 await axios.post('http://144.22.63.128:8080/register', dataToSend)
             }
             else {
 
                 await axios.patch('http://144.22.63.128:8080/coordinador/update', dataToSend, config)
+=======
+                dataToSend.usuarioActivo = true
+                await axios.post('http://localhost:8080/register', dataToSend)
+            }
+            else {
+
+                dataToSend.correo = C_CORREO;
+                await axios.patch('http://localhost:8080/coordinador/update', dataToSend, config)
+>>>>>>> 274d3bb90619bf9d0e62e8277195b6b5a5faa501
                 if (form.contrasenia != '-') {
-                    await changePassword(form.correo, form.contrasenia, type)
+                    await changePassword(C_CORREO, form.contrasenia, type)
+                }
+                if(form.correo != C_CORREO){
+                    let formDataCorreo = new FormData()
+                    formDataCorreo.append('codigo', form.codigo)
+                    formDataCorreo.append('correo', form.correo)
+                    await axios.patch(`http://localhost:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    if(myself){
+                        let aux = (JSON.parse(localStorage.getItem('session')))
+                        localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
+                    }
                 }
             }
 
             await axios.post('http://144.22.63.128:8080/coordinador/guardarFoto', formData, config)
 
-            navigate(-1)
+            if(myself) CerrarSesion(navigate)
+            else{
+                localStorage.setItem('LIDER_EMAIL', form.correo) 
+                navigate(-1)
+            }
+
 
         } catch (error) {
             let msg = '';
@@ -1092,15 +1163,6 @@ export const FormLider = ({ user, type }) => {
                         </div>
                         <div className='row'>
                             <div className='col-sm-4 col-6 fw-bold'>
-                                Fecha de Nacimiento:
-                            </div>
-                            <div className='col-sm-8 col-6'>
-                                <input type="date" max={getPresentDate()} className={`form-control ${errors.fecha_nacimiento ? "is-invalid" : ""}`} value={form.fecha_nacimiento} onChange={handleChange} name='fecha_nacimiento' />
-                                <div className="invalid-feedback">Solo se admiten fechas válidas.</div>
-                            </div>
-                        </div>
-                        <div className='row'>
-                            <div className='col-sm-4 col-6 fw-bold'>
                                 Sexo:
                             </div>
                             <div className='col-sm-8 col-6'>
@@ -1132,8 +1194,8 @@ export const FormLider = ({ user, type }) => {
                                 Correo eléctronico:
                             </div>
                             <div className='col-sm-8 col-6'>
-                                {type=='registrar'? <><input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
-                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div></>: form.correo}
+                                <input type="text" className={`form-control ${errors.correo ? "is-invalid" : ""}`} name='correo' value={form.correo} onChange={handleChange} />
+                                <div className="invalid-feedback">Este campo solo admite correos electrónicos válidos.</div>
                             </div>
                         </div>
                         {type == 'registrar' ? <RegisterPasswordInput errors={errors} form={form} handleChange={handleChange}></RegisterPasswordInput> : <EditPasswordInput toggleAlertPassword={toggleAlertPassword}></EditPasswordInput>}

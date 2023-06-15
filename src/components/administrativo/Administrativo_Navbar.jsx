@@ -169,7 +169,7 @@ const SideBarStatic = ({ flechas, toggleFlechas }) => {
           </NavLink>
         </NavItem>
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -180,9 +180,9 @@ const SideBarStatic = ({ flechas, toggleFlechas }) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -194,10 +194,10 @@ const SideBarStatic = ({ flechas, toggleFlechas }) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -208,7 +208,7 @@ const SideBarStatic = ({ flechas, toggleFlechas }) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Informe general UE</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
         <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
@@ -381,7 +381,7 @@ const SideBarResponsive = ({ flechas, toggleFlechas }) => {
             </NavLink>
           </NavItem>
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -392,9 +392,9 @@ const SideBarResponsive = ({ flechas, toggleFlechas }) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -406,10 +406,10 @@ const SideBarResponsive = ({ flechas, toggleFlechas }) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -420,7 +420,7 @@ const SideBarResponsive = ({ flechas, toggleFlechas }) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Informe general UE</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
           <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={() => CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">

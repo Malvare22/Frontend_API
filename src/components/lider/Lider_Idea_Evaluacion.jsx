@@ -408,7 +408,7 @@ const Evaluaciones = (props) => {
                         <Label for="exampleSelectMulti">Select Multiple</Label>
                         <Input type="select" name="selectMulti" id="exampleSelectMulti" onClick={(e) => { setCorreoDocente(e.target.value) }} multiple>
                             {profesores && profesores.map((l) => {
-                                return (<option key={l.correo} value={l.correo}>{l.nombre + l.apellido}</option>);
+                                return (<option key={l.correo} value={l.correo}>{l.nombre +" "+ l.apellido}</option>);
                             })}
                         </Input>
                     </FormGroup>

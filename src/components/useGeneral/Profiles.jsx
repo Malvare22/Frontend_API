@@ -110,7 +110,7 @@ const Profile = (props) => {
     );
 }
 
-const LiderInformacion = (props) =>{
+const LiderInformacion = (props) => {
     return (
         <Sdiv02>
             <div>
@@ -134,15 +134,6 @@ const LiderInformacion = (props) =>{
                         {props.usuario.apellido}
                     </div>
                 </div>
-
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
-                    </div>
-                </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Sexo:
@@ -151,7 +142,7 @@ const LiderInformacion = (props) =>{
                         {props.usuario.sexo}
                     </div>
                 </div>
-            
+
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
                         Correo eléctronico:
@@ -173,7 +164,7 @@ const LiderInformacion = (props) =>{
     );
 }
 
-const AdministradorInformacion = (props) =>{
+const AdministradorInformacion = (props) => {
     return (
         <Sdiv02>
             <div>
@@ -186,15 +177,7 @@ const AdministradorInformacion = (props) =>{
                         Nombre Completo:
                     </div>
                     <div className='col-sm-4 col-6'>
-                        {props.usuario.apellido+" "+props.usuario.nombre}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
+                        {props.usuario.apellido + " " + props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -260,14 +243,6 @@ const DocenteInformacion = (props) => {
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
@@ -321,10 +296,18 @@ const EstudianteInformacion = (props) => {
             <div id='principal'>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
+                        Código Institucional:
+                    </div>
+                    <div className='col-sm-4 col-6'>
+                        {props.usuario.codigoInstitucional}
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-sm-4 col-6 fw-bold'>
                         Nombre:
                     </div>
                     <div className='col-sm-4 col-6'>
-                       {props.usuario.nombre}
+                        {props.usuario.nombre}
                     </div>
                 </div>
                 <div className='row'>
@@ -345,14 +328,6 @@ const EstudianteInformacion = (props) => {
                 </div>
                 <div className='row'>
                     <div className='col-sm-4 col-6 fw-bold'>
-                        Edad:
-                    </div>
-                    <div className='col-sm-4 col-6'>
-                        {props.usuario.edad}
-                    </div>
-                </div>
-                <div className='row'>
-                    <div className='col-sm-4 col-6 fw-bold'>
                         Sexo:
                     </div>
                     <div className='col-sm-4 col-6'>
@@ -364,7 +339,7 @@ const EstudianteInformacion = (props) => {
                         Correo eléctronico:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {props.usuario.correo}
+                        {props.usuario.correo==("correoNoRegistrado@usuario.correo"+props.usuario.codigoInstitucional)? "": props.usuario.correo}
                     </div>
                 </div>
                 <div className='row'>
@@ -372,7 +347,7 @@ const EstudianteInformacion = (props) => {
                         Nombre del acudiente:
                     </div>
                     <div className='col-sm-4 col-6'>
-                    {props.usuario.nombre_acudiente}
+                        {props.usuario.nombre_acudiente}
                     </div>
                 </div>
                 <div className='row'>

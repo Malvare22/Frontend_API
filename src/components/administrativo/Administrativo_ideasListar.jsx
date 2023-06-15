@@ -365,7 +365,7 @@ export default function Listar_Ideas() {
                                     </div>
                                 </button>
                             </div>
-                            <div className="col d-flex justify-content-end">
+                            {/* <div className="col d-flex justify-content-end">
                                 <button type="button" className="btn rounded-3" style={{ background: "#1C3B57", color: "#FFFFFF" }}>
                                     <div className="row">
                                         <div className="col-auto">
@@ -379,7 +379,7 @@ export default function Listar_Ideas() {
                                         </div>
                                     </div>
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
 
                     </div>

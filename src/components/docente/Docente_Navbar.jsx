@@ -75,20 +75,6 @@ const SideBarStatic = ({flechas, toggleFlechas}) => {
         </NavItem>
 
         <NavItem>
-          <NavLink id="Habilidades" href="#">
-            <Row className='d-flex align-content-center align-items-center  justify-content-end'>
-              <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-clipboard2-check-fill" viewBox="0 0 16 16">
-                  <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z" />
-                  <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
-                </svg>
-              </Col>
-              <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
-            </Row>
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
           <NavLink id="Ideas" href="#" onClick={()=>toggleFlechas(0)}>
             <Row className='d-flex align-content-center align-items-center  justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -167,7 +153,7 @@ const SideBarStatic = ({flechas, toggleFlechas}) => {
           </NavLink>
         </NavItem>
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -178,9 +164,9 @@ const SideBarStatic = ({flechas, toggleFlechas}) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
-        <NavItem>
+        {/* <NavItem>
           <NavLink href="#">
             <Row className='d-flex align-content-center align-items-center justify-content-end'>
               <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -192,7 +178,7 @@ const SideBarStatic = ({flechas, toggleFlechas}) => {
               <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
             </Row>
           </NavLink>
-        </NavItem>
+        </NavItem> */}
 
         <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={()=>CerrarSesion(navigate)}>
           <NavLink id='cerrar' className='' href="#">
@@ -263,20 +249,6 @@ const SideBarResponsive = ({flechas, toggleFlechas}) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">
                   <Link to={'Estudiantes'} style={{ textDecoration: "none", color: "white" }}>Estudiantes</Link>
                 </Col>
-              </Row>
-            </NavLink>
-          </NavItem>
-
-          <NavItem>
-            <NavLink id="Habilidades" href="#">
-              <Row className='d-flex align-content-center align-items-center  justify-content-end'>
-                <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" className="bi bi-clipboard2-check-fill" viewBox="0 0 16 16">
-                    <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z" />
-                    <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5Zm6.769 6.854-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708.708Z" />
-                  </svg>
-                </Col>
-                <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Evaluacion</Col>
               </Row>
             </NavLink>
           </NavItem>
@@ -358,7 +330,7 @@ const SideBarResponsive = ({flechas, toggleFlechas}) => {
             </NavLink>
           </NavItem>
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -369,9 +341,9 @@ const SideBarResponsive = ({flechas, toggleFlechas}) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Experiencias exitosas</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
-          <NavItem>
+          {/* <NavItem>
             <NavLink href="#">
               <Row className='d-flex align-content-center align-items-center justify-content-end'>
                 <Col className="d-flex justify-content-end text-white align-content-center" xs="3" >
@@ -383,7 +355,7 @@ const SideBarResponsive = ({flechas, toggleFlechas}) => {
                 <Col xs="9" className="d-flex text-white text-start justify-content-start align-content-center">Cronograma</Col>
               </Row>
             </NavLink>
-          </NavItem>
+          </NavItem> */}
 
           <NavItem className='d-flex flex-column justify-content-end flex-grow-1' onClick={()=>CerrarSesion(navigate)}>
             <NavLink id='cerrar' className='' href="#">
