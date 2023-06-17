@@ -257,7 +257,7 @@ export default function Listar_Formatos() {
                     <div className='container mt-3'>
                         <select name="modulo" onChange={handleModuloChange} className="form-select-sm selector fw-bold text-black" required>
                             <option value="">General</option>
-                            <option value="material_plan_negocio">Idea de negocio</option>
+                            <option value="material_plan_negocio">Plan de negocio</option>
                             <option value="material_general">Material general</option>
                             <option value="material_idea_negocio">Idea de negocio</option>
                         </select>
