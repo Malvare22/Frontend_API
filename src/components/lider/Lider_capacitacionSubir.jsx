@@ -55,7 +55,7 @@ export default function Subir_Formatos() {
                 });
 
             setFormato(null);
-            navigate('../Formatos');
+            navigate('../Capacitacion');
         } else {
             setError('Por favor, selecciona un archivo');
             if (!formatoValido) {
@@ -65,7 +65,7 @@ export default function Subir_Formatos() {
     };
 
     const cambiarNombreArchivo = (nombreArchivo) => {
-        const nombreArchivoEsperado = modulo === 'idea_de_negocio' ? 'idea_de_negocio' : 'plan_de_negocio';
+        const nombreArchivoEsperado = modulo === 'material_idea_negocio' ? 'material_idea_negocio' : modulo === 'material_plan_negocio' ? 'material_plan_negocio' : 'material_general';
         const partesNombreArchivo = nombreArchivo.split('.');
         const extensionArchivo = partesNombreArchivo[partesNombreArchivo.length - 1];
 
@@ -97,7 +97,7 @@ export default function Subir_Formatos() {
         <div className="container-fluid w-75">
             <div className="row">
                 <div className="col-12 m-1 p-1">
-                    <h1 className="fst-italic fw-bold fs-1 text-black">Formato proyectos de emprendimiento</h1>
+                    <h1 className="fst-italic fw-bold fs-1 text-black">Capacitacion de proyectos de emprendimiento</h1>
                     <div className="container">
                         <div className="mt-3">
                             <form onSubmit={handleSubmit}>
@@ -105,8 +105,9 @@ export default function Subir_Formatos() {
                                     <div className="col-auto d-flex align-items-center mb-1">
                                         <select name="modulo" onChange={handleModuloChange} className="form-select-sm selector fw-bold text-black" required>
                                             <option value="">Seleccione...</option>
-                                            <option value="idea_de_negocio">Idea de negocio</option>
-                                            <option value="plan_de_negocio">Plan de negocio</option>
+                                            <option value="material_idea_negocio">Idea de negocio</option>
+                                            <option value="material_plan_negocio">Plan de negocio</option>
+                                            <option value="material_general">Material general</option>
                                         </select>
                                     </div>
                                 </div>
@@ -116,10 +117,10 @@ export default function Subir_Formatos() {
                                             <img src="https://live.staticflickr.com/65535/52935272392_1eff2004b3_o.png" className="img-fluid" />
                                         </div>
                                         <div className="mt-3">
-                                            {modulo === 'idea_de_negocio' ? (
+                                            {modulo === 'material_idea_negocio' ? (
                                                 <>
                                                     <p className="text-center">
-                                                        <b>4. Subir formato de la idea de negocio</b>
+                                                        <b>4. Subir material de idea de negocio</b>
                                                     </p>
                                                     <p style={{ fontSize: 'smaller' }} className="text-center">
                                                         Tenga en cuenta que el formato a subir debe coincidir con el formato esperado (PDF o DOCX)
@@ -128,10 +129,11 @@ export default function Subir_Formatos() {
                                                         <input type="file" id="formatoIdea" onChange={handleformatoChange} accept=".pdf,.docx" required />
                                                     </div>
                                                 </>
-                                            ) : (
+                                            ) : ( modulo === 'material_general' ? 
+                                            (
                                                 <>
                                                     <p className="text-center">
-                                                        <b>4. Subir formato del plan de negocio</b>
+                                                        <b>4. Subir material general</b>
                                                     </p>
                                                     <p style={{ fontSize: 'smaller' }} className="text-center">
                                                         Tenga en cuenta que el formato a subir debe coincidir con el formato esperado (PDF o DOCX)
@@ -140,7 +142,21 @@ export default function Subir_Formatos() {
                                                         <input type="file" id="formatoPlan" onChange={handleformatoChange} accept=".pdf,.docx" required />
                                                     </div>
                                                 </>
-                                            )}
+                                            )
+                    
+                                            :(
+                                                <>
+                                                    <p className="text-center">
+                                                        <b>4. Subir material de plan de negocio</b>
+                                                    </p>
+                                                    <p style={{ fontSize: 'smaller' }} className="text-center">
+                                                        Tenga en cuenta que el formato a subir debe coincidir con el formato esperado (PDF o DOCX)
+                                                    </p>
+                                                    <div className="d-flex justify-content-center align-items-center">
+                                                        <input type="file" id="formatoPlan" onChange={handleformatoChange} accept=".pdf,.docx" required />
+                                                    </div>
+                                                </>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>

@@ -26,7 +26,7 @@ export default function AdministrativoEditarPerfil(props) {
                 <div className='' id='head'>
                 {props.type!='registrar'?<HeadEdit labelText={labelText}/>:<HeadRegister labelText={labelText}/>}
                 </div>
-                <div className='' id="info"> <FormAdministrativo user={user} type={props.type}></FormAdministrativo></div>
+                <div className='' id="info"> <FormAdministrativo user={user} type={props.type} myself={props.myself}></FormAdministrativo></div>
             </div>
         </SContent>
 

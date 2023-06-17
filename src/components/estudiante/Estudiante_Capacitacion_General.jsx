@@ -7,7 +7,7 @@ export default function CapacitacionGeneral() {
         <div className="container">
             <img src="https://live.staticflickr.com/65535/52965391213_c807af25a6_o.png" className='img-fluid mt-2' />
             <div className="container my-5" style={{ width: "80%" }}>
-                <InfoGeneralCapacitacion></InfoGeneralCapacitacion>
+                <InfoGeneralCapacitacion ></InfoGeneralCapacitacion>
             </div>
         </div>
     )
@@ -72,7 +72,7 @@ const InfoGeneralCapacitacion = () => {
                 </p></b>
             </div>
             <div className='row my-5 d-flex justify-content-center align-items-center'>
-                <TablaMaterialApoyo></TablaMaterialApoyo>
+                <TablaMaterialApoyo tipo=""></TablaMaterialApoyo>
             </div>
         </main>
     )
