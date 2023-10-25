@@ -14,7 +14,7 @@ const EstudianteEvaluacion = () => {
 
     const getPreguntas = async () => {
         let value = null;
-        value = await axios.get("http://146.235.246.199:8080/pregunta", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        value = await axios.get("http://150.136.248.85:8080/pregunta", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -38,7 +38,7 @@ const EstudianteEvaluacion = () => {
             var parsedData = JSON.parse(localData);
             formData.append('codigoEstudiante', parsedData.codigo);
 
-            let ruta = "http://146.235.246.199:8080/test";
+            let ruta = "http://150.136.248.85:8080/test";
             try {
                 const response = await axios.post(ruta, formData, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
                 console.log("hecho");

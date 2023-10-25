@@ -20,7 +20,7 @@ export default function TiemposEvaluacionAgregar(){
     }
     const getTiempos = async () => {
      
-      let ruta = "http://146.235.246.199:8080/periodo";
+      let ruta = "http://150.136.248.85:8080/periodo";
       let value = await axios.get(ruta, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } })
         .then((response) => {
           const data = response.data;
@@ -47,7 +47,7 @@ export default function TiemposEvaluacionAgregar(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-          let ruta = "http://146.235.246.199:8080/periodo";
+          let ruta = "http://150.136.248.85:8080/periodo";
           let value = await axios.patch(ruta, {
             diasPeriodoIdea : tiempoIdea,
             diasPeriodoPlan : tiempoPlan

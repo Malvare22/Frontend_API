@@ -61,7 +61,7 @@ const InfoGeneral = (props) => {
 
     const [datos1, setDatos1] = useState();
     const getDatos1 = async () => {
-        const URLs = 'http://146.235.246.199:8080/ideaNegocio/' + props.nombre;
+        const URLs = 'http://150.136.248.85:8080/ideaNegocio/' + props.nombre;
         try {
             const response = await axios.get(URLs, {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
@@ -79,7 +79,7 @@ const InfoGeneral = (props) => {
     const getArchi = async () => {
         let value = null;
         //let URL = 'http://144.22.37.238:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
-        let URL = 'http://146.235.246.199:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
+        let URL = 'http://150.136.248.85:8080/ideaNegocio/recuperarDocumento/' + props.nombre;
         axios.get(URL, {responseType : 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") }}
         ).then(
             response => {
@@ -422,7 +422,7 @@ function Tabla(props) {
         async function enviarDatos() {
             try {
                 setError(null);
-              const url = 'http://146.235.246.199:8080/ideaNegocio/calificacion';
+              const url = 'http://150.136.248.85:8080/ideaNegocio/calificacion';
               const formData = new FormData();
               
               formData.append('titulo', props.nombre);

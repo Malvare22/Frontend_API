@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const generarToken=()=>{
-    axios.post('http://146.235.246.199:8080/login',{
+    axios.post('http://150.136.248.85:8080/login',{
         
         email: 'Ericka.Eckblad@gmail.com',
         password: 'Ericka2022-07-13'

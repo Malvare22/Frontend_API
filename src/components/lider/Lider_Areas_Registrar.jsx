@@ -44,7 +44,7 @@ const Information = () => {
             };
             console.log(nombre.valor)
 
-            await axios.post("http://146.235.246.199:8080/areaConocimiento", formData, config)
+            await axios.post("http://150.136.248.85:8080/areaConocimiento", formData, config)
             toggleConfirmacion(null)
 
         }

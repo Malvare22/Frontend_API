@@ -9,7 +9,7 @@ import { Filters, Table } from '../useGeneral/UserTablesPlanes';
 export default function Listar_Planes() {
     const [filteredData, setFilteredData] = useState([]);
     const getPlanes = async () => {
-        const value = await axios.get("http://146.235.246.199:8080/planNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get("http://150.136.248.85:8080/planNegocio", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -48,7 +48,7 @@ export default function Listar_Planes() {
                     "X-Softue-JWT": localStorage.getItem('token_access')
                 }
             }
-            let value = await axios.post("http://146.235.246.199:8080/planNegocio/filtrar", formData, config
+            let value = await axios.post("http://150.136.248.85:8080/planNegocio/filtrar", formData, config
             ).then(
                 response => {
                     const data = response.data;
@@ -72,7 +72,7 @@ export default function Listar_Planes() {
     };
     const obtenerFormato = async () => {
         let value = null;
-        let URL = 'http://146.235.246.199:8080/formato/PlanNegocio';
+        let URL = 'http://150.136.248.85:8080/formato/PlanNegocio';
         axios.get(URL, { responseType: 'blob', headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {

@@ -16,7 +16,7 @@ export default function Aceptar_Tutoria() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://146.235.246.199:8080/docente/${jsonObject.email}`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+                const response = await axios.get(`http://150.136.248.85:8080/docente/${jsonObject.email}`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
                 setNombreDocente(response.data.nombre + ' ' + response.data.apellido);
                 setArea(response.data.area)
             } catch (error) {
@@ -29,7 +29,7 @@ export default function Aceptar_Tutoria() {
     const aceptar = async (titulo) => {
         try {
             console.log(titulo)
-            await axios.get(`http://146.235.246.199:8080/docente/acceptarTutor/${titulo}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+            await axios.get(`http://150.136.248.85:8080/docente/acceptarTutor/${titulo}/true`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
 
             navigate('/Docente/Perfil');
         } catch (error) {
@@ -41,7 +41,7 @@ export default function Aceptar_Tutoria() {
 
     const rechazar = async (titulo) => {
         try {
-            await axios.get(`http://146.235.246.199:8080/docente/acceptarTutor/${titulo}/false`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
+            await axios.get(`http://150.136.248.85:8080/docente/acceptarTutor/${titulo}/false`, { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } });
             navigate('/Docente/Perfil');
         } catch (error) {
             console.log(error);

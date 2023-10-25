@@ -98,7 +98,7 @@ const Panel = (props) => {
             }
             else {
                 try {
-                    condition = await axios.post('http://146.235.246.199:8080/login', {
+                    condition = await axios.post('http://150.136.248.85:8080/login', {
                         email: form.userName,
                         password: form.password
                     }).then((response) => {
@@ -129,11 +129,11 @@ const Panel = (props) => {
             }
             else {
                 try {
-                    let endpoint="http://146.235.246.199:8080/estudiante/obtenerCorreoIngreo/"+form.userName;
+                    let endpoint="http://150.136.248.85:8080/estudiante/obtenerCorreoIngreo/"+form.userName;
                     const correo = await axios.get(endpoint).then((response)=>{
                         return(response.data);
                     })
-                    condition = await axios.post('http://146.235.246.199:8080/login', {
+                    condition = await axios.post('http://150.136.248.85:8080/login', {
                         email: correo,
                         password: form.password
                     }).then((response) => {

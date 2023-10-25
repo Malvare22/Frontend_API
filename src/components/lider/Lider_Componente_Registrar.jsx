@@ -102,7 +102,7 @@ const Information = () => {
                 "X-Softue-JWT": localStorage.getItem('token_access')
             }
         }
-        axios.post('http://146.235.246.199:8080/componenteCompetencias', data, config)
+        axios.post('http://150.136.248.85:8080/componenteCompetencias', data, config)
             .then((response) => {
                 toggleAlert();
                 navigate('/Lider/Evaluacion/Componentes');

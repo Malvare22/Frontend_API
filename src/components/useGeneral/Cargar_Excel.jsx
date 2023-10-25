@@ -25,11 +25,11 @@ export default function BtnExcel(props) {
         }
         try{
             if(props.type=='Estudiante') {
-                await axios.post('http://146.235.246.199:8080/register/estudiante/archivo', formdata, config)
+                await axios.post('http://150.136.248.85:8080/register/estudiante/archivo', formdata, config)
                 toggleAlert()
             }
             if(props.type=='Docente') {
-                await axios.post('http://146.235.246.199:8080/register/docente/archivo', formdata, config)
+                await axios.post('http://150.136.248.85:8080/register/docente/archivo', formdata, config)
                 toggleAlert()
             }
         }

@@ -230,13 +230,13 @@ const Information = () => {
         }
         const toSend = toLiderFormatStudentsToExport([prototype])[0]
         /*Registro*/
-        await axios.post('http://146.235.246.199:8080/register/estudiante', toSend).then(
+        await axios.post('http://150.136.248.85:8080/register/estudiante', toSend).then(
 
         ).catch((error) => { alert(error) })
 
 
         /*Set Foto*/
-        const zelda = "http://146.235.246.199:8080/coordinador/guardarFoto";
+        const zelda = "http://150.136.248.85:8080/coordinador/guardarFoto";
 
         await axios({
             method: "post",

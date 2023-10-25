@@ -26,7 +26,7 @@ export default function Screen() {
         } else if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&+]).{6,}$/.test(password)) {
             alert('La contraseña no cumple los requisitos. Debe tener al menos una letra mayúscula, un dígito y un carácter especial (!@#$%^&), y tener una longitud mínima de 6 caracteres.');
         } else if (password === confirmPassword) {
-            axios.patch('http://146.235.246.199:8080/administrativo/resetPassword', { "password": password }, { headers: { 'X-Softue-Reset': token } })
+            axios.patch('http://150.136.248.85:8080/administrativo/resetPassword', { "password": password }, { headers: { 'X-Softue-Reset': token } })
                 .then((response) => {
                     alert('Se ha reestablecido su contraseña, verifique su bandeja de entrada.');
                     navigate('../../Login');

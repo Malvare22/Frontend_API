@@ -84,7 +84,7 @@ const changePassword = async (correo, contrasenia, type) => {
             }
         }
 
-        await axios.patch('http://146.235.246.199:8080/coordinador/restablecerOtroUsuario', formData, config)
+        await axios.patch('http://150.136.248.85:8080/coordinador/restablecerOtroUsuario', formData, config)
     }
     else{
         const config = {
@@ -95,7 +95,7 @@ const changePassword = async (correo, contrasenia, type) => {
         const data = {
             "password" : contrasenia
         }
-        await axios.patch('http://146.235.246.199:8080/coordinador/reestablecer', data, config)
+        await axios.patch('http://150.136.248.85:8080/coordinador/reestablecer', data, config)
 
     }
     
@@ -270,12 +270,12 @@ export function FormDocente({ user, type, myself }) {
             }
             if (type == 'registrar') {
                 dataToSend.usuarioActivo = true
-                await axios.post('http://146.235.246.199:8080/register/docente', dataToSend)
+                await axios.post('http://150.136.248.85:8080/register/docente', dataToSend)
             }
             else {
                 dataToSend.correo = C_CORREO;
                 console.log('Export', dataToSend)
-                await axios.patch('http://146.235.246.199:8080/docente/actualizar', dataToSend, config)
+                await axios.patch('http://150.136.248.85:8080/docente/actualizar', dataToSend, config)
                 if (form.contrasenia != '') {
                     await changePassword(C_CORREO, form.contrasenia, type)
                 }
@@ -283,7 +283,7 @@ export function FormDocente({ user, type, myself }) {
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
-                    await axios.patch(`http://146.235.246.199:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    await axios.patch(`http://150.136.248.85:8080/coordinador/updateCorreo`, formDataCorreo, config)
                     if(myself){
                         let aux = (JSON.parse(localStorage.getItem('session')))
                         localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
@@ -291,7 +291,7 @@ export function FormDocente({ user, type, myself }) {
                 }
             }
 
-            await axios.post('http://146.235.246.199:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://150.136.248.85:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
             else{
@@ -556,18 +556,18 @@ export const FormEstudiante = ({ user, type, myself }) => {
                 dataToSend.capacitacionAprobada = "reprobada"
                 dataToSend.usuarioActivo = true
 
-                await axios.post('http://146.235.246.199:8080/register/estudiante', dataToSend)
+                await axios.post('http://150.136.248.85:8080/register/estudiante', dataToSend)
             }
 
             else {
                 dataToSend.correo = C_CORREO;
-                await axios.patch('http://146.235.246.199:8080/estudiante/actualizar', dataToSend, config)
+                await axios.patch('http://150.136.248.85:8080/estudiante/actualizar', dataToSend, config)
                 
                     if(form.correo != C_CORREO){
                         let formDataCorreo = new FormData()
                         formDataCorreo.append('codigo', form.codigo)
                         formDataCorreo.append('correo', form.correo)
-                        await axios.patch(`http://146.235.246.199:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                        await axios.patch(`http://150.136.248.85:8080/coordinador/updateCorreo`, formDataCorreo, config)
                         if(myself){
                             let aux = (JSON.parse(localStorage.getItem('session')))
                             localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
@@ -580,7 +580,7 @@ export const FormEstudiante = ({ user, type, myself }) => {
                 }
             }
 
-            await axios.post('http://146.235.246.199:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://150.136.248.85:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
             else{
@@ -836,12 +836,12 @@ export const FormAdministrativo = ({ user, type, myself }) => {
 
             if (type == 'registrar') {
                 dataToSend.usuarioActivo = true
-                await axios.post('http://146.235.246.199:8080/register', dataToSend)
+                await axios.post('http://150.136.248.85:8080/register', dataToSend)
             }
 
             else {
                 dataToSend.correo = C_CORREO;
-                await axios.patch('http://146.235.246.199:8080/administrativo/update', dataToSend, config)
+                await axios.patch('http://150.136.248.85:8080/administrativo/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(C_CORREO, form.contrasenia, type)
                 }
@@ -849,7 +849,7 @@ export const FormAdministrativo = ({ user, type, myself }) => {
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
-                    await axios.patch(`http://146.235.246.199:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    await axios.patch(`http://150.136.248.85:8080/coordinador/updateCorreo`, formDataCorreo, config)
                     if(myself){
                         let aux = (JSON.parse(localStorage.getItem('session')))
                         localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
@@ -858,7 +858,7 @@ export const FormAdministrativo = ({ user, type, myself }) => {
                 
             }
 
-            await axios.post('http://146.235.246.199:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://150.136.248.85:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
             else{
@@ -1064,12 +1064,12 @@ export const FormLider = ({ user, type, myself }) => {
             }
             if (type == 'registrar') {
                 dataToSend.usuarioActivo = true
-                await axios.post('http://146.235.246.199:8080/register', dataToSend)
+                await axios.post('http://150.136.248.85:8080/register', dataToSend)
             }
             else {
 
                 dataToSend.correo = C_CORREO;
-                await axios.patch('http://146.235.246.199:8080/coordinador/update', dataToSend, config)
+                await axios.patch('http://150.136.248.85:8080/coordinador/update', dataToSend, config)
                 if (form.contrasenia != '-') {
                     await changePassword(C_CORREO, form.contrasenia, type)
                 }
@@ -1077,7 +1077,7 @@ export const FormLider = ({ user, type, myself }) => {
                     let formDataCorreo = new FormData()
                     formDataCorreo.append('codigo', form.codigo)
                     formDataCorreo.append('correo', form.correo)
-                    await axios.patch(`http://146.235.246.199:8080/coordinador/updateCorreo`, formDataCorreo, config)
+                    await axios.patch(`http://150.136.248.85:8080/coordinador/updateCorreo`, formDataCorreo, config)
                     if(myself){
                         let aux = (JSON.parse(localStorage.getItem('session')))
                         localStorage.setItem('session', JSON.stringify({...aux, "email": form.correo}))
@@ -1085,7 +1085,7 @@ export const FormLider = ({ user, type, myself }) => {
                 }
             }
 
-            await axios.post('http://146.235.246.199:8080/coordinador/guardarFoto', formData, config)
+            await axios.post('http://150.136.248.85:8080/coordinador/guardarFoto', formData, config)
 
             if(myself) CerrarSesion(navigate)
             else{

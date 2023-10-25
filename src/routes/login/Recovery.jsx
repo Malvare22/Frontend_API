@@ -84,7 +84,7 @@ const PanelPrincipal = (props) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const isValidEmail = emailRegex.test(email);
         if (isValidEmail) {
-            axios.get(`http://146.235.246.199:8080/coordinador/forgotPassword/${email}`).then((response) => {
+            axios.get(`http://150.136.248.85:8080/coordinador/forgotPassword/${email}`).then((response) => {
                 alert("Se ha enviado un correo para reestablecer su contraseña, verifique su bandeja de entrada.")
                 navigate('/Login');
             }).catch((error) => {

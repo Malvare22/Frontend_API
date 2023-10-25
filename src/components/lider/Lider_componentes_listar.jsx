@@ -7,7 +7,7 @@ import axios from "axios";
 export default function Listar_Componentes() {
     const [data, setData] = useState([]);
     const getComponentes = async () => {
-        const value = await axios.get("http://146.235.246.199:8080/componenteCompetencias", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
+        const value = await axios.get("http://150.136.248.85:8080/componenteCompetencias", { headers: { "X-Softue-JWT": localStorage.getItem("token_access") } }
         ).then(
             response => {
                 const data = response.data;
@@ -111,7 +111,7 @@ const Table = (props) => {
             const config = {
                 headers: { "X-Softue-JWT": localStorage.getItem("token_access") },
             };
-            await axios.delete(`http://146.235.246.199:8080/componenteCompetencias/${nombre}`, config)
+            await axios.delete(`http://150.136.248.85:8080/componenteCompetencias/${nombre}`, config)
             props.updater();
             toggleAlert(null)
         }
